@@ -38,3 +38,6 @@ items:
 - id: 1a189b15d7a542fab4ac057f7733a451
   type: module
   url: /hacsfiles/harmony-card/harmony-card.js?hacstag=2375327500141
+- id: 60595b530cf04f9abe68e9722a0d6627
+  type: module
+  url: /hacsfiles/popup-backdrop-filter/popup-backdrop-filter.js?hacstag=20407589458119

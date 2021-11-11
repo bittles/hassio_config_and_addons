@@ -149,7 +149,8 @@ ios-light-mode-dark-green:
   mcg-title-letter-spacing: .15em
   mini-media-player-base-color: white
   mini-media-player-icon-color: white
-
+  # Blur
+  iron-overlay-backdrop-filter: 'blur(10px) grayscale(50%)'
 #
 # iOS Dark Mode Theme - dark-green
 #

@@ -1,9 +1,9 @@
 
-- platform: momentary
-  name: Anyone Arrives Home
+#- platform: momentary
+#  name: Anyone Arrives Home
   
-- platform: momentary
-  name: Anyone Leaves Home
+#- platform: momentary
+#  name: Anyone Leaves Home
   
 - platform: gc100
   ports:
