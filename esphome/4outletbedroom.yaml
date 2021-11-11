@@ -1,0 +1,99 @@
+esphome:
+  name: 4outletbedroom
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret wifi24g_ssid
+  password: !secret wifi24g_pass
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "KMC4 Bedroom Fallback Hotspot"
+    password: "wordpass"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+#  encryption:
+#    key: 03dWSoBo3/skXpNR1LIvEIgJy5ZvtfmYpQhO3Xu40+4=
+    
+ota:
+
+#web_server:
+#  port: 80
+
+sensor:
+  - platform: hlw8012
+    sel_pin: GPIO12
+    cf_pin: GPIO4
+    cf1_pin: GPIO5
+    voltage_divider: 325015
+    current:
+      name: "KMC4 Bedroom Current"
+    voltage:
+      name: "KMC4 Bedroom Voltage"
+    power:
+      name: "KMC4 Bedroom Power"
+    energy:
+      name: "KMC4 Bedroom Energy"
+    update_interval: 60s
+    
+  - platform: wifi_signal
+    name: "KMC4outlet Bedroom WiFi signal"
+    update_interval: 60s
+
+  - platform: uptime
+    name: "KMC4 Bedroom Uptime"
+
+text_sensor:
+  - platform: version
+    name: "KMC01 ESPHome Version"  
+
+
+## not sure if the switches need to be inverted or not yet. 
+switch:
+  - platform: gpio
+    name: "Bedroom Outlet 1"
+    pin: GPIO15
+    # inverted: yes
+    id: relay1
+  - platform: gpio
+    name: "Bedroom Outlet 2"
+    pin: GPIO13
+    # inverted: yes
+    id: relay2
+  - platform: gpio
+    name: "Bedroom Outlet 3"
+    pin: GPIO14
+    # inverted: yes
+    id: relay3
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO16
+      mode: INPUT_PULLDOWN
+      # inverted: True
+    name: "Bedroom Outlet button"
+    on_press:
+      - switch.toggle: relay1
+    on_double_click:
+      min_length: 50ms
+      max_length: 350ms
+      then:
+      - switch.toggle: relay2
+      - switch.toggle: relay3
+
+  - platform: status
+    name: "KMC01 Status"
+
+
+status_led:
+  pin:
+    number: GPIO1
+    inverted: true

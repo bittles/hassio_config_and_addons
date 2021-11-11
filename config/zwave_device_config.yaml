@@ -1,0 +1,54 @@
+zwave.fan:
+  ignored: false
+  polling_intensity: 1
+zwave.kitchen_light:
+  ignored: false
+  polling_intensity: 1
+zwave.lamp_light:
+  ignored: false
+  polling_intensity: 1
+zwave.linear_lb60z1_dimmable_led_light_bulb:
+  ignored: false
+  polling_intensity: 1
+zwave.living_room_ligh:
+  ignored: false
+  polling_intensity: 1
+switch.kitchen_light_kitchen_light:
+  ignored: false
+  polling_intensity: 1
+light.linear_lb60z1_dimmable_led_light_bulb_foyer_light:
+  ignored: false
+  polling_intensity: 1
+light.living_room_ligh_living_room_light:
+  ignored: false
+  polling_intensity: 0
+switch.lamp_light_lamp_light:
+  ignored: false
+  polling_intensity: 8
+switch.fan_living_room_fan:
+  ignored: false
+  polling_intensity: 1
+switch.ge_12720_outdoor_smart_switch_switch:
+  ignored: false
+  polling_intensity: 1
+fan.ge_14287_fan_control_switch_level:
+  ignored: false
+  polling_intensity: 1
+switch.kitchen_lights:
+  ignored: false
+  polling_intensity: 1
+switch.porch_lights:
+  ignored: false
+  polling_intensity: 1
+fan.living_room_fan:
+  ignored: false
+  polling_intensity: 0
+light.hallway:
+  ignored: false
+  polling_intensity: 0
+switch.receiver_outlet:
+  ignored: false
+  polling_intensity: 0
+switch.fan_switch:
+  ignored: false
+  polling_intensity: 0

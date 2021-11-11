@@ -1,0 +1,326 @@
+dreamscreen_main_source:
+  alias: DreamScreen - Main Source
+  sequence:
+  - service: dreamscreen.set_hdmi_source
+    data:
+      fields:
+        entity_id: dreamscreen.living_room
+        source: 1
+flash_bedroom_lights_purple:
+  alias: Flash Bedroom Lamps Purple
+  sequence:
+  - data:
+      entity_id: light.hue_go_1, light.hue_go_2
+    service: light.turn_off
+  - delay:
+      milliseconds: 500
+  - data:
+      entity_id: light.hue_go_1, light.hue_go_2
+      rgb_color:
+      - 255
+      - 0
+      - 255
+    service: light.turn_on
+bathroom_speaker_media_player:
+  alias: Turn On Bathroom Speaker and Ensure Back Deck Speaker is Off
+  sequence:
+  - service: switch.turn_on
+    entity_id: switch.hassbathroomspeaker
+  - service: media_player.turn_on
+    data: {}
+    entity_id: media_player.onkyo_zone_2
+  - service: switch.turn_off
+    entity_id: switch.hassbackdeckspeaker
+    data: {}
+  mode: single
+backdeck_speaker_media_player:
+  alias: Turn On Back Deck Speaker and Ensure Bathroom Speaker is Off
+  sequence:
+  - service: switch.turn_on
+    entity_id: switch.hassbackdeckspeaker
+  - service: media_player.turn_on
+    data: {}
+    entity_id: media_player.onkyo_zone_2
+  - data: {}
+    service: switch.turn_off
+    entity_id: switch.hassbathroomspeaker
+  mode: single
+foyer_light_ten_min:
+  alias: Turn on Foyer Light for 10 Minutes
+  sequence:
+  - data:
+      brightness: 255
+      entity_id: light.hallway
+    service: light.turn_on
+  - delay: 00:10:00
+  - data:
+      entity_id: light.hallway
+    service: light.turn_off
+'1579731744650':
+  alias: Bedroom Lamps Off
+  sequence:
+  - entity_id: light.hue_go_1
+    service: light.turn_off
+  - entity_id: light.hue_go_2
+    service: light.turn_off
+'1579731898503':
+  alias: Speakers Off
+  sequence:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.airplayserver_bathroom
+  - service: switch.turn_off
+    target:
+      entity_id: switch.airplayserver_deck
+  - entity_id: switch.hassbackdeckspeaker
+    service: switch.turn_off
+  - entity_id: switch.hassbathroomspeaker
+    service: switch.turn_off
+  - entity_id: switch.hassfrontporchspeaker
+    service: switch.turn_off
+  - entity_id: switch.hassz2
+    service: switch.turn_off
+  - service: media_player.turn_off
+    target:
+      entity_id:
+      - media_player.forked_daapd_output_master_bedroom_apple_tv
+      - media_player.forked_daapd_output_garage_apple_tv
+      - media_player.forked_daapd_output_shield
+      - media_player.forked_daapd_output_receiver
+  mode: single
+'1579732071901':
+  alias: Inside House Lights Off
+  sequence:
+  - entity_id: light.kitchen
+    service: light.turn_off
+  - entity_id: light.hallway
+    service: light.turn_off
+  - entity_id: light.lamp
+    service: light.turn_off
+  - entity_id: light.living_room_ligh_living_room_light
+    service: light.turn_off
+  - entity_id: light.above_cabinet_lights
+    service: light.turn_off
+'1580158052666':
+  alias: TV Volume Up 3x
+  sequence:
+  - data:
+      command: VolumeUp
+      device: '36419789'
+    entity_id: remote.living_room
+    service: remote.send_command
+  - data:
+      command: VolumeUp
+      device: '36419789'
+    entity_id: remote.living_room
+    service: remote.send_command
+  - data:
+      command: VolumeUp
+      device: '36419789'
+    entity_id: remote.living_room
+    service: remote.send_command
+'1580158143285':
+  alias: TV Volume Down 3x
+  sequence:
+  - data:
+      command: VolumeDown
+      device: '36419789'
+    entity_id: remote.living_room
+    service: remote.send_command
+  - data:
+      command: VolumeDown
+      device: '36419789'
+    entity_id: remote.living_room
+    service: remote.send_command
+  - data:
+      command: VolumeDown
+      device: '36419789'
+    entity_id: remote.living_room
+    service: remote.send_command
+'1580584668660':
+  alias: All Nick PC Outlets Off
+  sequence:
+  - delay: 00:00:20
+  - entity_id: switch.002006596001943c3b19_2
+    service: switch.turn_off
+  - entity_id: switch.002006596001943c3b19_3
+    service: switch.turn_off
+  - entity_id: switch.002006596001943c3b19_4
+    service: switch.turn_off
+'1580584719238':
+  alias: All Nick PC Outlets On
+  sequence:
+  - entity_id: switch.002006596001943c3b19_2
+    service: switch.turn_on
+  - entity_id: switch.002006596001943c3b19_3
+    service: switch.turn_on
+  - entity_id: switch.002006596001943c3b19_4
+    service: switch.turn_on
+restart_shield:
+  alias: Restart Shield
+  sequence:
+  - service: androidtv.adb_command
+    data:
+      command: reboot
+    entity_id: media_player.shield_adb
+  mode: single
+alexa_tts_bathroom:
+  alias: Alexa TTS Bathroom
+  sequence:
+  - service: notify.alexa_media_bathroom_echo
+    data:
+      message: test fucking test
+      data:
+        type: tts
+  mode: single
+'1624664181825':
+  sequence:
+  - service: notify.alexa_media
+    data_template:
+      target: '{{ states(''input_select.alexa_message_target'') }}'
+      data:
+        type: announce
+      message: '{{ states(''input_text.alexa_message_text'') }}'
+  mode: single
+  alias: Instant Message
+living_room_play_pause:
+  alias: Living Room Play_Pause
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: remote.living_room
+        state: nvidia SHIELD
+        attribute: current_activity
+      sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: sendevent /dev/input/event5 1 164 1 && sendevent /dev/input/event5
+            0 0 0 && sendevent /dev/input/event5 1 164 0 && sendevent /dev/input/event5
+            0 0 0
+    - conditions:
+      - condition: state
+        entity_id: remote.living_room
+        state: PowerOff
+        attribute: current_activity
+      sequence:
+      - delay: ''
+    default:
+    - service: remote.send_command
+      target:
+        entity_id: remote.living_room_tcl_tv
+      data:
+        command: play_pause
+  mode: queued
+  max: 10
+living_room_rewind:
+  alias: Living Room Rewind
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: remote.living_room
+        state: nvidia SHIELD
+        attribute: current_activity
+      sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: sendevent /dev/input/event5 1 168 1 && sendevent /dev/input/event5
+            0 0 0 && sendevent /dev/input/event5 1 168 0 && sendevent /dev/input/event5
+            0 0 0
+    - conditions:
+      - condition: state
+        entity_id: remote.living_room
+        state: PowerOff
+        attribute: current_activity
+      sequence:
+      - delay: ''
+    default:
+    - service: remote.send_command
+      target:
+        entity_id: remote.living_room_tcl_tv
+      data:
+        command: reverse
+  mode: queued
+  max: 10
+living_room_fast_forward:
+  alias: Living Room Fast Forward
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: remote.living_room
+        state: nvidia SHIELD
+        attribute: current_activity
+      sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: sendevent /dev/input/event5 1 208 1 && sendevent /dev/input/event5
+            0 0 0 && sendevent /dev/input/event5 1 208 0 && sendevent /dev/input/event5
+            0 0 0
+    - conditions:
+      - condition: state
+        entity_id: remote.living_room
+        state: PowerOff
+        attribute: current_activity
+      sequence:
+      - delay: ''
+    default:
+    - service: remote.send_command
+      target:
+        entity_id: remote.living_room_tcl_tv
+      data:
+        command: forward
+  mode: queued
+  max: 10
+bedroom_lights_day:
+  alias: Bedroom Lights Day
+  sequence:
+  - type: turn_on
+    device_id: 490ba522f9e011ea8bb3712c68a17879
+    entity_id: light.under_bed_light
+    domain: light
+    brightness_pct: 75
+  - type: turn_on
+    device_id: bc25d8622a074722810f69b745931250
+    entity_id: light.kitchen_nightlight
+    domain: light
+    brightness_pct: 100
+  mode: single
+bedroom_lights_night:
+  alias: Bedroom Lights Night
+  sequence:
+  - type: turn_on
+    device_id: 490ba522f9e011ea8bb3712c68a17879
+    entity_id: light.under_bed_light
+    domain: light
+    brightness_pct: 5
+  - type: turn_on
+    device_id: bc25d8622a074722810f69b745931250
+    entity_id: light.kitchen_nightlight
+    domain: light
+    brightness_pct: 50
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - data:
+      brightness_pct: 100
+      color_name: cornsilk
+    entity_id: light.hue_go_1
+    service: light.turn_on
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - data:
+      brightness_pct: 100
+      color_name: cornsilk
+    entity_id: light.hue_go_2
+    service: light.turn_on
+  mode: single

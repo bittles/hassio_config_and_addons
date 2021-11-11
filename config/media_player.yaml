@@ -1,0 +1,361 @@
+  - platform: onkyo
+    host: !secret onkyo_ip
+    name: Onkyo
+    max_volume: 64
+    sources:
+      strm-box: 'Shield'
+      tv: 'Roku TV'
+      game: 'PS4'
+      cbl: 'Xbox One'
+      network: 'NET'
+      bluetooth: 'Bluetooth'
+
+  - platform: androidtv
+    name: Shield ADB
+    device_class: auto
+    host: !secret shield_ip
+    adb_server_ip: 127.0.0.1
+    adb_server_port: !secret adb_port_androidtv
+    get_sources: false
+    apps:
+      com.plexapp.android: "Plex"
+
+#  - platform: media_player_template
+#    media_players:
+#      harmony:
+#        friendly_name: Living Room Remote
+#        device_class: tv
+#        current_source_template: "{{ states('input_select.harmony_select') }}"
+#        value_template: >
+#          {% if is_state("remote.living_room", "on") -%}
+#            on
+#          {%- else -%}
+#            off
+#          {%- endif %}
+#        turn_on:
+#          service: remote.turn_on
+#          target:
+#            entity_id: remote.living_room
+#          data:
+#            activity: nvidia SHIELD
+#        turn_off:
+#          service: remote.turn_off
+#          data_template:
+#            entity_id: remote.living_room
+#        volume_up:
+#          service: media_player.volume_up
+#          data_template:
+#            entity_id: media_player.onkyo
+#        volume_down:
+#          service: media_player.volume_down
+#          data_template:
+#            entity_id: media_player.onkyo
+#        mute:
+#          service: media_player.volume_mute
+#          data_template:
+#            entity_id: media_player.onkyo
+#        set_volume:
+#          service: media_player.volume_set
+#          data:
+#            entity_id: media_player.onkyo
+#            value: "{{volume}}"
+#        inputs:
+#          nvidia SHIELD:
+#            service: remote.turn_on
+#            data_template:
+#              entity_id: remote.living_room
+#              activity: nvidia SHIELD
+#          Roku TV:
+#            service: remote.turn_on
+#            data_template:
+#              entity_id: remote.living_room
+#              activity: Roku TV
+#          PS5:
+#            service: remote.turn_on
+#            data_template:
+#              entity_id: remote.living_room
+#              activity: Play PS5
+
+  - platform: universal
+    name: Living Room Remote
+    unique_id: livingroomremote
+    children:
+      - media_player.onkyo
+    state_template: '{{ states(''remote.living_room'') }}'
+    commands:
+      turn_on:
+        service: remote.turn_on
+        target:
+          entity_id: remote.living_room
+        data:
+          activity: nvidia SHIELD
+      turn_off:
+        service: remote.turn_off
+        target:
+          entity_id: remote.living_room
+      media_play:
+        service: script.living_room_play_pause
+      media_pause:
+        service: script.living_room_play_pause
+      media_play_pause:
+        service: script.living_room_play_pause
+      media_previous_track:
+        service: script.living_room_rewind
+      media_next_track:
+        service: script.living_room_fast_forward
+      volume_up:
+        service: media_player.volume_up
+        data:
+          entity_id: media_player.onkyo
+      volume_down:
+        service: media_player.volume_down
+        data:
+          entity_id: media_player.onkyo
+      volume_set:
+        service: media_player.volume_set
+        data:
+          entity_id: media_player.onkyo
+          value: '{{ volume }}'
+      select_source: 
+        service: remote.turn_on
+        target:
+          entity_id: remote.living_room
+        data:
+          activity: '{{ source }}'
+    attributes:
+      source: input_select.living_room_sources
+      source_list: input_select.living_room_sources|options
+    device_class: tv
+
+  - platform: universal
+    name: Bathroom Speaker
+    unique_id: bathroomspeakerplayer
+    children:
+      - media_player.onkyo_zone_2
+    state_template: >
+      {% if is_state('switch.hassz2', 'on') and is_state('switch.hassbathroomspeaker', 'on') %}
+        on
+      {% elif is_state('switch.hassz2', 'off') and is_state('switch.hassbathroomspeaker', 'off') %}
+        off
+      {% else %}
+        off
+      {% endif %}
+    commands:
+      turn_on: 
+        service: script.turn_on
+        data:
+          entity_id: script.bathroom_speaker_media_player
+      turn_off:
+        service: homeassistant.turn_off
+        data:
+          entity_id: group.zone2_bathroom
+      volume_set:
+        service: media_player.volume_set
+        data:
+          entity_id: media_player.onkyo_zone_2
+          value: '{{ volume }}'
+      volume_up:
+        service: media_player.volume_up
+        data:
+          entity_id: media_player.onkyo_zone_2
+      volume_down:
+        service: media_player.volume_down
+        data:
+          entity_id: media_player.onkyo_zone_2
+      volume_mute:
+        service: media_player.volume_mute
+        data:
+          entity_id: media_player.onkyo_zone_2
+      select_source:
+        service: media_player.select_source
+        data_template:
+          entity_id: media_player.onkyo_zone_2
+          source: '{{ source }}'
+    attributes:
+      source_list: input_select.zone_2_sources|options
+      source: input_select.zone_2_sources
+
+  - platform: universal
+    name: Master Bedroom TV
+    unique_id: bedroomtvremote
+    children:
+      - media_player.bedroom_tcl_tv
+    state_template: >
+          {% if is_state("media_player.bedroom_tcl_tv", "idle") -%}
+            on
+          {%- else -%}
+            {{ states("media_player.bedroom_tcl_tv") }}
+          {%- endif %}
+    commands:
+      turn_on:
+        service: remote.turn_on
+        target:
+          entity_id: remote.bedroom_tcl_tv
+      turn_off:
+        service: remote.turn_off
+        target:
+          entity_id: remote.bedroom_tcl_tv
+      volume_up:
+        service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: volume_up
+      volume_down:
+        service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: volume_down
+      volume_mute:
+        service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: volume_mute
+      media_play:
+        service: remote.send_command
+        target:
+          entity_id: >
+            {% if is_state_attr('media_player.master_bedroom_tv', 'source', 'Apple TV') %}
+              remote.master_bedroom_apple_tv
+            {% else %}
+              remote.bedroom_tcl_tv
+            {% endif %}
+        data:
+          command: play_pause
+      media_pause:
+        service: remote.send_command
+        target:
+          entity_id: >
+            {% if is_state_attr('media_player.master_bedroom_tv', 'source', 'Apple TV') %}
+              remote.master_bedroom_apple_tv
+            {% else %}
+              remote.bedroom_tcl_tv
+            {% endif %}
+        data:
+          command: play_pause
+      media_play_pause:
+        service: remote.send_command
+        target:
+          entity_id: >
+            {% if is_state_attr('media_player.master_bedroom_tv', 'source', 'Apple TV') %}
+              remote.master_bedroom_apple_tv
+            {% else %}
+              remote.bedroom_tcl_tv
+            {% endif %}
+        data:
+          command: play_pause
+      media_previous_track:
+        service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: reverse
+      media_next_track:
+        service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: forward
+      select_source: 
+        service: media_player.select_source
+        target:
+          entity_id: media_player.bedroom_tcl_tv
+        data_template:
+          source: >
+            {% if source == "Roku" %}
+              Home
+            {% else %}
+              {{ source }}
+            {% endif %}
+    attributes:
+#      state: remote.bedroom_tcl_tv
+#      source: media_player.bedroom_tcl_tv|source
+      source: input_select.bedroom_tv_source_list
+      source_list: input_select.bedroom_tv_source_list|options
+    device_class: tv
+
+  - platform: universal
+    name: Deck Speaker
+    unique_id: deckspeakerplayer
+    children:
+      - media_player.onkyo_zone_2
+    state_template: >
+      {% if is_state('switch.hassz2', 'on') and is_state('switch.hassbackdeckspeaker', 'on') %}
+        on
+      {% elif is_state('switch.hassz2', 'off') and is_state('switch.hassbackdeckspeaker', 'off') %}
+        off
+      {% else %}
+        off
+      {% endif %}
+    commands:
+      turn_on: 
+        service: script.turn_on
+        data:
+          entity_id: script.backdeck_speaker_media_player
+      turn_off:
+        service: homeassistant.turn_off
+        data:
+          entity_id: group.zone2_deck
+      volume_set:
+        service: media_player.volume_set
+        data:
+          entity_id: media_player.onkyo_zone_2
+      volume_up:
+        service: media_player.volume_up
+        data:
+          entity_id: media_player.onkyo_zone_2
+      volume_down:
+        service: media_player.volume_down
+        data:
+          entity_id: media_player.onkyo_zone_2
+      volume_mute:
+        service: media_player.volume_mute
+        data:
+          entity_id: media_player.onkyo_zone_2
+      select_source:
+        service: media_player.select_source
+        data_template:
+          entity_id: media_player.onkyo_zone_2
+          source: '{{ source }}'
+    attributes:
+      source_list: input_select.zone_2_sources|options
+      source: input_select.zone_2_sources
+
+#  - platform: universal
+#    name: Living Room TV
+#    children:
+#      - media_player.onkyo
+#    commands:
+#      turn_on:
+#        service: remote.turn_on
+#        data:
+#          entity_id: remote.living_room
+#      turn_off:
+#       service: remote.turn_off
+#        data: 
+#          entity_id: remote.living_room
+#      volume_up:
+#        service: media_player.volume_up
+#        data:
+#          entity_id: media_player.onkyo
+#      volume_down:
+#        service: media_player.volume_down
+#        data:
+#          entity_id: media_player.onkyo
+#      volume_mute:
+#        service: media_player.volume_mute
+#        data: 
+#          entity_id: media_player.onkyo
+#      select_source:
+#        service: remote.turn_on
+#        data_template:
+#          entity_id: remote.living_room
+###          activity:  "{{  states('sensor.living_roomtv')  }}"
+###          activity:  "{{  states('input_select.harmony_select')  }}"
+#          activity: '{{ source }}'
+#    attributes:
+###      state: remote.living_room
+#      source: input_select.harmony_select
+#      source_list: input_select.harmony_select|options

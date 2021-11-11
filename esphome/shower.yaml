@@ -1,0 +1,65 @@
+substitutions:
+  deviceName: dualsmartoutlet
+
+esphome:
+  name: $deviceName
+  platform: ESP8266
+  board: esp8285
+
+wifi:
+  ssid: !secret wifi24g_ssid
+  password: !secret wifi24g_pass
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "${deviceName} Fallback"
+    password: "yuyuyuyklo"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+#  encryption:
+#    key: 03dWSoBo3/skXpNR1LIvEIgJy5ZvtfmYpQhO3Xu40+4=
+    
+ota:
+
+status_led:
+  pin: 
+    number: GPIO4
+    inverted: True
+
+output:
+  - platform: gpio
+    id: relay1_status
+    pin: GPIO5
+    inverted: True
+
+switch:
+  - platform: gpio
+    name: Shower
+    pin: GPIO12
+    id: relay_1
+    on_turn_on:
+    - output.turn_on: relay1_status
+    on_turn_off:
+    - output.turn_off: relay1_status    
+  - platform: gpio
+    name: ${deviceName} Switch 2
+    pin: GPIO14
+    id: relay_2
+
+
+binary_sensor:
+  - platform: gpio
+    id: button
+    pin:
+      number: GPIO13
+      mode: INPUT_PULLUP
+      inverted: True
+    on_press:
+      - switch.toggle: relay_1
+    name: ${deviceName} Button

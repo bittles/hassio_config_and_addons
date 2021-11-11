@@ -1,0 +1,8 @@
+databases:
+- '!secret mariadb_database'
+logins:
+- password: '!secret mariadb_pass'
+  username: '!secret mariadb_user'
+rights:
+- database: '!secret mariadb_database'
+  username: '!secret mariadb_user'

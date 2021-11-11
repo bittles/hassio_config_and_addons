@@ -1,0 +1,2962 @@
+- id: '1572710134837'
+  alias: zNotify.Pi CPU Usage Above 35% for 10min then Notify
+  description: ''
+  trigger:
+  - above: '35'
+    entity_id: sensor.processor_use
+    for: 00:10:00
+    platform: numeric_state
+  condition:
+  - condition: not
+    conditions:
+    - condition: time
+      before: 07:30:00
+      after: 06:00:00
+  action:
+  - service: notify.mobile_app_rxniphone
+    data:
+      message: CPU usage on Pi has been high for over 25 minutes!
+      title: Pi CPU USAGE!!
+  mode: single
+- id: '1574873108236'
+  alias: Front Door Autolock
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+    for: 00:10:00
+    platform: state
+    to: 'off'
+  - entity_id: timer.frontdoorretry
+    platform: state
+    to: idle
+  - entity_id: lock.august_asl_03_smart_lock_locked
+    for: 00:10:00
+    platform: state
+    to: unlocked
+  condition:
+  - condition: state
+    entity_id: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+    state: 'off'
+  - condition: state
+    entity_id: lock.august_asl_03_smart_lock_locked
+    state: unlocked
+  action:
+  - service: timer.start
+    entity_id: timer.frontdoorretry
+    data: {}
+  - service: lock.lock
+    data: {}
+    entity_id: lock.front_door
+  mode: single
+- id: '1574882881430'
+  alias: Kitchen Lights Turns Cabinet Lights
+  description: ''
+  trigger:
+  - entity_id: light.kitchen
+    platform: state
+  - platform: state
+    entity_id: switch.kitchen_light
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.to_state.state == ''on'' }}'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 254
+          entity_id: light.under_cabinet_light
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.to_state.state == ''off'' }}'
+      sequence:
+      - service: light.turn_off
+        data: {}
+        entity_id: light.under_cabinet_light
+    default: []
+  mode: single
+  max: 10
+- id: '1574887131460'
+  alias: zzz.Outdoor Lights at Sunset/Sunrise
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sun.sun
+    to: below_horizon
+    id: sunset
+  - platform: state
+    entity_id: sun.sun
+    to: above_horizon
+    id: sunrise
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: sunset
+      sequence:
+      - repeat:
+          until:
+          - condition: device
+            type: is_on
+            device_id: d0bee64a1ce6eec283ca228325fab7fe
+            entity_id: switch.porch_lights
+            domain: switch
+          sequence:
+          - type: turn_on
+            device_id: d0bee64a1ce6eec283ca228325fab7fe
+            entity_id: switch.porch_lights
+            domain: switch
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+      - repeat:
+          until:
+          - condition: device
+            type: is_on
+            device_id: 746911e6923f45a897998898b5cd634b
+            entity_id: switch.driveway_lights
+            domain: switch
+          sequence:
+          - type: turn_on
+            device_id: 746911e6923f45a897998898b5cd634b
+            entity_id: switch.driveway_lights
+            domain: switch
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+    - conditions:
+      - condition: trigger
+        id: sunrise
+      sequence:
+      - repeat:
+          until:
+          - condition: device
+            type: is_off
+            device_id: d0bee64a1ce6eec283ca228325fab7fe
+            entity_id: switch.porch_lights
+            domain: switch
+          sequence:
+          - type: turn_off
+            device_id: d0bee64a1ce6eec283ca228325fab7fe
+            entity_id: switch.porch_lights
+            domain: switch
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+      - repeat:
+          until:
+          - condition: device
+            type: is_off
+            device_id: 746911e6923f45a897998898b5cd634b
+            entity_id: switch.driveway_lights
+            domain: switch
+          sequence:
+          - type: turn_off
+            device_id: 746911e6923f45a897998898b5cd634b
+            entity_id: switch.driveway_lights
+            domain: switch
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+    default: []
+  mode: single
+- id: '1575053470509'
+  alias: zPresence.Welcome Home Front Door
+  description: ''
+  trigger:
+  - event_data:
+      actionName: Unlock Door
+    event_type: ios.action_fired
+    platform: event
+  - platform: state
+    entity_id: sensor.number_of_persons_at_home
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.state > trigger.from_state.state }}'
+  action:
+  - data: {}
+    service: lock.unlock
+    target:
+      entity_id:
+      - lock.august_asl_03_smart_lock_locked
+  initial_state: false
+  mode: single
+- id: '1575053671877'
+  alias: zPresence.Leaving Darius
+  description: ''
+  trigger:
+  - entity_id: person.darius
+    from: home
+    platform: state
+  condition: []
+  action:
+  - service: timer.start
+    entity_id: timer.dariusleft
+    data: {}
+  - data: {}
+    entity_id: input_boolean.darius
+    service: input_boolean.turn_off
+  mode: single
+- id: '1575053903845'
+  alias: zPresence.Welcome Home D Garage
+  description: ''
+  trigger:
+  - entity_id: person.darius
+    platform: state
+    to: home
+  condition:
+  - condition: state
+    entity_id: timer.dariusleft
+    state: idle
+  action:
+  - service: cover.open_cover
+    data: {}
+    target:
+      entity_id: cover.garage_mqtt
+  initial_state: false
+  mode: single
+- id: '1575054155989'
+  alias: zPresence.Welcome Home Nick Garage
+  description: ''
+  trigger:
+  - entity_id: person.nick
+    platform: state
+    to: home
+  condition:
+  - condition: state
+    entity_id: timer.nickleft
+    state: idle
+  action:
+  - service: cover.open_cover
+    data: {}
+    target:
+      entity_id: cover.garage_mqtt
+  initial_state: false
+  mode: single
+- id: '1575057048062'
+  alias: zzzz.Post Maintenance Restart HASS
+  description: ''
+  trigger:
+  - at: input_datetime.zzdaily_post_maintenance
+    platform: time
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+    - sat
+  action:
+  - service: homeassistant.restart
+  mode: single
+- id: '1575057878601'
+  alias: zzDreamscreen
+  description: ''
+  trigger:
+  - entity_id: sensor.living_roomtv
+    platform: state
+    to: nvidia SHIELD
+  - entity_id: sensor.living_roomtv
+    platform: state
+    to: Watch Apple TV
+  - entity_id: sensor.living_roomtv
+    platform: state
+    to: Nintendo Switch
+  - entity_id: sensor.living_roomtv
+    platform: state
+    to: Xbox One
+  - entity_id: sensor.living_roomtv
+    platform: state
+    to: Play PS5
+  - entity_id: sensor.living_roomtv
+    platform: state
+    to: PowerOff
+    id: Power-OFF
+  - entity_id: sensor.living_roomtv
+    platform: state
+    to: Roku TV
+    id: ROKU
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: Power-OFF
+      sequence:
+      - data:
+          entity_id: dreamscreen.dream_screen
+          mode: '0'
+        service: dreamscreen.set_mode
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: am kill com.plexapp.android
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 2
+          milliseconds: 0
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: am kill com.plexapp.android
+    - conditions:
+      - condition: trigger
+        id: ROKU
+      sequence:
+      - data:
+          entity_id: dreamscreen.dream_screen
+          mode: '3'
+        service: dreamscreen.set_mode
+    default:
+    - data:
+        entity_id: dreamscreen.dream_screen
+        mode: '1'
+      service: dreamscreen.set_mode
+  mode: single
+- id: '1575136889637'
+  alias: zzzChance Rain 0-20% Yellow
+  description: ''
+  trigger:
+  - below: '20'
+    entity_id: sensor.dark_sky_precip_probability_0d
+    platform: numeric_state
+    above: '-0.1'
+  - entity_id: binary_sensor.noone
+    platform: state
+    to: 'off'
+  - platform: state
+    entity_id: sun.sun
+  condition:
+  - condition: and
+    conditions:
+    - below: '20'
+      condition: numeric_state
+      entity_id: sensor.dark_sky_precip_probability_0d
+      above: '-0.1'
+  action:
+  - data:
+      option: yellow
+    entity_id: input_select.rainchancergb
+    service: input_select.select_option
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: above_horizon
+      - condition: state
+        entity_id: binary_sensor.noone
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 255
+          color_name: yellow
+        target:
+          device_id: 490c4c1cf9e011ea8c0593a9ad4edd66
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      - condition: state
+        entity_id: binary_sensor.noone
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 1
+          color_name: yellow
+        target:
+          device_id: 490c4c1cf9e011ea8c0593a9ad4edd66
+    default: []
+  mode: single
+- id: '1575137204156'
+  alias: zzzChance Rain 50-80% Blue
+  description: ''
+  trigger:
+  - above: '50'
+    below: '80'
+    entity_id: sensor.dark_sky_precip_probability_0d
+    platform: numeric_state
+  - entity_id: binary_sensor.noone
+    platform: state
+    to: 'off'
+  - platform: state
+    entity_id: sun.sun
+  condition:
+  - condition: and
+    conditions:
+    - above: '50'
+      below: '80'
+      condition: numeric_state
+      entity_id: sensor.dark_sky_precip_probability_0d
+  action:
+  - data:
+      option: blue
+    entity_id: input_select.rainchancergb
+    service: input_select.select_option
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: above_horizon
+      - condition: state
+        entity_id: binary_sensor.noone
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 254
+          color_name: blue
+        target:
+          device_id: 490c4c1cf9e011ea8c0593a9ad4edd66
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      - condition: state
+        entity_id: binary_sensor.noone
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 1
+          color_name: blue
+        target:
+          device_id: 490c4c1cf9e011ea8c0593a9ad4edd66
+    default: []
+  mode: single
+- id: '1575137419254'
+  alias: zzzChance Rain 80-100% Red
+  description: ''
+  trigger:
+  - above: '80'
+    below: '101'
+    entity_id: sensor.dark_sky_precip_probability_0d
+    platform: numeric_state
+  - entity_id: binary_sensor.noone
+    platform: state
+    to: 'off'
+  - platform: state
+    entity_id: sun.sun
+  condition:
+  - condition: and
+    conditions:
+    - above: '80'
+      below: '101'
+      condition: numeric_state
+      entity_id: sensor.dark_sky_precip_probability_0d
+  action:
+  - data:
+      option: red
+    entity_id: input_select.rainchancergb
+    service: input_select.select_option
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: above_horizon
+      - condition: state
+        entity_id: binary_sensor.noone
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 255
+          color_name: red
+        target:
+          device_id: 490c4c1cf9e011ea8c0593a9ad4edd66
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      - condition: state
+        entity_id: binary_sensor.noone
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 1
+          color_name: red
+        target:
+          device_id: 490c4c1cf9e011ea8c0593a9ad4edd66
+    default: []
+  mode: single
+- id: '1575137761900'
+  alias: zzzChance Rain 20-50% Green
+  description: ''
+  trigger:
+  - above: '20'
+    below: '50'
+    entity_id: sensor.dark_sky_precip_probability_0d
+    platform: numeric_state
+  - entity_id: binary_sensor.noone
+    platform: state
+    to: 'off'
+  - platform: state
+    entity_id: sun.sun
+  condition:
+  - condition: and
+    conditions:
+    - above: '20'
+      below: '50'
+      condition: numeric_state
+      entity_id: sensor.dark_sky_precip_probability_0d
+  action:
+  - data:
+      option: green
+    entity_id: input_select.rainchancergb
+    service: input_select.select_option
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: above_horizon
+      - condition: state
+        entity_id: binary_sensor.noone
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 254
+          color_name: green
+        target:
+          device_id: 490c4c1cf9e011ea8c0593a9ad4edd66
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      - condition: state
+        entity_id: binary_sensor.noone
+        state: 'off'
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 1
+          color_name: green
+        target:
+          device_id: 490c4c1cf9e011ea8c0593a9ad4edd66
+    default: []
+  mode: single
+- id: '1575229878688'
+  alias: zPresence.Chance Rain Off Leaving House
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.noone
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data: {}
+    service: light.turn_off
+    target:
+      device_id: 490c4c1cf9e011ea8c0593a9ad4edd66
+  mode: single
+- id: '1576175161018'
+  alias: zPresence.Lights and TV off when Everyone Leaves
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.noone
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data: {}
+    entity_id: script.1579731744650
+    service: script.turn_on
+  - data: {}
+    entity_id: script.1579732071901
+    service: script.turn_on
+  - data:
+      entity_id: remote.living_room
+    service: remote.turn_off
+  - entity_id: script.1579731898503
+    service: script.turn_on
+  mode: single
+- id: '1576175280059'
+  alias: zPresence.Come Home Above Cabinet Lights On
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.noone
+    platform: state
+    to: 'off'
+    id: someonehome
+  - platform: state
+    entity_id: sun.sun
+    to: above_horizon
+    id: sunup
+  - platform: state
+    entity_id: sun.sun
+    to: below_horizon
+    id: sundown
+  condition:
+  - condition: state
+    entity_id: binary_sensor.noone
+    state: 'off'
+  action:
+  - scene: scene.above_cabinet_lights_on_when_home
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: sunup
+        - condition: trigger
+          id: someonehome
+      - condition: state
+        entity_id: sun.sun
+        state: above_horizon
+      sequence:
+      - scene: scene.above_cabinet_lights_on_when_home
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: sundown
+        - condition: trigger
+          id: someonehome
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      sequence:
+      - scene: scene.above_cabinets_on_night
+    default: []
+  mode: single
+- id: '1576175978294'
+  alias: zPresence.Foyer Light On When Someone Comes Home
+  description: ''
+  trigger:
+  - entity_id: sensor.number_of_persons_at_home
+    platform: state
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.state > trigger.from_state.state }}'
+  action:
+  - alias: ''
+    data:
+      entity_id: script.foyer_light_ten_min
+    service: script.turn_on
+  mode: single
+- id: '1576178649971'
+  alias: zPresence.Come Home and Give Lights after Sunset
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.noone
+    platform: state
+    to: 'off'
+  condition:
+  - after: sunset
+    condition: sun
+  action:
+  - entity_id: light.kitchen
+    service: light.turn_on
+  - entity_id: light.lamp
+    service: light.turn_on
+  mode: single
+- id: '1579732436442'
+  alias: zzzz.Daily Maintenance
+  description: ''
+  trigger:
+  - at: input_datetime.zzdaily_maintenance
+    platform: time
+  condition: []
+  action:
+  - entity_id: script.1579732071901
+    service: script.turn_on
+  - entity_id: script.1579731898503
+    service: script.turn_on
+  - entity_id: script.1579731744650
+    service: script.turn_on
+  - entity_id: remote.living_room
+    service: remote.turn_off
+  - entity_id: switch.receiver_outlet
+    service: switch.turn_off
+  - delay: 00:00:15
+  - entity_id: switch.receiver_outlet
+    service: switch.turn_on
+  mode: single
+- id: '1580357581197'
+  alias: zPresence.Noone On
+  description: ''
+  trigger:
+  - entity_id: person.darius
+    from: home
+    platform: state
+  - entity_id: person.nick
+    from: home
+    platform: state
+  - platform: state
+    entity_id: person.kara
+    from: home
+  condition:
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{% if not is_state(''person.darius'' , ''home'') %}
+
+        True
+
+        {% else %}
+
+        False
+
+        {% endif %}'
+    - condition: template
+      value_template: '{% if not is_state(''person.nick'' , ''home'') %}
+
+        True
+
+        {% else %}
+
+        False
+
+        {% endif %}'
+    - condition: template
+      value_template: '{% if not is_state(''person.kara'' , ''home'') %}
+
+        True
+
+        {% else %}
+
+        False
+
+        {% endif %}'
+  action:
+  - entity_id: input_boolean.noone
+    service: input_boolean.turn_on
+  mode: single
+- id: '1580358398143'
+  alias: zPresence. Noone Off
+  description: ''
+  trigger:
+  - entity_id: person.darius
+    platform: state
+    to: home
+  - entity_id: person.nick
+    platform: state
+    to: home
+  - entity_id: person.kara
+    platform: state
+    to: home
+  condition: []
+  action:
+  - entity_id: input_boolean.noone
+    service: input_boolean.turn_off
+  mode: single
+- id: '1580495622140'
+  alias: Garage Autos On at 0700
+  description: ''
+  trigger:
+  - at: 07:00:00
+    platform: time
+  - event: start
+    platform: homeassistant
+  - platform: event
+    event_type: automation_reloaded
+  - platform: state
+    entity_id: input_boolean.welcomehomeautomations
+    from: 'off'
+    to: 'on'
+  - at: 07:02:00
+    platform: time
+  condition:
+  - after: 06:59
+    before: '23:59'
+    condition: time
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - data: {}
+    service: automation.turn_on
+    target:
+      entity_id:
+      - automation.welcome_home_nick_garage
+      - automation.welcome_home_d_garage
+  - data: {}
+    service: automation.turn_on
+    entity_id: automation.welcome_home_kara_garage
+  - service: automation.turn_on
+    entity_id: automation.welcome_home_front_door
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.welcomehomeautomations
+  mode: restart
+  max: 10
+- id: '1580496037388'
+  alias: Garage Auto Off at Midnight
+  description: ''
+  trigger:
+  - at: 00:00
+    platform: time
+  - platform: state
+    entity_id: input_boolean.welcomehomeautomations
+    from: 'on'
+    to: 'off'
+  condition:
+  - after: 00:00
+    before: 07:00
+    condition: time
+  action:
+  - service: automation.turn_off
+    data: {}
+    target:
+      entity_id:
+      - automation.welcome_home_nick_garage
+      - automation.welcome_home_d_garage
+  - entity_id: automation.welcome_home_kara_garage
+    service: automation.turn_off
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.welcomehomeautomations
+  mode: restart
+- id: '1590522357368'
+  alias: zNotify.Garage Door Open and Noone Home then Notify
+  description: ''
+  trigger:
+  - entity_id: cover.garage_mqtt
+    for: 00:05:00
+    platform: state
+    to: open
+  - entity_id: binary_sensor.noone
+    for: 00:05:00
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.noone
+    state: 'on'
+  - condition: state
+    entity_id: cover.garage_mqtt
+    state: open
+  action:
+  - service: notify.mobile_app_rxniphone
+    data:
+      data:
+        actions:
+        - action: CLOSE_GARAGE
+          title: Close Garage
+          destructive: true
+          activationMode: background
+        - title: Dismiss
+      title: Should the garage be open??
+      message: Garage door is open and no one is home!
+  mode: single
+- id: '1590525069094'
+  alias: Garage Close Action from Notification
+  description: ''
+  trigger:
+  - event_data:
+      action: CLOSE_GARAGE
+    event_type: mobile_app_notification_action
+    platform: event
+  condition: []
+  action:
+  - data: {}
+    entity_id: cover.garage_mqtt
+    service: cover.close_cover
+  mode: single
+- id: '1590604022031'
+  alias: zNotify.Garage Open for 20 Min then Notify
+  description: ''
+  trigger:
+  - entity_id: cover.garage_mqtt
+    for: 00:20:00
+    platform: state
+    to: open
+  condition: []
+  action:
+  - service: notify.mobile_app_rxniphone
+    data:
+      title: Should the garage be open??
+      message: Garage door has been open for 20 minutes!
+      data:
+        actions:
+        - action: CLOSE_GARAGE
+          title: Close Garage
+          destructive: true
+          activationMode: background
+        - title: Dismiss
+  mode: single
+- id: '1594325734855'
+  alias: zzzz.Alfred Cleans Zones at 4am
+  description: ''
+  trigger:
+  - at: 04:00:00
+    platform: time
+  condition: []
+  action:
+  - data:
+      command: zoned_cleanup
+      params:
+        zone_ids:
+        - Living Room and Kitchen
+    entity_id: vacuum.rockrobo
+    service: vacuum.send_command
+- id: '1600464055158'
+  alias: zzSave Zone 2 Sources
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.onkyo_zone_2
+    attribute: source
+    to: NET
+  - platform: state
+    entity_id: media_player.onkyo_zone_2
+    attribute: source
+    to: Bluetooth
+  - platform: state
+    entity_id: media_player.onkyo_zone_2
+    to: 'on'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: media_player.onkyo_zone_2
+      attribute: source
+      state: NET
+    - condition: state
+      entity_id: media_player.onkyo_zone_2
+      state: Bluetooth
+      attribute: source
+  action:
+  - service: input_select.select_option
+    data_template:
+      option: '{{  trigger.to_state.attributes.source  }}'
+    entity_id: input_select.zone_2_sources
+  mode: single
+- id: '1604792588235'
+  alias: zzzz.Restart Shield TV
+  description: ''
+  trigger:
+  - at: input_datetime.zzdaily_shield_restart_maintenance
+    platform: time
+  condition: []
+  action:
+  - data:
+      command: reboot
+    entity_id: media_player.shield_adb
+    service: androidtv.adb_command
+  mode: single
+- id: '1608171491408'
+  alias: zzWashing Cycle 1-Filling
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.washing_machine_wattage
+    from: '0'
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.washing_machine_wattage
+    below: '500'
+  action:
+  - service: input_select.select_option
+    data:
+      option: filling
+    entity_id: input_select.washing_cycle
+  mode: single
+- id: '1608171587652'
+  alias: zzWashing Cycle 2-Washing
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.washing_machine_wattage
+    above: '500'
+    below: '10000'
+  condition:
+  - condition: state
+    entity_id: input_select.washing_cycle
+    state: filling
+  action:
+  - delay: 00:00:10
+  - service: input_select.select_next
+    data: {}
+    entity_id: input_select.washing_cycle
+  mode: single
+- id: '1608171660032'
+  alias: zzWashing Cycle 3-Draining
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.washing_machine_wattage
+    below: '500'
+    above: '0'
+  condition:
+  - condition: state
+    entity_id: input_select.washing_cycle
+    state: washing
+  action:
+  - delay: 00:00:10
+  - service: input_select.select_next
+    data: {}
+    entity_id: input_select.washing_cycle
+  mode: single
+- id: '1608171712679'
+  alias: zzWashing Cycle 4-Drying
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.washing_machine_wattage
+    above: '500'
+  condition:
+  - condition: state
+    entity_id: input_select.washing_cycle
+    state: draining
+  action:
+  - delay: 00:00:10
+  - service: input_select.select_next
+    data: {}
+    entity_id: input_select.washing_cycle
+  mode: single
+- id: '1608172846986'
+  alias: zzWashing Cycle Done and Reset
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.washing_machine_wattage
+    below: '1'
+  condition:
+  - condition: state
+    entity_id: input_select.washing_cycle
+    state: drying
+  action:
+  - delay: 00:00:10
+  - service: input_select.select_option
+    data:
+      option: idle
+    entity_id: input_select.washing_cycle
+  mode: single
+- id: '1612314682129'
+  alias: zPresence.Leaving Kara
+  description: ''
+  trigger:
+  - entity_id: person.kara
+    from: home
+    platform: state
+  condition: []
+  action:
+  - data: {}
+    service: timer.start
+    target:
+      entity_id: timer.karaleft
+  - data: {}
+    entity_id: input_boolean.kara
+    service: input_boolean.turn_off
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.nick
+        state: not_home
+      sequence:
+      - service: light.turn_off
+        data: {}
+        entity_id: light.bedroom_light
+      - service: light.turn_off
+        data: {}
+        entity_id: light.hue_go_1
+      - service: light.turn_off
+        data: {}
+        entity_id: light.hue_go_2
+      - service: light.turn_off
+        data: {}
+        entity_id: light.under_bed_light
+      - service: light.turn_off
+        data: {}
+        entity_id: light.kitchen_nightlight
+      - service: media_player.turn_off
+        target:
+          entity_id: media_player.bedroom_tcl_tv
+    default: []
+  mode: single
+- id: '1612314765484'
+  alias: zPresence.Welcome Home Kara Garage
+  description: ''
+  trigger:
+  - entity_id: person.kara
+    platform: state
+    to: home
+  condition:
+  - condition: state
+    entity_id: timer.karaleft
+    state: idle
+  action:
+  - service: cover.open_cover
+    data: {}
+    target:
+      entity_id: cover.garage_mqtt
+  initial_state: false
+  mode: single
+- id: '1612351799505'
+  alias: zPresence.Leaving Nick
+  description: ''
+  trigger:
+  - entity_id: person.nick
+    from: home
+    platform: state
+  condition: []
+  action:
+  - data: {}
+    service: timer.start
+    target:
+      entity_id: timer.nickleft
+  - data: {}
+    entity_id: input_boolean.nick
+    service: input_boolean.turn_off
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.kara
+        state: not_home
+      sequence:
+      - service: light.turn_off
+        data: {}
+        entity_id: light.bedroom_light
+      - service: light.turn_off
+        data: {}
+        entity_id: light.hue_go_1
+      - service: light.turn_off
+        data: {}
+        entity_id: light.hue_go_2
+      - service: light.turn_off
+        data: {}
+        entity_id: light.under_bed_light
+      - service: light.turn_off
+        data: {}
+        entity_id: light.kitchen_nightlight
+      - service: media_player.turn_off
+        target:
+          entity_id: media_player.bedroom_tcl_tv
+      - service: media_player.turn_off
+        data: {}
+        entity_id: media_player.forked_daapd_output_master_bedroom_apple_tv
+      - service: switch.turn_off
+        data: {}
+        entity_id: switch.airplayserver_bathroom
+    default: []
+  mode: single
+- id: '1612397393109'
+  alias: zPresence.Kara Nick Bedroom Lights
+  description: ''
+  trigger:
+  - entity_id: person.kara
+    platform: state
+    to: home
+    id: karahome
+  - entity_id: person.nick
+    platform: state
+    to: home
+    id: nickhome
+  - platform: state
+    entity_id: sun.sun
+    to: below_horizon
+    id: sundown
+  - platform: state
+    entity_id: sun.sun
+    to: above_horizon
+    id: sunup
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: person.kara
+      state: home
+    - condition: state
+      entity_id: person.nick
+      state: home
+  action:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: karahome
+        - condition: trigger
+          id: nickhome
+        - condition: trigger
+          id: sunup
+      - condition: state
+        entity_id: sun.sun
+        state: above_horizon
+      sequence:
+      - service: script.bedroom_lights_day
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: karahome
+        - condition: trigger
+          id: nickhome
+        - condition: trigger
+          id: sundown
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      sequence:
+      - service: script.bedroom_lights_night
+    default: []
+  mode: single
+- id: '1612574184047'
+  alias: Front Door Autolock Manually Locked Cancels Timer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: lock.august_asl_03_smart_lock_locked
+    to: locked
+  condition: []
+  action:
+  - service: timer.cancel
+    data: {}
+    entity_id: timer.frontdoorretry
+  mode: single
+- id: '1612857978065'
+  alias: yTanner Dinner Now Fed
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: f3f0b4b448e0ea2c72219d4ca2720652
+    entity_id: binary_sensor.tanner_food_container_brown_access_control_window_door_is_open
+    domain: binary_sensor
+  - type: opened
+    platform: device
+    device_id: 088661e85ee0e353d18fbc16dbd2014f
+    entity_id: binary_sensor.tanner_food_container_white_access_control_window_door_is_open
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: input_datetime.tanner_dinner
+    before: '23:59'
+  action:
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.idevices_switch
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.tanner_dinner_fed
+  mode: single
+- id: '1613013614605'
+  alias: yTanner Breakfast Now Fed
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: f3f0b4b448e0ea2c72219d4ca2720652
+    entity_id: binary_sensor.tanner_food_container_brown_access_control_window_door_is_open
+    domain: binary_sensor
+  - type: opened
+    platform: device
+    device_id: 088661e85ee0e353d18fbc16dbd2014f
+    entity_id: binary_sensor.tanner_food_container_white_access_control_window_door_is_open
+    domain: binary_sensor
+  condition:
+  - condition: time
+    after: input_datetime.tanner_breakfast
+    before: input_datetime.tanner_dinner
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.tanner_breakfast_now_fed
+  - repeat:
+      until:
+      - condition: device
+        type: is_on
+        device_id: 647fbd4b922c53e19bda1f6af1603ef9
+        entity_id: light.color_lights
+        domain: light
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 100
+        entity_id: light.color_lights
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 30
+          milliseconds: 0
+  mode: single
+- id: '1613016396968'
+  alias: yTanner Lights Controls When People Home or Not
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.noone
+    to: 'on'
+    id: noone-home
+  - platform: state
+    entity_id: binary_sensor.noone
+    to: 'off'
+    id: someone-home
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.color_lights
+  - repeat:
+      until:
+      - condition: state
+        entity_id: light.color_lights
+        state: 'off'
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: light.turn_off
+        target:
+          entity_id: light.color_lights
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.idevices_switch
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: noone-home
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        entity_id: switch.idevices_switch
+      - repeat:
+          until:
+          - condition: state
+            entity_id: light.color_lights
+            state: 'off'
+          sequence:
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 3
+              milliseconds: 0
+          - service: light.turn_off
+            target:
+              entity_id: light.color_lights
+    - conditions:
+      - condition: trigger
+        id: someone-home
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: input_boolean.tanner_breakfast_now_fed
+            state: 'on'
+          - condition: sun
+            after: sunset
+          sequence:
+          - service: light.turn_on
+            data:
+              brightness: 1
+            entity_id: light.color_lights
+        - conditions:
+          - condition: state
+            entity_id: input_boolean.tanner_breakfast_now_fed
+            state: 'on'
+          - condition: sun
+            before: sunset
+          sequence:
+          - service: light.turn_on
+            data:
+              brightness: 254
+            entity_id: light.color_lights
+        default: []
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: input_boolean.tanner_dinner_fed
+            state: 'on'
+          sequence:
+          - service: switch.turn_on
+            data: {}
+            entity_id: switch.idevices_switch
+        default: []
+    default: []
+  mode: single
+- id: '1613018718905'
+  alias: yTanner Dims Sunroom at Sunset
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sun.sun
+    to: below_horizon
+  condition:
+  - condition: state
+    entity_id: input_boolean.tanner_breakfast_now_fed
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.noone
+    state: 'off'
+  action:
+  - repeat:
+      until:
+      - condition: state
+        entity_id: light.color_lights
+        state: '1'
+        attribute: brightness
+      sequence:
+      - service: light.turn_on
+        data:
+          brightness: 1
+        entity_id: light.color_lights
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 30
+          milliseconds: 0
+  mode: single
+- id: '1613019051638'
+  alias: yTanner Resets
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.tanner_resets
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.color_lights
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.idevices_switch
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.tanner_breakfast_now_fed
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.tanner_dinner_fed
+  - repeat:
+      until:
+      - condition: device
+        type: is_off
+        device_id: 647fbd4b922c53e19bda1f6af1603ef9
+        entity_id: light.color_lights
+        domain: light
+      sequence:
+      - type: turn_off
+        device_id: 647fbd4b922c53e19bda1f6af1603ef9
+        entity_id: light.color_lights
+        domain: light
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
+  mode: single
+- id: '1613769936294'
+  alias: zNotify.Washing Cycle Done Notifications
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.washing_machine_wattage
+    below: '1'
+  condition:
+  - condition: state
+    entity_id: input_select.washing_cycle
+    state: drying
+  action:
+  - delay: 00:00:10
+  - service: notify.mobile_app_darius_s_iphone
+    data:
+      title: Washing Machine Done
+      message: Your clothes are washed! Throw them in the dryer you lazy piece of
+        shit!!
+  - service: notify.mobile_app_rxniphone
+    data:
+      title: Washing Machine Done
+      message: Your clothes are washed! Throw them in the dryer you lazy piece of
+        shit!!
+  mode: single
+- id: '1615078034361'
+  alias: zzzzSunday Reboot
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.sunday_reboot_time
+  condition:
+  - condition: time
+    weekday:
+    - sun
+  action:
+  - service: hassio.host_reboot
+  mode: single
+- id: '1615243979556'
+  alias: zzShower On then Airplay Server On
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: cd3e8a6034ae8e737cb75c1ddd26e01d
+    entity_id: switch.tasmota_switch_1
+    domain: switch
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.airplayserver_bathroom
+      - switch.master_bathroom_fan
+  - service: media_player.turn_on
+    target:
+      entity_id:
+      - media_player.forked_daapd_output_master_bedroom_apple_tv
+      - media_player.bedroom_tcl_tv
+  mode: single
+- id: '1616705695257'
+  alias: Bedroom Airplay On then TV On
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.forked_daapd_output_master_bedroom_apple_tv
+    to: 'on'
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.office_tv_power
+  mode: single
+- id: '1618339168730'
+  alias: zzzz.PreHome Assistant Shutdown Automation Triggers
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: shutdown
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.welcome_automations
+  - service: automation.turn_off
+    target:
+      entity_id:
+      - automation.welcome_home_d_garage
+      - automation.welcome_home_front_door
+      - automation.welcome_home_kara_garage
+      - automation.welcome_home_nick_garage
+  mode: single
+- id: '1620488535274'
+  alias: zzAarlo Porch Motion Picture
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: camera.aarlo_front_porch
+    attribute: last_video
+  condition:
+  - condition: not
+    conditions:
+    - condition: time
+      after: 00:00:00
+      before: 00:01:00
+  - type: is_not_open
+    condition: device
+    device_id: fc1eacd788f605dcfbf2b7e51f09d9ca
+    entity_id: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+    domain: binary_sensor
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.porch_capture_time_capture_time
+    data:
+      timestamp: '{{ now().timestamp() }}'
+  - service: notify.d_and_nicks_notifications_grouped
+    data:
+      message: '''{{ state_attr(''sensor.aarlo_last_front_porch'', ''object_type'')
+        }}'' detected on front porch.  Check the home app for live view.  Here''s
+        the image captured from ''{{ states(''input_datetime.porch_video_capture_time'')
+        }}''.'
+      data:
+        image: '{{ state_attr(''camera.aarlo_front_porch'', ''last_thumbnail'') }}'
+  mode: single
+- id: '1620859025311'
+  alias: zzAarlo Porch Motion Clip
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: camera.aarlo_front_porch
+    attribute: last_video
+  condition:
+  - condition: state
+    entity_id: sensor.aarlo_recent_activity_front_porch
+    state: 'True'
+  - type: is_not_open
+    condition: device
+    device_id: fc1eacd788f605dcfbf2b7e51f09d9ca
+    entity_id: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+    domain: binary_sensor
+  - condition: not
+    conditions:
+    - condition: time
+      after: 00:00:00
+      before: 00:01:00
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.porch_video_capture_time
+    data:
+      timestamp: '{{ now().timestamp() }}'
+  - service: notify.d_and_nicks_notifications_grouped
+    data:
+      message: Recorded clip of '{{ state_attr('sensor.aarlo_last_front_porch', 'object_type')
+        }}' from '{{ states('input_datetime.porch_video_capture_time') }}'.
+      data:
+        attachment:
+          url: '{{ state_attr(''camera.aarlo_front_porch'', ''last_video'') }}'
+  mode: single
+- id: '1621191007886'
+  alias: zzzz.Homekit Device Tracker Updates (mqtt) nick
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.nick
+    from: 'off'
+    to: 'on'
+    id: nickhome
+  - platform: state
+    entity_id: input_boolean.nick
+    from: 'on'
+    to: 'off'
+    id: nickleft
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: nickhome
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: location/nick
+          payload: home
+          qos: '1'
+          retain: true
+    - conditions:
+      - condition: trigger
+        id: nickleft
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: location/nick
+          payload: not_home
+          qos: '1'
+          retain: true
+    default: []
+  mode: single
+- id: '1625618059379'
+  alias: Nest Back Door Open > 1 min
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.back_door_template
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - device_id: 1f4e53d64461d767d63350604b93cd1e
+    domain: climate
+    entity_id: climate.downstairs_the_nest
+    type: set_preset_mode
+    preset_mode: eco
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: climate.set_fan_mode
+    target:
+      entity_id: climate.downstairs_the_nest
+    data:
+      fan_mode: 'off'
+  mode: single
+- id: '1625618122535'
+  alias: Nest Back Door Closed
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.back_door_template
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  condition: []
+  action:
+  - device_id: 1f4e53d64461d767d63350604b93cd1e
+    domain: climate
+    entity_id: climate.downstairs_the_nest
+    type: set_preset_mode
+    preset_mode: none
+  mode: single
+- id: '1626906624466'
+  alias: ..Rain Alert
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.dark_sky_precip_probability
+    above: '50'
+  condition: []
+  action:
+  - service: notify.mobile_app_rxniphone
+    data:
+      title: RAIN
+      message: ITS RAINING BRO
+  mode: single
+- id: '1626987945731'
+  alias: ..Washing Machine On
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:00:00'
+  condition: []
+  action:
+  - type: turn_on
+    device_id: e775c10059e17eb67294898a311be1dc
+    entity_id: switch.tasmota_2
+    domain: switch
+  mode: single
+- id: '1629232161783'
+  alias: zzzzz..Bedroom Thermostat AC
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.shellytempfixed_timestamp_updater
+    id: settempchanged
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - platform: state
+    entity_id: climate.master_bedroom_thermostat
+    attribute: temperature
+    id: roomtempchanged
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - platform: template
+    id: morethanone
+    value_template: '{{ (states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)
+      - state_attr(''climate.master_bedroom_thermostat'', ''temperature'')|float(default=0))
+      > 1 }}'
+  condition:
+  - condition: state
+    entity_id: climate.master_bedroom_thermostat
+    state: cool
+  - condition: template
+    value_template: '{{ trigger.to_state.state != trigger.from_state.state }}'
+  action:
+  - service: climate.set_hvac_mode
+    target:
+      entity_id: climate.downstairs_the_nest
+    data:
+      hvac_mode: cool
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)
+          > state_attr(''climate.master_bedroom_thermostat'', ''temperature'') }}'
+      - condition: not
+        conditions:
+        - condition: device
+          device_id: 1f4e53d64461d767d63350604b93cd1e
+          domain: climate
+          entity_id: climate.downstairs_the_nest
+          type: is_preset_mode
+          preset_mode: eco
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            - 3}}'
+      - choose:
+        - conditions:
+          - condition: trigger
+            id: morethanone
+          sequence:
+          - service: climate.set_fan_mode
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              fan_mode: 'on'
+        default: []
+    - conditions:
+      - condition: template
+        value_template: '{{ states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)
+          < state_attr(''climate.master_bedroom_thermostat'', ''temperature'') }}'
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 3}}'
+    default: []
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: morethanone
+      sequence:
+      - service: climate.set_fan_mode
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          fan_mode: 'on'
+    default: []
+  mode: single
+  max: 10
+- id: '1629944626908'
+  alias: zzBedroom TV Source Select
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: media_player.bedroom_tcl_tv
+    to: Apple TV
+    id: atv
+    attribute: source
+  - platform: state
+    entity_id: media_player.bedroom_tcl_tv
+    to: Computer
+    id: cpu
+    attribute: source
+  - platform: template
+    value_template: '{{ not (is_state_attr(''media_player.bedroom_tcl_tv'', ''source'',
+      "Apple TV") or is_state_attr(''media_player.bedroom_tcl_tv'', ''source'', "Computer"))
+      }}'
+    id: roku
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: atv
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.bedroom_tv_source_list
+        data:
+          option: Apple TV
+    - conditions:
+      - condition: trigger
+        id: cpu
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.bedroom_tv_source_list
+        data:
+          option: Computer
+    - conditions:
+      - condition: trigger
+        id: roku
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.bedroom_tv_source_list
+        data:
+          option: Roku
+    default:
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.bedroom_tv_source_list
+      data:
+        option: Roku
+  mode: single
+- id: '1629946643120'
+  alias: zzHomekit Bedroom TV Button Pressed
+  description: ''
+  trigger:
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.master_bedroom_tv
+      key_name: information
+    id: info
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.master_bedroom_tv
+      key_name: back
+    id: back
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.master_bedroom_tv
+      key_name: arrow_down
+    id: down
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.master_bedroom_tv
+      key_name: arrow_right
+    id: right
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.master_bedroom_tv
+      key_name: arrow_up
+    id: up
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.master_bedroom_tv
+      key_name: arrow_left
+    id: left
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.master_bedroom_tv
+      key_name: select
+    id: select
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: info
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: home
+    - conditions:
+      - condition: trigger
+        id: back
+      - condition: state
+        entity_id: media_player.master_bedroom_tv
+        state: Apple TV
+        attribute: source
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.master_bedroom_apple_tv
+        data:
+          command: menu
+    - conditions:
+      - condition: trigger
+        id: down
+      - condition: state
+        entity_id: media_player.master_bedroom_tv
+        state: Apple TV
+        attribute: source
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.master_bedroom_apple_tv
+        data:
+          command: down
+    - conditions:
+      - condition: trigger
+        id: right
+      - condition: state
+        entity_id: media_player.master_bedroom_tv
+        state: Apple TV
+        attribute: source
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.master_bedroom_apple_tv
+        data:
+          command: right
+    - conditions:
+      - condition: trigger
+        id: up
+      - condition: state
+        entity_id: media_player.master_bedroom_tv
+        state: Apple TV
+        attribute: source
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.master_bedroom_apple_tv
+        data:
+          command: up
+    - conditions:
+      - condition: trigger
+        id: left
+      - condition: state
+        entity_id: media_player.master_bedroom_tv
+        state: Apple TV
+        attribute: source
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.master_bedroom_apple_tv
+        data:
+          command: left
+    - conditions:
+      - condition: trigger
+        id: select
+      - condition: state
+        entity_id: media_player.master_bedroom_tv
+        state: Apple TV
+        attribute: source
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.master_bedroom_apple_tv
+        data:
+          command: select
+    default: []
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: back
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: media_player.master_bedroom_tv
+          attribute: source
+          state: Apple TV
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: back
+    - conditions:
+      - condition: trigger
+        id: down
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: media_player.master_bedroom_tv
+          attribute: source
+          state: Apple TV
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: down
+    - conditions:
+      - condition: trigger
+        id: right
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: media_player.master_bedroom_tv
+          attribute: source
+          state: Apple TV
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: right
+    - conditions:
+      - condition: trigger
+        id: up
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: media_player.master_bedroom_tv
+          attribute: source
+          state: Apple TV
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: up
+    - conditions:
+      - condition: trigger
+        id: left
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: media_player.master_bedroom_tv
+          attribute: source
+          state: Apple TV
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: left
+    - conditions:
+      - condition: trigger
+        id: select
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: media_player.master_bedroom_tv
+          attribute: source
+          state: Apple TV
+      sequence:
+      - service: remote.send_command
+        target:
+          entity_id: remote.bedroom_tcl_tv
+        data:
+          command: select
+    default: []
+  mode: parallel
+  max: 10
+- id: '1630005897829'
+  alias: zzLiving Room TV Source Select New
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: remote.living_room
+    to: nvidia SHIELD
+    id: shield
+    attribute: current_activity
+  - platform: state
+    entity_id: remote.living_room
+    to: Play PS5
+    id: ps5
+    attribute: current_activity
+  - platform: template
+    value_template: '{{ not (is_state_attr(''remote.living_room'', ''current_activity'',
+      "nvidia SHIELD") or is_state_attr(''remote.living_room'', ''current_activity'',
+      "Play PS5") or is_state_attr(''remote.living_room'', ''current_activity'', "PowerOff"))
+      }}'
+    id: roku
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: shield
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id:
+          - input_select.living_room_sources
+        data:
+          option: nvidia SHIELD
+    - conditions:
+      - condition: trigger
+        id: ps5
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id:
+          - input_select.living_room_sources
+        data:
+          option: Play PS5
+    - conditions:
+      - condition: trigger
+        id: roku
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id:
+          - input_select.living_room_sources
+        data:
+          option: Roku TV
+    default:
+    - service: input_select.select_option
+      target:
+        entity_id:
+        - input_select.living_room_sources
+      data:
+        option: Roku TV
+  mode: single
+- id: '1630037778926'
+  alias: zzHomekit Roku TV Buttons New
+  description: ''
+  trigger:
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: arrow_right
+    id: right
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: arrow_down
+    id: down
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: arrow_left
+    id: left
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: arrow_up
+    id: up
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: select
+    id: select
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: back
+    id: back
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: information
+    id: info
+  condition:
+  - condition: state
+    entity_id: input_select.living_room_sources
+    state: Roku TV
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: right
+      sequence:
+      - service: remote.send_command
+        data:
+          command: DirectionRight
+        target:
+          entity_id:
+          - remote.living_room_tcl_tv
+    - conditions:
+      - condition: trigger
+        id: down
+      sequence:
+      - service: remote.send_command
+        data:
+          command: DirectionDown
+        target:
+          entity_id:
+          - remote.living_room_tcl_tv
+    - conditions:
+      - condition: trigger
+        id: left
+      sequence:
+      - service: remote.send_command
+        data:
+          command: DirectionLeft
+        target:
+          entity_id:
+          - remote.living_room_tcl_tv
+    - conditions:
+      - condition: trigger
+        id: up
+      sequence:
+      - service: remote.send_command
+        data:
+          command: DirectionUp
+        target:
+          entity_id:
+          - remote.living_room_tcl_tv
+    - conditions:
+      - condition: trigger
+        id: select
+      sequence:
+      - service: remote.send_command
+        data:
+          command: Select
+        target:
+          entity_id: remote.living_room_tcl_tv
+    - conditions:
+      - condition: trigger
+        id: back
+      sequence:
+      - service: remote.send_command
+        data:
+          command: Back
+        target:
+          entity_id: remote.living_room_tcl_tv
+    - conditions:
+      - condition: trigger
+        id: info
+      sequence:
+      - service: remote.send_command
+        data:
+          command: Home
+        target:
+          entity_id: remote.living_room_tcl_tv
+    default: []
+  mode: parallel
+  max: 10
+- id: '1630037823364'
+  alias: zzHomekit Shield TV Buttons New
+  description: ''
+  trigger:
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: arrow_right
+    id: right
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: arrow_down
+    id: down
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: arrow_left
+    id: left
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: arrow_up
+    id: up
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: select
+    id: select
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: back
+    id: back
+  - platform: event
+    event_type: homekit_tv_remote_key_pressed
+    event_data:
+      entity_id: media_player.living_room_remote
+      key_name: information
+    id: info
+  condition:
+  - condition: state
+    entity_id: input_select.living_room_sources
+    state: nvidia SHIELD
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: right
+      sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: sendevent /dev/input/event5 4 4 458831 && sendevent /dev/input/event5
+            1 106 1 && sendevent /dev/input/event5 0 0 0 && sendevent /dev/input/event5
+            4 4 458831 && sendevent /dev/input/event5 1 106 0 && sendevent /dev/input/event5
+            0 0 0
+    - conditions:
+      - condition: trigger
+        id: down
+      sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: sendevent /dev/input/event5 4 4 458833 && sendevent /dev/input/event5
+            1 108 1 && sendevent /dev/input/event5 0 0 0 && sendevent /dev/input/event5
+            4 4 458833 && sendevent /dev/input/event5 1 108 0 && sendevent /dev/input/event5
+            0 0 0
+    - conditions:
+      - condition: trigger
+        id: left
+      sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: sendevent /dev/input/event5 4 4 458832 && sendevent /dev/input/event5
+            1 105 1 && sendevent /dev/input/event5 0 0 0 && sendevent /dev/input/event5
+            4 4 458832 && sendevent /dev/input/event5 1 105 0 && sendevent /dev/input/event5
+            0 0 0
+    - conditions:
+      - condition: trigger
+        id: up
+      sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: sendevent /dev/input/event5 4 4 458834 && sendevent /dev/input/event5
+            1 103 1 && sendevent /dev/input/event5 0 0 0 && sendevent /dev/input/event5
+            4 4 458834 && sendevent /dev/input/event5 1 103 0 && sendevent /dev/input/event5
+            0 0 0
+    - conditions:
+      - condition: trigger
+        id: select
+      sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: sendevent /dev/input/event5 4 4 786497 && sendevent /dev/input/event5
+            1 353 1 && sendevent /dev/input/event5 0 0 0 && sendevent /dev/input/event5
+            4 4 786497 && sendevent /dev/input/event5 1 353 0 && sendevent /dev/input/event5
+            0 0 0
+    - conditions:
+      - condition: trigger
+        id: back
+      sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: sendevent /dev/input/event5 4 4 786980 && sendevent /dev/input/event5
+            1 158 1 && sendevent /dev/input/event5 0 0 0 && sendevent /dev/input/event5
+            4 4 786980 && sendevent /dev/input/event5 1 158 0 && sendevent /dev/input/event5
+            0 0 0
+    - conditions:
+      - condition: trigger
+        id: info
+      sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_adb
+          command: sendevent /dev/input/event5 4 4 786979 && sendevent /dev/input/event5
+            1 172 1 && sendevent /dev/input/event5 0 0 0 && sendevent /dev/input/event5
+            4 4 786979 && sendevent /dev/input/event5 1 172 0 && sendevent /dev/input/event5
+            0 0 0
+    default: []
+  mode: parallel
+  max: 10
+- id: '1630536165695'
+  alias: zzBonus Room Temperature Update
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.bonusroomtemp_air_temperature
+    id: tempchange
+  condition:
+  - condition: template
+    value_template: '{{ states(''sensor.bonusroomtemp_air_temperature'')|float(default=0)
+      > 50 }}'
+  action:
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.bonus_room_temperature
+    data:
+      value: '{{ states(''sensor.bonusroomtemp_air_temperature'') }}'
+  mode: single
+- id: '1631407504174'
+  alias: zzAarlo Garage Motion Clip
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: camera.aarlo_garage_camera
+    attribute: last_video
+  condition:
+  - condition: state
+    entity_id: sensor.aarlo_recent_activity_garage_camera
+    state: 'True'
+  - condition: not
+    conditions:
+    - condition: time
+      after: 00:00:00
+      before: 00:01:00
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.driveway_video_capture
+    data:
+      timestamp: '{{ now().timestamp() }}'
+  - service: notify.d_and_nicks_notifications_grouped
+    data:
+      message: Recorded clip in driveway of '{{ state_attr('sensor.aarlo_last_garage_camera',
+        'object_type') }}' from '{{ states('input_datetime.driveway_video_capture')
+        }}'.
+      data:
+        attachment:
+          url: '{{ state_attr(''camera.aarlo_garage_camera'', ''last_video'') }}'
+  mode: single
+- id: '1631407684486'
+  alias: zzAarlo Garage Motion Picture
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: camera.aarlo_garage_camera
+    attribute: last_video
+  condition:
+  - condition: not
+    conditions:
+    - condition: time
+      after: 00:00:00
+      before: 00:01:00
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.driveway_video_capture
+    data:
+      timestamp: '{{ now().timestamp() }}'
+  - service: notify.d_and_nicks_notifications_grouped
+    data:
+      message: '''{{ state_attr(''sensor.aarlo_last_garage_camera'', ''object_type'')
+        }}'' detected in DRIVEWAY.  Check the home app for live view.  Here''s the
+        image captured from ''{{ states(''input_datetime.driveway_video_capture'')
+        }}''.'
+      data:
+        image: '{{ state_attr(''camera.aarlo_garage_camera'', ''last_thumbnail'')
+          }}'
+  mode: single
+- id: '1632339599194'
+  alias: zzMaster Bath Fan On/Off
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: c07864bf3c5d9bb0531b3839087c04b7
+    entity_id: switch.master_bathroom_fan
+    domain: switch
+    id: fanon
+  - platform: device
+    type: turned_off
+    device_id: c07864bf3c5d9bb0531b3839087c04b7
+    entity_id: switch.master_bathroom_fan
+    domain: switch
+    id: fanoff
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: fanon
+      sequence:
+      - service: timer.start
+        data:
+          duration: '0'
+        target:
+          entity_id: timer.master_bath_fan
+    - conditions:
+      - condition: trigger
+        id: fanoff
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 3
+          milliseconds: 0
+      - service: timer.cancel
+        target:
+          entity_id: timer.master_bath_fan
+    default: []
+  mode: single
+- id: '1632341001787'
+  alias: zzMaster Bath Fan Timer Finished
+  description: ''
+  trigger:
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.master_bath_fan
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: device
+        type: is_on
+        device_id: cd3e8a6034ae8e737cb75c1ddd26e01d
+        entity_id: switch.tasmota_switch_1
+        domain: switch
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - service: timer.start
+        data:
+          duration: '0'
+        target:
+          entity_id: timer.master_bath_fan
+    - conditions:
+      - condition: device
+        type: is_off
+        device_id: cd3e8a6034ae8e737cb75c1ddd26e01d
+        entity_id: switch.tasmota_switch_1
+        domain: switch
+      sequence:
+      - type: turn_off
+        device_id: c07864bf3c5d9bb0531b3839087c04b7
+        entity_id: switch.master_bathroom_fan
+        domain: switch
+    default: []
+  mode: single
+- id: '1634166499506'
+  alias: zzzz.Shield Home Button Post Restart Post HDD Mount
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.zzdaily_shield_restart_post_maintenance
+    id: '430'
+  condition: []
+  action:
+  - service: media_player.select_source
+    data:
+      source: Shield
+    target:
+      entity_id: media_player.onkyo
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - service: androidtv.adb_command
+    data:
+      entity_id: media_player.shield_adb
+      command: sendevent /dev/input/event5 4 4 786979 && sendevent /dev/input/event5
+        1 172 1 && sendevent /dev/input/event5 0 0 0 && sendevent /dev/input/event5
+        4 4 786979 && sendevent /dev/input/event5 1 172 0 && sendevent /dev/input/event5
+        0 0 0
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - service: media_player.turn_off
+    target:
+      entity_id: media_player.onkyo
+  mode: single
+- id: '1635279331492'
+  alias: zzzzzGit Push HASS Config at MN Everynight
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: hassio.addon_start
+    data:
+      addon: 243ffc37_git-exporter
+  mode: single
+- id: '1635382540924'
+  alias: zzzBedroom Temp Change Timestamp
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.shellytempfixed_timestamp_updater
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.bedroom_temp_change_time
+    data:
+      datetime: '{{ now() }}'
+  mode: single
+- id: '1635435382120'
+  alias: zzzzz..Bedroom Thermostat Heat
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.shellytempfixed_timestamp_updater
+    id: settempchanged
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - platform: state
+    entity_id: climate.master_bedroom_thermostat_heat
+    attribute: temperature
+    id: roomtempchanged
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - platform: template
+    id: morethanone
+    value_template: '{{ (state_attr(''climate.master_bedroom_thermostat_heat'', ''temperature'')|float(default=0)
+      - states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)) > 10
+      }}'
+  condition:
+  - condition: state
+    entity_id: climate.master_bedroom_thermostat_heat
+    state: heat
+  action:
+  - service: climate.set_hvac_mode
+    target:
+      entity_id: climate.downstairs_the_nest
+    data:
+      hvac_mode: heat
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ state_attr(''climate.master_bedroom_thermostat_heat'',
+          ''temperature'') > states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)
+          }}'
+      - condition: not
+        conditions:
+        - condition: device
+          device_id: 1f4e53d64461d767d63350604b93cd1e
+          domain: climate
+          entity_id: climate.downstairs_the_nest
+          type: is_preset_mode
+          preset_mode: eco
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 3}}'
+      - choose:
+        - conditions:
+          - condition: trigger
+            id: morethanone
+          sequence:
+          - service: climate.set_fan_mode
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              fan_mode: 'on'
+        default: []
+    - conditions:
+      - condition: template
+        value_template: '{{ states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)
+          > state_attr(''climate.master_bedroom_thermostat_heat'', ''temperature'')
+          }}'
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            - 3}}'
+    default: []
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: morethanone
+      sequence:
+      - service: climate.set_fan_mode
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          fan_mode: 'on'
+    default: []
+  mode: single
+  max: 10
+- id: '1635547220186'
+  alias: zzzBack Door Last Opened
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.back_door
+    to: 'on'
+  condition: []
+  action:
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.back_door_last_opened_time
+    data:
+      datetime: '{{ now() }}'
+  mode: single
+- id: '1636120295184'
+  alias: zzzzz.Bedroom Thermostat Heat by Switch
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.bedroom_dummyheat
+    to: 'on'
+    id: switchon
+  - platform: state
+    entity_id: switch.bedroom_dummyheat
+    to: 'off'
+    id: switchoff
+  - platform: state
+    entity_id: sensor.shellytempfixed_timestamp_updater
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+    id: bedroom_temp_change
+  condition:
+  - condition: state
+    entity_id: climate.master_bedroom_thermostat_heat
+    state: heat
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: switchon
+      sequence:
+      - choose:
+        - conditions:
+          - condition: not
+            conditions:
+            - condition: device
+              device_id: 1f4e53d64461d767d63350604b93cd1e
+              domain: climate
+              entity_id: climate.downstairs_the_nest
+              type: is_hvac_mode
+              hvac_mode: heat
+          sequence:
+          - device_id: 1f4e53d64461d767d63350604b93cd1e
+            domain: climate
+            entity_id: climate.downstairs_the_nest
+            type: set_hvac_mode
+            hvac_mode: heat
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 15
+              milliseconds: 0
+          - service: climate.set_temperature
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+                + 3}}'
+        - conditions:
+          - condition: device
+            device_id: 1f4e53d64461d767d63350604b93cd1e
+            domain: climate
+            entity_id: climate.downstairs_the_nest
+            type: is_hvac_mode
+            hvac_mode: heat
+          sequence:
+          - service: climate.set_temperature
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+                + 3}}'
+        default: []
+    - conditions:
+      - condition: trigger
+        id: switchoff
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            - 3}}'
+    - conditions:
+      - condition: trigger
+        id: bedroom_temp_change
+      - condition: state
+        entity_id: climate.downstairs_the_nest
+        state: heating
+        attribute: hvac_action
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)
+              - (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)))
+              < 3 }}'
+          sequence:
+          - service: climate.set_temperature
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+                + 3}}'
+        default: []
+    default: []
+  mode: single
+- id: '1636499910042'
+  alias: zzzz.Homekit Device Tracker Updates (mqtt) d
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.darius
+    from: 'off'
+    to: 'on'
+    id: dhome
+  - platform: state
+    entity_id: input_boolean.darius
+    from: 'on'
+    to: 'off'
+    id: dleft
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: dhome
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: location/darius
+          payload: home
+          qos: '1'
+          retain: true
+    - conditions:
+      - condition: trigger
+        id: dleft
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: location/darius
+          payload: not_home
+          qos: '1'
+          retain: true
+    default: []
+  mode: single
+- id: '1636500267045'
+  alias: zzzz.Homekit Device Tracker Updates (mqtt) kara
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.kara
+    from: 'off'
+    to: 'on'
+    id: karahome
+  - platform: state
+    entity_id: input_boolean.kara
+    from: 'on'
+    to: 'off'
+    id: karaleft
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: karahome
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: location/kara
+          payload: home
+          qos: '1'
+          retain: true
+    - conditions:
+      - condition: trigger
+        id: karaleft
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: location/kara
+          payload: not_home
+          qos: '1'
+          retain: true
+    default: []
+  mode: single

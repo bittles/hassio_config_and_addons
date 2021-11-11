@@ -1,0 +1,4 @@
+certfile: farmmooossl/cert.pem
+keyfile: farmmooossl/key.pem
+log_level: debug
+ssl: true

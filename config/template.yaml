@@ -1,0 +1,187 @@
+#################################################################################################################################
+#################        BINARY SENSORS        ##################################################################################
+- binary_sensor:
+    - name: back_door_template
+#      friendly_name: "Back Porch Door"
+      unique_id: backdoortemplate
+      state: >
+        {% if is_state('binary_sensor.back_door', 'on') %}
+          on
+        {% elif is_state('binary_sensor.back_door', 'off') %}
+          off
+        {% endif %}
+      device_class: door
+      attributes:
+        "Last Opened": '{{ states.input_datetime.back_door_last_opened_time.state }}'
+
+    - name: noone
+#      friendly_name: No One is Home
+      unique_id: nooneprescence
+      state: "{{ is_state('input_boolean.noone', 'on') }}"
+        
+#    - name: garagedoorstatus
+##      friendly_name: Garage Door Status
+#      unique_id: garagebinarytemp
+#      state: "{{ is_state('sensor.garage_status', 'Open') }}"
+#      device_class: garage_door
+        
+#    - name: caringaragestatus
+##      friendly_name: Car Present in Garage
+#      unique_id: caringaragebinarytemp
+#      state: "{{ is_state('sensor.garage_car_status', 'Yes') }}"
+#      device_class: occupancy
+##      icon_template: "{%- if is_state('sensor.garage_car_status', 'Yes') %}mdi:car{% else %}mdi:car-off{%- endif %}"
+
+#################################################################################################################################
+#################         SENSORS        ########################################################################################
+- sensor:
+    - unique_id: bedroom_temp_combiner
+      name: shellytempfixed
+      unit_of_measurement: "°F"
+      device_class: temperature
+      state: >
+        {% if states.sensor.shelly_shht_1_6bb145_temperature.state|int(default=0) < 50 %}
+          {{ (states.sensor.shelly_shht_1_6bb145_temperature.state|float(default=0) * 9/5) + 32 }}
+        {% else %}
+          {{ states.sensor.shelly_shht_1_6bb145_temperature.state|float(default=0) }}
+        {% endif %}
+      attributes: 
+        "Last Updated": '{{ states.input_datetime.bedroom_temp_change_time.state }}'
+
+    - name: shellytempfixed_timestamp_updater
+      unique_id: bedroom_temp_combined_fixed_timestamp_updater
+      unit_of_measurement: "°F"
+      device_class: temperature
+      state: >
+       {% if states.sensor.shelly_shht_1_6bb145_temperature.state|int(default=0) < 50 %}
+         {{ (states.sensor.shelly_shht_1_6bb145_temperature.state|float(default=0) * 9/5) + 32 }}
+       {% else %}
+         {{ states.sensor.shelly_shht_1_6bb145_temperature.state|float(default=0) }}
+       {% endif %}
+
+    - name: routerdlkbs
+#      friendly_name: ASUSWRT Download Speed KBps
+      unique_id: routerdlkBs
+      unit_of_measurement: "KB/s"
+      state: '{{ states(''sensor.asuswrt_download_speed'')|float(default=0) * 125 }}'
+
+    - name: routerulkbs
+#      friendly_name: ASUSWRT Upload Speed KBps
+      unique_id: routerulkBs
+      unit_of_measurement: "KB/s"
+      state: '{{ states(''sensor.asuswrt_upload_speed'')|float(default=0) * 125 }}'
+
+    - name: bedroom_outlet_energy_in_kwh
+#      friendly_name: Bedroom Outlet Energy Converted to kWh
+      unique_id: bedroomoutletkwh
+      device_class: energy
+      unit_of_measurement: "kWh"
+      state: '{{ states(''sensor.kmc4_bedroom_energy'')|float(default=0) / 1000 }}'
+
+    - name: bonusroomtemp
+      unit_of_measurement: "°F"
+      unique_id: bonusroom_temp
+      state: '{{ states(''input_number.bonus_room_temperature'')|float(default=0) }}'
+      device_class: temperature
+
+    - name: living_roomtv
+      state: '{{ states.remote.living_room.attributes.current_activity }}'
+      unique_id: livingroomtvsource
+#      friendly_name: 'TV in Living Room'
+
+    - name: back_door_battery_template
+#        friendly_name: 'Front Door Wifi Battery Level'
+      state: '{{ ((states(''sensor.back_door_battery'')|int -32)/40*100)|round(0) }}'
+      device_class: battery
+      unique_id: backdoorbatterytemplate
+      unit_of_measurement: "%"
+
+#  sensor:
+    - name: Number of Persons at Home
+      unique_id: number_ppl_at_home
+      state: '{{ dict((states.person)|groupby(''state''))[''home'']|count }}'
+
+#    - name: garage_status
+##      friendly_name: 'Garage Door Status'
+#      unique_id: garagedoorstatus
+#      state: '{% if states.cover.garage %}
+#          {% if states.cover.garage == "open" %}
+#            Open
+#          {% elif states.cover.garage == "closed" %}
+#            Closed
+#          {% elif states.cover.garage == "opening" %}
+#            Opening
+#          {% elif states.cover.garage == "closing" %}
+#            Closing
+#          {% else %}
+#            Unknown
+#          {% endif %}
+#          {% else %}
+#          n/a
+#          {% endif %}'
+
+#    - name: garage_car_present
+##      friendly_name: 'Car in Garage'
+#      unique_id: car_present_or_not
+#      state: '{% if states.cover.garage %}
+#          {% if states.cover.garage.state == "open" %}
+#            n/a
+#          {% elif (states(''sensor.garage_opener_distance_mqtt'')|int(default=0) > 30 and states(''sensor.garage_opener_distance_mqtt'')|int(default=0) < 150) %}
+#            Yes
+#          {% else %}
+#            No
+#          {% endif %}
+#          {% else %}
+#          n/a
+#          {% endif %}'
+
+#    - name: garage_car_status
+##      friendly_name: 'Is Car in Garage'
+#      unique_id: redundancy_car_status
+#      state: '{% if states.input_select.car_garage_input_select.state == "present" %}
+#            Yes
+#          {% else %}
+#            No
+#          {% endif %}'
+
+#################################################################################################################################
+#################        TRIGGER SENSORS        #################################################################################
+- trigger:
+    - platform: state
+      entity_id: camera.aarlo_front_porch
+      attribute: last_thumbnail
+      for:
+        seconds: 1
+        milliseconds: 50
+  sensor:
+    - name: "Porch Thumbnail URL"
+      state: "{{ state_attr('camera.aarlo_front_porch', 'last_thumbnail') }}"
+
+- trigger:
+    - platform: mqtt
+      topic: "My OpenGarage/OUT/DIST"
+      payload: 'True'
+      value_template: '{{ value | int(default=0) > 30 }}'
+  binary_sensor:
+    - name: Car in Garage
+      unique_id: is_a_car_in_the_garage_or_not
+      state: >
+        {% if trigger.payload | int(default=35) < 150 -%}
+          on
+        {%- else -%}
+          off
+        {%- endif %}
+      device_class: occupancy
+
+#- trigger:
+#    - platform: state
+#      entity_id: person.darius
+#    - platform: state
+#      entity_id: person.kara
+#    - platform: state
+#      entity_id: person.nick
+#    - platform: event
+#      event_type: call_service
+#      event_data: 
+#        domain: template
+#        service: reload

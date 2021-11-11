@@ -1,0 +1,9 @@
+dirsfirst: true
+enforce_basepath: false
+git: true
+ignore_pattern:
+- __pycache__
+- .cloud
+- .storage
+- deps
+ssh_keys: []

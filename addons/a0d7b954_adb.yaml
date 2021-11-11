@@ -1,0 +1,3 @@
+devices:
+- '!secret shield_ip'
+reconnect_timeout: 90

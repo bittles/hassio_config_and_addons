@@ -1,0 +1,14 @@
+accent_color: '#0275ab'
+background_color: '#1c1c1c'
+backup_name: '{type} Snapshot {version_ha} - {version_super}: {year}-{month}-{day}
+  {hr24}:{min}:{sec}'
+backup_password: '!secret hassio_goog_backup_pass'
+backup_time_of_day: 04:00
+days_between_backups: 2
+exclude_addons: core_mariadb,243ffc37_git-exporter
+exclude_folders: homeassistant,share
+ignore_other_backups: true
+ignore_upgrade_backups: true
+max_backups_in_google_drive: 6
+max_backups_in_ha: 4
+send_error_reports: true

@@ -1,0 +1,7 @@
+computers:
+- address: '!secret nickpc_ip'
+  alias: nick-pc
+  credentials: '!secret rpc_credentials'
+  delay: 0
+  message: Home Assistant is shutting down this PC. This cannot be canceled. Please
+    save your work!

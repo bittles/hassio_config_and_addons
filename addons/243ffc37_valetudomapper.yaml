@@ -1,0 +1,22 @@
+mapColors: {}
+mapSettings:
+  autoCrop: 20
+  drawCharger: true
+  drawCurrentlyCleanedBlocks: false
+  drawCurrentlyCleanedZones: false
+  drawForbiddenZones: true
+  drawPath: true
+  drawRobot: true
+  drawVirtualWalls: true
+  gradientBackground: true
+  scale: 4
+mqtt:
+  autoconfPrefix: homeassistant
+  broker_url: '!secret mqtt_url_auth'
+  caPath: ''
+  identifier: rockrobo
+  mapDataTopic: valetudo/rockrobo/map_data
+  minMillisecondsBetweenMapUpdates: 10000
+  publishMapData: true
+  publishMapImage: true
+  topicPrefix: valetudo

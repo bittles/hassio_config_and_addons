@@ -1,0 +1,10 @@
+API_THUMB: true
+FFMPEG_CMD: ''
+LAN_ONLY: true
+MQTT_DTOPIC: homeassistant
+NET_MODE: ANY
+QUALITY: HD120
+RTSP_THUMB: true
+SNAPSHOT: API
+WYZE_EMAIL: '!secret wyze_email'
+WYZE_PASSWORD: '!secret wyze_pass'

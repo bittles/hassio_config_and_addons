@@ -1,0 +1,437 @@
+
+- platform: momentary
+  name: Anyone Arrives Home
+  
+- platform: momentary
+  name: Anyone Leaves Home
+  
+- platform: gc100
+  ports:
+    - '1:1': Porch Speaker
+    - '1:2': Deck Speaker
+    - '1:3': Bathroom Speaker
+
+- platform: wake_on_lan
+  mac: !secret nickpc_mac
+  name: "Nick's PC"
+  host: !secret nickpc_ip
+  turn_off:
+    service: hassio.addon_stdin
+    data:
+      addon: core_rpc_shutdown
+      input: nick-pc
+
+- platform: template
+  switches:
+#      bedroomtvpower:
+#        friendly_name: Bedroom TV
+#        value_template: "{{ is_state('switch.office_tv_power', 'on') }}"
+#        turn_on:
+#          service: media_player.select_source
+#          data:
+#            entity_id: media_player.bedroom
+#            source: Computer
+#        turn_off:
+#          service: switch.turn_off
+#          data:
+#            entity_id: switch.office_tv_power
+
+      fakeswitch1:
+        unique_id: fakeswitch1
+        value_template: "{{ states('input_boolean.fake1') }}"
+        turn_on:
+          service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.fake1
+        turn_off:
+          service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.fake1
+
+      fakeswitch2:
+        unique_id: fakeswitch2
+        value_template: "{{ states('input_boolean.fake2') }}"
+        turn_on:
+          service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.fake2
+        turn_off:
+          service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.fake2
+
+      fakeswitch3:
+        unique_id: fakeswitch3
+        value_template: "{{ states('input_boolean.dummy') }}"
+        turn_on:
+          service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.dummy
+        turn_off:
+          service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.dummy
+
+      fakeswitch4:
+        unique_id: fakeswitch4
+        value_template: "{{ states('input_boolean.dummy2') }}"
+        turn_on:
+          service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.dummy2
+        turn_off:
+          service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.dummy2
+
+      startgitexport:
+        unique_id: gitpushswitch
+        value_template: "{{ is_state('sensor.git_exporter_status', 'started') }}"
+        turn_on:
+          service: hassio.addon_start
+          data:
+            addon: 243ffc37_git-exporter
+        turn_off:
+          service: hassio.addon_stop
+          data:
+            addon: 243ffc37_git-exporter
+
+      bedroomtvswitch:
+        unique_id: bedroomtv
+        value_template: >
+          {% if is_state("media_player.bedroom_tcl_tv", "standby") -%}
+            off
+          {%- else -%}
+            on
+          {%- endif %}
+        turn_on:
+          service: media_player.turn_on
+          data:
+            entity_id: media_player.master_bedroom_tv
+        turn_off:
+          service: media_player.turn_off
+          data:
+            entity_id: media_player.master_bedroom_tv
+
+      bedroom_dummyac:
+        unique_id: bedrromdummyac
+        value_template: "{{ states('input_boolean.bedroom_dummyacswitch') }}"
+        turn_on:
+          service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.bedroom_dummyacswitch
+        turn_off:
+          service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.bedroom_dummyacswitch
+
+      bedroom_dummyheat:
+        unique_id: Bedroom Dummy Heat
+        value_template: "{{ states('input_boolean.bedroom_dummyheatswitch') }}"
+        turn_on:
+          service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.bedroom_dummyheatswitch
+        turn_off:
+          service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.bedroom_dummyheatswitch
+
+#      4in1_first:
+#        value_template: "{{ states('input_boolean.4in1_first') }}"
+#        turn_on:
+#          service: input_boolean.turn_on
+#          data:
+#            entity_id: input_boolean.4in1_first
+#        turn_off:
+#          service: input_boolean.turn_off
+#          data:
+#            entity_id: input_boolean.4in1_first
+
+      door:
+        friendly_name: Door
+        unique_id: dummydoory
+        value_template: "{{ is_state('lock.front_door', 'unlocked') }}"
+        turn_on:
+          service: lock.unlock
+          data:
+            entity_id: lock.front_door
+        turn_off:
+          service: lock.lock
+          data:
+            entity_id: lock.front_door
+            
+      hassbackdeckspeaker:
+        friendly_name: Back Deck Speaker HASS
+        unique_id: hassbackdeckspeaker
+        value_template: "{{ is_state('switch.deck_speaker', 'on') }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.deck_speaker
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.deck_speaker
+            
+      hassbathroomspeaker:
+        friendly_name: Bathroom Speaker HASS
+        unique_id: hassbathroomspeaker
+        value_template: "{{ is_state('switch.bathroom_speaker', 'on') }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.bathroom_speaker
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.bathroom_speaker
+            
+      hassfrontporchspeaker:
+        friendly_name: Front Porch Speaker HASS
+        unique_id: hassporchspeaker
+        value_template: "{{ is_state('switch.porch_speaker', 'on') }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.porch_speaker
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.porch_speaker
+            
+      hassz2:
+        friendly_name: Zone 2 HASS
+        unique_id: hasszone2
+        value_template: "{{ is_state('media_player.onkyo_zone_2', 'on') }}"
+        turn_on:
+          service: media_player.turn_on
+          data:
+            entity_id: media_player.onkyo_zone_2
+        turn_off:
+          service: media_player.turn_off
+          data:
+            entity_id: media_player.onkyo_zone_2
+
+      airplayserver_deck:
+        friendly_name: AirPlay Deck
+        unique_id: airplaydeck
+        value_template: "{{ is_state('switch.hassz2', 'on') and is_state('switch.hassbackdeckspeaker', 'on') and is_state('media_player.forked_daapd_output_receiver', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: switch.hassz2, switch.hassbackdeckspeaker, media_player.forked_daapd_output_receiver
+        turn_off:
+          service: homeassistant.turn_off
+          data_template:
+            entity_id: >
+              {% if is_state("switch.hassbathroomspeaker", "on") -%}
+                switch.hassbackdeckspeaker
+              {%- elif is_state("switch.hassbathroomspeaker", "off") -%}
+                switch.hassz2, switch.hassbackdeckspeaker, media_player.forked_daapd_output_receiver
+              {%- endif -%}
+
+      airplayserver_bathroom:
+        friendly_name: AirPlay Bathroom
+        unique_id: airplaybathroom
+        value_template: "{{ is_state('switch.hassz2', 'on') and is_state('switch.hassbathroomspeaker', 'on') and is_state('media_player.forked_daapd_output_receiver', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: switch.hassz2, switch.hassbathroomspeaker, media_player.forked_daapd_output_receiver
+        turn_off:
+          service: homeassistant.turn_off
+          data_template:
+            entity_id: >
+              {% if is_state("switch.hassbackdeckspeaker", "on") -%}
+                switch.hassbathroomspeaker
+              {%- elif is_state("switch.hassbackdeckspeaker", "off") -%}
+                switch.hassz2, switch.hassbathroomspeaker, media_player.forked_daapd_output_receiver
+              {%- endif -%}
+
+      welcome_automations:
+        friendly_name: Front Door and Garage Welcome Home Automations
+        unique_id: welcomeautomationstoggle
+        value_template: "{{ is_state('automation.welcome_home_d_garage', 'on') and is_state('automation.welcome_home_kara_garage', 'on') and is_state('automation.welcome_home_nick_garage', 'on') }}"
+        turn_on:
+          service: homeassistant.turn_on
+          data:
+            entity_id: automation.welcome_home_d_garage, automation.welcome_home_kara_garage, automation.welcome_home_nick_garage, automation.welcome_home_front_door
+        turn_off:
+          service: homeassistant.turn_off
+          data:
+            entity_id: automation.welcome_home_d_garage, automation.welcome_home_kara_garage, automation.welcome_home_nick_garage, automation.welcome_home_front_door
+
+      garagedoorswitch:
+        friendly_name: Garage
+        unique_id: dummygarage
+        value_template: "{{ is_state('cover.garage_mqtt', 'open') }}"
+        turn_on:
+          service: cover.open_cover
+          data:
+            entity_id: cover.garage_mqtt
+        turn_off:
+          service: cover.close_cover
+          data:
+            entity_id: cover.garage_mqtt
+            
+#      newgarageswitch:
+#        friendly_name: Garage Button
+#        value_template: "{{ is_state('binary_sensor.garagedoorstatus', 'on') }}"
+#        turn_on:
+#          service: rest_command.garage_toggler
+#        turn_off:
+#          service: rest_command.garage_toggler
+          
+#      playharmony:
+#        friendly_name: Toggle Play 
+#        value_template: >
+#          {% if is_state('remote.living_room', 'on') %}on{% else %}off{% endif %}
+#        turn_on:
+#          service: input_boolean.toggle
+#          data:
+#            entity_id: input_boolean.dummy
+#        turn_off:
+#          service: remote.send_command
+#          data_template: 
+#            entity_id: 'remote.living_room'
+#            command: 'Play'
+#            device: >
+#              {% set mapper = {
+#                  'Shield':'43337450',
+#                  'Roku':'55806674',
+#                  'Apple TV':'61945752'} %}
+#              {% set state = states('input_select.harmony_select') %}
+#              {% set device = mapper[state] if state in mapper %}
+#              {{device}}
+###            device: >
+#             {% set mapper = {
+#                  'Shield':'43337450',
+#                  'Roku':'55806674',
+#                  'Apple TV':'61945752'} %}
+#             {{ mapper["input_select.harmony_select"] }}
+#              {% if is_state(sensor.living_roomtv, 'nvidia SHIELD') -%}
+#                43337450
+#              {%- elif is_state(sensor.living_roomtv, 'Roku TV') -%}
+#                55806674
+#              {%- elif is_state(sensor.living_roomtv, 'Watch Apple TV') -%}
+#                61945752
+#              {%- else -%}
+#                43337450
+#              {%- endif %}
+
+#      pauseharmony:
+#        friendly_name: Toggle Pause 
+#        value_template: >
+#          {% if is_state('remote.living_room', 'on') %}on{% else %}off{% endif %}
+#        turn_on:
+#          service: input_boolean.toggle
+#          data:
+#            entity_id: input_boolean.dummy
+#        turn_off:
+#          service: remote.send_command
+#          data_template: 
+#            entity_id: "remote.living_room"
+#            command: "Pause"
+#            device: >
+#              {% set mapper = {
+#                  'Shield':'43337450',
+#                  'Roku':'55806674',
+#                  'Apple TV':'61945752'} %}
+#              {% set state = states('input_select.harmony_select') %}
+#              {% set device = mapper[state] if state in mapper %}
+###              {{device}}
+#              {% if is_state(sensor.living_roomtv, 'nvidia SHIELD') -%}
+#                43337450
+#              {%- elif is_state(sensor.living_roomtv, 'Roku TV') -%}
+#                55806674
+#              {%- elif is_state(sensor.living_roomtv, 'Watch Apple TV') -%}
+#                61945752
+#              {%- else -%}
+#                43337450
+#              {%- endif %}
+
+#- platform: template
+#  switches:
+#    bonus_room_fan_action_switch:
+#      friendly_name: Bonus Room Fan Action Switch
+#      value_template: "{{ is_state('input_boolean.bonus_room_fan_power', 'on') }}"
+#      turn_on:
+#        service: fan.turn_on
+#        data_template:
+#          entity_id: fan.bonus_room_fan_mqtt
+#          speed: "{{ states('input_select.bonus_room_fan_speeds') }}"
+#      turn_off:
+#        service: fan.turn_off
+#        entity_id: fan.bonus_room_fan_mqtt
+      
+
+#- platform: mqtt
+#  name: "Tasmota Switch 1"
+#  state_topic: "stat/tasmota/RESULT"  
+#  value_template: "{{ value_json.POWER1 }}"
+#  command_topic: "cmnd/tasmota/POWER1"
+#  payload_on: "ON"
+#  payload_off: "OFF"
+#  availability_topic: "tele/tasmota/LWT"
+#  payload_available: "Online"
+#  payload_not_available: "Offline"
+#  qos: 1
+#  retain: false
+  
+#- platform: mqtt
+#  name: "Tasmota Switch 2"
+#  state_topic: "stat/tasmota/RESULT"  
+#  value_template: "{{ value_json.POWER2 }}"
+#  command_topic: "cmnd/tasmota/POWER2"
+#  payload_on: "ON"
+#  payload_off: "OFF"
+#  availability_topic: "tele/tasmota/LWT"
+#  payload_available: "Online"
+#  payload_not_available: "Offline"
+#  qos: 1
+#  retain: false
+
+#- platform: mqtt
+#  name: "4in1 Outlet 1"
+#  state_topic: "stat/4in1/RESULT"
+#  value_template: "{{ value_json.POWER1 }}"
+#  command_topic: "cmnd/4in1/POWER1"
+#  payload_on: "ON"
+#  payload_off: "OFF"
+#  availability_topic: "tele/4in1/LWT"
+#  payload_available: "Online"
+#  payload_not_available: "Offline"
+#  qos: 1
+#  retain: true
+
+#- platform: mqtt
+#  name: "4in1 Outlet 2"
+#  state_topic: "stat/4in1/RESULT"
+#  value_template: "{{ value_json.POWER2 }}"
+#  command_topic: "cmnd/4in1/POWER2"
+#  payload_on: "ON"
+#  payload_off: "OFF"
+#  availability_topic: "tele/4in1/LWT"
+#  payload_available: "Online"
+#  payload_not_available: "Offline"
+#  qos: 1
+#  retain: true
+  
+#- platform: mqtt
+#  name: "4in1 Outlet 3"
+#  state_topic: "stat/4in1/RESULT"
+#  value_template: "{{ value_json.POWER3 }}"
+#  command_topic: "cmnd/4in1/POWER3"
+#  payload_on: "ON"
+#  payload_off: "OFF"
+#  availability_topic: "tele/4in1/LWT"
+#  payload_available: "Online"
+#  payload_not_available: "Offline"
+#  qos: 1
+#  retain: true
+
+#DONOT USE  
+#- platform: rest
+#  name: garage-toggle
+#  resource: !secret opengarage_url_path

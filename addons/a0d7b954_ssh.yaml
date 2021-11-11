@@ -1,0 +1,13 @@
+init_commands: []
+packages: []
+share_sessions: false
+ssh:
+  allow_agent_forwarding: false
+  allow_remote_port_forwarding: false
+  allow_tcp_forwarding: false
+  authorized_keys: []
+  compatibility_mode: false
+  password: '!secret ssh_pass'
+  sftp: false
+  username: '!secret ssh_username'
+zsh: true

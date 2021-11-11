@@ -1,0 +1,912 @@
+############################################### My Added Devices Section ########################################
+#################################################################################################################
+#################################################################################################################
+###############################################################################################1##################
+#################################################################################################################
+nest: !include nest.yaml
+switch: !include switch.yaml
+light: !include light.yaml
+sensor: !include sensor.yaml
+binary_sensor: !include binary_sensor.yaml
+fan: !include fan.yaml
+media_player: !include media_player.yaml
+alexa: !include alexa.yaml
+homekit: !include homekit.yaml
+scene: !include scenes.yaml
+notify: !include notify.yaml
+climate: !include climate.yaml
+template: !include template.yaml
+
+timer:
+input_select:
+
+#spotify:
+#  client_id: !secret spotify_id
+#  client_secret: !secret spotify_secret
+
+battery_consumption:
+  front_door_batteries:
+    source: sensor.august_smart_lock_pro_3rd_gen_battery_level
+    unique_id: frontlockbatteries
+    battery_capacity: 45.6
+    unit_of_measurement: Wh
+
+  back_door_batteries:
+    source: sensor.back_door_battery_template
+    unique_id: backlockbatteries_consumption_template
+    battery_capacity: 45.6
+    unit_of_measurement: Wh
+
+utility_meter:
+  bedroom_outlets_energy:
+    name: Monthly Bedroom Outlets Energy
+    source: sensor.bedroom_outlet_energy_in_kwh
+    cycle: monthly
+    offset:
+      days: 1
+
+weather:
+#  - platform: pirateweather
+#    api_key: !secret pirateweather_api_key
+
+folder_watcher:
+#  - folder: /share/downloadtracker/
+#    patterns:
+#      - '*'
+  - folder: /share/Arlo/Camera
+    patterns:
+      - '*.mp4'
+  - folder: "/share/Arlo/Front Porch"
+    patterns:
+      - '*.mp4'
+
+#shell_command:
+#  unziptorrents: /share/zipscript.sh '{{ torrent }}'
+
+breaking_changes:
+
+shelly:
+  discover_by_ip:
+    - !secret shelly_ip
+  devices:      #devices to be added
+    - id: !secret shelly_id
+      name: Master Bedroom Thermometer
+      settings:
+        temperature: { decimals: 3 }
+  attributes:
+    - all
+#    - latest_fw_version
+#    - firmware_version
+#    - ip_address
+#    - shelly_type
+#    - shelly_id
+#    - has_firmware_update
+#    - mqtt_connected
+#    - device_temp
+#    - uptime
+#    - payload
+  mdns: true
+  sensors: 
+    - all
+  host_ip: !secret pi4_ip
+  version: true
+  scan_interval: 15
+  additional_information: true
+  upgrade_switch: true
+  upgrade_beta_switch: true
+  mqtt_port: 0
+  discovery: false
+  mqtt_server_host: !secret pi4_ip
+  mqtt_server_port: !secret mqttport #Default 1883
+  mqtt_server_username: !secret mqttuser
+  mqtt_server_password: !secret mqttpass
+  settings:
+    temperature: { decimals: 3 }
+
+aarlo:
+  tfa_source: imap
+  tfa_type: email
+  tfa_host: imap.gmail.com
+  tfa_username: !secret aarlo_rxuser
+  tfa_password: !secret aarlo_rxpass
+  username: !secret gmail_rxuser
+  password: !secret gmail_rxpass
+#  tfa_username: !secret aarlo_mainuser
+#  tfa_password: !secret aarlo_mainpass
+#  username: !secret gmail_mainuser
+#  password: !secret gmail_mainpass
+#  refresh_devices_every: 2
+#  refresh_modes_every: 20
+#  stream_timeout: 60
+#  reconnect_every: 45
+#  request_timeout: 120
+  save_media_to: "/share/Arlo/${N}/${m}-${d}-${Y}_${H}-${M}-${S}"
+#  stream_snapshot: true
+#  stream_snapshot_stop: 20
+#  media_retry:
+#    - 5
+#    - 15
+#    - 25
+
+camera:
+  - platform: aarlo
+
+localtuya:
+  - host: !secret localtuya1_ip
+    device_id: !secret localtuya_colorbulbid
+    local_key: !secret localtuya_colorbulbkey
+    friendly_name: Color Bulb
+    protocol_version: "3.3"
+    entities:
+      - platform: light
+        friendly_name: Device Light
+        id: 1 # Usually 1 or 20
+        color_mode: 2 # Optional, usually 2 or 21, default: "none"
+        brightness: 3 # Optional, usually 3 or 22, default: "none"
+        color_temp: 4 # Optional, usually 4 or 23, default: "none"
+        color: 5 # Optional, usually 5 (RGB_HSV) or 24 (HSV), default: "none"
+        brightness_lower: 27 # Optional, usually 0 or 29, default: 29
+        brightness_upper: 255 # Optional, usually 255 or 1000, default: 1000
+        color_temp_min_kelvin: 2700 # Optional, default: 2700
+        color_temp_max_kelvin: 6500 # Optional, default: 6500
+        scene: 25 # Optional, usually 6 (RGB_HSV) or 25 (HSV), default: "none"
+        music_mode: False # Optional, some use internal mic, others, phone mic. Only internal mic is supported, default: "False"
+
+device_tracker:
+  - platform: iphonedetect
+    consider_home: 60
+    hosts:
+      ipnickphone: !secret nickiphone_ip
+      ipdariusphone: !secret dariusiphone_ip
+      ipkaraphone: !secret karaiphone_ip
+    new_device_defaults:
+      track_new_devices: false
+
+  - platform: mqtt
+    devices:
+      nickmqtttrigger: "location/nick"
+      dariusmqtttrigger: "location/darius"
+      karamqtttrigger: "location/kara"
+    qos: 1
+
+gc100:
+  host: !secret globalcache_ip
+
+dreamscreen:
+  devices:
+    - dream_screen:
+        address: !secret dreamscreen_ip
+        timeout: 5
+
+hue:
+  bridges:
+    - host: !secret huehub_ip
+      allow_unreachable: true
+      allow_hue_groups: false
+
+cover:
+  - platform: mqtt
+    name: Garage MQTT
+    unique_id: mqttgarage
+    availability: 
+      - topic: "My OpenGarage/OUT/STATUS"
+    command_topic: "My OpenGarage/IN/STATE"
+    state_topic: "My OpenGarage/OUT/STATE"
+    json_attributes_topic: "My OpenGarage/OUT/DIST"
+    device_class: garage
+    json_attributes_template: >
+      {
+          "Distance (cm)": "{{ value }}"
+      }
+    payload_open: "open"
+    payload_stop: "click"
+    payload_close: "close"
+    state_open: "OPEN"
+    state_closed: "CLOSED"
+
+#  - platform: template
+#    covers:
+#      garagetemplate:
+#        unique_id: "garagetemplate"
+#        friendly_name: "Garage Door"
+#        value_template: >
+#          {% if as_timestamp(states('input_datetime.garage_opening_or_closing_update_time')) > as_timestamp(states('input_datetime.garage_sensor_update_time')) %}
+#            {{ states('cover.garage') }}
+#          {% elif states('sensor.garage_opener_distance_mqtt')|int(default=0) < 50 %}
+#            open
+#          {% else %}
+#            closed
+#          {% endif %}
+##        position_template: >
+##          {% if states('sensor.garage_opener_distance_mqtt')|int < 50 %}
+##            100
+##          {% else %}
+##            0
+##          {% endif %}
+#        open_cover:
+#          service: cover.open_cover
+#          target:
+#            entity_id: cover.garage
+#        close_cover:
+#          service: cover.close_cover
+#          target:
+#            entity_id: cover.garage
+#        device_class: garage
+
+yeelight:
+  custom_effects:
+    - name: 'Fire Flicker Day'
+      flow_params:
+        count: 0
+        transitions:
+          - TemperatureTransition: [1900, 1000, 100]
+          - TemperatureTransition: [1700, 2000, 60]
+          - SleepTransition:       [1000]
+    - name: 'Fire Flicker Night'
+      flow_params:
+        count: 0
+        transitions:
+          - TemperatureTransition: [1900, 1000, 15]
+          - TemperatureTransition: [1700, 2000, 1]
+          - SleepTransition:       [1000]
+
+input_boolean:
+
+  doortrigger:
+    name: Door
+    initial: off
+
+#alarm_control_panel:
+#  - platform: aarlo
+#    away_mode_name: armed
+#    home_mode_name: home
+#    night_mode_name: night
+#    trigger_time: 30
+#    alarm_volume: 8
+
+#tplink:
+#  discovery: false
+#  switch:
+#    - host: !secret drivewaylights_ip
+#    - host: !secret bathroomfan_ip
+
+#remote:
+#  - platform: harmony
+#    name: Living Room
+#    host: !secret harmonyhub_ip
+#    activity: nvidia SHIELD
+
+#camera:
+#  - platform: generic
+#    name: Bedroom Cam
+#    still_image_url: http://127.0.0.1:8123/local/bedroom-cam.jpg
+#    verify_ssl: false
+#    stream_source: rtsp://127.0.0.1:8554/bedroom-cam
+    
+#  - platform: generic
+#    name: Tanner Cam
+#    still_image_url: http://127.0.0.1:8123/local/tanner-cam.jpg
+#    verify_ssl: false
+#    stream_source: rtsp://127.0.0.1:8554/tanner-cam
+
+#  - platform: generic
+#    name: Front Porch Last Thumbnail
+#    still_image_url: "{{ state_attr('camera.aarlo_front_porch', 'last_thumbnail') }}"
+
+#  - platform: generic
+#    name: Front Porch Sensor Thumbnail Url
+#    still_image_url: "{{ state_attr('sensor.aarlo_last_front_porch', 'thumbnail_url') }}"
+
+#  - platform: generic
+#    name: Back Porch Gen
+#    still_image_url: "{{ state_attr('camera.aarlo_front_porch', 'last_thumbnail') }}"
+    
+
+
+
+############################################### Homeassistant Config Stuff ########################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+#################################################################################################################
+
+homeassistant:
+  #customizations
+  customize: !include customize.yaml
+  #external_url: !secret externalurl
+  #internal_url: !secret internalurl
+  media_dirs:
+    local: /media
+    recordings: /share/Arlo
+  allowlist_external_dirs:
+  - /share
+  - /config/www
+  - /tmp
+#  - /config/.storage/gol
+
+media_source:
+stream:
+
+hassio:
+system_health:
+api:
+ffmpeg:
+config:
+sun:
+updater:
+mobile_app:
+python_script:
+person:
+ios:
+input_text:
+input_number:
+input_datetime:
+#counter:
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+zeroconf:
+## deprecated
+#  default_interface: true
+
+#zone:
+
+http:
+#   base_url: !secret externalurl
+   #ssl_certificate: /ssl/fullchain.pem
+   #ssl_key: /ssl/privkey.pem
+   use_x_forwarded_for: true
+   trusted_proxies: 
+   - 192.168.29.1
+   - ::1
+   - 127.0.0.0/8
+   - 172.30.32.0/23
+   - 172.17.0.0/16
+   - 192.168.29.0/24
+
+system_log:
+  fire_event: true
+  
+recorder:
+  db_url: !secret mariadb_url_auth
+  purge_keep_days: 30
+  include:
+    domains:
+      - switch
+      - light
+      - automation
+      - binary_sensor
+#      - sensor
+      - lock
+#      - device_tracker
+      - input_boolean
+      - cover
+      - person
+    entities:
+#      - sensor.nest_thermostat_temperature
+#      - sensor.nest_thermostat_target
+      - binary_sensor.aarlo_motion_front_porch
+      - binary_sensor.back_door_mqtt_any
+      - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+      - binary_sensor.caringaragestatus
+      - camera.aarlo_front_porch
+      - camera.aarlo_back_deck
+      - climate.downstairs_the_nest
+      - climate.master_bedroom_thermostat
+      - climate.master_bedroom_thermostat_heat
+      - vacuum.rockrobo
+      - sensor.aarlo_recent_activity_back_deck
+      - sensor.aarlo_recent_activity_front_porch
+      - sensor.aarlo_last_back_deck
+      - sensor.aarlo_last_front_porch
+      - sensor.august_smart_lock_pro_3rd_gen_battery_level
+      - sensor.back_door_battery
+      - sensor.bedroom_outlet_energy_in_kwh
+      - sensor.bonusroomtemp
+      - sensor.bonusroomtemp_air_temperature
+      - sensor.bonusroomtemp_humidity
+      - sensor.bonusroomtemp_illuminance
+      - sensor.dark_sky_apparent_temperature
+      - sensor.dark_sky_humidity
+      - sensor.dark_sky_precip_probability
+      - sensor.dark_sky_temperature
+      - sensor.garage_opener_distance_mqtt
+      - sensor.kmc4_bedroom_energy
+      - sensor.living_roomtv
+      - sensor.master_bedroom_humidity_mqtt
+      - sensor.master_bedroom_temperature_mqtt
+      - sensor.monthly_bedroom_outlets_energy
+      - sensor.nest_thermostat_humidity
+      - sensor.nest_thermostat_temperature
+      - sensor.processor_use
+      - sensor.routerdlkbs
+      - sensor.routerulkbs
+      - sensor.shellytempfixed
+      - sensor.tannerwaterbowl_node_status
+      - sensor.tanner_water_bowl_water_alarm_sensor_status
+      - sensor.total_time_tanner_s_water_empty
+      - sensor.total_time_tanner_s_water_empty_mqtt
+      - sensor.washing_machine_current
+      - sensor.washing_machine_energy_today
+      - sensor.washing_machine_energy_total_this_month
+      - sensor.washing_machine_wattage
+      - sensor.battery_consumption_sensor_back_door_battery_template
+      - sensor.battery_consumption_sensor_august_smart_lock_pro_3rd_gen_battery_level
+
+history:
+  use_include_order: true
+  include:
+    entities:
+      - lock.august_asl_03_smart_lock_locked
+      - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+      - lock.back_door
+      - binary_sensor.back_door_template
+      - binary_sensor.caringaragestatus
+#      - cover.garage
+      - cover.garage_mqtt
+      - person.nick
+      - person.darius
+      - person.kara
+      - sensor.living_roomtv
+#      - vacuum.rockrobo
+#      - camera.aarlo_back_deck
+#      - sensor.aarlo_last_back_deck
+#      - binary_sensor.aarlo_motion_back_deck
+#      - sensor.aarlo_recent_activity_back_deck
+#      - camera.aarlo_front_porch
+#      - sensor.aarlo_last_front_porch
+#      - binary_sensor.aarlo_motion_front_porch
+#      - sensor.aarlo_recent_activity_front_porch
+      - sensor.dark_sky_humidity
+      - sensor.dark_sky_apparent_temperature
+      - sensor.dark_sky_temperature
+#     - sensor.nest_thermostat_humidity
+#      - sensor.nest_thermostat_temperature
+#      - climate.downstairs_the_nest
+      - sensor.nest_thermostat_temperature
+#      - sensor.nest_thermostat_target
+      - sensor.dark_sky_precip_probability
+      - sensor.processor_use
+#      - sensor.washing_machine_energy_total_this_month
+      - sensor.zooztemp
+      - sensor.bonusroomtemp_air_temperature
+      - sensor.zoozhumidity
+      - sensor.zoozluminance
+      - sensor.master_bedroom_temperature_mqtt
+#      - climate.master_bedroom_thermostat
+      - climate.master_bedroom_thermostat_heat
+
+logbook:
+  exclude:
+    domains:
+      - automation
+# Enables the frontend
+frontend:
+  themes: !include_dir_merge_named themes
+  #background: 'radial-gradient(lightgray, black)'
+
+logger:
+  default: warning
+  logs:
+    homeassistant.components: warning
+    homeassistant.components.rfxtrx: error
+    homeassistant.components.device_tracker: critical
+    homeassistant.components.camera: critical
+    homeassistant.components.august: critical
+    homeassistant.components.lock: critical
+    homeassistant.components.python_script: debug
+    gc100: error
+    homeassistant.components.gc100: error
+    homeassistant.components.zeroconf: warning
+    homeassistant.components.websocket_api.http.connection: warning
+    zeroconf: warning
+    homeassistant.core: warning
+    pydreamscreen: warning
+    custom_components.iphonedetect: warning
+    custom_components.hacs: warning
+    androidtv: warning
+    google_nest_sdm: warning
+    homeassistant.components.homekit: warning
+    homeassistant.components.time_date: warning
+    homeassistant.components.roku: warning
+    homeassistant.helpers: warning
+    homeassistant.components.asuswrt: warning
+    paho.mqtt: warning
+    homeassistant.components.recorder: warning
+    homeassistant.components.homekit_controller: warning
+    homeassistant.components.alexa: debug
+    pyhap: warning
+    homeassistant.components.automation.zz_tv_power_off: error
+    yeelight.main: warning
+    homeassistant.components.onkyo.media_player: warning
+    google.cloud.pubsub_v1: warning
+    zwave_js_server: info
+    homeassistant.components.template: warning
+    homeassistant.components.mqtt: critical
+    custom_components.localtuya.discovery: warning
+    homeassistant.components.xiaomi_miio.config_flow: warning
+    custom_components.localtuya.pytuya: warning
+    homeassistant.setup: error
+    homeassistant.components.cover: error
+    homeassistant.components.switch: error
+    homeassistant.config_entries: error
+    custom_components.weatherbit: error
+    homeassistant.components.sensor: error
+    slixmpp.stringprep: error
+    homeassistant.components.climate: error
+    homeassistant.components.media_player: error
+    slixmpp.basexmpp: error
+    homeassistant.components.mqtt.fan: error
+    homeassistant.components.homekit.accessories: error
+    homeassistant.components.binary_sensor: error
+    yalexs.api_async: warning
+
+####### Deprecated Sections
+
+#zone:
+#  - name: Home
+#    latitude: !secret secretlat
+#    longitude: !secret secretlong
+#    radius: 233.38696511088193
+
+#lovelace:
+#  resources:
+#    - url: /local/custom_cards/icloud3-event-log-card.js?v=2.1
+#      type: js
+#  mode: yaml
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+
+# Discover some devices automatically
+#discovery:
+#  ignore:
+#    - apple_tv
+#    - belkin_wemo
+#    - bluesound
+#    - bose_soundtouch
+#    - denonavr
+#    - enigma2
+#    - frontier_silicon
+#    - harmony
+#    - logitech_mediaserver
+#    - netgear_router
+#    - octoprint
+#    - openhome
+#    - philips_hue
+#    - sabnzbd
+#    - samsung_printer
+#    - sonos
+#    - songpal
+#    - tellstick
+#    - wink
+#    - yamaha
+#    - yeelight
+#    - xiaomi_gw
+
+#recorder:
+#      - binary_sensor.noone
+#      - lock.front_door
+#      - binary_sensor.front_door_open
+#      - input_boolean.nick
+#      - input_boolean.darius
+#      - person.michelle
+#      - input_boolean.michelle
+#      - input_boolean.kara
+#      - switch.nick_s_pc
+#      - switch.4in1_outlet_3
+#      - binary_sensor.tanner_water_bowl_water
+#      - binary_sensor.tanner_water_bowl_mqtt_water
+#      - binary_sensor.tanner_water_bowl_water_alarm_water_leak_detected
+#      - binary_sensor.tanner_water_bowl_water_alarm
+#      - binary_sensor.tanner_food_container_brown_access_control_window_door_is_open
+#      - binary_sensor.tanner_food_container_white_access_control_window_door_is_open
+#      - timer.dariusleft
+#  exclude:
+#    entities:
+#      - switch.vacuum_switch
+#      - switch.hassbackdeckspeaker
+#      - switch.back_deck_speaker
+#      - switch.hassbathroomspeaker
+#      - switch.master_bath_speaker
+#      - switch.front_porch_speaker
+#      - switch.hassfrontporchspeaker
+#      - media_player.living_room
+#      - media_player.roku_streaming_stick
+#      - sensor.xiaomi_map
+
+#history:
+#      - binary_sensor.tanner_water_bowl_water
+#      - binary_sensor.tanner_water_bowl_water_alarm_water_leak_detected
+#      - binary_sensor.tanner_food_container_brown_access_control_window_door_is_open
+#      - binary_sensor.tanner_food_container_white_access_control_window_door_is_open
+#      - input_boolean.kara
+#      - binary_sensor.noone
+#      - input_boolean.darius
+#      - person.michelle
+#      - input_boolean.michelle
+#      - input_boolean.nick
+
+## deprecated 2.0 zwavegraph
+#panel_custom:
+#  - name: zwavegraph2
+#    sidebar_title: Z-Wave Graph
+#    sidebar_icon: mdi:access-point-network
+#    url_path: zwave
+
+#panel_custom:
+#  - name: zwave-graph-panel
+#    url_path: zwave-graph
+#    sidebar_title: Z-Wave Graph
+#    sidebar_icon: mdi:z-wave
+#    module_url: /local/zwavegraph3.js
+#    config:
+      ## ranker - pick one: network-simplex, tight-tree, longest-path
+#      ranker: network-simplex
+      ## edge_visibility - pick one: relevant, all
+#      edge_visibility: relevant
+      ## grouping - pick one: z-wave, ungrouped
+#      grouping: z-wave
+
+##zwave:
+##  usb_path: /dev/ttyACM0
+##  network_key: !secret zwavekey
+##  polling_interval: 15000
+##  device_config:
+##    switch.lamp_light_lamp_light:
+##      polling_intensity: 8
+##    light.living_room_ligh_living_room_light:
+##      refresh_value: true
+##    light.hallway:
+##      refresh_value: true
+##    switch.fan_switch:
+##      polling_intensity: 1
+
+#    light.linear_lb60z1_dimmable_led_light_bulb_level:
+#      refresh_value: true
+#    light.living_room_ligh_living_room_light:
+#      refresh_value: true
+
+
+
+#duckdns:
+#  domain: !secret duckdnsdomain
+#  access_token: !secret duckdnstoken
+
+
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+#default_config:
+
+#lock:
+#  - platform: template
+#    name: Back Door
+#    value_template: "{{ is_state('input_boolean.backdoorlock', 'off') }}"
+#    lock:
+#      service: input_boolean.turn_off
+#      data:
+#        entity_id: input_boolean.backdoorlock
+#    unlock:
+#      service: input_boolean.turn_on
+#      data:
+#        entity_id: input_boolean.backdoorlock
+
+
+#cloud:
+#  alexa:
+#    filter:
+#      include_entities:
+#      - switch.fan_living_room_fan
+#      - switch.ge_unknown_type4952_id3037_bathroom_fan
+#      - switch.kitchen_light_kitchen_light
+#      - switch.lamp_light_lamp_light
+#      - light.linear_lb60z1_dimmable_led_light_bulb_foyer_light
+
+# Text to speech
+#tts:
+#  - platform: marytts
+#    voice: dfki-poppy-hsmm
+
+#asuswrt:
+#  host: !secret router_ip
+#  username: !secret routeruser
+#  ssh_key: /ssl/routerkey
+##  password: 
+#  port: !secret routersshport
+#  sensors:
+#    - devices
+#    - upload
+#    - download
+#    - upload_speed
+#    - download_speed
+
+#camera:
+#  - platform: mjpeg
+#    name: Petcam
+#    mjpeg_url: !secret tinycamurl
+#    username: !secret tinycamuser
+#    password: !secret tinycampass
+
+#  - platform: icloud3
+#    username: !secret icloudrxuser
+#    password: !secret icloudrxpass
+#    tracking_method: fmf
+#    track_devices:
+#      - nbauers_iphone > !secret gmail_mainuser
+      
+#  - platform: icloud3
+#    username: !secret icloudrxuser
+#    password: !secret icloudrxpass2
+#    tracking_method: iosapp
+#    track_devices:
+#      - darius_s_iphone
+
+#### Custom Card:
+#entity: sensor.icloud3_event_log
+#icon: 'mdi:information-outline'
+#title: iCloud Event Log
+#type: 'custom:icloud3-event-log-card'
+
+#vacuum:
+#  - platform: xiaomi_miio
+#    host: 192.168.29.211
+#    name: Alfred
+#    token: !secret alfredtoken
+
+#roku:
+#  - host: !secret bedroom_tv_ip
+
+#tuya:
+#  username: !secret gmail_mainuser
+#  password: !secret tuyapass
+#  country_code: 1
+
+#notify:
+#  - name: Messages
+#    platform: gntp
+#    hostname: !secret nickpc_ip
+#    password: !secret generic_pass
+#  - name: Prowler
+#    platform: prowl
+#    api_key: !secret prowlapikey
+#  - name: ALL_DEVICES
+#    platform: group
+#    services:
+#      - service: mobile_app_hasskit_nickiphone
+
+#rest_command:
+#  garage_toggler:
+#    url: !secret opengarage_url_path
+#    method: PUT
+
+#timer:
+#  nickleft:
+#    duration: '00:05:00'
+#  dariusleft:
+#    duration: '00:05:00'
+#  michelleleft:
+#    duration: '00:05:00'
+#  karaleft:
+#    duration: '00:05:00'
+#  frontdoorretry:
+#    duration: '00:10:00'
+
+#device_tracker:
+#  - platform: asuswrt
+#    host: !secret router_ip
+#    username: !secret routeruser
+#    ssh_key: /ssl/routerkey
+#    password: 
+#    port: !secret routersshport
+#    new_device_defaults:
+#      track_new_devices: false
+
+#august:
+#  login_method: phone
+#  username: !secret augustuser
+#  password: !secret augustpass
+
+#ecovacs:
+#  username: !secret gmail_mainuser
+#  password: !secret ecovacspass
+#  country: us
+#  continent: na
+
+#shell_command: 
+#  mirrorgrowldb: "cp /share/gol/config.db /share/hassgol/config.db"
+#  mirrorgrowlresources: "cp -R /share/gol/resource /share/hassgol/"
+
+#input_boolean:
+#  noone:
+#    name: Noone's Home
+#  homekitstarted:
+#    name: Homekit Started
+#    initial: off
+#  dummy:
+#    name: Dummy
+##  bonus_room_fan_power:
+##    name: Bonus Room fan Power Saved State
+##  bonus_room_fanlight_power:
+##    name: Bonus Room Fan Light Power Saved State
+#  nick:
+#    name: Nick Trigger
+#  darius:
+#    name: Darius Trigger
+#  michelle:
+#    name: Michelle Trigger
+#  kara:
+#    name: Kara Trigger
+#  backdoortimer:
+#    name: Back Door Timer
+#  driveway_boolean:
+#    name: Driveway Lights Boolean
+#  backdoorlock:
+#    name: Back Door Lock Boolean
+#  z2bathroombool:
+#    name: Boolean for Bathroom Speaker Switch
+#    initial: off
+#  z2porchbool:
+#    name: Boolean for Porch Speaker Switch
+#    initial: off
+#  z2backyardbool:
+#    name: Boolean for Backyard Speaker Switch
+#    initial: off
+#  tyler:
+#    name: Tyler's Home
+#  darius:
+#    name: Darius's Home
+#  nick: 
+#    name: Nick's Home
+
+
+#######################################  Input Selects ######################
+
+
+#  rainchancergb:
+#    name: Color Lights by Chance of Rain
+#    options:
+#      - red
+#      - blue
+#      - green
+#      - yellow
+      
+#  car_garage_input_select:
+#    name: Save Car in Garage Status
+#    options:
+#      - present
+#      - absent
+
+##  bonus_room_fan_speeds:
+##    name: Saved State of Bonus Room Fan Speed
+##    options:
+##      - 'off'
+##      - low
+##      - medium
+##      - high
+
+#  light_color_cycle:
+#    options:
+#      - red
+#      - green
+#      - yellow
+#      - blue
+#      - purple
+
+#  washing_cycle:
+#    options:
+#      - idle
+#      - filling
+#      - washing
+#      - draining
+#      - drying
+
+
+############################################################# Cloud Integrations ############################# CLOUD #################################################################
+#emulated_hue:
+#  expose_by_default: true
+#  exposed_domains:
+#    - light
+#    - switch
+#    - fan
+#    - media_player
+#    - input_boolean
+

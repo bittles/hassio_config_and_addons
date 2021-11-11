@@ -1,0 +1,5 @@
+- platform: group
+  name: D and Nicks Notifications Grouped
+  services:
+  - service: mobile_app_rxniphone
+  - service: mobile_app_darius_s_iphone

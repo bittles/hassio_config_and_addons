@@ -1,0 +1,265 @@
+- name: HassBridge
+#  auto_start: true
+  filter:
+    include_domains:
+     - climate
+    include_entities:
+     - sensor.nest_thermostat_temperature
+     - sensor.dark_sky_temperature
+     - sensor.dark_sky_apparent_temperature
+     - sensor.dark_sky_precip_probability_0d
+     - sensor.dark_sky_precip_probability_1d
+#     - cover.garage
+#     - binary_sensor.garagedoorstatus
+     - binary_sensor.caringaragestatus
+#     - light.sonoff
+     - light.driveway
+#     - binary_sensor.back_door
+     - fan.living_room_fan
+     - fan.bedroom_fan2
+#     - fan.bonus_room_fan
+#     - fan.bonusfantemp
+     - light.lamp
+     - light.kitchen
+#     - switch.hassbathroomspeaker
+#     - switch.hassz2
+#     - switch.hassbackdeckspeaker
+     - switch.hassfrontporchspeaker
+     - switch.tasmota_switch_1
+     - switch.nick_s_pc
+     - switch.office_tv_power
+#     - media_player.bathroom_speaker
+     - light.porch
+     - light.bedroom_light
+     - light.living_room_ligh_living_room_light
+     - vacuum.rockrobo
+     - light.hallway
+     - switch.receiver_outlet
+     - person.nick
+     - person.kara
+     - person.darius
+#     - person.michelle
+     - light.under_bed_light
+     - light.above_oven_light
+     - light.above_cabinet_lights
+     - light.under_cabinet_light
+#     - lock.august_asl_03_smart_lock_locked
+#     - lock.front_door
+     - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+#     - input_boolean.nick
+#     - input_boolean.kara
+#     - input_boolean.darius
+#     - input_boolean.michelle
+     - light.color_lights
+     - camera.petcam
+#     - input_boolean.4in1_first
+     - switch.idevices_switch
+#     - media_player.forked_daapd_output_receiver
+     - media_player.forked_daapd_output_shield
+     - media_player.forked_daapd_output_office_apple_tv
+     - media_player.forked_daapd_output_master_bedroom_apple_tv
+     - media_player.forked_daapd_output_living_room_tcl_tv
+     - media_player.forked_daapd_output_roku_streaming_stick
+     - switch.airplayserver_bathroom
+     - switch.airplayserver_deck
+     - light.aarlo_front_porch
+#     - binary_sensor.back_door_mqtt_any
+     - light.aarlo_back_deck
+     - switch.door
+#     - light.zone2volume
+     - sensor.bonusroomtemp
+     - climate.master_bedroom_thermostat
+     - light.aarlo_garage_camera
+     - camera.bedroom_cam
+     - camera.tanner_cam
+     - switch.bedroom_outlet_1
+     - switch.bedroom_outlet_2
+     - switch.bedroom_outlet_3
+     - switch.master_bathroom_fan
+     - fan.bonus_room_fan
+     - light.bonus_room_light
+     - climate.master_bedroom_thermostat_heat
+    exclude_entities:
+     - media_player.onkyo
+     - light.hue_go_1
+     - light.hue_go_2
+     - light.kitchen_nightlight
+     - light.window_lamp
+     - media_player.living_room_tv
+     - media_player.onkyo_zone_2
+     - switch.master_bath_speaker
+     - switch.back_deck_speaker
+     - switch.front_porch_speaker
+     - light.porch
+     - switch.driveway_lights
+     - switch.playharmony
+     - switch.pauseharmony
+     - fan.bonus_room_fan_mqtt
+     - device_tracker.nbauers_iphone
+     - device_tracker.nbauers_iphone_2
+     - switch.bonus_room_fan_action_switch
+    exclude_domains:
+     - fan
+     - light
+     - automation
+     - input_boolean
+     - script
+     - binary_sensor
+     - sensor
+     - device_tracker
+     - scene
+     - sensor
+     - switch
+     - remote
+  entity_config:
+    camera.petcam:
+      name: Tanner Cam
+      max_fps: 20
+      video_codec: copy
+    sensor.bonusroomtemp:
+      name: Bonus Room Temperature
+    switch.tasmota_switch_1:
+      name: Shower
+      type: shower
+    media_player.bathroom_speaker:
+      name: 'Bathroom Speaker'
+#      feature_list:
+#       - feature: on_off
+#       - feature: play_pause
+#       - feature: play_stop
+#       - feature: toggle_mute
+#    media_player.onkyo_zone_2:
+#      name: Zone 2 Onkyo
+#      feature_list:
+#       - feature: on_off
+    light.left_cabinet_light:
+      name: Above Oven Light
+    light.hallway:
+      name: Foyer Light
+    light.living_room_ligh_living_room_light:
+      name: Living Room Lights
+    light.right_cabinet_light:
+      name: Right Cabinet Light
+    light.under_cabinet_light:
+      name: Under Cabinet Light
+    lock.august_asl_03_smart_lock_locked:
+      name: Front Door Lock
+    binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door:
+      name: Front Door
+#    lock.front_door:
+#      name: Front Door Lock Wifi
+    switch.nick_pc:
+      name: Nick's PC
+    switch.office_tv_power:
+      name: Bedroom TV
+    switch.receiver_outlet:
+      name: Receiver Outlet
+      type: outlet
+    sensor.nest_thermostat_temperature:
+      name: Living Room Temperature
+    sensor.dark_sky_temperature:
+      name: Outdoors Temperature
+    sensor.dark_sky_apparent_temperature:
+      name: Outdoors feels like Temperature
+    fan.living_room_fan:
+      name: Living Room Fan
+#    switch.hassz2:
+#      name: Zone Two
+    sensor.dark_sky_precip_probability_0d:
+      name: Today
+    sensor.dark_sky_precip_probability_1d:
+      name: Tomorrow
+#    sensor.dark_sky_precip_probability_2d:
+#      name: Two Days Away
+    binary_sensor.garagedoorstatus:
+      name: Garage Door Status
+    binary_sensor.caringaragestatus:
+      name: Car in Garage
+#    binary_sensor.darius:
+#      name: Darius
+#    binary_sensor.nick:
+#      name: Nick
+    light.driveway:
+      name: Driveway Lights
+    light.bedroom_light:
+      name: Master Bedroom Light
+    fan.bedroom_fan:
+      name: Master Bedroom Fan
+    light.bonus_room_fan_light_mqtt:
+      name: Bonus Room Light
+    fan.bonusfantemp:
+      name: Bonus Room Fan
+#    switch.hassbathroomspeaker:
+#      name: Bathroom Speaker Switch
+#    switch.hassbackdeckspeaker:
+#      name: Deck Speaker Switch
+    switch.hassfrontporchspeaker:
+      name: Front Porch Speaker Switch
+#    media_player.forked_daapd_output_receiver:
+#      name: Receiver Airplay Output
+#      feature_list:
+#       - feature: on_off
+    media_player.forked_daapd_output_shield:
+      name: Shield Airplay Output
+      feature_list:
+       - feature: on_off
+    media_player.forked_daapd_output_office_apple_tv:
+      name: Garage Airplay Output
+      feature_list:
+       - feature: on_off
+    media_player.forked_daapd_output_master_bedroom_apple_tv:
+      name: Bedroom aTV Airplay Output
+      feature_list:
+       - feature: on_off
+    media_player.forked_daapd_output_living_room_tcl_tv:
+      name: TCL TV Airplay Output
+      feature_list:
+       - feature: on_off
+    media_player.forked_daapd_output_roku_streaming_stick:
+      name: Roku Stick Airplay Output
+      feature_list:
+       - feature: on_off
+    switch.airplayserver_bathroom:
+      name: Bathroom Airplay Output
+    light.zone2volume:
+      name: Zone 2 Volume
+    switch.airplayserver_deck:
+      name: Back Deck Airplay Output
+#    light.color_lights:
+#      name: Xmas Room Light
+
+#- name: August Bridge
+#  port: 51821
+#  mode: accessory
+#  filter:
+#    include_entities:
+#     - lock.front_door
+#  entity_config:
+#    lock.front_door:
+#      name: Front Door Wifi
+#      linked_battery_sensor: sensor.front_door_battery_template
+
+#- name: SpeakerBridge
+#  port: 51821
+#  auto_start: true
+#  filter:
+#    include_entities:
+#     - media_player.deck_speaker
+#  entity_config:
+#    media_player.deck_speaker:
+#      name: Back Deck Speaker
+
+#- name: HarmonyBridge
+#  port: 51822
+#  auto_start: true
+#  filter:
+#    include_entities:
+#     - media_player.harmonytv
+#  entity_config:
+#    media_player.harmonytv:
+#      name: Harmony Hub
+#      feature_list:
+#        - feature: on_off
+#        - feature: play_pause
+#        - feature: play_stop
+#        - feature: toggle_mute

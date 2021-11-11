@@ -1,0 +1,343 @@
+- platform: rest
+  resource: !secret git_addon_url
+  name: Git Exporter Status
+  value_template: '{{ value_json.data.state }}'
+  scan_interval: 2
+  headers:
+    Authorization: !secret api_token
+    Content-Type: application/json
+
+#- platform: history_stats
+#  name: Total Time Tanner's Water Empty mqtt
+#  entity_id: binary_sensor.tanner_water_manual_mqtt
+#  state: "off"
+#  type: time
+#  end: "{{ now() }}"
+#  duration:
+#    days: 30
+
+#- platform: history_stats
+#  name: Count Tanner's Water was Empty mqtt
+#  entity_id: binary_sensor.tanner_water_manual_mqtt
+#  state: "off"
+#  type: count
+#  end: "{{ now() }}"
+#  duration:
+#    days: 30
+
+- platform: history_stats
+  name: Total Time Tanner's Water Empty
+  entity_id: binary_sensor.tanner_water_bowl_water_alarm
+  state: "off"
+  type: time
+  end: "{{ now() }}"
+  duration:
+    days: 30
+
+- platform: history_stats
+  name: Count Tanner's Water was Empty
+  entity_id: binary_sensor.tanner_water_bowl_water_alarm
+  state: "off"
+  type: count
+  end: "{{ now() }}"
+  duration:
+    days: 30
+
+- platform: time_date
+  display_options:
+    - 'time'
+    - 'date'
+#    - 'date_time'
+#    - 'date_time_utc'
+#    - 'date_time_iso'
+#    - 'time_date'
+#    - 'time_utc'
+#    - 'beat'
+
+- platform: systemmonitor
+  resources:
+    - type: processor_use
+
+- platform: aarlo
+  monitored_conditions:
+#  - total_cameras
+  - last_capture
+  - recent_activity
+#  - captured_today
+  - battery_level
+  - signal_strength
+#  - temperature
+#  - humidity
+#  - air_quality
+
+- platform: pirateweather
+  api_key: !secret pirateweather_api_key
+  scan_interval: '00:15:00'
+  forecast:
+    - 0
+    - 1
+  monitored_conditions:
+    - precip_probability
+    - temperature
+    - apparent_temperature
+    - humidity
+    - apparent_temperature_high
+    - apparent_temperature_low
+    - cloud_cover
+    - uv_index
+
+- platform: darksky
+  api_key: !secret darkskyapi
+  forecast:
+    - 0
+    - 1
+#  snowshoe coords
+#  latitude: 38.4132303
+#  longitude: -79.9975177
+  monitored_conditions:
+#    - summary
+#    - hourly_summary
+#    - icon
+#    - nearest_storm_distance
+#    - daily_summary
+#    - precip_intensity
+#    - precip_intensity_max
+    - precip_probability
+    - temperature
+    - apparent_temperature
+    - humidity
+    - apparent_temperature_high
+    - apparent_temperature_low
+    - cloud_cover
+    - uv_index
+
+
+#- platform: mqtt
+#  name: "Garage Opener Distance mqtt"
+#  force_update: true
+#  state_topic: "My OpenGarage/OUT/DIST"
+##  value_template: '{{ value_json.dist }}'
+#  unique_id: "garagedist"
+#  device:
+#    identifiers:
+#      - garage_door_mqtt
+#    manufacturer: OpenGarage
+#    name: OpenGarage Garage Door Opener
+
+
+#- platform: attributes
+#  friendly_name: "Bedroom Fan Speed"
+#  attribute: speed
+#  entities:
+#    - fan.bedroom_fan
+
+#- platform: mqtt
+#  name: "Bonus Room Temperature Manual mqtt"
+#  device_class: temperature
+#  unit_of_measurement: "°F"
+#  force_update: true
+#  unique_id: "bonusroom_mqtt_manually_setup_temp"
+#  state_topic: "zwave/bonus/BonusRoomTemp/49/0/Air_temperature"
+#  value_template: '{{ value_json.value }}'
+#  json_attributes_topic: "zwave/bonus/BonusRoomTemp/49/0/Air_temperature"
+#  json_attributes_template: >
+#    {
+#      "Last Updated": "{{ (value_json.time / 1000) | timestamp_local }}"
+#    }
+
+#  - platform: mqtt
+#    name: "Master Bedroom Humidity mqtt"
+#    device:
+#      identifiers:
+#        - master_bedroom_temp_sensor
+#      manufacturer: Shelly
+#      model: SH&T
+#      name: Bedroom Temperature Sensor
+#    device_class: humidity
+#    force_update: true
+#    state_topic: "shellies/shellyht-6BB145/sensor/humidity"
+#    unit_of_measurement: "%"
+#    json_attributes_topic: "shellies/shellyht-6BB145/announce"
+#    unique_id: "shhtmasterbedhumidity"
+
+#  - platform: mqtt
+#    name: "Master Bedroom Temperature mqtt"
+#    device:
+#      identifiers:
+#        - master_bedroom_temp_sensor
+#      manufacturer: Shelly
+#      model: SH&T
+#      name: Bedroom Temperature Sensor
+#    unique_id: "shhtmasterbedtemp"
+#    device_class: temperature
+#    force_update: true
+#    state_topic: "shellies/shellyht-6BB145/timeandtemperature"
+#    value_template: '{{ value_json.temperature }}'
+#    unit_of_measurement: "°F"
+#    json_attributes_topic: "shellies/shellyht-6BB145/timeandtemperature"
+#    json_attributes_template: >
+#      {
+#        "Last Updated": "{{ value_json.time }}"
+#      }
+#        "Shelly Model": "{{ value_json.model }}",
+#        "MAC Address": "{{ value_json.mac[0:2] }}:{{ value_json.mac[2:4] }}:{{ value_json.mac[4:6] }}:{{ value_json.mac[6:8] }}:{{ value_json.mac[8:10] }}:{{ value_json.mac[10:12] }}",
+#        "IP Address": "{{ value_json.ip }}",
+#        "Current Firmware": "{{ value_json.fw_ver }}",
+#        "Update Available?": "{% if value_json.new_fw == true %}Yes{% else %}No{% endif %}"
+      
+#        "Last Update": "{% set timediff = (as_timestamp(now()) - as_timestamp(states('input_datetime.bedroom_temp_change_time')))|round() %}{% if timediff < 60 %}{{ timediff }} seconds ago{% elif timediff < 120 %}{{ (timediff / 60)|int }} minute and {{ ((((timediff / 60))-((timediff / 60)|int))*60)|int }} seconds ago{% else %}{{ (timediff / 60)|int }} minutes and {{ ((((timediff / 60))-((timediff / 60)|int))*60)|int }} seconds ago{% endif %}"
+
+#  - platform: imap
+#    server: imap.gmail.com
+#    username: !secret gmail_mainuser
+#    password: !secret aarlo_mainpass
+
+#  - platform: temperature_feels_like
+#    name: 'Bedroom Feels Like Temperature'
+#    source:
+#      - sensor.master_bedroom_temperature_mqtt
+#      - sensor.master_bedroom_humidity_mqtt
+
+#  - platform: temperature_feels_like
+#    name: 'Outside Feels Like Temperature'
+#    source:
+#      - sensor.dark_sky_temperature
+#      - sensor.dark_sky_humidity
+
+#  - platform: template
+#    sensors:
+#      asusupspeedkb:
+#        friendly_name: 'Asuswrt Upload Speed KB/s'
+#        unit_of_measurement: 'kB/s'
+#        value_template: '{{ states.sensor.asuswrt_upload_speed.state | float * 125 }}'
+
+#      garagedistancesensor:
+#        friendly_name: Distance from Opengarage
+#        value_template: '{{ state_attr(''cover.garage'', ''distance_sensor'') }}'
+
+#      monthly_bedroom_outlet_utilitymeter_unround:
+#        friendly_name: Monthly Bedroom Outlets Energy Unrounded
+#        unique_id: bedroom_outlet_utility_unround
+#        device_class: energy
+#        unit_of_measurement: "kWh"
+#        value_template: '{{"{:.3f}".format(''sensor.monthly_bedroom_outlets_energy'' | float(default=0)) }}'
+
+#      bedroom_set_temp:
+#        friendly_name: 'Set Temp for Bedroom'
+#        unique_id: bedroom_set_temp
+#        value_template: '{{ state_attr(''climate.master_bedroom_thermostat'', ''temperature'') }}'
+#        device_class: temperature
+
+
+
+#      fan_speed:
+#        friendly_name: 'Living Room Fan Speed'
+#        value_template: '{{ states.fan.living_room_fan.attributes.percentage }}'
+
+#      garage_car_present:
+#        friendly_name: 'Car in Garage'
+#        value_template: '{% if states.cover.garage %}
+#            {% if states.cover.garage.state == "open" %}
+#              n/a
+#            {% elif ((states.cover.garage.attributes["distance_sensor"] > 30) and (states.cover.garage.attributes["distance_sensor"] < 150)) %}
+#              Yes
+#            {% else %}
+#              No
+#            {% endif %}
+#            {% else %}
+#            n/a
+#            {% endif %}'
+
+#  - platform: sql
+#    db_url: sqlite://///share/hassgol/config.db
+#    queries:
+#      - name: Growler Notification Title
+#        query: "SELECT title FROM notification ORDER BY received DESC LIMIT 1;"
+#        column: 'title'
+#      - name: Growler Notification Text
+#        query: "SELECT text FROM notification ORDER BY received DESC LIMIT 1;"
+#        column: 'text'
+#      - name: Growler Notitication Timestamp
+#        query: "SELECT received FROM notification ORDER BY received DESC LIMIT 1;"
+#        column: 'received'
+
+#      piserver_users:
+#        friendly_name: 'Plex Users Watching'
+#        value_template: '{% if states("sensor.plex_piserver") != "0" %}
+#            {% for attr in states.sensor.plex_piserver.attributes %}
+#              {% if not attr in ["friendly_name", "unit_of_measurement"] %}
+#                {{attr}} is watching  {{states.sensor.plex_piserver.attributes[attr]}}.
+#                
+#              {% endif %}
+#            {% endfor %}
+#            {% else %}
+#              Watching Pi Plex: {{states("sensor.plex_piserver")}}
+#            {% endif %}
+#            {% if states("sensor.plex_nick_s_desktop") != "0" %}
+#            {% for attr in states.sensor.plex_nick_s_desktop.attributes %}
+#              {% if not attr in ["friendly_name", "unit_of_measurement"] %}
+#                {{attr}} is watching  {{states.sensor.plex_nick_s_desktop.attributes[attr]}}.
+#                
+#              {% endif %}
+#            {% endfor %}
+#            {% else %}
+#              Watching Desktop Plex: {{states("sensor.plex_nick_s_desktop")}}
+#            {% endif %}
+#            {% if states("sensor.plex_shield_android_tv") != "0" %}
+#            {% for attr in states.sensor.plex_shield_android_tv.attributes %}
+#              {% if not attr in ["friendly_name", "unit_of_measurement"] %}
+#                {{attr}} is watching  {{states.sensor.plex_shield_android_tv.attributes[attr]}}.
+#                
+#              {% endif %}
+#            {% endfor %}
+#            {% else %}
+#              Watching Shield Plex: {{states("sensor.plex_shield_android_tv")}}
+#            {% endif %}'
+
+#  - platform: mqtt
+#    state_topic: "valetudo/rockrobo/state"
+#    json_attributes_topic: "valetudo/rockrobo/map_data_parsed"
+#    name: xiaomi_map
+#    value_template: 'OK'
+#    scan_interval: 5
+    
+#  - platform: mqtt
+#    state_topic: "tele/4in1/SENSOR"
+#    value_template: "{{ value_json.ENERGY.Voltage }}"
+#    name: 4in1 Voltage Sensor
+#    unit_of_measurement: V
+#    scan_interval: 20
+#    force_update: true
+    
+#  - platform: mqtt
+#    state_topic: "tele/washmash/SENSOR"
+#    value_template: "{{ value_json.ENERGY.Voltage }}"
+#    name: Washing Machine Voltage
+#    unit_of_measurement: V
+#    scan_interval: 20
+
+#  - platform: mqtt
+#    state_topic: "tele/washmash/SENSOR"
+#    value_template: "{{ value_json.ENERGY.Power }}"
+#    name: Washing Machine Wattage
+#    unit_of_measurement: W
+    
+#  - platform: mqtt
+#    state_topic: "tele/washmash/SENSOR"
+#    value_template: "{{ value_json.ENERGY.Today }}"
+#    name: Washing Machine Energy Today
+#    unit_of_measurement: kWh
+#    scan_interval: 60
+    
+#  - platform: mqtt
+#    state_topic: "tele/washmash/SENSOR"
+#    value_template: "{{ value_json.ENERGY.Current }}"
+#    name: Washing Machine Current
+#    unit_of_measurement: A
+
+#  - platform: mqtt
+#    state_topic: "tele/washmash/SENSOR"
+#    value_template: "{{ value_json.ENERGY.Total }}"
+#    name: Washing Machine Energy Total This Month
+#    unit_of_measurement: kWh
+#    scan_interval: 86400

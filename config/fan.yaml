@@ -1,0 +1,173 @@
+#  - platform: mqtt
+#    name: "Bedroom Fan mqtt"
+#    state_topic: "tele/treatfan/STATE"
+#    state_value_template: "{{ value_json.POWER1 }}"
+#    command_topic: "cmnd/treatfan/POWER1"
+#    percentage_state_topic: "stat/treatfan/speed"
+#    percentage_value_template: '{{ ((value | replace("3,","")) | int) * 33.333333333333336 }}'
+#    percentage_command_topic: "cmnd/treatfan/tuyasend4"
+#    percentage_command_template: "3,{{ ((value | int) / 33) | int }}"
+#    availability_topic: "tele/treatfan/LWT"
+#    payload_available: "Online"
+#    payload_not_available: "Offline"    
+#    payload_on: "ON"
+#    payload_off: "OFF"
+#    json_attributes_topic: "tele/treatfan/STATE"
+
+#    speed_state_topic: "stat/treatfan/speed"
+#    speed_command_topic: "cmnd/treatfan/tuyasend4"
+#    payload_low_speed: "3,1"
+#    payload_medium_speed: "3,2"
+#    payload_high_speed: "3,3"
+#    speeds:
+#      - 'off'
+#      - low
+#      - medium
+#      - high
+
+
+#  - platform: mqtt
+#    name: "Bedroom Fan mqtt"
+#    qos: 1
+#    state_topic: "stat/treatfan/POWER1"
+#    command_topic: "cmnd/treatfan/POWER1"
+#    availability_topic: "tele/treatfan/LWT"
+#    percentage_state_topic: "stat/treatfan/speed"
+#    percentage_value_template: '{{ ((value | replace("3,","")) | int + 1) * 25 }}'
+#    percentage_command_topic: "cmnd/treatfan/tuyasend4"
+#    percentage_command_template: "3,{{ ((value | int - 1) / 25) | int }}"
+#    preset_mode_state_topic: "stat/treatfan/speed"
+#    preset_mode_value_template: '{{ value | replace("3,0", "turtle") | replace("3,1", "low") | replace("3,2", "medium") | replace("3,3", "high") }}'
+#    preset_mode_command_topic: "cmnd/treatfan/tuyasend4"
+#    preset_mode_command_template: '{{ value | replace("turtle", "3,0") | replace("low", "3,1") | replace("medium", "3,2") | replace("high", "3,3") }}'
+#    preset_modes:
+#      - "turtle"
+#      - "low"
+#      - "medium"
+#      - "high"
+#    payload_available: "Online"
+#    payload_not_available: "Offline"
+#    payload_on: "ON"
+#    payload_off: "OFF"
+
+
+  - platform: template
+    fans:
+      bedroom_fan2:
+        friendly_name: Bedroom Fan
+        unique_id: bedroomfantemplate
+        value_template: "{{ states('fan.bedroom_fan') }}"
+        percentage_template: >
+          {% if state_attr('fan.bedroom_fan', 'percentage') == 75 %}
+            66
+          {% elif (state_attr('fan.bedroom_fan', 'percentage') == 50 or state_attr('fan.bedroom_fan', 'percentage') == 25) %}
+            33
+          {% else %}
+            {{ state_attr('fan.bedroom_fan', 'percentage') }}
+          {% endif %}
+        turn_on:
+          - service: fan.turn_on
+            entity_id: fan.bedroom_fan
+        turn_off:
+          - service: fan.turn_off
+            entity_id: fan.bedroom_fan
+        set_percentage:
+          - service: fan.set_percentage
+            entity_id: fan.bedroom_fan
+            data_template:
+              percentage: "{{ percentage }}"
+        speed_count: 3
+
+#  - platform: template
+#    fans:
+#      bonusfantemp:
+#        friendly_name: Bonus Room Fan
+#        value_template: "{{ states('input_boolean.d_fan_power') }}"
+#        percentage_template: "{{ states('input_number.d_fan_percent') }}"
+#        turn_on:
+#          - service: input_boolean.turn_on
+#            entity_id: input_boolean.d_fan_power
+#        turn_off:
+#          - service: input_boolean.turn_off
+#            entity_id: input_boolean.d_fan_power
+#        set_percentage:
+#          - service: input_number.set_value
+#            entity_id: input_number.d_fan_percent
+#            data_template:
+#              value: "{{ percentage }}"
+#        speed_count: 3
+
+#  - platform: template
+#    fans:
+#      bedroom_fan:
+#        friendly_name: Bedroom Fan_old
+#        value_template: "{{ states('switch.bedroom_fan') }}"
+#        speed_template: "{{ states('input_select.bedroom_room_fan_speeds') }}"
+#        turn_on:
+#          - service: switch.turn_on
+#            entity_id: switch.bedroom_fan
+#        turn_off:
+#          - service: switch.turn_off
+#            entity_id: switch.bedroom_fan
+#        set_speed:
+#          - service: input_select.select_option
+#            entity_id: input_select.bedroom_room_fan_speeds
+#            data_template:
+#              option: "{{ speed }}"
+#        speeds:
+#          - 'off'
+#          - low
+#          - medium
+#          - high
+
+#  - platform: template
+#    fans:
+#      bonus_room_fan:
+#        friendly_name: Bonus Room Fan
+#        value_template: "{{ states('input_boolean.bonus_room_fan_power') }}"
+#        speed_template: "{{ states('input_select.bonus_room_fan_speeds') }}"
+#        turn_on:
+#          - service: homeassistant.turn_on
+#            entity_id: group.bonus_room_fan_switches
+#        turn_off:
+#          - service: homeassistant.turn_off
+#            entity_id: group.bonus_room_fan_switches
+#        set_speed:
+#          - service: input_select.select_option
+#            entity_id: input_select.bonus_room_fan_speeds
+#            data_template:
+#              option: "{{ speed }}"
+#        speeds:
+#          - 'off'
+#          - low
+#          - medium
+#          - high
+
+#  - platform: mqtt  
+#    name: "Bonus Room Fan mqtt"
+#    state_topic: "stat/sonoff_fanlight/RESULT"
+#    speed_state_topic: "stat/sonoff_fanlight/RESULT"
+#    state_value_template: >
+#      {% if value_json.FanSpeed is defined %}
+#        {% if value_json.FanSpeed == 0 -%}0{%- elif value_json.FanSpeed > 0 -%}3{%- endif %}
+#      {% else %}
+#        {% if states.fan.bedroom_fan.state == 'off' -%}0{%- elif states.fan.bedroom_fan.state == 'on' -%}3{%- endif %}
+#      {% endif %}
+#    speed_value_template: "{{ value_json.FanSpeed }}"
+#    command_topic: "cmnd/sonoff_fanlight/FanSpeed"
+#    speed_command_topic: "cmnd/sonoff_fanlight/FanSpeed"   
+#    availability_topic: tele/sonoff_fanlight/LWT
+#    payload_off: "0"
+#    payload_on: "3"
+#    payload_low_speed: "1"
+#    payload_medium_speed: "2"
+#    payload_high_speed: "3"
+#    payload_available: Online
+#    payload_not_available: Offline
+#    qos: 1
+#    retain: true
+#    speeds:
+#      - 'off'
+#      - low
+#      - medium
+#      - high

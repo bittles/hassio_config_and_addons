@@ -1,0 +1,642 @@
+config:
+  background: var(--background-image)
+  title: Home
+  views:
+  - badges:
+    - entity: sensor.dark_sky_precip_probability_0d
+    - entity: sensor.dark_sky_daytime_high_apparent_temperature_0d
+    - entity: sensor.dark_sky_apparent_temperature
+    - entity: sensor.dark_sky_overnight_low_apparent_temperature_0d
+    - entity: sensor.dark_sky_temperature
+    - entity: sensor.dark_sky_humidity
+    - entity: sensor.nest_thermostat_temperature
+    - entity: sensor.nest_thermostat_humidity
+    - entity: person.nick
+    - entity: person.darius
+    - entity: person.kara
+    - entity: binary_sensor.noone
+    - entity: binary_sensor.bedroom_shelly_ht_status
+    - entity: sensor.shellytempfixed
+    - entity: sensor.shelly_shht_1_6bb145_humidity
+    - entity: sensor.bonusroomtemp
+    - entity: sensor.bonusroomtemp_humidity
+    - entity: vacuum.rockrobo
+    - entity: automation.alfred_cleans_zones_at_4am
+    - entity: automation.front_door_autolock
+    - entity: sensor.processor_use
+    - entity: sensor.routerdlkbs
+    - entity: sensor.routerulkbs
+    - entity: binary_sensor.updater
+    - entity: sensor.potential_breaking_changes
+    cards:
+    - entities:
+      - entity: script.restart_shield
+      show_header_toggle: false
+      type: entities
+    - entities:
+      - entity: cover.garage_mqtt
+      - entity: binary_sensor.caringaragestatus
+      - entity: lock.august_asl_03_smart_lock_locked
+      - entity: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+      - entity: lock.back_door
+      - entity: binary_sensor.back_door_template
+      - entity: timer.frontdoorretry
+      - entity: sensor.august_smart_lock_pro_3rd_gen_battery_level
+      - entity: sensor.back_door_battery_template
+      - entity: sensor.battery_consumption_sensor_august_smart_lock_pro_3rd_gen_battery_level
+      - entity: sensor.battery_consumption_sensor_back_door_battery_template
+      state_color: true
+      type: entities
+    - entity: weather.weatherbit_pine_island
+      secondary_info_attribute: precipitation
+      show_forecast: true
+      type: weather-forecast
+    - entities:
+      - entity: climate.downstairs_the_nest
+      - entity: climate.master_bedroom_thermostat
+      - entity: climate.master_bedroom_thermostat_heat
+      - customTheme: false
+        entity: fan.living_room_fan
+        name: Living Room Fan
+        type: custom:fan-percent-button-row
+      - customTheme: false
+        entity: fan.bedroom_fan2
+        name: Bedroom Fan
+        type: custom:fan-percent-button-row
+      - customTheme: false
+        entity: fan.bonus_room_fan
+        name: Bonus Room Fan
+        type: custom:fan-percent-button-row
+      - entity: switch.bedroom_dummyac
+      - entity: switch.bedroom_dummyheat
+      type: entities
+    - columns: 4
+      entities:
+      - entity: switch.nick_s_pc
+        tap_action:
+          action: toggle
+      - entity: switch.tasmota_switch_1
+        tap_action:
+          action: toggle
+      - entity: switch.bedroom_outlet_1
+        tap_action:
+          action: toggle
+      - entity: switch.bedroom_outlet_2
+        tap_action:
+          action: toggle
+      - entity: switch.bedroom_outlet_3
+        tap_action:
+          action: toggle
+      - entity: automation.daily_4am_maintenance
+      - entity: automation.restart_hass
+      - entity: switch.master_bathroom_fan
+      title: Switches
+      type: glance
+    - columns: 6
+      entities:
+      - entity: light.kitchen
+        tap_action:
+          action: toggle
+      - entity: light.lamp
+        tap_action:
+          action: toggle
+      - entity: light.hallway
+        tap_action:
+          action: toggle
+      - entity: light.living_room_ligh_living_room_light
+      - entity: light.bedroom_light
+      - entity: group.bedroom_lamps
+      - entity: light.kitchen_nightlight
+      - entity: light.porch
+        tap_action:
+          action: toggle
+      - entity: light.driveway
+        tap_action:
+          action: toggle
+      - entity: light.under_cabinet_light
+      - entity: light.above_oven_light
+      - entity: light.under_bed_light
+      - entity: light.above_cabinet_lights
+      - entity: light.color_lights
+      - entity: switch.idevices_switch
+        tap_action:
+          action: toggle
+      - entity: light.bonus_room_light
+        tap_action:
+          action: toggle
+      - entity: light.hue_go_1
+      - entity: light.hue_go_2
+      show_icon: true
+      show_name: true
+      show_state: false
+      state_color: true
+      title: Lights
+      type: glance
+    - showAzimuth: false
+      showElevation: false
+      type: custom:sun-card
+    - calibration_points:
+      - map:
+          x: 270
+          y: 15
+        vacuum:
+          x: 22715
+          y: 13911
+      - map:
+          x: 1500
+          y: 15
+        vacuum:
+          x: 37862
+          y: 13911
+      - map:
+          x: 1500
+          y: 1000
+        vacuum:
+          x: 37862
+          y: 26070
+      default_mode: predefined_zones
+      entity: vacuum.rockrobo
+      map_camera: camera.rockrobo_map
+      modes:
+      - predefined_zones
+      service: python_script.vacuum_send_command
+      type: custom:xiaomi-vacuum-map-card
+      zones:
+      - - - 22690
+          - 22778
+          - 32457
+          - 26013
+        - - 22725
+          - 18724
+          - 34759
+          - 22826
+        - - 30852
+          - 17148
+          - 34777
+          - 18825
+        - - 32605
+          - 16157
+          - 33980
+          - 17196
+      - - - 22689
+          - 17452
+          - 26864
+          - 18697
+        - - 22721
+          - 14028
+          - 29985
+          - 17449
+      - - - 26920
+          - 16975
+          - 29805
+          - 18513
+      - - - 29911
+          - 13811
+          - 33116
+          - 17067
+      - - - 33945
+          - 13551
+          - 38350
+          - 17410
+    - content: j
+      theme: Google Dark Theme
+      type: markdown
+    - entities:
+      - entity: switch.startgitexport
+      - entity: sensor.git_exporter_status
+      type: entities
+    theme: night
+    title: Home
+  - badges: []
+    cards:
+    - entities:
+      - entity: light.aarlo_front_porch
+      - entity: light.aarlo_back_deck
+      - entity: light.aarlo_garage_camera
+      type: entities
+    - entity: input_text.camera_click
+      type: entity
+    - entity: camera.aarlo_front_porch
+      global: muted
+      image_bottom: snapshot|library|light
+      image_click: recordings
+      image_top: name|date|stream|onoff
+      image_view: smart
+      library_sizes: 1,2,3,4
+      light: light.aarlo_front_porch
+      logging: false
+      max_recordings: '30'
+      name: Front Porch
+      snapshot_retry: 2,5
+      type: custom:aarlo-glance
+    - entity: camera.aarlo_back_deck
+      global: muted
+      image_bottom: snapshot|library|light
+      image_click: recordings
+      image_top: name|date|stream|onoff
+      image_view: smart
+      library_sizes: 1,2,3,4
+      light: light.aarlo_back_deck
+      logging: false
+      max_recordings: '30'
+      name: Back Deck
+      snapshot_retry: 2,5
+      type: custom:aarlo-glance
+    - entity: camera.aarlo_garage_camera
+      global: muted
+      image_bottom: snapshot|library|light
+      image_click: recordings
+      image_top: name|date|stream|onoff
+      image_view: smart
+      library_sizes: 1,2,3,4
+      light: light.aarlo_garage_camera
+      logging: false
+      max_recordings: '30'
+      name: Driveway
+      snapshot_retry: 2,5
+      type: custom:aarlo-glance
+    panel: false
+    path: arlo
+    title: Arlo
+  - badges: []
+    cards:
+    - entity: media_player.bedroom_tcl_tv
+      title: Bedroom TV
+      tv: true
+      type: custom:roku-card
+      volume_down:
+        double_tap_action:
+          action: call-service
+          service: remote.send_command
+          service_data:
+            command: volume_down
+            entity_id: remote.bedroom_tcl_tv
+      volume_up:
+        tap_action:
+          action: call-service
+          service: remote.send_command
+          service_data:
+            command: volume_up
+            entity_id: remote.bedroom_tcl_tv
+    - activities:
+      - device: NVIDIA Game Console
+        name: nvidia SHIELD
+      - device: Harmony Beta Test Apple TV
+        name: Watch Apple TV
+      - device: Sony PS4
+        name: PS4
+      - device: Onkyo AV Receiver
+        name: Xbox One
+      - device: TCL TV Living Room
+        name: Roku TV
+      buttons:
+        a:
+          command: VolumeUp
+          device: Onkyo AV Receiver
+          icon: mdi:chevron-up
+        b:
+          command: VolumeDown
+          device: Onkyo AV Receiver
+          icon: mdi:chevron-down
+        xbox:
+          command: Home,
+          icon: mdi:home
+      entity: remote.living_room
+      name: Living Room TV
+      scale: 1.25
+      type: custom:harmony-card
+      volume_device: Onkyo AV Receiver
+      volume_entity: media_player.onkyo
+    - entities:
+      - entity: remote.living_room
+      - entity: sensor.living_roomtv
+      show_header_toggle: false
+      title: TVs
+      type: entities
+    - entity: media_player.bedroom_tcl_tv
+      type: custom:mini-media-player
+    - entities:
+      - entity: switch.airplayserver_bathroom
+      - entity: switch.airplayserver_deck
+      - entity: media_player.forked_daapd_output_master_bedroom_apple_tv
+      - entity: media_player.forked_daapd_output_shield
+      - entity: media_player.forked_daapd_output_garage_apple_tv
+      - entity: media_player.forked_daapd_output_living_room_tcl_tv
+      - entity: media_player.forked_daapd_output_receiver
+      - entity: media_player.forked_daapd_output_roku_streaming_stick
+      type: entities
+    - entities:
+      - entity: media_player.bathroom_speaker
+      - entity: switch.hassbathroomspeaker
+      - entity: switch.hassz2
+      type: entities
+    - entities:
+      - entity: media_player.deck_speaker
+      - entity: switch.hassbackdeckspeaker
+      - entity: switch.hassz2
+      type: entities
+    - entity: media_player.master_bedroom_tv
+      type: custom:mini-media-player
+    path: bedroom-tv-remote
+    title: Remotes
+  - badges: []
+    cards:
+    - entities:
+      - entity: input_boolean.tanner_breakfast_now_fed
+      - entity: input_datetime.tanner_breakfast
+      - entity: automation.tanner_breakfast_now_fed
+      - entity: light.color_lights
+      - entity: binary_sensor.tanner_food_container_white_access_control_window_door_is_open
+      show_header_toggle: false
+      state_color: true
+      title: Tanner Breakfast
+      type: entities
+    - entities:
+      - entity: input_boolean.tanner_dinner_fed
+      - entity: input_datetime.tanner_dinner
+      - entity: automation.tanner_dinner_now_fed
+      - entity: switch.idevices_switch
+      - entity: binary_sensor.tanner_food_container_brown_access_control_window_door_is_open
+      show_header_toggle: false
+      state_color: true
+      title: Tanner Dinner
+      type: entities
+    - entities:
+      - entity: binary_sensor.tanner_water_bowl_water
+      - entity: binary_sensor.tanner_water_bowl_water_alarm_water_leak_detected
+      - entity: sensor.tanner_water_bowl_water_alarm_sensor_status
+      - entity: sensor.tannerwaterbowl_node_status
+      show_header_toggle: false
+      state_color: true
+      title: Tanner Water Bowl
+      type: entities
+    - entities:
+      - entity: automation.tanner_dims_sunroom_at_sunset
+      - entity: automation.tanner_autos_off_when_noone_home
+      - entity: input_datetime.tanner_resets
+      show_header_toggle: false
+      type: entities
+    - entities:
+      - entity: sensor.total_time_tanner_s_water_empty
+      - entity: sensor.count_tanner_s_water_was_empty
+      type: entities
+    title: Tanner
+  - badges: []
+    cards:
+    - entity: media_player.onkyo
+      group: true
+      type: custom:mini-media-player
+      volume_stateless: true
+    - entity: media_player.onkyo_zone_2
+      group: true
+      type: custom:mini-media-player
+      volume_stateless: true
+    - entity: media_player.living_room_tcl_tv
+      group: true
+      type: custom:mini-media-player
+      volume_stateless: true
+    - artwork: none
+      entity: media_player.shield_adb
+      group: true
+      sound_mode: full
+      source: full
+      type: custom:mini-media-player
+      volume_stateless: true
+    - cards:
+      - columns: 3
+        entities:
+        - entity: dreamscreen.dream_screen
+          icon: mdi:power
+          name: Power Off
+          tap_action:
+            action: call-service
+            service: dreamscreen.set_mode
+            service_data:
+              entity_id: dreamscreen.dream_screen
+              mode: '0'
+        - entity: dreamscreen.dream_screen
+          icon: mdi:television
+          name: Roku TV
+          tap_action:
+            action: call-service
+            service: dreamscreen.set_mode
+            service_data:
+              entity_id: dreamscreen.dream_screen
+              mode: '3'
+        - entity: dreamscreen.dream_screen
+          icon: mdi:alarm-light
+          name: Ambient Colors
+          tap_action:
+            action: call-service
+            service: dreamscreen.set_mode
+            service_data:
+              entity_id: dreamscreen.dream_screen
+              mode: '1'
+        show_state: false
+        title: Dreamscreen Mode
+        type: glance
+      type: vertical-stack
+    - cards:
+      - columns: 3
+        entities:
+        - entity: dreamscreen.dream_screen
+          icon: mdi:palette
+          name: Random Colors
+          tap_action:
+            action: call-service
+            service: dreamscreen.set_ambient_scene
+            service_data:
+              entity_id: dreamscreen.dream_screen
+              scene: '0'
+        - entity: dreamscreen.dream_screen
+          icon: mdi:fireplace
+          name: Fireplace
+          tap_action:
+            action: call-service
+            service: dreamscreen.set_ambient_scene
+            service_data:
+              entity_id: dreamscreen.dream_screen
+              scene: '1'
+        - entity: dreamscreen.dream_screen
+          icon: mdi:pine-tree
+          name: Enchanted Forest
+          tap_action:
+            action: call-service
+            service: dreamscreen.set_ambient_scene
+            service_data:
+              entity_id: dreamscreen.dream_screen
+              scene: '8'
+        show_state: false
+        title: Dreamscreen Scenes
+        type: glance
+      type: vertical-stack
+    - entity: switch.receiver_outlet
+      type: entity
+    - entities:
+      - entity: switch.hassz2
+      - entity: switch.hassbathroomspeaker
+      - entity: switch.bathroom_speaker
+      - entity: switch.deck_speaker
+      - entity: switch.hassbackdeckspeaker
+      - entity: switch.porch_speaker
+      - entity: switch.hassfrontporchspeaker
+      - entity: media_player.forked_daapd_output_receiver
+      - entity: media_player.bathroom_speaker
+      - entity: remote.bedroom_tcl_tv
+      - entity: input_select.bedroom_tv_source_list
+      - entity: input_select.living_room_sources
+      - entity: switch.receiver_outlet
+      type: entities
+    - artwork: cover
+      entity: media_player.roku_streaming_stick
+      group: true
+      name: D's Roku
+      sound_mode: full
+      source: full
+      toggle_power: false
+      type: custom:mini-media-player
+      volume_stateless: true
+    - entity: media_player.bedroom_tcl_tv
+      type: media-control
+    - entity: remote.living_room
+      type: entity
+    - entity: media_player.master_bedroom_tv
+      type: media-control
+    - entity: media_player.living_room_remote
+      type: media-control
+    title: TV and Music
+  - badges: []
+    cards:
+    - entity: media_player.all_echos
+      type: media-control
+    - entity: media_player.nicks_echos
+      type: media-control
+    - entity: media_player.tyler_s_echo_dot
+      tts:
+        platform: alexa
+        type: tts
+      type: custom:mini-media-player
+    - entities:
+      - entity: input_text.alexa_message_text
+        name: Alexa message text
+        type: custom:text-input-row
+      - entity: input_select.alexa_message_target
+        name: Alexa message device
+      - action_name: Send
+        icon: mdi:voice
+        name: ' '
+        service: script.1624664181825
+        type: call-service
+      type: entities
+    - entity: media_player.living_room_echo
+      tts:
+        platform: alexa
+        type: tts
+      type: custom:mini-media-player
+    - entity: media_player.bathroom_echo
+      tts:
+        platform: alexa
+        type: tts
+      type: custom:mini-media-player
+    - entity: media_player.bedroom_echo
+      tts:
+        platform: alexa
+        type: tts
+      type: custom:mini-media-player
+    path: alexa
+    title: Alexa
+  - badges: []
+    cards:
+    - entities:
+      - entity: sensor.washing_machine_energy_total_this_month
+      hours_to_show: 800
+      refresh_interval: 0
+      type: history-graph
+    - entities:
+      - entity: sensor.washing_machine_wattage
+      - entity: sensor.washing_machine_energy_today
+      - entity: sensor.washing_machine_energy_total_this_month
+      - entity: sensor.washing_machine_current
+      type: entities
+    - entities:
+      - input_select.washing_cycle
+      type: entities
+    - entities:
+      - entity: automation.washing_cycle_filling
+      - entity: automation.washing_cycle_washing
+      - entity: automation.washing_cycle_draining
+      - entity: automation.washing_cycle_drying
+      - entity: automation.new_automation
+      - entity: automation.washing_cycle_done_notifications
+      type: entities
+    - entities:
+      - entity: sensor.monthly_bedroom_outlets_energy
+      - entity: sensor.kmc4_bedroom_energy
+      type: entities
+    path: washing-machine
+    title: Washing Machine
+  - badges: []
+    cards:
+    - columns: 2
+      entities:
+      - entity: device_tracker.ipnickphone
+      - entity: device_tracker.iphonenick_2
+      - entity: device_tracker.ipdariusphone
+      - entity: device_tracker.dariuss_iphone_2
+      - entity: device_tracker.ipkaraphone
+      - entity: device_tracker.karas_iphone
+      - entity: input_boolean.noone
+      - entity: binary_sensor.noone
+      show_icon: true
+      show_name: true
+      show_state: true
+      state_color: true
+      title: Device Trackers
+      type: glance
+    - entities:
+      - entity: timer.nickleft
+      - entity: timer.dariusleft
+      - entity: timer.karaleft
+      show_header_toggle: false
+      state_color: true
+      title: Timers
+      type: entities
+    - entities:
+      - entity: input_boolean.nick
+      - entity: input_boolean.darius
+      - entity: input_boolean.kara
+      - entity: device_tracker.dariusmqtttrigger
+      - entity: device_tracker.nickmqtttrigger
+      - entity: device_tracker.karamqtttrigger
+      show_header_toggle: false
+      state_color: true
+      title: Homekit Triggers
+      type: entities
+    - entities:
+      - entity: automation.welcome_home_front_door
+      - entity: automation.welcome_home_kara_garage
+      - entity: automation.welcome_home_nick_garage
+      - entity: automation.welcome_home_d_garage
+      - entity: input_boolean.welcomehomeautomations
+      - entity: automation.foyer_light_on_when_someone_comes_home
+      type: entities
+    - entities:
+      - entity: sensor.date
+      - entity: sensor.time
+      state_color: true
+      type: entities
+    path: device-trackers
+    title: Device Trackers
+  - badges: []
+    cards:
+    - entities:
+      - entity: input_datetime.zzdaily_maintenance
+      - entity: input_datetime.zzdaily_post_maintenance
+      - entity: input_datetime.zzdaily_shield_restart_maintenance
+      - entity: input_datetime.zzdaily_shield_restart_post_maintenance
+      - entity: input_datetime.sunday_reboot_time
+      - entity: automation.restart_hass
+      - entity: automation.daily_4am_maintenance
+      type: entities
+    path: server-control
+    title: Server Control

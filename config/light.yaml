@@ -1,0 +1,155 @@
+#  - platform: switch
+#    name: kitchen
+#    entity_id: switch.kitchen_switch
+
+#  - platform: switch
+#    name: lamp
+#    entity_id: switch.lamp_light
+    
+#  - platform: switch
+#    name: porch
+#    entity_id: switch.porch_switch
+    
+#  - platform: switch
+#    name: driveway
+#    entity_id: switch.driveway_lights
+    
+#  - platform: mqtt
+#    name: "Bonus Room Fan Light mqtt"
+#    state_topic: "stat/sonoff_fanlight/RESULT"
+#    value_template: "{{ value_json.POWER1 }}"
+#    command_topic: "cmnd/sonoff_fanlight/POWER1"
+###    availability_topic: "tele/sonoff_fanlight/LWT"
+#    qos: 1
+#    payload_on: "ON"
+#    payload_off: "OFF"
+###    payload_available: "Online"
+###    payload_not_available: "Offline"
+#    retain: true
+#    optimistic: false
+    
+#  - platform: mqtt
+#    name: "Bedroom Light"
+#    state_topic: "tele/treatfan/STATE"
+#    value_template: "{{ value_json.POWER2 }}"
+#    command_topic: "cmnd/treatfan/POWER2"
+#    availability_topic: "tele/treatfan/LWT"
+#    brightness_state_topic: "tele/treatfan/STATE"
+#    brightness_command_topic: "cmnd/treatfan/Dimmer"
+#    brightness_scale: 100
+#    brightness_value_template: "{{ value_json.Dimmer }}"
+#    qos: 1
+#    payload_on: "ON"
+#    payload_off: "OFF"
+#    payload_available: "Online"
+#    payload_not_available: "Offline"
+
+#  - platform: mqtt
+#    name: Kitchen Light mqtt manual
+#    unique_id: kitchen_light_manual_mqtt
+#    state_topic: zwave/kitchen/Kitchen/37/0/currentValue
+#    command_topic: zwave/kitchen/Kitchen/37/0/targetValue/set
+#    payload_off: false
+#    payload_on: true
+#    state_value_template: '{{ value_json.value }}'
+
+  - platform: aarlo
+
+  - platform: template
+    lights:
+
+      kitchen:
+        friendly_name: Kitchen Light
+        unique_id: kitchenlight
+        value_template:  "{{ states('switch.kitchen_light') }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.kitchen_light
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.kitchen_light
+
+      porch:
+        friendly_name: Porch Light
+        unique_id: porchlight
+        value_template:  "{{ states('switch.porch_lights') }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.porch_lights
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.porch_lights
+
+      lamp:
+        friendly_name: Lamp
+        unique_id: lamplight
+        value_template:  "{{ states('switch.lamp_light') }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.lamp_light
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.lamp_light
+
+      driveway:
+        friendly_name: Driveway Lights
+        unique_id: drivewaylight
+        value_template:  "{{ states('switch.driveway_lights') }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.driveway_lights
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.driveway_lights
+
+#      zone2volume:
+#        friendly_name: Zone 2 Volume
+#        value_template: >-
+#          {% if is_state('media_player.onkyo_zone_2', 'on') %}
+#            {% if states.media_player.onkyo_zone_2.attributes.is_volume_muted %}
+#              off
+#            {% else %}
+#              on
+#            {% endif %}
+#          {% else %}
+#            off
+#          {% endif %}
+#        turn_on:
+#          service: media_player.volume_mute
+#          data:
+#            entity_id: media_player.onkyo_zone_2
+#            is_volume_muted: false
+#        turn_off:
+#          service: media_player.volume_mute
+#          data:
+#            entity_id: media_player.onkyo_zone_2
+#            is_volume_muted: true
+#        set_level:
+#          service: media_player.volume_set
+#          data_template:
+#            entity_id: media_player.onkyo_zone_2
+#            volume_level: "{{ (brightness / 255 * 100)|int / 100 }}"
+#        level_template: >-
+#          {% if is_state('media_player.onkyo_zone_2', 'on') %}
+#            {{ (states.media_player.onkyo_zone_2.attributes.volume_level|float * 255)|int }}
+#          {% else %}
+#            0
+#          {% endif %}
+
+#      bonus_room_fan_light:
+#        friendly_name: Bonus Room Fan Light
+#        value_template: "{{ states('input_boolean.bonus_room_fanlight_power') }}"
+#        turn_on:
+#          - service: input_boolean.turn_on
+#            entity_id: input_boolean.bonus_room_fanlight_power
+#        turn_off:
+#          - service: input_boolean.turn_off
+#            entity_id: input_boolean.bonus_room_fanlight_power

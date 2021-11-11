@@ -1,0 +1,437 @@
+background: var(--background-image)
+title: Home
+views:
+  - badges:
+      - entity: binary_sensor.homekitstarted
+      - entity: binary_sensor.nest_thermostat_fan
+      - entity: sensor.nest_thermostat_target
+      - entity: sensor.nest_thermostat_temperature
+      - entity: sensor.dark_sky_apparent_temperature
+      - entity: sensor.dark_sky_temperature
+      - entity: sensor.dark_sky_humidity
+      - entity: sensor.nest_thermostat_humidity
+      - entity: sensor.dark_sky_precip_probability_0d
+      - entity: binary_sensor.jeeves_connected
+      - entity: sensor.processor_use
+      - entity: person.nick
+      - entity: person.tyler
+      - entity: person.darius
+      - entity: binary_sensor.noone
+    cards:
+      - columns: 2
+        entities:
+          - entity: cover.garage
+          - entity: binary_sensor.caringaragestatus
+          - entity: lock.front_door
+          - entity: binary_sensor.front_door_open
+          - entity: automation.front_door_autolock
+          - entity: >-
+              binary_sensor.linear_nortek_security_control_llc_wadwaz_1_door_window_sensor_sensor
+        show_icon: true
+        show_name: true
+        show_state: true
+        title: Garage
+        type: glance
+      - entities:
+          - entity: script.1580584719238
+          - entity: script.1580584668660
+        type: glance
+      - entity: climate.downstairs_the_nest
+        type: thermostat
+      - entity: weather.home
+        type: weather-forecast
+      - entity: sensor.piserver_users
+        type: sensor
+      - entities:
+          - entity: vacuum.jeevesjr
+          - entity: automation.jeeves_cleans_at_4am
+          - entity: input_boolean.findjeeves
+        show_header_toggle: false
+        title: Vacuum
+        type: entities
+      - entities:
+          - entity: automation.warm_house_early
+        type: glance
+    panel: false
+    theme: night
+    title: Home
+  - cards:
+      - columns: 3
+        entities:
+          - entity: light.kitchen
+            icon: 'mdi:white-balance-incandescent'
+            tap_action:
+              action: toggle
+          - entity: light.lamp
+            icon: 'mdi:lamp'
+            tap_action:
+              action: toggle
+          - entity: light.window_lamp
+            icon: 'mdi:floor-lamp'
+            tap_action:
+              action: toggle
+          - entity: light.hallway
+            icon: 'mdi:white-balance-incandescent'
+            tap_action:
+              action: toggle
+          - entity: light.living_room_ligh_living_room_light
+            tap_action:
+              action: toggle
+          - entity: light.bedroom_fan_light
+            icon: 'mdi:ceiling-light'
+            tap_action:
+              action: toggle
+          - entity: light.hue_go_1
+            icon: 'mdi:lightbulb-outline'
+          - entity: light.hue_go_2
+            icon: 'mdi:lightbulb-outline'
+          - entity: light.kitchen_nightlight
+            icon: 'mdi:white-balance-incandescent'
+          - entity: light.porch
+            icon: 'mdi:white-balance-incandescent'
+            tap_action:
+              action: toggle
+          - entity: light.driveway
+            icon: 'mdi:white-balance-incandescent'
+            tap_action:
+              action: toggle
+          - entity: light.under_cabinet_light
+            icon: 'mdi:led-strip'
+            tap_action:
+              action: toggle
+          - entity: light.left_cabinet_light
+          - entity: light.under_bed_light
+            icon: 'mdi:led-strip'
+            tap_action:
+              action: toggle
+          - entity: light.above_cabinet_lights
+            icon: 'mdi:led-strip'
+        show_header_toggle: false
+        title: Lights
+        type: glance
+      - entities:
+          - entity: fan.living_room_fan
+          - entity: fan.bedroom_fan
+        title: Fans
+        type: glance
+      - columns: 3
+        entities:
+          - entity: switch.tyler_s_pc
+            tap_action:
+              action: toggle
+          - entity: switch.nick_s_pc
+            tap_action:
+              action: toggle
+          - entity: switch.vacuum_switch
+            tap_action:
+              action: toggle
+          - entity: switch.tasmota_switch_1
+            tap_action:
+              action: toggle
+          - entity: switch.tasmota_switch_2
+            tap_action:
+              action: toggle
+        title: Switches
+        type: glance
+      - entities:
+          - switch.002006596001943c3b19_1
+          - switch.002006596001943c3b19_7
+          - switch.002006596001943c3b19_4
+          - switch.002006596001943c3b19_3
+          - switch.002006596001943c3b19_2
+        type: entities
+    title: 'Lights, Fans, Switches'
+  - badges: []
+    cards:
+      - entities:
+          - entity: remote.living_room
+          - entity: sensor.living_roomtv
+          - entity: switch.office_tv_power
+        show_header_toggle: false
+        title: Remote
+        type: entities
+      - columns: 2
+        entities:
+          - entity: switch.receiver_outlet
+            tap_action:
+              action: toggle
+          - entity: switch.hassz2
+            name: Zone 2
+            tap_action:
+              action: toggle
+          - entity: switch.hassbathroomspeaker
+            name: Bathroom Speaker
+            tap_action:
+              action: toggle
+          - entity: switch.hassfrontporchspeaker
+            name: Front Porch Speaker
+            tap_action:
+              action: toggle
+          - entity: switch.hassbackdeckspeaker
+            name: Back Deck Speaker
+            tap_action:
+              action: toggle
+        type: glance
+      - cards:
+          - columns: 3
+            entities:
+              - entity: dreamscreen.dream_screen
+                icon: 'mdi:power'
+                name: Power Off
+                tap_action:
+                  action: call-service
+                  service: dreamscreen.set_mode
+                  service_data:
+                    entity_id: dreamscreen.dream_screen
+                    mode: '0'
+              - entity: dreamscreen.dream_screen
+                icon: 'mdi:television'
+                name: Roku TV
+                tap_action:
+                  action: call-service
+                  service: dreamscreen.set_mode
+                  service_data:
+                    entity_id: dreamscreen.dream_screen
+                    mode: '3'
+              - entity: dreamscreen.dream_screen
+                icon: 'mdi:alarm-light'
+                name: Ambient Colors
+                tap_action:
+                  action: call-service
+                  service: dreamscreen.set_mode
+                  service_data:
+                    entity_id: dreamscreen.dream_screen
+                    mode: '1'
+            show_state: false
+            title: Dreamscreen Mode
+            type: glance
+        type: vertical-stack
+      - entity: media_player.zbathroom_speaker_media_player
+        type: media-control
+      - cards:
+          - columns: 3
+            entities:
+              - entity: dreamscreen.dream_screen
+                icon: 'mdi:palette'
+                name: Random Colors
+                tap_action:
+                  action: call-service
+                  service: dreamscreen.set_ambient_scene
+                  service_data:
+                    entity_id: dreamscreen.dream_screen
+                    scene: '0'
+              - entity: dreamscreen.dream_screen
+                icon: 'mdi:fireplace'
+                name: Fireplace
+                tap_action:
+                  action: call-service
+                  service: dreamscreen.set_ambient_scene
+                  service_data:
+                    entity_id: dreamscreen.dream_screen
+                    scene: '1'
+              - entity: dreamscreen.dream_screen
+                icon: 'mdi:pine-tree'
+                name: Enchanted Forest
+                tap_action:
+                  action: call-service
+                  service: dreamscreen.set_ambient_scene
+                  service_data:
+                    entity_id: dreamscreen.dream_screen
+                    scene: '8'
+            show_state: false
+            title: Dreamscreen Scenes
+            type: glance
+        type: vertical-stack
+      - entity: media_player.deck_speaker_media_player
+        type: media-control
+      - entity: media_player.zliving_room_tv_media_player
+        type: media-control
+    title: TV and Music
+  - badges: []
+    cards:
+      - entity: media_player.bedroom_tcl_tv
+        tv: true
+        type: 'custom:roku-card'
+        volume_down:
+          double_tap_action:
+            action: call-service
+            service: remote.send_command
+            service_data:
+              command: volume_down
+              entity_id: remote.bedroom_tcl_tv
+        volume_up:
+          tap_action:
+            action: call-service
+            service: remote.send_command
+            service_data:
+              command: volume_up
+              entity_id: remote.bedroom_tcl_tv
+    path: bedroom-tv-remote
+    title: Bedroom TV Remote
+  - badges: []
+    cards:
+      - entities:
+          - entity: automation.start_homekit
+          - entity: automation.iphone_notification
+          - entity: automation.welcome_home_d_garage
+          - entity: automation.welcome_home_nick_garage
+          - entity: automation.welcome_home_t_garage_door_others
+          - entity: automation.welcome_home_front_door
+          - entity: automation.foyer_light_on_when_someone_comes_home
+          - entity: automation.front_door_and_garage_auto_on_after_reboot
+          - entity: automation.nick_bedroom_lights_at_night
+          - entity: automation.nick_pc_off_then_outlets_off
+        show_header_toggle: false
+        title: Automation
+        type: entities
+    theme: night
+    title: Automations & Z-Wave
+  - badges: []
+    cards:
+      - columns: 2
+        entities:
+          - entity: device_tracker.darius_s_iphone_2
+          - entity: device_tracker.darius_s_iphone
+          - entity: device_tracker.ipdariusphone
+          - entity: device_tracker.dariusphone
+          - entity: device_tracker.iphone_2
+          - entity: device_tracker.iphone
+          - entity: device_tracker.iptylerphone
+          - entity: device_tracker.iphonetylerping
+          - entity: device_tracker.xsn_iphone_2
+          - entity: device_tracker.xsn_iphone
+          - entity: device_tracker.ipnickphone
+          - entity: device_tracker.iphonenick
+          - entity: device_tracker.jeevesjr
+        show_header_toggle: false
+        title: Device Trackers
+        type: glance
+      - entity: sensor.icloud3_event_log
+        icon: 'mdi:information-outline'
+        title: iCloud Event Log
+        type: 'custom:icloud3-event-log-card'
+      - entities:
+          - entity: timer.dariusleft
+          - entity: timer.nickleft
+          - entity: timer.tylerleft
+          - entity: input_boolean.noone
+          - entity: binary_sensor.noone
+        show_header_toggle: false
+        title: Timers
+        type: entities
+    path: device-trackers
+    title: Device Trackers
+  - badges: []
+    cards:
+      - card:
+          show_header_toggle: false
+          title: Z-Wave Auto Entities
+          type: glance
+        filter:
+          include:
+            - domain: zwave
+        type: 'custom:auto-entities'
+      - entities:
+          - entity: sensor.growler_notification_title
+          - entity: sensor.growler_notification_text
+          - entity: sensor.growler_notitication_timestamp
+        show_header_toggle: false
+        type: entities
+    path: auto-cards
+    title: Auto Cards
+  - badges: []
+    cards:
+      - columns: 7
+        entities:
+          - entity: zwave.aeon_labs_zw090_z_stick_gen5_us
+          - entity: zwave.august_asl_03_smart_lock
+          - entity: sensor.august_asl_03_smart_lock_alarm_level
+          - entity: sensor.august_asl_03_smart_lock_alarm_type
+          - entity: sensor.august_asl_03_smart_lock_battery_level
+          - entity: lock.august_asl_03_smart_lock_locked
+          - entity: switch.back_deck_speaker
+          - entity: switch.office_tv_power
+          - entity: scene.blue_day
+          - entity: scene.blue_night
+          - entity: group.above_cabinet_lights
+          - entity: binary_sensor.caringaragestatus
+          - entity: sensor.dark_sky_humidity_0d
+          - entity: sensor.dark_sky_humidity_1d
+          - entity: sensor.dark_sky_humidity_2d
+          - entity: sensor.dark_sky_precip_probability
+          - entity: sensor.dark_sky_precip_probability_1d
+          - entity: sensor.dark_sky_precip_probability_2d
+          - entity: input_boolean.doortrigger
+          - entity: script.dreamscreen_main_source
+          - entity: switch.driveway_lights
+          - entity: input_boolean.findjeeves
+          - entity: script.flash_bedroom_lights_purple
+          - entity: switch.front_porch_speaker
+          - entity: group.garage_group
+          - entity: switch.garagedoorswitch
+          - entity: binary_sensor.garagedoorstatus
+          - entity: sensor.garage_status
+          - entity: scene.green_day
+          - entity: scene.green_night
+          - entity: input_boolean.homekitstarted
+          - entity: sensor.nest_thermostat_operation_mode
+          - entity: sensor.nest_thermostat_hvac_state
+          - entity: zwave.jasco_products_14287_fan_control_switch
+          - entity: zwave.jasco_products_14292_in_wall_smart_toggle_switch
+          - entity: zwave.jasco_products_28169_plug_in_one_outlet_smart_switch
+          - entity: zwave.kitchen_light
+          - entity: switch.kitchen_lights
+          - entity: automation.kitchen_lights_on_turns_cabinet_lights_on
+          - entity: automation.kitchen_lights_turns_off_cabinet_lights_off
+          - entity: switch.lamp_light_lamp_light
+          - entity: zwave.lamp_light
+          - entity: automation.leaving_darius
+          - entity: automation.leaving_nick
+          - entity: automation.leaving_tyler
+          - entity: >-
+              zwave.linear_nortek_security_control_llc_lb60z_1_dimmable_led_light_bulb
+          - entity: >-
+              zwave.linear_nortek_security_control_llc_wadwaz_1_door_window_sensor
+          - entity: >-
+              sensor.linear_nortek_security_control_llc_wadwaz_1_door_window_sensor_alarm_level
+          - entity: >-
+              sensor.linear_nortek_security_control_llc_wadwaz_1_door_window_sensor_alarm_type
+          - entity: >-
+              sensor.linear_nortek_security_control_llc_wadwaz_1_door_window_sensor_battery_level
+          - entity: >-
+              sensor.linear_nortek_security_control_llc_wadwaz_1_door_window_sensor_burglar
+          - entity: >-
+              sensor.linear_nortek_security_control_llc_wadwaz_1_door_window_sensor_sourcenodeid
+          - entity: zwave.living_room_ligh
+          - entity: switch.master_bath_speaker
+          - entity: binary_sensor.nest_thermostat_has_leaf
+          - entity: binary_sensor.nest_thermostat_is_using_emergency_heat
+          - entity: binary_sensor.nest_thermostat_is_locked
+          - entity: binary_sensor.nest_thermostat_online
+          - entity: media_player.onkyo
+          - entity: media_player.onkyo_zone_2
+          - entity: automation.outdoor_lights_off_at_sunrise
+          - entity: automation.outdoor_lights_on_at_sunset
+          - entity: binary_sensor.pharmlake_away
+          - entity: sensor.pharmlake_eta
+          - entity: automation.pi_cpu_usage_monitor
+          - entity: media_player.plex_shield_android_tv
+          - entity: sensor.plex_shield_android_tv
+          - entity: switch.porch_lights
+          - entity: scene.red_day
+          - entity: scene.red_night
+          - entity: automation.start_homekit_triggers_sensor
+          - entity: sun.sun
+          - entity: script.backdeck_speaker_media_player
+          - entity: script.bathroom_speaker_media_player
+          - entity: binary_sensor.updater
+          - entity: automation.welcome_home_front_door
+          - entity: scene.yellow_day
+          - entity: scene.yellow_night
+          - entity: light.zone2volume
+        show_icon: true
+        show_name: true
+        show_state: true
+        type: glance
+    path: unused-stuff
+    title: Unused Stuff

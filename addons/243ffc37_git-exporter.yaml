@@ -1,0 +1,51 @@
+check:
+  check_for_ips: false
+  check_for_secrets: false
+  enabled: false
+dry_run: false
+exclude:
+- '*.db'
+- '*.log'
+- '*.log.1'
+- '*.log.2'
+- '*.log.fault'
+- __pycache__
+- ._*
+- .DS_Store
+- deps/
+- core_dhcp*
+- core
+- .august.conf
+- .augustBAK.conf
+- .augustBAK2.conf
+- config/.august.conf
+- config/.augustBAK.conf
+- config/.augustBAK2.conf
+- matrix.yaml
+- known_devices.yaml
+- nest.conf
+- .aarlo/
+- icloud/
+- config/www/*.jpg
+- wyze-bridge/
+- core_dhcp_server.yaml
+- /addons/core_dhcp_server.yaml
+- addons/core_dhcp_server.yaml
+- core_dhcp_server
+- augustold.conf
+- /addons/7094bb28_docker-wyze-bridge.yaml
+- addons/7094bb28_docker-wyze-bridge.yaml
+- config/image/
+- /config/image/
+- image/
+export:
+  addons: true
+  esphome: true
+  lovelace: true
+  node_red: false
+repository:
+  commit_message: Home Assistant Git Exporter
+  password: '!secret git_pass'
+  pull_before_push: false
+  url: https://github.com/bittles/hassio_config_and_addons.git
+  username: '!secret git_username'

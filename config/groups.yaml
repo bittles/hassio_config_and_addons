@@ -1,0 +1,42 @@
+#garage_group:
+#  name: Garage
+#  entities:
+#    - cover.garage
+#    - sensor.garage_status
+#    - sensor.garage_car_present
+    
+bedroom_lamps:
+  name: Bedroom Lamps
+  entities:
+    - light.hue_go_1
+    - light.hue_go_2
+
+above_cabinet_lights:
+  name: Above Cabinet Lights
+  entities:
+    - light.left_cabinet_light
+    - light.right_cabinet_light
+
+#bonus_room_fan_switches:
+#  name: Switches to Save State of Bonus Room Fan
+#  entities:
+#    - input_boolean.bonus_room_fan_power
+#    - switch.bonus_room_fan_action_switch
+
+#bonus_room_fanlight_switches:
+#  name: Switches to Save State of Bonus Room Fan Light
+#  entities:
+#    - input_boolean.bonus_room_fanlight_power
+#    - light.bonus_room_fan_light
+
+zone2_deck:
+  name: Switches for Deck Speaker
+  entities:
+    - switch.hassbackdeckspeaker
+    - media_player.onkyo_zone_2
+
+zone2_bathroom:
+  name: Switches for Bathroom Speaker
+  entities:
+    - switch.hassbathroomspeaker
+    - media_player.onkyo_zone_2

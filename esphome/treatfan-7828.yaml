@@ -1,0 +1,57 @@
+esphome:
+  name: bedroomfanswitch
+  platform: ESP8266
+  board: esp01_1m
+
+uart:
+  rx_pin: GPIO3
+  tx_pin: GPIO1
+  baud_rate: 115200
+
+# Enable logging
+logger:
+  baud_rate: 0
+
+# Enable Home Assistant API
+api:
+#  encryption:
+#    key: 03dWSoBo3/skXpNR1LIvEIgJy5ZvtfmYpQhO3Xu40+4=
+
+ota:
+  password: "9e88767254488c7cac99b0f2063ca2b9"
+
+wifi:
+  ssid: !secret wifi24g_ssid
+  password: !secret wifi24g_pass
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Treatfan-7828 Fallback Hotspot"
+    password: "0vqOp6G8qtRx"
+
+captive_portal:
+
+tuya:
+
+sensor:
+  - platform: wifi_signal
+    name: Bedroom Fan-Light Wifi Signal
+    update_interval: 60s
+
+  - platform: uptime
+    name: Bedroom Fan-Light uptime
+
+light:
+  - platform: "tuya"
+    name: Bedroom Light
+    dimmer_datapoint: 10
+    switch_datapoint: 9
+    min_value: 100
+    max_value: 1000
+
+fan:
+  - platform: "tuya"
+    name: Bedroom Fan
+    switch_datapoint: 1
+    speed_datapoint: 3
+    speed_count: 4

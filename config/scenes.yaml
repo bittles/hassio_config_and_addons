@@ -1,0 +1,231 @@
+- name: Red_Day
+  entities:
+    light.left_cabinet_light:
+      state: true
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      brightness: 255
+  id: bbb57ae368f84d408f023dbe7ce0e378
+- name: Blue_Day
+  entities:
+    light.left_cabinet_light:
+      state: true
+      rgb_color:
+      - 0
+      - 0
+      - 130
+      brightness: 255
+  id: 3444667b48ea42b1bbbc0b8403f32cfb
+- name: Green_Day
+  entities:
+    light.left_cabinet_light:
+      state: true
+      rgb_color:
+      - 80
+      - 255
+      - 80
+      brightness: 255
+  id: 7dc8ef251cd9431f9a494149e347c207
+- name: Yellow_Day
+  entities:
+    light.left_cabinet_light:
+      state: true
+      rgb_color:
+      - 255
+      - 255
+      - 0
+      brightness: 255
+  id: 3826516f362b4e919b12b53ab618fbc5
+- name: Red_Night
+  entities:
+    light.left_cabinet_light:
+      state: true
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      brightness: 1
+  id: 2b49794d81c242bfa05271802984a1ec
+- name: Blue_Night
+  entities:
+    light.left_cabinet_light:
+      state: true
+      rgb_color:
+      - 0
+      - 0
+      - 130
+      brightness: 1
+  id: 3b3e19661ee6488eabb84b263e7bfd02
+- name: Green_Night
+  entities:
+    light.left_cabinet_light:
+      state: true
+      rgb_color:
+      - 80
+      - 255
+      - 80
+      brightness: 1
+  id: dfc9b672ecd04b3091c367e00f70b462
+- name: Yellow_Night
+  entities:
+    light.left_cabinet_light:
+      state: true
+      rgb_color:
+      - 255
+      - 255
+      - 0
+      brightness: 1
+  id: 4fac51c6ff5a42faaf51317248b7cc85
+- id: '1576174982472'
+  name: Lights Off
+  entities:
+    light.above_cabinet_lights:
+      state: 'off'
+    light.bedroom_fan_light:
+      state: 'off'
+    light.hallway:
+      state: 'off'
+    light.hue_go_1:
+      state: 'off'
+    light.hue_go_2:
+      state: 'off'
+    light.kitchen_nightlight:
+      state: 'off'
+    light.living_room_ligh_living_room_light:
+      state: 'off'
+    light.window_lamp:
+      state: 'off'
+    switch.kitchen_lights:
+      state: 'off'
+    switch.lamp_light_lamp_light:
+      state: 'off'
+    zwave.jasco_products_14292_in_wall_smart_toggle_switch:
+      state: ready
+    zwave.lamp_light:
+      state: ready
+    zwave.linear_nortek_security_control_llc_lb60z_1_dimmable_led_light_bulb:
+      state: ready
+    zwave.living_room_ligh:
+      state: ready
+- id: '1576175029599'
+  name: TV Off
+  entities:
+    remote.living_room:
+      state: 'off'
+- id: '1576175053797'
+  name: Fans Off
+  entities:
+    fan.bedroom_fan:
+      speed: 'off'
+      state: 'off'
+    fan.living_room_fan:
+      speed: 'off'
+      state: 'off'
+- id: '1576175096968'
+  name: Speakers Off
+  entities:
+    switch.hassbackdeckspeaker:
+      state: 'off'
+    switch.hassbathroomspeaker:
+      state: 'off'
+    switch.hassfrontporchspeaker:
+      state: 'off'
+- id: '1576175211968'
+  name: Above Cabinet Lights On When Home Daytime
+  entities:
+    light.above_cabinet_lights:
+      min_mireds: 153
+      max_mireds: 588
+      effect_list:
+      - Strobe color
+      - Police
+      - Christmas
+      - RGB
+      - Random Loop
+      - Fast Random Loop
+      - LSD
+      - Slowdown
+      - Disco
+      - Strobe epilepsy!
+      - Alarm
+      - Police2
+      - WhatsApp
+      - Facebook
+      - Twitter
+      - Slow Temp
+      - Stop
+      - Fire Flicker Day
+      - Fire Flicker Night
+      brightness: 255
+      color_temp: 250
+      hs_color:
+      - 24
+      - 100
+      rgb_color:
+      - 255
+      - 102
+      - 0
+      xy_color:
+      - 0.642
+      - 0.349
+      effect: Fire Flicker Day
+      flowing: true
+      friendly_name: Above Cabinet Lights
+      supported_features: 63
+      state: 'on'
+- id: '1576178551987'
+  name: Normal Night Lights
+  entities:
+    switch.kitchen_lights:
+      state: 'on'
+    switch.lamp_light_lamp_light:
+      state: 'on'
+    zwave.jasco_products_14292_in_wall_smart_toggle_switch:
+      state: ready
+    zwave.lamp_light:
+      state: ready
+- id: '1597124483187'
+  name: Above Cabinets On Night
+  entities:
+    light.above_cabinet_lights:
+      min_mireds: 153
+      max_mireds: 588
+      effect_list:
+      - Strobe color
+      - Police
+      - Christmas
+      - RGB
+      - Random Loop
+      - Fast Random Loop
+      - LSD
+      - Slowdown
+      - Disco
+      - Strobe epilepsy!
+      - Alarm
+      - Police2
+      - WhatsApp
+      - Facebook
+      - Twitter
+      - Slow Temp
+      - Stop
+      - Fire Flicker Day
+      - Fire Flicker Night
+      brightness: 3
+      color_temp: 250
+      hs_color:
+      - 24
+      - 100
+      rgb_color:
+      - 255
+      - 102
+      - 0
+      xy_color:
+      - 0.642
+      - 0.349
+      effect: Fire Flicker Night
+      flowing: true
+      friendly_name: Above Cabinet Lights
+      supported_features: 63
+      state: 'on'

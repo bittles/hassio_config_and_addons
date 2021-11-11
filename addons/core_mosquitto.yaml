@@ -1,0 +1,7 @@
+certfile: farmmooossl/cert.pem
+customize:
+  active: false
+  folder: mosquitto
+keyfile: farmmooossl/key.pem
+logins: []
+require_certificate: false

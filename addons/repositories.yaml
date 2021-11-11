@@ -1,0 +1,40 @@
+Frigate hass.io addons:
+  maintainer: blakeblackshear
+  slug: ccab4aaf
+  source: https://github.com/blakeblackshear/frigate-hass-addons
+Hass.IO Repository for snowzach:
+  maintainer: Zach Brown <zach@prozach.org>
+  slug: d5f40609
+  source: https://github.com/snowzach/hassio-addons
+Home Assistant Community Add-ons:
+  maintainer: Franck Nijhof <frenck@addons.community>
+  slug: a0d7b954
+  source: https://github.com/hassio-addons/repository
+Home Assistant Developer Add-ons:
+  maintainer: Home Assistant Team <info@home-assistant.io>
+  slug: ae6e943c
+  source: https://github.com/home-assistant/hassio-addons-development
+Home Assistant Google Drive Backup Repository:
+  maintainer: Stephen Beechen <stephen@beechens.com>
+  slug: cebe7a76
+  source: https://github.com/sabeechen/hassio-google-drive-backup
+Local add-ons:
+  maintainer: you
+  slug: local
+  source: local
+Official add-ons:
+  maintainer: Home Assistant
+  slug: core
+  source: core
+Poeschl Home Assistant Add-ons:
+  maintainer: Poeschl <Poeschl@users.noreply.github.com>
+  slug: 243ffc37
+  source: https://github.com/Poeschl/Hassio-Addons
+Transmission repository:
+  maintainer: Pierrick Rouxel
+  slug: 8cc98bc5
+  source: https://github.com/pierrickrouxel/hassio-addon-transmission.git
+docker-wyze-bridge:
+  maintainer: unknown
+  slug: 7094bb28
+  source: https://github.com/mrlt8/docker-wyze-bridge

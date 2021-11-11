@@ -1,0 +1,120 @@
+light.living_room_ligh_living_room_light:
+  friendly_name: Living Room Light
+  icon: mdi:ceiling-light
+light.hallway:
+  friendly_name: Hallway Light
+  icon: mdi:white-balance-incandescent
+light.kitchen_nightlight:
+  icon: mdi:white-balance-incandescent
+switch.driveway_lights:
+  icon: mdi:spotlight
+fan.living_room_fan:
+  friendly_name: 'Living Room Fan '
+  percentage_step: 33.333
+script.dreamscreen_main_source:
+  hidden: false
+sensor.dark_sky_humidity:
+  friendly_name: Outside Humidity
+sensor.dark_sky_temperature:
+  friendly_name: Outside Temperature
+sensor.dark_sky_apparent_temperature:
+  friendly_name: Outdoors feels like
+sensor.nest_thermostat_temperature:
+  friendly_name: Living Room temperature
+sensor.nest_thermostat_humidity:
+  friendly_name: Living Room humidity
+switch.receiver_outlet:
+  icon: mdi:power-socket-us
+sensor.dark_sky_precip_probability_0d:
+  device_class: humidity
+  friendly_name: Today's Chance of Rain
+switch.hassbackdeckspeaker:
+  icon: mdi:speaker
+  name: Back Deck Speaker
+switch.hassbathroomspeaker:
+  icon: mdi:speaker
+  name: Bathroom Speaker
+switch.hassfrontporchspeaker:
+  icon: mdi:speaker
+  name: Front Porch Speaker
+switch.hassz2:
+  icon: mdi:surround-sound
+  name: Zone Two
+sensor.dark_sky_precip_probability_1d:
+  device_class: humidity
+light.driveway:
+  friendly_name: Driveway Lights
+  icon: mdi:white-balance-incandescent
+light.kitchen:
+  friendly_name: Kitchen Lights
+  icon: mdi:white-balance-incandescent
+light.lamp:
+  friendly_name: Lamp
+  icon: mdi:lamp
+switch.nick_s_pc:
+  icon: mdi:desktop-classic
+binary_sensor.caringaragestatus:
+  icon: mdi:car
+binary_sensor.noone:
+  device_class: occupancy
+timer.dariusleft:
+  friendly_name: Darius Left in Past 5 Min?
+timer.nickleft:
+  friendly_name: Nick Left in Past 5 Min?
+switch.tasmota_switch_1:
+  device_class: shower
+  friendly_name: Shower
+  icon: mdi:shower
+  type: shower
+media_player.deck_speaker:
+  device_class: tv
+  source_list:
+  - NET
+  - Bluetooth
+automation.foyer_light_on_when_someone_comes_home:
+  initial_state: 'on'
+device_tracker.raspberry:
+  hidden: true
+device_tracker.ubuntuvm:
+  hidden: true
+media_player.bathroom_speaker:
+  source_list:
+  - NET
+  - Bluetooth
+  device_class: tv
+binary_sensor.back_door:
+  device_class: door
+light.bedroom_light:
+  icon: mdi:ceiling-light
+group.bedroom_lamps:
+  icon: mdi:lamp
+light.porch:
+  icon: mdi:white-balance-incandescent
+light.under_cabinet_light:
+  icon: mdi:led-strip
+light.under_bed_light:
+  icon: mdi:led-strip
+light.above_cabinet_lights:
+  icon: mdi:led-strip
+light.color_lights:
+  icon: mdi:ceiling-light
+switch.idevices_switch:
+  icon: mdi:string-lights
+binary_sensor.tanner_water_bowl_water:
+  device_class: moisture
+binary_sensor.tanner_food_container_brown_access_control_window_door_is_open:
+  device_class: opening
+binary_sensor.updater:
+  device_class: problem
+sensor.dark_sky_daytime_high_apparent_temperature_0d:
+  friendly_name: Outdoors Heat Index High
+sensor.dark_sky_overnight_low_apparent_temperature_0d:
+  friendly_name: Outdoors Heat Index Low
+sensor.bonusroomtemp:
+  unit_of_measurement: °F
+  friendly_name: Bonus Room Temperature
+climate.master_bedroom_thermostat:
+  target_temp_step: 0.1
+sensor.shelly_shht_1_6bb145_temperature:
+  unit_of_measurement: ''
+  device_class: temperature

@@ -1,0 +1,158 @@
+esphome:
+  name: bonusroomfanlight
+  platform: ESP8266
+  board: esp8285
+  includes:
+    - ifan02.h
+  on_boot:
+    priority: 225
+    # turn off the light as early as possible
+    then:
+      - light.turn_off: ifan02_light
+
+wifi:
+  ssid: !secret wifi24g_ssid
+  password: !secret wifi24g_pass
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Sonoff Fallback"
+    password: "yuyuyuyklo"
+
+captive_portal:
+
+api:
+
+logger:
+
+ota:
+
+sensor:
+  - platform: uptime
+    name: "Bonus Room Fanlight Uptime"
+
+binary_sensor:
+  - platform: gpio
+    id: vbutton_light
+    pin:
+      number: GPIO0
+      inverted: true
+    on_press:
+      then:
+        - light.toggle: ifan02_light
+
+  - platform: gpio
+    id: vbutton_relay_1
+    pin:
+      number: GPIO9
+      inverted: true
+    on_press:
+      then:
+        - switch.toggle: fan_relay1
+        - switch.turn_on: update_fan_speed
+
+  - platform: gpio
+    id: vbutton_relay_2
+    pin:
+      number: GPIO10
+      inverted: true
+    on_press:
+      then:
+        - switch.toggle: fan_relay2
+        - switch.turn_on: update_fan_speed
+
+  - platform: gpio
+    id: vbutton_relay_3
+    pin:
+      number: GPIO14
+      inverted: true
+    on_press:
+      then:
+        - switch.toggle: fan_relay3
+        - switch.turn_on: update_fan_speed
+
+output:
+  - platform: custom
+    type: float
+    outputs:
+      id: fanoutput
+    lambda: |-
+      auto ifan02_fan = new IFan02Output();
+      App.register_component(ifan02_fan);
+      return {ifan02_fan};
+
+  - platform: gpio
+    pin: GPIO12
+    id: light_output
+
+light:
+  - platform: binary
+    name: "Bonus Room Light"
+    output: light_output
+    id: ifan02_light
+
+switch:
+  - platform: template
+    id: update_fan_speed
+    optimistic: true
+    turn_on_action:
+      then:
+        - delay: 200ms
+        - if:
+            condition:
+              and:
+                - switch.is_off: fan_relay1
+                - switch.is_off: fan_relay2
+                - switch.is_off: fan_relay3
+            then:
+              - fan.turn_off: ifan02_fan
+        - if:
+            condition:
+              and:
+                - switch.is_on: fan_relay1
+                - switch.is_off: fan_relay2
+                - switch.is_off: fan_relay3
+            then:
+              - fan.turn_on:
+                  id: ifan02_fan
+                  speed: 1
+        - if:
+            condition:
+              and:
+                - switch.is_on: fan_relay1
+                - switch.is_on: fan_relay2
+                - switch.is_off: fan_relay3
+            then:
+              - fan.turn_on:
+                  id: ifan02_fan
+                  speed: 2
+        - if:
+            condition:
+              and:
+                - switch.is_on: fan_relay1
+                - switch.is_off: fan_relay2
+                - switch.is_on: fan_relay3
+            then:
+              - fan.turn_on:
+                  id: ifan02_fan
+                  speed: 3
+        - switch.turn_off: update_fan_speed
+
+  - platform: gpio
+    pin: GPIO5
+    id: fan_relay1
+
+  - platform: gpio
+    pin: GPIO4
+    id: fan_relay2
+
+  - platform: gpio
+    pin: GPIO15
+    id: fan_relay3
+
+fan:
+  - platform: speed
+    output: fanoutput
+    id: ifan02_fan
+    speed_count: 3
+    name: "Bonus Room Fan"

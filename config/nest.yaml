@@ -1,0 +1,15 @@
+#client_id: !secret nest_first_id
+#client_secret: !secret nest_first_secret
+#structure:
+# - PharmLake
+ 
+ 
+#client_id: !secret nest_old_clientid
+#client_secret: !secret nest_old_pass
+#project_id: !secret nest_old_projectid
+#subscriber_id: !secret nest_old_subscriberid
+
+client_id: !secret nest_clientid
+client_secret: !secret nest_secret
+project_id: !secret nest_projectid
+subscriber_id: !secret nest_subscriberid

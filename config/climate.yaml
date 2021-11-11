@@ -1,0 +1,34 @@
+- platform: generic_thermostat
+  name: Master Bedroom Thermostat
+  unique_id: bedroom_hvac_ac
+  heater: switch.bedroom_dummyac
+  target_sensor: sensor.shellytempfixed
+  min_temp: 70
+  max_temp: 80
+  ac_mode: true
+#  target_temp: 74.5
+  cold_tolerance: 0
+  hot_tolerance: 0
+  min_cycle_duration:
+    seconds: 5
+#  initial_hvac_mode: "cool"
+  keep_alive: 5
+  away_temp: 77
+  precision: 0.1
+
+- platform: generic_thermostat
+  name: Master Bedroom Thermostat Heat
+  unique_id: bedroom_hvac_heat
+  heater: switch.bedroom_dummyheat
+  target_sensor: sensor.shellytempfixed
+  min_temp: 65
+  max_temp: 75
+  ac_mode: false
+#  target_temp: 74.5
+  cold_tolerance: 0
+  hot_tolerance: 1
+  min_cycle_duration:
+    seconds: 5
+#  initial_hvac_mode: "cool"
+  away_temp: 69
+  precision: 0.1

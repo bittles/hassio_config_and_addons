@@ -1,0 +1,5 @@
+certfile: nginxproxymanager/live/npm-10/cert.pem
+keyfile: nginxproxymanager/live/npm-10/privkey.pem
+password: '''!secret tautulli_pass'''
+ssl: true
+username: '''!secret tautulli_username'''

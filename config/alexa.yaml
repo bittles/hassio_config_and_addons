@@ -1,0 +1,114 @@
+  smart_home:
+#    endpoint: https://api.amazonalexa.com/v3/events
+#    client_id: !secret alexa_id
+#    client_secret: !secret alexa_secret
+    locale: en-US
+    entity_config:
+      fan.bedroom_fan2:
+        name: bedroom fan
+        display_categories: FAN
+      fan.living_room_fan:
+        name: fan
+        display_categories: FAN
+      light.hallway:
+        name: hallway light
+      light.living_room_ligh_living_room_light:
+        name: living room light
+#      switch.hassz2:
+#        name: zone 2
+#      binary_sensor.garagedoorstatus:
+#        display_categories: CONTACT_SENSOR
+#      switch.bedroomtvpower:
+#        display_categories: TV
+      switch.nick_s_pc:
+        display_categories: SWITCH
+#      media_player.bathroom_speaker:
+#        name: Bathroom Speaker
+#      media_player.deck_speaker:
+#        name: Back Deck Speaker
+#      cover.garage:
+#        name: Garage
+#      switch.garagedoorswitch:
+#        name: Garage
+#      media_player.living_room_tv:
+#        name: TV
+      switch.tasmota_switch_1:
+        name: Shower
+      switch.bedroomtvswitch:
+        name: Bedroom TV
+#      binary_sensor.garagedoorstatus:
+#        name: garage door
+#      binary_sensor.nick:
+#        name: Nick
+#        display_categories: CAMERA
+#      binary_sensor.darius:
+#        name: Darius
+#        display_categories: CAMERA
+      light.color_lights:
+        name: Sun Room Light
+      switch.airplayserver_bathroom:
+        name: Bathroom Speaker
+      switch.airplayserver_deck:
+        name: Deck Speaker
+    filter:
+      include_entities:
+#        - fan.bedroom_fan2
+#        - media_player.bathroom_speaker
+#        - media_player.deck_speaker
+#        - cover.garage
+#        - binary_sensor.garagedoorstatus
+        - light.bedroom_light
+        - fan.bedroom_fan2
+        - light.driveway
+        - light.hallway
+        - light.kitchen
+        - light.lamp
+        - light.living_room_ligh_living_room_light
+        - light.porch
+#        - switch.hassz2
+#        - switch.hassbackdeckspeaker
+#        - switch.bedroomtvpower
+#        - switch.hassbathroomspeaker
+        - switch.nick_s_pc
+        - switch.bedroomtvswitch
+#        - switch.garagedoorswitch
+#        - media_player.living_room_tv
+#        - switch.playharmony
+#        - switch.pauseharmony
+        - switch.tasmota_switch_1
+#        - switch.door
+        - binary_sensor.garagedoorstatus
+#        - binary_sensor.darius
+#        - binary_sensor.nick
+        - fan.living_room_fan
+#        - switch.002006596001943c3b19_4
+        - light.color_lights
+        - switch.airplayserver_bathroom
+        - switch.airplayserver_deck
+      exclude_entities:
+        - camera.rockrobo_map
+        - input_number.tanner_water_bowl_dry_count
+        - input_number.bedroom_light_brightness
+        - input_number.bedroom_room_percent_fan_speeds
+      exclude_domains:
+        - automation
+        - binary_sensor
+        - camera
+        - input_number
+        - group
+        - input_boolean
+        - lock
+        - remote
+        - scene
+        - script
+        - sensor
+        - timer
+        - vacuum
+        - weather
+        - zwave
+        - switch
+        - light
+        - media_player
+        - cover
+        - fan
+        - climate
