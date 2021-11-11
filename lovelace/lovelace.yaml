@@ -15,7 +15,7 @@ config:
     - entity: person.darius
     - entity: person.kara
     - entity: binary_sensor.noone
-    - entity: binary_sensor.bedroom_shelly_ht_status
+    - entity: binary_sensor.shelly_ping_sensor
     - entity: sensor.shellytempfixed
     - entity: sensor.shelly_shht_1_6bb145_humidity
     - entity: sensor.bonusroomtemp
@@ -204,6 +204,7 @@ config:
     - entities:
       - entity: switch.startgitexport
       - entity: sensor.git_exporter_status
+      state_color: true
       type: entities
     theme: night
     title: Home

@@ -6,4 +6,5 @@ ignore_pattern:
 - .cloud
 - .storage
 - deps
-ssh_keys: []
+ssh_keys:
+- /ssl/.ssh/github_pi

@@ -382,6 +382,7 @@ recorder:
       - input_boolean
       - cover
       - person
+      - device_tracker
     entities:
 #      - sensor.nest_thermostat_temperature
 #      - sensor.nest_thermostat_target

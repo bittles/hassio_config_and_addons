@@ -118,3 +118,5 @@ climate.master_bedroom_thermostat:
 sensor.shelly_shht_1_6bb145_temperature:
   unit_of_measurement: ''
   device_class: temperature
+device_tracker.shellyht:
+  “consider_home”: '1'

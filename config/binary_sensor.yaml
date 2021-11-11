@@ -6,23 +6,23 @@
   - cry
   - connectivity
 
-- platform: mqtt
-  unique_id: shelly-6bb145awake
-  name: Bedroom Shelly HT Status
-  device_class: connectivity
-  enabled_by_default: true
-  device:
-    identifiers:
-      - master_bedroom_temp_sensor
-    manufacturer: Shelly
-    model: SH&T
-    name: Bedroom Temperature Sensor
-  force_update: true
-  state_topic: "shellies/shellyht-6BB145/online"
-  payload_on: "true"
-  payload_off: "false"
-  json_attributes_topic: "shellies/shellyht-6BB145/announce"
-#  json_attributes_template: >
+#- platform: mqtt
+#  unique_id: shelly-6bb145awake
+#  name: Bedroom Shelly HT Status
+#  device_class: connectivity
+#  enabled_by_default: true
+#  device:
+#    identifiers:
+#      - master_bedroom_temp_sensor
+#    manufacturer: Shelly
+#    model: SH&T
+#    name: Bedroom Temperature Sensor
+#  force_update: true
+#  state_topic: "shellies/shellyht-6BB145/online"
+#  payload_on: "true"
+#  payload_off: "false"
+#  json_attributes_topic: "shellies/shellyht-6BB145/announce"
+###  json_attributes_template: >
 #    { "Shelly ID": "{{ value_json.id }}",
 #      "Model": "{{ value_json.model }}",
 #      "MAC": "{{ value_json.mac }}",
@@ -139,6 +139,7 @@
 #      friendly_name: Darius is Home
 #      value_template: "{{ is_state('person.darius', 'home') }}"
 
-#- platform: ping
-#  host: 
-#  name: Jeeves Connected
+- platform: ping
+  host: !secret shelly_ip
+  scan_interval: 15
+  name: Shelly Ping Sensor
