@@ -31,30 +31,9 @@ config:
     cards:
     - entities:
       - entity: script.restart_shield
-      show_header_toggle: false
-      type: entities
-    - entities:
       - entity: cover.garage_mqtt
-      - entity: binary_sensor.caringaragestatus
       - entity: lock.august_asl_03_smart_lock_locked
-      - entity: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
       - entity: lock.back_door
-      - entity: binary_sensor.back_door_template
-      - entity: timer.frontdoorretry
-      - entity: sensor.august_smart_lock_pro_3rd_gen_battery_level
-      - entity: sensor.back_door_battery_template
-      - entity: sensor.battery_consumption_sensor_august_smart_lock_pro_3rd_gen_battery_level
-      - entity: sensor.battery_consumption_sensor_back_door_battery_template
-      state_color: true
-      type: entities
-    - entity: weather.weatherbit_pine_island
-      secondary_info_attribute: precipitation
-      show_forecast: true
-      type: weather-forecast
-    - entities:
-      - entity: climate.downstairs_the_nest
-      - entity: climate.master_bedroom_thermostat
-      - entity: climate.master_bedroom_thermostat_heat
       - customTheme: false
         entity: fan.living_room_fan
         name: Living Room Fan
@@ -67,30 +46,17 @@ config:
         entity: fan.bonus_room_fan
         name: Bonus Room Fan
         type: custom:fan-percent-button-row
-      - entity: switch.bedroom_dummyac
-      - entity: switch.bedroom_dummyheat
+      state_color: true
       type: entities
-    - columns: 4
+    - columns: 3
       entities:
-      - entity: switch.nick_s_pc
-        tap_action:
-          action: toggle
-      - entity: switch.tasmota_switch_1
-        tap_action:
-          action: toggle
-      - entity: switch.bedroom_outlet_1
-        tap_action:
-          action: toggle
-      - entity: switch.bedroom_outlet_2
-        tap_action:
-          action: toggle
-      - entity: switch.bedroom_outlet_3
-        tap_action:
-          action: toggle
-      - entity: automation.daily_4am_maintenance
-      - entity: automation.restart_hass
-      - entity: switch.master_bathroom_fan
-      title: Switches
+      - entity: binary_sensor.caringaragestatus
+      - entity: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+      - entity: binary_sensor.back_door_template
+      - entity: timer.frontdoorretry
+      - entity: sensor.battery_consumption_sensor_august_smart_lock_pro_3rd_gen_battery_level
+      - entity: sensor.battery_consumption_sensor_back_door_battery_template
+      state_color: true
       type: glance
     - columns: 6
       entities:
@@ -132,6 +98,39 @@ config:
       state_color: true
       title: Lights
       type: glance
+    - columns: 4
+      entities:
+      - entity: switch.nick_s_pc
+        tap_action:
+          action: toggle
+      - entity: switch.tasmota_switch_1
+        tap_action:
+          action: toggle
+      - entity: switch.bedroom_outlet_1
+        tap_action:
+          action: toggle
+      - entity: switch.bedroom_outlet_2
+        tap_action:
+          action: toggle
+      - entity: switch.bedroom_outlet_3
+        tap_action:
+          action: toggle
+      - entity: automation.daily_4am_maintenance
+      - entity: automation.restart_hass
+      - entity: switch.master_bathroom_fan
+      title: Switches
+      type: glance
+    - entities:
+      - entity: climate.downstairs_the_nest
+      - entity: climate.master_bedroom_thermostat
+      - entity: climate.master_bedroom_thermostat_heat
+      - entity: switch.startgitexport
+      - entity: sensor.git_exporter_status
+      type: entities
+    - entity: weather.weatherbit_pine_island
+      secondary_info_attribute: precipitation
+      show_forecast: true
+      type: weather-forecast
     - showAzimuth: false
       showElevation: false
       type: custom:sun-card
@@ -201,11 +200,6 @@ config:
     - content: j
       theme: Google Dark Theme
       type: markdown
-    - entities:
-      - entity: switch.startgitexport
-      - entity: sensor.git_exporter_status
-      state_color: true
-      type: entities
     theme: night
     title: Home
   - badges: []
@@ -215,8 +209,6 @@ config:
       - entity: light.aarlo_back_deck
       - entity: light.aarlo_garage_camera
       type: entities
-    - entity: input_text.camera_click
-      type: entity
     - entity: camera.aarlo_front_porch
       global: muted
       image_bottom: snapshot|library|light
@@ -508,10 +500,6 @@ config:
     title: TV and Music
   - badges: []
     cards:
-    - entity: media_player.all_echos
-      type: media-control
-    - entity: media_player.nicks_echos
-      type: media-control
     - entity: media_player.tyler_s_echo_dot
       tts:
         platform: alexa

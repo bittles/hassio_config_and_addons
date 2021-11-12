@@ -183,6 +183,8 @@
   condition:
   - condition: template
     value_template: '{{ trigger.to_state.state > trigger.from_state.state }}'
+  - condition: template
+    value_template: '{{ not trigger.to_state.state == ''unavailable'' }}'
   action:
   - data: {}
     service: lock.unlock
@@ -288,7 +290,9 @@
     platform: state
     to: Roku TV
     id: ROKU
-  condition: []
+  condition:
+  - condition: template
+    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
   action:
   - choose:
     - conditions:
@@ -620,6 +624,8 @@
   - condition: state
     entity_id: binary_sensor.noone
     state: 'off'
+  - condition: template
+    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
   action:
   - scene: scene.above_cabinet_lights_on_when_home
   - choose:
@@ -658,6 +664,8 @@
   condition:
   - condition: template
     value_template: '{{ trigger.to_state.state > trigger.from_state.state }}'
+  - condition: template
+    value_template: '{{ not trigger.to_state.state == ''unavailable'' }}'
   action:
   - alias: ''
     data:
@@ -674,6 +682,8 @@
   condition:
   - after: sunset
     condition: sun
+  - condition: template
+    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
   action:
   - entity_id: light.kitchen
     service: light.turn_on
@@ -1320,7 +1330,9 @@
     entity_id: binary_sensor.noone
     to: 'off'
     id: someone-home
-  condition: []
+  condition:
+  - condition: template
+    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
   action:
   - service: light.turn_off
     data: {}
@@ -1714,7 +1726,9 @@
       minutes: 0
       seconds: 10
       milliseconds: 0
-  condition: []
+  condition:
+  - condition: template
+    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
   action:
   - device_id: 1f4e53d64461d767d63350604b93cd1e
     domain: climate

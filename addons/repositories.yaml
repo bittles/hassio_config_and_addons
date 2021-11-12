@@ -30,10 +30,6 @@ Poeschl Home Assistant Add-ons:
   maintainer: Poeschl <Poeschl@users.noreply.github.com>
   slug: 243ffc37
   source: https://github.com/Poeschl/Hassio-Addons
-Transmission repository:
-  maintainer: Pierrick Rouxel
-  slug: 8cc98bc5
-  source: https://github.com/pierrickrouxel/hassio-addon-transmission.git
 docker-wyze-bridge:
   maintainer: unknown
   slug: 7094bb28

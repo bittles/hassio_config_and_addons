@@ -27,7 +27,7 @@
 
 - platform: history_stats
   name: Total Time Tanner's Water Empty
-  entity_id: binary_sensor.tanner_water_bowl_water_alarm
+  entity_id: binary_sensor.tanner_water_bowl_water
   state: "off"
   type: time
   end: "{{ now() }}"
@@ -36,7 +36,7 @@
 
 - platform: history_stats
   name: Count Tanner's Water was Empty
-  entity_id: binary_sensor.tanner_water_bowl_water_alarm
+  entity_id: binary_sensor.tanner_water_bowl_water
   state: "off"
   type: count
   end: "{{ now() }}"

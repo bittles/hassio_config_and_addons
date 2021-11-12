@@ -388,7 +388,7 @@ recorder:
 #      - sensor.nest_thermostat_target
       - binary_sensor.aarlo_motion_front_porch
       - binary_sensor.back_door_mqtt_any
-      - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+#      - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
       - binary_sensor.caringaragestatus
       - camera.aarlo_front_porch
       - camera.aarlo_back_deck
@@ -479,8 +479,21 @@ history:
 
 logbook:
   exclude:
+    entities:
+      - switch.garagedoorswitch
+      - switch.lamp_light
+      - switch.kitchen_light
+      - input_boolean.noone
+      - switch.driveway_lights
+      - switch.porch_lights
+      - sensor.aarlo_last_front_porch
+      - switch.bathroom_speaker
+      - binary_sensor.back_door
+      - binary_sensor.bonusroomtemp_home_security_motion_detection
+      - binary_sensor.aarlo_connected_base_station
     domains:
       - automation
+
 # Enables the frontend
 frontend:
   themes: !include_dir_merge_named themes

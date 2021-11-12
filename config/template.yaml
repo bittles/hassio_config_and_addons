@@ -36,6 +36,19 @@
 #################         SENSORS        ########################################################################################
 - sensor:
 
+    - unique_id: bedroom_temp_combiner
+      name: shellytempfixed
+      unit_of_measurement: "°F"
+      device_class: temperature
+      state: >
+        {% if states.sensor.shelly_shht_1_6bb145_temperature.state|int(default=0) < 50 %}
+          {{ (states.sensor.shelly_shht_1_6bb145_temperature.state|float(default=0) * 9/5) + 32 }}
+        {% else %}
+          {{ states.sensor.shelly_shht_1_6bb145_temperature.state|float(default=0) }}
+        {% endif %}
+      attributes: 
+        "Last Updated": '{{ states.input_datetime.bedroom_temp_change_time.state }}'
+
     - name: shellytempfixed_timestamp_updater
       unique_id: bedroom_temp_combined_fixed_timestamp_updater
       unit_of_measurement: "°F"
