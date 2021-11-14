@@ -2890,29 +2890,48 @@
         data:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             - 3}}'
-    - conditions:
-      - condition: trigger
-        id: bedroom_temp_change
-      - condition: state
-        entity_id: climate.downstairs_the_nest
-        state: heating
-        attribute: hvac_action
-      sequence:
-      - choose:
-        - conditions:
-          - condition: template
-            value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)
-              - (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)))
-              < 3 }}'
-          sequence:
-          - service: climate.set_temperature
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-                + 3}}'
-        default: []
-    default: []
+    default:
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)
+            - (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)))
+            < 3 }}'
+        - condition: trigger
+          id: bedroom_temp_change
+        - condition: state
+          entity_id: climate.downstairs_the_nest
+          state: heating
+          attribute: hvac_action
+        sequence:
+        - service: climate.set_temperature
+          target:
+            entity_id: climate.downstairs_the_nest
+          data:
+            temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+              + 3}}'
+      - conditions:
+        - condition: trigger
+          id: bedroom_temp_change
+        - condition: state
+          entity_id: climate.downstairs_the_nest
+          state: 'off'
+          attribute: hvac_action
+        - condition: state
+          entity_id: switch.bedroom_dummyheat
+          state: 'on'
+          for:
+            hours: 0
+            minutes: 0
+            seconds: 15
+            milliseconds: 0
+        sequence:
+        - service: climate.set_temperature
+          target:
+            entity_id: climate.downstairs_the_nest
+          data:
+            temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+              + 3}}'
   mode: single
 - id: '1636499910042'
   alias: zzzz.Homekit Device Tracker Updates (mqtt) d

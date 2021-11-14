@@ -7,6 +7,14 @@
     Authorization: !secret api_token
     Content-Type: application/json
 
+- platform: filter
+  name: shellytempcombined_filter
+  entity_id: sensor.shellytempfixed_timestamp_updater
+  filters:
+    - filter: outlier
+      window_size: 15
+      radius: 10.0
+
 #- platform: history_stats
 #  name: Total Time Tanner's Water Empty mqtt
 #  entity_id: binary_sensor.tanner_water_manual_mqtt
