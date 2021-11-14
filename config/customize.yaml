@@ -120,3 +120,7 @@ sensor.shelly_shht_1_6bb145_temperature:
   device_class: temperature
 device_tracker.shellyht:
   “consider_home”: '1'
+sensor.battery_consumption_sensor_back_door_battery_template:
+  device_class: battery
+sensor.battery_consumption_sensor_august_smart_lock_pro_3rd_gen_battery_level:
+  device_class: battery
