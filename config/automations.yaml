@@ -2993,3 +2993,38 @@
           retain: true
     default: []
   mode: single
+- id: '1636946965943'
+  alias: ..Morning Heat
+  description: ''
+  trigger:
+  - platform: time
+    id: heatstart
+    at: input_datetime.heat_start
+  - platform: time
+    id: heatend
+    at: input_datetime.heat_end
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: heatstart
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.master_bedroom_thermostat_heat
+        data:
+          temperature: '{{ states.input_number.heat_start_temp.state | float(default=0)
+            }}'
+    - conditions:
+      - condition: trigger
+        id: heatend
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.master_bedroom_thermostat_heat
+        data:
+          temperature: '{{ states.input_number.heat_end_temp.state | float(default=0)
+            }}'
+    default: []
+  mode: single
