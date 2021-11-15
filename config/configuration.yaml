@@ -470,7 +470,8 @@ history:
       - sensor.processor_use
 #      - sensor.washing_machine_energy_total_this_month
       - sensor.zooztemp
-      - sensor.bonusroomtemp_air_temperature
+      - sensor.bonusroomtemp
+#      - sensor.bonusroomtemp_air_temperature
       - sensor.zoozhumidity
       - sensor.zoozluminance
       - sensor.master_bedroom_temperature_mqtt
