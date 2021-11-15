@@ -74,12 +74,6 @@
       unit_of_measurement: "kWh"
       state: '{{ states(''sensor.kmc4_bedroom_energy'')|float(default=0) / 1000 }}'
 
-    - name: bonusroomtemp
-      unit_of_measurement: "°F"
-      unique_id: bonusroom_temp
-      state: '{{ states(''input_number.bonus_room_temperature'')|float(default=0) }}'
-      device_class: temperature
-
     - name: living_roomtv
       state: '{{ states.remote.living_room.attributes.current_activity }}'
       unique_id: livingroomtvsource
@@ -162,12 +156,30 @@
     - name: Car in Garage
       unique_id: is_a_car_in_the_garage_or_not
       state: >
-        {% if trigger.payload | int(default=35) < 150 -%}
+        {% if trigger.payload | int(default=0) == 0 -%}
+          {{ Nan }}
+        {%- elif trigger.payload | int(default=0) < 150 -%}
           on
         {%- else -%}
           off
         {%- endif %}
       device_class: occupancy
+
+- trigger:
+  - platform: state
+    entity_id: sensor.bonusroomtemp_air_temperature
+  sensor:
+    - name: bonusroomtemp
+      unit_of_measurement: "°F"
+      unique_id: bonusroom_temp
+      state: >
+        {% if trigger.to_state.state | int(default=0) < 50 %}
+          {{ Nan }}
+        {% else %}
+          {{ states.sensor.bonusroomtemp_air_temperature.state }}
+        {% endif %}
+      device_class: temperature
+#      state: '{{ states(''input_number.bonus_room_temperature'')|float(default=0) }}'
 
 #- trigger:
 #    - platform: state

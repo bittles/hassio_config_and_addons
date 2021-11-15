@@ -2471,24 +2471,6 @@
     default: []
   mode: parallel
   max: 10
-- id: '1630536165695'
-  alias: zzBonus Room Temperature Update
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.bonusroomtemp_air_temperature
-    id: tempchange
-  condition:
-  - condition: template
-    value_template: '{{ states(''sensor.bonusroomtemp_air_temperature'')|float(default=0)
-      > 50 }}'
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.bonus_room_temperature
-    data:
-      value: '{{ states(''sensor.bonusroomtemp_air_temperature'') }}'
-  mode: single
 - id: '1631407504174'
   alias: zzAarlo Garage Motion Clip
   description: ''
