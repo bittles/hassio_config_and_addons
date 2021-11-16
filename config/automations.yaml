@@ -310,7 +310,7 @@
       - service: androidtv.adb_command
         data:
           entity_id: media_player.shield_adb
-          command: am kill com.plexapp.android
+          command: am force-stop com.plexapp.android
       - delay:
           hours: 0
           minutes: 0
@@ -930,10 +930,10 @@
         - title: Dismiss
   mode: single
 - id: '1594325734855'
-  alias: zzzz.Alfred Cleans Zones at 4am
+  alias: zzzz.Alfred Cleans ZonesEveryNight
   description: ''
   trigger:
-  - at: 04:00:00
+  - at: 05:00
     platform: time
   condition: []
   action:
