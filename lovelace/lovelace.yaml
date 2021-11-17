@@ -31,9 +31,6 @@ config:
     cards:
     - entities:
       - entity: script.restart_shield
-      - entity: climate.master_bedroom_thermostat_heat
-      - entity: climate.downstairs_the_nest
-      - entity: climate.master_bedroom_thermostat
       - entity: cover.garage_mqtt
       - entity: lock.august_asl_03_smart_lock_locked
       - entity: lock.back_door
@@ -123,6 +120,13 @@ config:
       - entity: switch.master_bathroom_fan
       title: Switches
       type: glance
+    - entities:
+      - entity: climate.downstairs_the_nest
+      - entity: climate.master_bedroom_thermostat
+      - entity: climate.master_bedroom_thermostat_heat
+      - entity: switch.startgitexport
+      - entity: sensor.git_exporter_status
+      type: entities
     - entity: weather.weatherbit_pine_island
       secondary_info_attribute: precipitation
       show_forecast: true
@@ -130,10 +134,69 @@ config:
     - showAzimuth: false
       showElevation: false
       type: custom:sun-card
-    - entities:
-      - entity: switch.startgitexport
-      - entity: sensor.git_exporter_status
-      type: entities
+    - calibration_points:
+      - map:
+          x: 270
+          y: 15
+        vacuum:
+          x: 22715
+          y: 13911
+      - map:
+          x: 1500
+          y: 15
+        vacuum:
+          x: 37862
+          y: 13911
+      - map:
+          x: 1500
+          y: 1000
+        vacuum:
+          x: 37862
+          y: 26070
+      default_mode: predefined_zones
+      entity: vacuum.rockrobo
+      map_camera: camera.rockrobo_map
+      modes:
+      - predefined_zones
+      service: python_script.vacuum_send_command
+      type: custom:xiaomi-vacuum-map-card
+      zones:
+      - - - 22690
+          - 22778
+          - 32457
+          - 26013
+        - - 22725
+          - 18724
+          - 34759
+          - 22826
+        - - 30852
+          - 17148
+          - 34777
+          - 18825
+        - - 32605
+          - 16157
+          - 33980
+          - 17196
+      - - - 22689
+          - 17452
+          - 26864
+          - 18697
+        - - 22721
+          - 14028
+          - 29985
+          - 17449
+      - - - 26920
+          - 16975
+          - 29805
+          - 18513
+      - - - 29911
+          - 13811
+          - 33116
+          - 17067
+      - - - 33945
+          - 13551
+          - 38350
+          - 17410
     - content: j
       theme: Google Dark Theme
       type: markdown
@@ -563,73 +626,6 @@ config:
       - entity: input_datetime.sunday_reboot_time
       - entity: automation.restart_hass
       - entity: automation.daily_4am_maintenance
-      - entity: input_datetime.heat_start
-      - entity: input_datetime.heat_end
-      - entity: input_number.heat_start_temp
-      - entity: input_number.heat_end_temp
       type: entities
-    - calibration_points:
-      - map:
-          x: 270
-          y: 15
-        vacuum:
-          x: 22715
-          y: 13911
-      - map:
-          x: 1500
-          y: 15
-        vacuum:
-          x: 37862
-          y: 13911
-      - map:
-          x: 1500
-          y: 1000
-        vacuum:
-          x: 37862
-          y: 26070
-      default_mode: predefined_zones
-      entity: vacuum.rockrobo
-      map_camera: camera.rockrobo_map
-      modes:
-      - predefined_zones
-      service: python_script.vacuum_send_command
-      type: custom:xiaomi-vacuum-map-card
-      zones:
-      - - - 22690
-          - 22778
-          - 32457
-          - 26013
-        - - 22725
-          - 18724
-          - 34759
-          - 22826
-        - - 30852
-          - 17148
-          - 34777
-          - 18825
-        - - 32605
-          - 16157
-          - 33980
-          - 17196
-      - - - 22689
-          - 17452
-          - 26864
-          - 18697
-        - - 22721
-          - 14028
-          - 29985
-          - 17449
-      - - - 26920
-          - 16975
-          - 29805
-          - 18513
-      - - - 29911
-          - 13811
-          - 33116
-          - 17067
-      - - - 33945
-          - 13551
-          - 38350
-          - 17410
     path: server-control
     title: Server Control
