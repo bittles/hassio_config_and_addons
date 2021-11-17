@@ -10,7 +10,7 @@ items:
   url: /hacsfiles/lovelace-hass-aarlo/hass-aarlo.js
 - id: 9194a1de09ce41d294f1f8345e060535
   type: module
-  url: /hacsfiles/lovelace-notify-card/notify-card.js?hacstag=358962656418
+  url: /hacsfiles/lovelace-notify-card/notify-card.js?hacstag=3589626560734
 - id: bedaa6ee2a114830aa2c9fa5fa409ce3
   type: module
   url: /hacsfiles/Multiline-Entity-Card/multiline-entity-card.js?hacstag=351472550111

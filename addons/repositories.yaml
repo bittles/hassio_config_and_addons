@@ -6,6 +6,10 @@ Hass.IO Repository for snowzach:
   maintainer: Zach Brown <zach@prozach.org>
   slug: d5f40609
   source: https://github.com/snowzach/hassio-addons
+Home Assistant Add-ons (@MikeJMcGuire):
+  maintainer: Mike J McGuire <mike@mikejmcguire.com>
+  slug: e4641267
+  source: https://github.com/MikeJMcGuire/HASSAddons
 Home Assistant Community Add-ons:
   maintainer: Franck Nijhof <frenck@addons.community>
   slug: a0d7b954

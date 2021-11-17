@@ -73,6 +73,6 @@ export:
 repository:
   commit_message: Home Assistant Git Exporter
   password: '!secret git_pass'
-  pull_before_push: true
+  pull_before_push: false
   url: https://github.com/bittles/hassio_config_and_addons.git
   username: '!secret git_username'
