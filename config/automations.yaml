@@ -310,7 +310,7 @@
       - service: androidtv.adb_command
         data:
           entity_id: media_player.shield_adb
-          command: am kill com.plexapp.android
+          command: am force-stop com.plexapp.android
       - delay:
           hours: 0
           minutes: 0
@@ -319,7 +319,7 @@
       - service: androidtv.adb_command
         data:
           entity_id: media_player.shield_adb
-          command: am kill com.plexapp.android
+          command: am force-stop com.plexapp.android
     - conditions:
       - condition: trigger
         id: ROKU
@@ -930,10 +930,10 @@
         - title: Dismiss
   mode: single
 - id: '1594325734855'
-  alias: zzzz.Alfred Cleans Zones at 4am
+  alias: zzzz.Alfred Cleans ZonesEveryNight
   description: ''
   trigger:
-  - at: 04:00:00
+  - at: 05:00
     platform: time
   condition: []
   action:
@@ -2471,24 +2471,6 @@
     default: []
   mode: parallel
   max: 10
-- id: '1630536165695'
-  alias: zzBonus Room Temperature Update
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.bonusroomtemp_air_temperature
-    id: tempchange
-  condition:
-  - condition: template
-    value_template: '{{ states(''sensor.bonusroomtemp_air_temperature'')|float(default=0)
-      > 50 }}'
-  action:
-  - service: input_number.set_value
-    target:
-      entity_id: input_number.bonus_room_temperature
-    data:
-      value: '{{ states(''sensor.bonusroomtemp_air_temperature'') }}'
-  mode: single
 - id: '1631407504174'
   alias: zzAarlo Garage Motion Clip
   description: ''
@@ -2890,29 +2872,48 @@
         data:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             - 3}}'
-    - conditions:
-      - condition: trigger
-        id: bedroom_temp_change
-      - condition: state
-        entity_id: climate.downstairs_the_nest
-        state: heating
-        attribute: hvac_action
-      sequence:
-      - choose:
-        - conditions:
-          - condition: template
-            value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)
-              - (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)))
-              < 3 }}'
-          sequence:
-          - service: climate.set_temperature
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-                + 3}}'
-        default: []
-    default: []
+    default:
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)
+            - (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)))
+            < 3 }}'
+        - condition: trigger
+          id: bedroom_temp_change
+        - condition: state
+          entity_id: climate.downstairs_the_nest
+          state: heating
+          attribute: hvac_action
+        sequence:
+        - service: climate.set_temperature
+          target:
+            entity_id: climate.downstairs_the_nest
+          data:
+            temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+              + 3}}'
+      - conditions:
+        - condition: trigger
+          id: bedroom_temp_change
+        - condition: state
+          entity_id: climate.downstairs_the_nest
+          state: 'off'
+          attribute: hvac_action
+        - condition: state
+          entity_id: switch.bedroom_dummyheat
+          state: 'on'
+          for:
+            hours: 0
+            minutes: 0
+            seconds: 15
+            milliseconds: 0
+        sequence:
+        - service: climate.set_temperature
+          target:
+            entity_id: climate.downstairs_the_nest
+          data:
+            temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+              + 3}}'
   mode: single
 - id: '1636499910042'
   alias: zzzz.Homekit Device Tracker Updates (mqtt) d
@@ -2990,5 +2991,40 @@
           payload: not_home
           qos: '1'
           retain: true
+    default: []
+  mode: single
+- id: '1636946965943'
+  alias: ..Morning Heat
+  description: ''
+  trigger:
+  - platform: time
+    id: heatstart
+    at: input_datetime.heat_start
+  - platform: time
+    id: heatend
+    at: input_datetime.heat_end
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: heatstart
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.master_bedroom_thermostat_heat
+        data:
+          temperature: '{{ states.input_number.heat_start_temp.state | float(default=0)
+            }}'
+    - conditions:
+      - condition: trigger
+        id: heatend
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.master_bedroom_thermostat_heat
+        data:
+          temperature: '{{ states.input_number.heat_end_temp.state | float(default=0)
+            }}'
     default: []
   mode: single
