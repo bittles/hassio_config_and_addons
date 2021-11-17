@@ -38,6 +38,9 @@ exclude:
 - config/image/
 - /config/image/
 - image/
+- config/custom_components/hacs/
+- /config/custom_components/hacs/
+- .HA_VERSION
 export:
   addons: true
   esphome: true

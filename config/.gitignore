@@ -32,6 +32,6 @@ image/
 .aarlo/
 wyze-bridge/
 deps/
-custom-components/hacs/
-custom_components/hacs
-www/community/
+.HA_VERSION
+custom_components/hacs/
+/custom_components/hacs/

@@ -319,7 +319,7 @@
       - service: androidtv.adb_command
         data:
           entity_id: media_player.shield_adb
-          command: am kill com.plexapp.android
+          command: am force-stop com.plexapp.android
     - conditions:
       - condition: trigger
         id: ROKU
