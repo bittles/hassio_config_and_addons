@@ -563,6 +563,7 @@ config:
       - entity: input_datetime.heat_end
       - entity: input_number.heat_start_temp
       - entity: input_number.heat_end_temp
+      - entity: automation.morning_heat
       type: entities
     - calibration_points:
       - map:
