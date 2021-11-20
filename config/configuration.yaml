@@ -479,6 +479,10 @@ history:
       - climate.master_bedroom_thermostat_heat
 
 logbook:
+  include:
+    domains:
+      - climate
+      - automation.zzzzz_bedroom_thermostat_heat_by_switch
   exclude:
     entities:
       - switch.garagedoorswitch
@@ -492,6 +496,7 @@ logbook:
       - binary_sensor.back_door
       - binary_sensor.bonusroomtemp_home_security_motion_detection
       - binary_sensor.aarlo_connected_base_station
+      - binary_sensor.shelly_ping_sensor
     domains:
       - automation
 
