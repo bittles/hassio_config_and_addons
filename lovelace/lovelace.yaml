@@ -101,7 +101,7 @@ config:
       state_color: true
       title: Lights
       type: glance
-    - columns: 4
+    - columns: 3
       entities:
       - entity: switch.nick_s_pc
         tap_action:
@@ -109,6 +109,7 @@ config:
       - entity: switch.tasmota_switch_1
         tap_action:
           action: toggle
+      - entity: switch.master_bathroom_fan
       - entity: switch.bedroom_outlet_1
         tap_action:
           action: toggle
@@ -118,9 +119,6 @@ config:
       - entity: switch.bedroom_outlet_3
         tap_action:
           action: toggle
-      - entity: automation.daily_4am_maintenance
-      - entity: automation.restart_hass
-      - entity: switch.master_bathroom_fan
       title: Switches
       type: glance
     - entity: weather.weatherbit_pine_island
@@ -553,17 +551,20 @@ config:
     cards:
     - entities:
       - entity: input_datetime.zzdaily_maintenance
+      - entity: automation.daily_4am_maintenance
+      - entity: automation.restart_hass
       - entity: input_datetime.zzdaily_post_maintenance
       - entity: input_datetime.zzdaily_shield_restart_maintenance
       - entity: input_datetime.zzdaily_shield_restart_post_maintenance
+      - entity: automation.restart_shield_tv
+      - entity: automation.new_automation_2
       - entity: input_datetime.sunday_reboot_time
-      - entity: automation.restart_hass
-      - entity: automation.daily_4am_maintenance
+      - entity: automation.zzsunday_reboot
       - entity: input_datetime.heat_start
       - entity: input_datetime.heat_end
+      - entity: automation.morning_heat
       - entity: input_number.heat_start_temp
       - entity: input_number.heat_end_temp
-      - entity: automation.morning_heat
       type: entities
     - calibration_points:
       - map:

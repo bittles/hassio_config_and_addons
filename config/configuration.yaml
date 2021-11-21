@@ -482,6 +482,16 @@ logbook:
   include:
     domains:
       - climate
+      - sensor
+      - input_boolean
+      - switch
+      - media_player
+      - person
+      - device_tracker
+      - lock
+      - light
+      - cover
+    entities:
       - automation.zzzzz_bedroom_thermostat_heat_by_switch
   exclude:
     entities:
