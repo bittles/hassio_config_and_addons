@@ -4,7 +4,7 @@ items:
   url: /hacsfiles/roku-card/roku-card.js?hacstag=164367214123
 - id: 09cc55915cfa4258807af4dca806c739
   type: module
-  url: /hacsfiles/mini-media-player/mini-media-player-bundle.js?hacstag=1485208381140
+  url: /hacsfiles/mini-media-player/mini-media-player-bundle.js?hacstag=1485208381150
 - id: 5e735fbbe8a24eddb43916f2eb2aec0c
   type: module
   url: /hacsfiles/lovelace-hass-aarlo/hass-aarlo.js
