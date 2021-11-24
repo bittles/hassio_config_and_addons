@@ -5,8 +5,8 @@ backup_name: '{type} Snapshot {version_ha} - {version_super}: {year}-{month}-{da
 backup_password: '!secret hassio_goog_backup_pass'
 backup_time_of_day: 04:00
 days_between_backups: 2
-exclude_addons: core_mariadb,243ffc37_git-exporter
-exclude_folders: homeassistant,share
+exclude_addons: core_mariadb
+exclude_folders: share
 ignore_ipv6_addresses: true
 ignore_other_backups: true
 ignore_upgrade_backups: true

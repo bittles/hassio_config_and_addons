@@ -420,8 +420,6 @@ config:
       toggle_power: false
       type: custom:mini-media-player
       volume_stateless: true
-    - entity: media_player.bedroom_tcl_tv
-      type: media-control
     - entity: remote.living_room
       type: entity
     - entity: media_player.master_bedroom_tv

@@ -180,12 +180,13 @@
     unique_id: bedroomtvremote
     children:
       - media_player.bedroom_tcl_tv
-    state_template: >
-          {% if is_state("media_player.bedroom_tcl_tv", "idle") -%}
-            on
-          {%- else -%}
-            {{ states("media_player.bedroom_tcl_tv") }}
-          {%- endif %}
+    state_template: '{{ states(''remote.bedroom_tcl_tv'') }}'
+    #>
+    #      {% if is_state("media_player.bedroom_tcl_tv", "idle") -%}
+    #        on
+    #      {%- else -%}
+    #        {{ states("media_player.bedroom_tcl_tv") }}
+    #      {%- endif %}
     commands:
       turn_on:
         service: remote.turn_on
