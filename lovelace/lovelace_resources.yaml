@@ -14,9 +14,6 @@ items:
 - id: bedaa6ee2a114830aa2c9fa5fa409ce3
   type: module
   url: /hacsfiles/Multiline-Entity-Card/multiline-entity-card.js?hacstag=351472550111
-- id: 21a63f8b99b048bea86a285f916f6a77
-  type: module
-  url: /hacsfiles/PlexMeetsHomeAssistant/plex-meets-homeassistant.js?hacstag=363428919331
 - id: 01d0248cc5ca4442aadedc23e84e048e
   type: module
   url: /hacsfiles/entity-attributes-card/entity-attributes-card.js
