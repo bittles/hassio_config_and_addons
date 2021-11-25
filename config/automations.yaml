@@ -2903,6 +2903,9 @@
           entity_id: climate.downstairs_the_nest
           state: heating
           attribute: hvac_action
+        - condition: state
+          entity_id: switch.bedroom_dummyheat
+          state: 'on'
         sequence:
         - service: climate.set_temperature
           target:

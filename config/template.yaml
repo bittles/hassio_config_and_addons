@@ -81,7 +81,12 @@
 
     - name: back_door_battery_template
 #        friendly_name: 'Front Door Wifi Battery Level'
-      state: '{{ ((states(''sensor.back_door_battery'')|int -32)/40*100)|round(0) }}'
+      state: >
+        {% if is_state('sensor.back_door_battery', '0') %} 
+          {{ Nan }}
+        {% else %}
+          {{ ((states('sensor.back_door_battery')|int -32)/40*100)|round(0) }}
+        {% endif %}
       device_class: battery
       unique_id: backdoorbatterytemplate
       unit_of_measurement: "%"

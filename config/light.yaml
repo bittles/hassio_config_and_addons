@@ -110,6 +110,19 @@
           data:
             entity_id: switch.driveway_lights
 
+      desklamp:
+        friendly_name: Desk Lamp
+        unique_id: desklamp
+        value_template:  "{{ states('switch.desk_lamp') }}"
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.desk_lamp
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.desk_lamp
+
 #      zone2volume:
 #        friendly_name: Zone 2 Volume
 #        value_template: >-
