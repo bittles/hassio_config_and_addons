@@ -9,13 +9,13 @@ config:
     - entity: sensor.dark_sky_overnight_low_apparent_temperature_0d
     - entity: sensor.dark_sky_temperature
     - entity: sensor.dark_sky_humidity
-    - entity: sensor.nest_thermostat_temperature
-    - entity: sensor.nest_thermostat_humidity
     - entity: person.nick
     - entity: person.darius
     - entity: person.kara
     - entity: binary_sensor.noone
     - entity: binary_sensor.shelly_ping_sensor
+    - entity: sensor.nest_thermostat_temperature
+    - entity: sensor.nest_thermostat_humidity
     - entity: sensor.shellytempfixed
     - entity: sensor.shelly_shht_1_6bb145_humidity
     - entity: sensor.bonusroomtemp
