@@ -85,7 +85,7 @@
         {% if is_state('sensor.back_door_battery', '0') %} 
           {{ Nan }}
         {% else %}
-          {{ ((states('sensor.back_door_battery')|int -32)/40*100)|round(0) }}
+          {{ ((states('sensor.back_door_battery')|int -32)/44*100)|round(0) }}
         {% endif %}
       device_class: battery
       unique_id: backdoorbatterytemplate

@@ -4,8 +4,6 @@ light.living_room_ligh_living_room_light:
 light.hallway:
   friendly_name: Hallway Light
   icon: mdi:white-balance-incandescent
-light.kitchen_nightlight:
-  icon: mdi:white-balance-incandescent
 switch.driveway_lights:
   icon: mdi:spotlight
 fan.living_room_fan:
@@ -44,10 +42,8 @@ sensor.dark_sky_precip_probability_1d:
   device_class: humidity
 light.driveway:
   friendly_name: Driveway Lights
-  icon: mdi:white-balance-incandescent
 light.kitchen:
   friendly_name: Kitchen Lights
-  icon: mdi:white-balance-incandescent
 light.lamp:
   friendly_name: Lamp
   icon: mdi:lamp
@@ -84,12 +80,8 @@ media_player.bathroom_speaker:
   device_class: tv
 binary_sensor.back_door:
   device_class: door
-light.bedroom_light:
-  icon: mdi:ceiling-light
 group.bedroom_lamps:
   icon: mdi:lamp
-light.porch:
-  icon: mdi:white-balance-incandescent
 light.under_cabinet_light:
   icon: mdi:led-strip
 light.under_bed_light:
@@ -120,3 +112,7 @@ sensor.shelly_shht_1_6bb145_temperature:
   device_class: temperature
 device_tracker.shellyht:
   “consider_home”: '1'
+sensor.battery_consumption_sensor_back_door_battery_template:
+  device_class: battery
+sensor.battery_consumption_sensor_august_smart_lock_pro_3rd_gen_battery_level:
+  device_class: battery

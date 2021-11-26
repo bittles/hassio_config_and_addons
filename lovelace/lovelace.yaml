@@ -95,6 +95,9 @@ config:
           action: toggle
       - entity: light.hue_go_1
       - entity: light.hue_go_2
+      - entity: light.desklamp
+        tap_action:
+          action: toggle
       show_icon: true
       show_name: true
       show_state: false

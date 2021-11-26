@@ -1146,7 +1146,8 @@
     platform: state
   condition: []
   action:
-  - data: {}
+  - data:
+      duration: '0'
     service: timer.start
     target:
       entity_id: timer.nickleft
@@ -1183,6 +1184,10 @@
       - service: switch.turn_off
         data: {}
         entity_id: switch.airplayserver_bathroom
+      - type: turn_off
+        device_id: 5e5a2b32c5848dc960a5fa9d3bc41b26
+        entity_id: switch.desk_lamp
+        domain: switch
     default: []
   mode: single
 - id: '1612397393109'
@@ -3048,4 +3053,18 @@
           temperature: '{{ states.input_number.heat_end_temp.state | float(default=0)
             }}'
     default: []
+  mode: single
+- id: '1637818448968'
+  alias: zzz.Desk Lamp
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.nick_s_pc
+    to: 'on'
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 5e5a2b32c5848dc960a5fa9d3bc41b26
+    entity_id: switch.desk_lamp
+    domain: switch
   mode: single
