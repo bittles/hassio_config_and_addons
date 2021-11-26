@@ -85,6 +85,7 @@
         - light.color_lights
         - switch.airplayserver_bathroom
         - switch.airplayserver_deck
+        - light.desklamp
       exclude_entities:
         - camera.rockrobo_map
         - input_number.tanner_water_bowl_dry_count

@@ -79,6 +79,7 @@
      - fan.bonus_room_fan
      - light.bonus_room_light
      - climate.master_bedroom_thermostat_heat
+     - light.desklamp
     exclude_entities:
      - media_player.onkyo
      - light.hue_go_1
