@@ -3061,7 +3061,10 @@
   - platform: state
     entity_id: switch.nick_s_pc
     to: 'on'
-  condition: []
+  condition:
+  - condition: state
+    entity_id: person.nick
+    state: home
   action:
   - type: turn_on
     device_id: 5e5a2b32c5848dc960a5fa9d3bc41b26
