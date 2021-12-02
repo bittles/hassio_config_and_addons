@@ -2,7 +2,7 @@
   alias: zNotify.Pi CPU Usage Above 35% for 10min then Notify
   description: ''
   trigger:
-  - above: '35'
+  - above: '40'
     entity_id: sensor.processor_use
     for: 00:10:00
     platform: numeric_state
