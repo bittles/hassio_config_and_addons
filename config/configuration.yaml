@@ -131,6 +131,10 @@ aarlo:
 camera:
   - platform: aarlo
 
+  - platform: ffmpeg
+    name: Front Door
+    input: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
+
 localtuya:
   - host: !secret localtuya1_ip
     device_id: !secret localtuya_colorbulbid
@@ -325,7 +329,7 @@ homeassistant:
 #  - /config/.storage/gol
 
 media_source:
-stream:
+#stream:
 
 hassio:
 system_health:
