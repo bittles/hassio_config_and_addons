@@ -104,23 +104,6 @@
           until:
           - condition: device
             type: is_on
-            device_id: d0bee64a1ce6eec283ca228325fab7fe
-            entity_id: switch.porch_lights
-            domain: switch
-          sequence:
-          - type: turn_on
-            device_id: d0bee64a1ce6eec283ca228325fab7fe
-            entity_id: switch.porch_lights
-            domain: switch
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 1
-              milliseconds: 0
-      - repeat:
-          until:
-          - condition: device
-            type: is_on
             device_id: 746911e6923f45a897998898b5cd634b
             entity_id: switch.driveway_lights
             domain: switch
