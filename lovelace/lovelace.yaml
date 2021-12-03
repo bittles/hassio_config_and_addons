@@ -134,7 +134,10 @@ config:
     - content: 'rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
 
 
-        rtsp://driveway:kPaWrZG8A9@192.168.29.117/live'
+        rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
+
+
+        rtsp://backdeck:Hz6YAm3LPt@192.168.29.64/live'
       theme: Google Dark Theme
       type: markdown
     theme: night
