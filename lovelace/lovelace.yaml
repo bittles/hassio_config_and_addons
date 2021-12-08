@@ -131,13 +131,8 @@ config:
     - showAzimuth: false
       showElevation: false
       type: custom:sun-card
-    - content: 'rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
-
-
-        rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
-
-
-        rtsp://backdeck:Hz6YAm3LPt@192.168.29.64/live'
+    - content: "rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live\n\nrtsp://driveway:kPaWrZG8A9@192.168.29.117/live\n\
+        \nrtsp://backdeck:Hz6YAm3LPt@192.168.29.64/live\n   changed to 113"
       theme: Google Dark Theme
       type: markdown
     theme: night
