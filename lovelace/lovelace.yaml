@@ -567,6 +567,7 @@ config:
       - entity: automation.morning_heat
       - entity: input_number.heat_start_temp
       - entity: input_number.heat_end_temp
+      - entity: input_boolean.driveway_motion
       type: entities
     - calibration_points:
       - map:
