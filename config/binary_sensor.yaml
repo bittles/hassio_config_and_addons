@@ -7,6 +7,12 @@
   - connectivity
 
 #- platform: mqtt
+#  unique_id: scrypted-driveway
+#  device_class: motion
+#  force_update: true
+  
+
+#- platform: mqtt
 #  unique_id: shelly-6bb145awake
 #  name: Bedroom Shelly HT Status
 #  device_class: connectivity

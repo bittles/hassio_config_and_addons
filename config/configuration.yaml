@@ -24,6 +24,12 @@ input_select:
 #  client_id: !secret spotify_id
 #  client_secret: !secret spotify_secret
 
+rest_command:
+  camera_motion_start:
+    url: 'http://192.168.29.189:7999/1/detection/start'
+  camera_motion_pause:
+    url: 'http://192.168.29.189:7999/1/detection/pause'
+
 battery_consumption:
   front_door_batteries:
     source: sensor.august_smart_lock_pro_3rd_gen_battery_level

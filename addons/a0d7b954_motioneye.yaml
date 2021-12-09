@@ -1,5 +1,5 @@
 action_buttons: []
 certfile: fullchain.pem
 keyfile: privkey.pem
-motion_webcontrol: false
+motion_webcontrol: true
 ssl: true
