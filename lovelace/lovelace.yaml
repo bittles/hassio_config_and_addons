@@ -14,15 +14,14 @@ config:
     - entity: person.kara
     - entity: binary_sensor.noone
     - entity: binary_sensor.shelly_ping_sensor
+    - entity: vacuum.rockrobo
     - entity: sensor.nest_thermostat_temperature
     - entity: sensor.nest_thermostat_humidity
     - entity: sensor.shellytempfixed
     - entity: sensor.shelly_shht_1_6bb145_humidity
     - entity: sensor.bonusroomtemp
     - entity: sensor.bonusroomtemp_humidity
-    - entity: vacuum.rockrobo
     - entity: automation.alfred_cleans_zones_at_4am
-    - entity: automation.front_door_autolock
     - entity: sensor.processor_use
     - entity: sensor.routerdlkbs
     - entity: sensor.routerulkbs
@@ -568,6 +567,7 @@ config:
       - entity: input_number.heat_start_temp
       - entity: input_number.heat_end_temp
       - entity: input_boolean.driveway_motion
+      - entity: input_boolean.porch_motion
       type: entities
     - calibration_points:
       - map:

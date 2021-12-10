@@ -2,15 +2,15 @@
   alias: zNotify.Pi CPU Usage Above 35% for 10min then Notify
   description: ''
   trigger:
-  - above: '40'
-    entity_id: sensor.processor_use
+  - entity_id: sensor.processor_use
     for: 00:10:00
     platform: numeric_state
+    above: '50'
   condition:
   - condition: not
     conditions:
     - condition: time
-      before: 07:30:00
+      before: 07:30
       after: 06:00:00
   action:
   - service: notify.mobile_app_rxniphone
@@ -3077,4 +3077,29 @@
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.driveway_motion
+  mode: single
+- id: '1639096642296'
+  alias: zzMotioneye Porch On
+  description: ''
+  trigger:
+  - platform: webhook
+    webhook_id: porch-motion-on
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id:
+      - input_boolean.porch_motion
+  mode: single
+- id: '1639096680539'
+  alias: zzMotioneye Porch Off
+  description: ''
+  trigger:
+  - platform: webhook
+    webhook_id: porch-motion-off
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.porch_motion
   mode: single
