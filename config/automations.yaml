@@ -3103,3 +3103,45 @@
     target:
       entity_id: input_boolean.porch_motion
   mode: single
+- id: '1639175749676'
+  alias: zzMotion Update Driveway Snapshot
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.driveway_motion
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: camera.snapshot
+    target:
+      entity_id: camera.driveway
+    data:
+      filename: /config/www/snapshot_{{ 'camera.driveway' }}.jpg
+  mode: single
+- id: '1639179202364'
+  alias: zzMotion Update Porch Snapshot
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.porch_motion
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: camera.snapshot
+    target:
+      entity_id: camera.front_door
+    data:
+      filename: /config/www/snapshot_{{ 'camera.front_door' }}.jpg
+  mode: single
