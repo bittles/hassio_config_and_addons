@@ -137,9 +137,13 @@ aarlo:
 camera:
   - platform: aarlo
 
-  - platform: ffmpeg
-    name: Front Door
-    input: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
+  - platform: generic
+    still_image_url: http://127.0.0.1:8123/local/snapshot_camera.front_door.jpg
+    name: Porch Motion Snapshot
+
+  - platform: generic
+    still_image_url: http://127.0.0.1:8123/local/snapshot_camera.driveway.jpg
+    name: Driveway Motion Snapshot
 
 localtuya:
   - host: !secret localtuya1_ip

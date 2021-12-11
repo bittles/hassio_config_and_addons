@@ -182,9 +182,22 @@ config:
       name: Driveway
       snapshot_retry: 2,5
       type: custom:aarlo-glance
-    panel: false
+    - camera_image: camera.porch_motion_snapshot
+      entities:
+      - entity: lock.august_asl_03_smart_lock_locked
+      - entity: cover.garage_mqtt
+      entity: camera.porch_camera
+      title: Front Porch
+      type: picture-glance
+    - camera_image: camera.driveway_motion_snapshot
+      entities:
+      - entity: lock.august_asl_03_smart_lock_locked
+      - entity: cover.garage_mqtt
+      entity: camera.driveway
+      title: Driveway
+      type: picture-glance
     path: arlo
-    title: Arlo
+    title: Cameras
   - badges: []
     cards:
     - entity: media_player.bedroom_tcl_tv
