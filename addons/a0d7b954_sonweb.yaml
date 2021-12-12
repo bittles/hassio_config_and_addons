@@ -1,3 +1,0 @@
-certfile: nginxproxymanager/live/npm-10/cert.pem
-keyfile: nginxproxymanager/live/npm-10/privkey.pem
-ssl: true

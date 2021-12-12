@@ -1,5 +1,7 @@
-init_commands: []
-packages: []
+init_commands:
+- upnpc -r 9722 tcp 8443 443 tcp 8880 80 tcp
+packages:
+- miniupnpc
 share_sessions: false
 ssh:
   allow_agent_forwarding: false
