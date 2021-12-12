@@ -1,0 +1,15 @@
+allow_hosts:
+- 10.0.0.0/8
+- 172.16.0.0/12
+- 192.168.0.0/16
+- fe80::/10
+compatibility_mode: false
+password: T!g0le86
+username: homeassistant
+veto_files:
+- ._*
+- .DS_Store
+- Thumbs.db
+- icon?
+- .Trashes
+workgroup: WORKGROUP

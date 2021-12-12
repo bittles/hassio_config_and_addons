@@ -1202,6 +1202,15 @@
     - condition: state
       entity_id: person.nick
       state: home
+  - condition: not
+    conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id: karahome
+      - condition: state
+        entity_id: person.nick
+        state: home
   action:
   - choose:
     - conditions:
