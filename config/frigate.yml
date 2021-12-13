@@ -1,0 +1,97 @@
+mqtt:
+  # Required: host name
+  host: 192.168.29.189
+  # Optional: port (default: shown below)
+  port: 1883
+  # Optional: topic prefix (default: shown below)
+  # NOTE: must be unique if you are running multiple instances
+  topic_prefix: frigate
+  # Optional: client id (default: shown below)
+  # NOTE: must be unique if you are running multiple instances
+  client_id: frigate
+  # Optional: user
+  user: mqtt
+  # Optional: password
+  # NOTE: MQTT password can be specified with an environment variables that must begin with 'FRIGATE_'.
+  #       e.g. password: '{FRIGATE_MQTT_PASSWORD}'
+  password: mosquitto
+cameras:
+  Front Porch:
+    ffmpeg:
+      inputs:
+        - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
+          roles:
+            - detect
+#            - rtmp
+    detect:
+      width: 1280
+      height: 720
+      fps: 3
+      
+ffmpeg:
+  # Optional: global ffmpeg args (default: shown below)
+#  global_args: -hide_banner -loglevel warning
+  
+  # Optional: global hwaccel args (default: shown below)
+  # NOTE: See hardware acceleration docs for your specific device
+  
+  hwaccel_args: -hwaccel drm -hwaccel_device /dev/dri/renderD128
+    
+  # Optional: global input args (default: shown below)
+  
+  # input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1
+  
+  input_args: -avoid_negative_ts make_zero -fflags nobuffer -flags low_delay -strict experimental -fflags +genpts+discardcorrupt -use_wallclock_as_timestamps 1
+  
+  # Optional: global output args
+  #output_args:
+  #  # Optional: output args for detect streams (default: shown below)
+  #  detect: -f rawvideo -pix_fmt yuv420p
+  #  # Optional: output args for record streams (default: shown below)
+  #  record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an
+  #  # Optional: output args for rtmp streams (default: shown below)
+  #  rtmp: -c copy -f flv
+  #  
+  output_args:
+    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v libx264 -an
+    rtmp: -c:v libx264 -an -f flv
+
+motion:
+  # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
+  # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
+  # The value should be between 1 and 255.
+  
+  threshold: 11
+  
+  # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
+  # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
+  # moving objects.
+  
+  contour_area: 100
+  
+  # Optional: Alpha value passed to cv2.accumulateWeighted when averaging the motion delta across multiple frames (default: shown below)
+  # Higher values mean the current frame impacts the delta a lot, and a single raindrop may register as motion.
+  # Too low and a fast moving person wont be detected as motion.
+  
+  delta_alpha: 0.2
+  
+  # Optional: Alpha value passed to cv2.accumulateWeighted when averaging frames to determine the background (default: shown below)
+  # Higher values mean the current frame impacts the average a lot, and a new object will be averaged into the background faster.
+  # Low values will cause things like moving shadows to be detected as motion for longer.
+  # https://www.geeksforgeeks.org/background-subtraction-in-an-image-using-concept-of-running-average/
+  
+  frame_alpha: 0.2
+  
+  # Optional: Height of the resized motion frame  (default: 1/6th of the original frame height, but no less than 180)
+  # This operates as an efficient blur alternative. Higher values will result in more granular motion detection at the expense of higher CPU usage.
+  # Lower values result in less CPU, but small changes may not register as motion.
+  
+  frame_height: 180
+  
+  # Optional: motion mask
+  # NOTE: see docs for more detailed info on creating masks
+  
+  mask:
+    - 0,234,0,720,224,720,183,379,347,369,347,269,342,51,514,31,512,0,257,0,136,0,0,0
+    - 1280,0,662,0,486,170,505,233,679,363,1280,459
+    - 927,709,1246,704,1248,674,930,679

@@ -142,6 +142,8 @@ config:
       - entity: light.aarlo_front_porch
       - entity: light.aarlo_back_deck
       - entity: light.aarlo_garage_camera
+      - entity: input_boolean.driveway_motion
+      - entity: input_boolean.porch_motion
       type: entities
     - entity: camera.aarlo_front_porch
       global: muted
