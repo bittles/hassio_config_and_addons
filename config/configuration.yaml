@@ -25,10 +25,22 @@ input_select:
 #  client_secret: !secret spotify_secret
 
 rest_command:
-  camera_motion_start:
-    url: 'http://192.168.29.189:7999/1/detection/start'
-  camera_motion_pause:
-    url: 'http://192.168.29.189:7999/1/detection/pause'
+  driveway_motion_on:
+    url: 'http://192.168.29.187:10080/endpoint/@scrypted/webhook/public/24/9ae328b5778ec680/turnOn'
+    method: post
+    verify_ssl: false
+  driveway_motion_off:
+    url: 'http://192.168.29.187:10080/endpoint/@scrypted/webhook/public/24/9ae328b5778ec680/turnOff'
+    method: post
+    verify_ssl: false
+  porch_motion_on:
+    url: 'http://192.168.29.187:10080/endpoint/@scrypted/webhook/public/31/4cba00a99e8bceef/turnOn'
+    method: post
+    verify_ssl: false
+  porch_motion_off:
+    url: 'http://192.168.29.187:10080/endpoint/@scrypted/webhook/public/31/4cba00a99e8bceef/turnOff'
+    method: post
+    verify_ssl: false
 
 battery_consumption:
   front_door_batteries:
@@ -138,7 +150,7 @@ camera:
   - platform: aarlo
 
   - platform: generic
-    still_image_url: http://127.0.0.1:8123/local/snapshot_camera.front_door.jpg
+    still_image_url: http://127.0.0.1:8123/local/snapshot_camera.porch_camera.jpg
     name: Porch Motion Snapshot
 
   - platform: generic

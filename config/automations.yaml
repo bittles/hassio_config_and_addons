@@ -3150,7 +3150,59 @@
       milliseconds: 0
   - service: camera.snapshot
     target:
-      entity_id: camera.front_door
+      entity_id: camera.porch_camera
     data:
-      filename: /config/www/snapshot_{{ 'camera.front_door' }}.jpg
+      filename: /config/www/snapshot_{{ 'camera.porch_camera' }}.jpg
   mode: single
+- id: '1639324601132'
+  alias: zzMotion Send Webhook to Scrypted
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.driveway_motion
+    id: drivewaymotion-on
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.porch_motion
+    id: porchmotion-on
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: input_boolean.porch_motion
+    id: porchmotion-off
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: input_boolean.driveway_motion
+    id: drivewaymotion-off
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: drivewaymotion-on
+      sequence:
+      - service: rest_command.driveway_motion_on
+    - conditions:
+      - condition: trigger
+        id: drivewaymotion-off
+      sequence:
+      - service: rest_command.driveway_motion_off
+    default: []
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: porchmotion-on
+      sequence:
+      - service: rest_command.porch_motion_on
+    - conditions:
+      - condition: trigger
+        id: porchmotion-off
+      sequence:
+      - service: rest_command.porch_motion_off
+    default: []
+  mode: parallel
+  max: 10
