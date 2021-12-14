@@ -3178,6 +3178,26 @@
     id: drivewaymotion-off
     from: 'on'
     to: 'off'
+  - platform: state
+    entity_id: switch.frigate_driveway_motion
+    id: drivewaymotion-off
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: switch.frigate_driveway_motion
+    id: drivewaymotion-on
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: switch.frigate_porch_motion
+    id: porchmotion-on
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: switch.frigate_porch_motion
+    id: porchmotion-off
+    from: 'on'
+    to: 'off'
   condition: []
   action:
   - choose:
