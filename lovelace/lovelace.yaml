@@ -583,6 +583,8 @@ config:
       - entity: input_number.heat_end_temp
       - entity: input_boolean.driveway_motion
       - entity: input_boolean.porch_motion
+      - entity: switch.frigate_porch_motion
+      - entity: switch.frigate_driveway_motion
       type: entities
     - calibration_points:
       - map:
@@ -649,3 +651,111 @@ config:
           - 17410
     path: server-control
     title: Server Control
+  - badges: []
+    cards:
+    - cards:
+      - entities:
+        - entity: binary_sensor.front_porch_bicycle_motion
+          name: Bicycle Motion
+        - entity: binary_sensor.front_porch_bird_motion
+          name: Bird Motion
+        - entity: binary_sensor.front_porch_bus_motion
+          name: Bus Motion
+        - entity: binary_sensor.front_porch_car_motion
+          name: Car Motion
+        - entity: binary_sensor.front_porch_cat_motion
+          name: Cat Motion
+        - entity: binary_sensor.front_porch_dog_motion
+          name: Dog Motion
+        - entity: binary_sensor.front_porch_motorcycle_motion
+          name: Motorcycle Motion
+        - entity: binary_sensor.front_porch_person_motion
+          name: Person Motion
+        - entity: sensor.front_porch_camera_fps_2
+          name: Camera Fps
+        - entity: sensor.front_porch_detection_fps_2
+          name: Detection Fps
+        - entity: sensor.front_porch_process_fps_2
+          name: Process Fps
+        - entity: sensor.front_porch_skipped_fps_2
+          name: Skipped Fps
+        title: Front Porch
+        type: entities
+      - entity: camera.front_porch_2
+        type: picture-entity
+      - entity: camera.front_porch_bicycle
+        type: picture-entity
+      - entity: camera.front_porch_bird
+        type: picture-entity
+      - entity: camera.front_porch_bus
+        type: picture-entity
+      - entity: camera.front_porch_car
+        type: picture-entity
+      - entity: camera.front_porch_cat
+        type: picture-entity
+      - entity: camera.front_porch_dog
+        type: picture-entity
+      - entity: camera.front_porch_motorcycle
+        type: picture-entity
+      - entity: camera.front_porch_person_2
+        type: picture-entity
+      columns: 1
+      square: false
+      type: grid
+    - cards:
+      - entities:
+        - entity: binary_sensor.driveway_bicycle_motion
+          name: Bicycle Motion
+        - entity: binary_sensor.driveway_bird_motion
+          name: Bird Motion
+        - entity: binary_sensor.driveway_bus_motion
+          name: Bus Motion
+        - entity: binary_sensor.driveway_car_motion
+          name: Car Motion
+        - entity: binary_sensor.driveway_cat_motion
+          name: Cat Motion
+        - entity: binary_sensor.driveway_dog_motion
+          name: Dog Motion
+        - entity: binary_sensor.driveway_motorcycle_motion
+          name: Motorcycle Motion
+        - entity: binary_sensor.driveway_person_motion
+          name: Person Motion
+        - entity: sensor.driveway_camera_fps
+          name: Camera Fps
+        - entity: sensor.driveway_detection_fps
+          name: Detection Fps
+        - entity: sensor.driveway_process_fps
+          name: Process Fps
+        - entity: sensor.driveway_skipped_fps
+          name: Skipped Fps
+        title: Driveway
+        type: entities
+      - entity: camera.driveway_2
+        type: picture-entity
+      - entity: camera.driveway_bicycle
+        type: picture-entity
+      - entity: camera.driveway_bird
+        type: picture-entity
+      - entity: camera.driveway_bus
+        type: picture-entity
+      - entity: camera.driveway_car
+        type: picture-entity
+      - entity: camera.driveway_cat
+        type: picture-entity
+      - entity: camera.driveway_dog
+        type: picture-entity
+      - entity: camera.driveway_motorcycle
+        type: picture-entity
+      - entity: camera.driveway_person
+        type: picture-entity
+      columns: 1
+      square: false
+      type: grid
+    - entities:
+      - entity: input_boolean.driveway_motion
+      - entity: input_boolean.porch_motion
+      - entity: switch.frigate_porch_motion
+      - entity: switch.frigate_driveway_motion
+      type: entities
+    path: frigate
+    title: Frigate
