@@ -3120,25 +3120,8 @@
     entity_id: input_boolean.driveway_motion
     from: 'off'
     to: 'on'
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - service: camera.snapshot
-    target:
-      entity_id: camera.driveway
-    data:
-      filename: /config/www/snapshot_{{ 'camera.driveway' }}.jpg
-  mode: single
-- id: '1639179202364'
-  alias: zzMotion Update Porch Snapshot
-  description: ''
-  trigger:
   - platform: state
-    entity_id: input_boolean.porch_motion
+    entity_id: switch.frigate_driveway_motion
     from: 'off'
     to: 'on'
   condition: []
@@ -3150,9 +3133,34 @@
       milliseconds: 0
   - service: camera.snapshot
     target:
-      entity_id: camera.porch_camera
+      entity_id: camera.driveway_2
     data:
-      filename: /config/www/snapshot_{{ 'camera.porch_camera' }}.jpg
+      filename: /config/www/snapshot_camera.driveway.jpg
+  mode: single
+- id: '1639179202364'
+  alias: zzMotion Update Porch Snapshot
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.porch_motion
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: switch.frigate_porch_motion
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: camera.snapshot
+    data:
+      filename: /config/www/snapshot_camera.porch_camera.jpg
+    target:
+      entity_id: camera.front_porch_2
   mode: single
 - id: '1639324601132'
   alias: zzMotion Send Webhook to Scrypted

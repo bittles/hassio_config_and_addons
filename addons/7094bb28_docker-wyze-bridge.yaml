@@ -1,5 +1,6 @@
 API_THUMB: true
 FFMPEG_CMD: ''
+IGNORE_OFFLINE: true
 LAN_ONLY: true
 MQTT_DTOPIC: homeassistant
 NET_MODE: ANY

@@ -2,6 +2,24 @@ config:
   background: var(--background-image)
   title: Home
   views:
+  - badges: []
+    cards:
+    - camera_image: camera.porch_motion_snapshot
+      entities:
+      - entity: lock.august_asl_03_smart_lock_locked
+      - entity: cover.garage_mqtt
+      entity: camera.front_porch_2
+      title: Front Porch
+      type: picture-glance
+    - camera_image: camera.driveway_motion_snapshot
+      entities:
+      - entity: lock.august_asl_03_smart_lock_locked
+      - entity: cover.garage_mqtt
+      entity: camera.driveway_2
+      title: Driveway
+      type: picture-glance
+    path: arlo
+    title: Cameras
   - badges:
     - entity: sensor.dark_sky_precip_probability_0d
     - entity: sensor.dark_sky_daytime_high_apparent_temperature_0d
@@ -136,70 +154,6 @@ config:
       type: markdown
     theme: night
     title: Home
-  - badges: []
-    cards:
-    - entities:
-      - entity: light.aarlo_front_porch
-      - entity: light.aarlo_back_deck
-      - entity: light.aarlo_garage_camera
-      - entity: input_boolean.driveway_motion
-      - entity: input_boolean.porch_motion
-      type: entities
-    - entity: camera.aarlo_front_porch
-      global: muted
-      image_bottom: snapshot|library|light
-      image_click: recordings
-      image_top: name|date|stream|onoff
-      image_view: smart
-      library_sizes: 1,2,3,4
-      light: light.aarlo_front_porch
-      logging: false
-      max_recordings: '30'
-      name: Front Porch
-      snapshot_retry: 2,5
-      type: custom:aarlo-glance
-    - entity: camera.aarlo_back_deck
-      global: muted
-      image_bottom: snapshot|library|light
-      image_click: recordings
-      image_top: name|date|stream|onoff
-      image_view: smart
-      library_sizes: 1,2,3,4
-      light: light.aarlo_back_deck
-      logging: false
-      max_recordings: '30'
-      name: Back Deck
-      snapshot_retry: 2,5
-      type: custom:aarlo-glance
-    - entity: camera.aarlo_garage_camera
-      global: muted
-      image_bottom: snapshot|library|light
-      image_click: recordings
-      image_top: name|date|stream|onoff
-      image_view: smart
-      library_sizes: 1,2,3,4
-      light: light.aarlo_garage_camera
-      logging: false
-      max_recordings: '30'
-      name: Driveway
-      snapshot_retry: 2,5
-      type: custom:aarlo-glance
-    - camera_image: camera.porch_motion_snapshot
-      entities:
-      - entity: lock.august_asl_03_smart_lock_locked
-      - entity: cover.garage_mqtt
-      entity: camera.porch_camera
-      title: Front Porch
-      type: picture-glance
-    - camera_image: camera.driveway_motion_snapshot
-      entities:
-      - entity: lock.august_asl_03_smart_lock_locked
-      - entity: cover.garage_mqtt
-      entity: camera.driveway
-      title: Driveway
-      type: picture-glance
-    path: arlo
-    title: Cameras
   - badges: []
     cards:
     - entity: media_player.bedroom_tcl_tv
@@ -649,6 +603,52 @@ config:
           - 13551
           - 38350
           - 17410
+    - entity: camera.aarlo_back_deck
+      global: muted
+      image_bottom: snapshot|library|light
+      image_click: recordings
+      image_top: name|date|stream|onoff
+      image_view: smart
+      library_sizes: 1,2,3,4
+      light: light.aarlo_back_deck
+      logging: false
+      max_recordings: '30'
+      name: Back Deck
+      snapshot_retry: 2,5
+      type: custom:aarlo-glance
+    - entities:
+      - entity: light.aarlo_front_porch
+      - entity: light.aarlo_back_deck
+      - entity: light.aarlo_garage_camera
+      - entity: input_boolean.driveway_motion
+      - entity: input_boolean.porch_motion
+      type: entities
+    - entity: camera.aarlo_front_porch
+      global: muted
+      image_bottom: snapshot|library|light
+      image_click: recordings
+      image_top: name|date|stream|onoff
+      image_view: smart
+      library_sizes: 1,2,3,4
+      light: light.aarlo_front_porch
+      logging: false
+      max_recordings: '30'
+      name: Front Porch
+      snapshot_retry: 2,5
+      type: custom:aarlo-glance
+    - entity: camera.aarlo_garage_camera
+      global: muted
+      image_bottom: snapshot|library|light
+      image_click: recordings
+      image_top: name|date|stream|onoff
+      image_view: smart
+      library_sizes: 1,2,3,4
+      light: light.aarlo_garage_camera
+      logging: false
+      max_recordings: '30'
+      name: Driveway
+      snapshot_retry: 2,5
+      type: custom:aarlo-glance
     path: server-control
     title: Server Control
   - badges: []

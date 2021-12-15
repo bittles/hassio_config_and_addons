@@ -20,7 +20,8 @@ cameras:
   front_porch:
     ffmpeg:
       inputs:
-        - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
+        - path: rtsp://192.168.29.189:8554/front-porch-cam
+ #       - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
           roles:
             - detect
             - rtmp
@@ -37,7 +38,8 @@ cameras:
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
+        - path: rtsp://192.168.29.189:8554/driveway-cam
+ #       - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
           roles:
             - detect
             - rtmp
