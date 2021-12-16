@@ -3129,13 +3129,29 @@
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
-      milliseconds: 0
+      seconds: 0
+      milliseconds: 400
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.wyze_driveway_time
+    data:
+      timestamp: '{{ now().timestamp() }}'
   - service: camera.snapshot
     target:
       entity_id: camera.driveway_2
     data:
       filename: /config/www/snapshot_camera.driveway.jpg
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 100
+  - service: notify.mobile_app_rxniphone
+    data:
+      message: Frigate driveway capture.  Check the home app for live view.  Here's
+        the image captured from '{{ states('input_datetime.wyze_driveway_time') }}'.
+      data:
+        image: /local/snapshot_camera.driveway.jpg
   mode: single
 - id: '1639179202364'
   alias: zzMotion Update Porch Snapshot
@@ -3154,13 +3170,29 @@
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
-      milliseconds: 0
+      seconds: 0
+      milliseconds: 400
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.wyze_porch_time
+    data:
+      timestamp: '{{ now().timestamp() }}'
   - service: camera.snapshot
     data:
       filename: /config/www/snapshot_camera.porch_camera.jpg
     target:
       entity_id: camera.front_porch_2
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 100
+  - service: notify.mobile_app_rxniphone
+    data:
+      message: Frigate porch capture.  Check the home app for live view.  Here's the
+        image captured from '{{ states('input_datetime.wyze_porch_time') }}'.
+      data:
+        image: /local/snapshot_camera.porch_camera.jpg
   mode: single
 - id: '1639324601132'
   alias: zzMotion Send Webhook to Scrypted
@@ -3234,3 +3266,85 @@
     default: []
   mode: parallel
   max: 10
+- id: '1639590820458'
+  alias: zzMotion Update Driveway Snapshot (Duplicate)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.driveway_motion
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: switch.frigate_driveway_motion
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 400
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.wyze_driveway_time
+    data:
+      timestamp: '{{ now().timestamp() }}'
+  - service: camera.snapshot
+    target:
+      entity_id: camera.driveway_2
+    data:
+      filename: /config/www/snapshot_camera.driveway.jpg
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 200
+  - service: notify.mobile_app_rxniphone
+    data:
+      message: Frigate driveway capture.  Check the home app for live view.  Here's
+        the image captured from '{{ states('input_datetime.wyze_driveway_time') }}'.
+      data:
+        entity_id: camera.driveway_motion_snapshot
+  mode: single
+- id: '1639590891103'
+  alias: zzMotion Update Porch Snapshot (Duplicate)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.porch_motion
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: switch.frigate_porch_motion
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 400
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.wyze_porch_time
+    data:
+      timestamp: '{{ now().timestamp() }}'
+  - service: camera.snapshot
+    data:
+      filename: /config/www/snapshot_camera.porch_camera.jpg
+    target:
+      entity_id: camera.front_porch_2
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 200
+  - service: notify.mobile_app_rxniphone
+    data:
+      message: Frigate porch capture.  Check the home app for live view.  Here's the
+        image captured from '{{ states('input_datetime.wyze_porch_time') }}'.
+      data:
+        entity_id: camera.porch_motion_snapshot
+  mode: single
