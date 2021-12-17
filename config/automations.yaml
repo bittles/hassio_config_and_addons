@@ -3348,3 +3348,15 @@
       data:
         entity_id: camera.porch_motion_snapshot
   mode: single
+- id: '1639636571527'
+  alias: zzzzzzzSSH Restart
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /1
+  condition: []
+  action:
+  - service: hassio.addon_restart
+    data:
+      addon: a0d7b954_ssh
+  mode: single
