@@ -28,7 +28,7 @@ cameras:
     detect:
       width: 1024
       height: 576
-      fps: 5
+      fps: 2
     motion:
       mask:
         - 0,234,0,576,172,576,157,301,283,293,275,179,272,71,310,30,443,31,429,0,257,0,136,0,0,0
@@ -46,7 +46,7 @@ cameras:
     detect:
       width: 1024
       height: 576
-      fps: 5
+      fps: 2
     motion:
       mask:
         - 177,0,0,0,0,78
