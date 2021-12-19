@@ -3300,10 +3300,11 @@
       minutes: 0
       seconds: 0
       milliseconds: 200
-  - service: notify.mobile_app_rxniphone
+  - service: notify.d_and_nicks_notifications_grouped
     data:
-      message: Frigate driveway capture.  Check the home app for live view.  Here's
-        the image captured from '{{ states('input_datetime.wyze_driveway_time') }}'.
+      message: Frigate driveway capture.  Check the home app for live view and recorded
+        clip.  Here's the image captured from '{{ states('input_datetime.wyze_driveway_time')
+        }}'.
       data:
         entity_id: camera.driveway_motion_snapshot
   mode: single
