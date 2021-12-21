@@ -3295,18 +3295,15 @@
       entity_id: camera.driveway_2
     data:
       filename: /config/www/snapshot_camera.driveway.jpg
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 200
-  - service: notify.d_and_nicks_notifications_grouped
+  - service: camera.snapshot
+    target:
+      entity_id: camera.driveway_2
     data:
-      message: Frigate driveway capture.  Check the home app for live view and recorded
-        clip.  Here's the image captured from '{{ states('input_datetime.wyze_driveway_time')
-        }}'.
-      data:
-        entity_id: camera.driveway_motion_snapshot
+      filename: /config/www/Wyze/driveway/driveway_{{ states('input_number.wyze_driveway_captures')
+        }}.jpg
+  - service: input_number.increment
+    target:
+      entity_id: input_number.wyze_driveway_captures
   mode: single
 - id: '1639590891103'
   alias: zzMotion Update Porch Snapshot (Duplicate)
@@ -3360,4 +3357,110 @@
   - service: hassio.addon_restart
     data:
       addon: a0d7b954_ssh
+  mode: single
+- id: '1639989263629'
+  alias: ..Restart Cams
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:30:00
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - service: hassio.addon_restart
+    data:
+      addon: ccab4aaf_frigate-fa
+  mode: single
+- id: '1640042306096'
+  alias: zzMotion Driveway Pic
+  description: ''
+  trigger:
+  - platform: event
+    event_type: folder_watcher
+    event_data:
+      event_type: modified
+      folder: /config/www/Wyze/clips
+  condition:
+  - condition: template
+    value_template: '{% if trigger.event.data.file|truncate(11, true) == ''driveway...''
+      %}
+
+      true
+
+      {% endif %}'
+  action:
+  - service: notify.d_and_nicks_notifications_grouped
+    data:
+      message: Frigate driveway capture.  Check the home app for live view and recorded
+        clip.  Here's the image captured from '{{ states('input_datetime.wyze_driveway_time')
+        }}'.
+      data:
+        image: https://hassio.unibutton.com/local/Wyze/clips/{{ trigger.event.data.file
+          }}
+  mode: single
+- id: '1640043670626'
+  alias: zzMotion Porch Pic
+  description: ''
+  trigger:
+  - platform: event
+    event_type: folder_watcher
+    event_data:
+      event_type: modified
+      folder: /config/www/Wyze/clips
+  condition:
+  - condition: template
+    value_template: '{% if trigger.event.data.file|truncate(14, true) == ''front_porch...''
+      %}
+
+      true
+
+      {% endif %}'
+  action:
+  - service: notify.d_and_nicks_notifications_grouped
+    data:
+      message: Frigate PORCH capture.  Check the home app for live view and recorded
+        clip.  Here's the image captured from '{{ states('input_datetime.wyze_porch_time')
+        }}'.
+      data:
+        image: https://hassio.unibutton.com/local/Wyze/clips/{{ trigger.event.data.file
+          }}
+  mode: single
+- id: '1640044752814'
+  alias: zzMotion Reset Captures
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_number.wyze_driveway_captures
+    to: '99'
+    id: drivewaycap
+  - platform: state
+    entity_id: input_number.wyze_front_porch_captures
+    to: '99'
+    id: frontporchcap
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: drivewaycap
+      sequence:
+      - service: input_number.set_value
+        target:
+          entity_id: input_number.wyze_driveway_captures
+        data:
+          value: 0
+    - conditions:
+      - condition: trigger
+        id: frontporchcap
+      sequence:
+      - service: input_number.set_value
+        data:
+          value: 0
+    default: []
   mode: single

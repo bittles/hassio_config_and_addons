@@ -20,7 +20,7 @@ cameras:
   front_porch:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.189:8554/front-porch-cam
+        - path: rtmp://192.168.29.187:1935/front-porch-cam
  #       - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
           roles:
             - detect
@@ -38,7 +38,7 @@ cameras:
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.189:8554/driveway-cam
+        - path: rtmp://192.168.29.187:1935/driveway-cam
  #       - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
           roles:
             - detect
@@ -117,7 +117,7 @@ ffmpeg:
   hwaccel_args: -hwaccel drm -hwaccel_device /dev/dri/renderD128
     
   # Optional: global input args (default: shown below)
-#  input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1
+#  input_args: -avoid_negative_ts make_zero -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -fflags +genpts+discardcorrupt+nofillin+flush_packets
   
   input_args: -avoid_negative_ts make_zero -fflags nobuffer -flags low_delay -fflags +genpts+discardcorrupt -use_wallclock_as_timestamps 1
   # DONT USE-rw_timeout 5000000

@@ -71,12 +71,22 @@ folder_watcher:
 #  - folder: /share/downloadtracker/
 #    patterns:
 #      - '*'
-  - folder: /share/Arlo/Camera
-    patterns:
-      - '*.mp4'
+#  - folder: /share/Arlo/Camera
+#    patterns:
+#      - '*.mp4'
   - folder: "/share/Arlo/Front Porch"
     patterns:
       - '*.mp4'
+  - folder: "/config/www/Wyze/driveway"
+    patterns:
+      - '*.jpg'
+  - folder: "/config/www/Wyze/front_porch"
+    patterns:
+      - '*.jpg'
+  - folder: "/config/www/Wyze/clips"
+    patterns:
+      - 'driveway-*.jpg'
+      - 'front_porch-*.jpg'
 
 #shell_command:
 #  unziptorrents: /share/zipscript.sh '{{ torrent }}'
@@ -347,8 +357,9 @@ homeassistant:
     recordings: /share/Arlo
   allowlist_external_dirs:
   - /share
-  - /config/www
-  - /tmp
+  - /config/www/Wyze/driveway
+  - /config/www/Wyze/front_porch
+  - /config/www/Wyze/clips
 #  - /config/.storage/gol
 
 media_source:
