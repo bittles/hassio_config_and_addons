@@ -3334,17 +3334,15 @@
       filename: /config/www/snapshot_camera.porch_camera.jpg
     target:
       entity_id: camera.front_porch_2
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 200
-  - service: notify.mobile_app_rxniphone
+  - service: camera.snapshot
     data:
-      message: Frigate porch capture.  Check the home app for live view.  Here's the
-        image captured from '{{ states('input_datetime.wyze_porch_time') }}'.
-      data:
-        entity_id: camera.porch_motion_snapshot
+      filename: /config/www/Wyze/front_porch/front_porch_{{ states('input_number.wyze_front_porch_captures')
+        }}.jpg
+    target:
+      entity_id: camera.front_porch_2
+  - service: input_number.increment
+    target:
+      entity_id: input_number.wyze_front_porch_captures
   mode: single
 - id: '1639636571527'
   alias: zzzzzzzSSH Restart
@@ -3378,7 +3376,7 @@
       addon: ccab4aaf_frigate-fa
   mode: single
 - id: '1640042306096'
-  alias: zzMotion Driveway Pic
+  alias: zzMotion Driveway Pic (Nick Notif)
   description: ''
   trigger:
   - platform: event
@@ -3395,17 +3393,16 @@
 
       {% endif %}'
   action:
-  - service: notify.d_and_nicks_notifications_grouped
+  - service: notify.mobile_app_rxniphone
     data:
-      message: Frigate driveway capture.  Check the home app for live view and recorded
-        clip.  Here's the image captured from '{{ states('input_datetime.wyze_driveway_time')
+      message: Frigate DRIVEWAY DETECTION pic from '{{ states('input_datetime.wyze_driveway_time')
         }}'.
       data:
         image: https://hassio.unibutton.com/local/Wyze/clips/{{ trigger.event.data.file
           }}
   mode: single
 - id: '1640043670626'
-  alias: zzMotion Porch Pic
+  alias: zzMotion Porch Pic (Nick Notif)
   description: ''
   trigger:
   - platform: event
@@ -3422,10 +3419,9 @@
 
       {% endif %}'
   action:
-  - service: notify.d_and_nicks_notifications_grouped
+  - service: notify.mobile_app_rxniphone
     data:
-      message: Frigate PORCH capture.  Check the home app for live view and recorded
-        clip.  Here's the image captured from '{{ states('input_datetime.wyze_porch_time')
+      message: Frigate PORCH DETECTION pic from '{{ states('input_datetime.wyze_porch_time')
         }}'.
       data:
         image: https://hassio.unibutton.com/local/Wyze/clips/{{ trigger.event.data.file
@@ -3463,4 +3459,44 @@
         data:
           value: 0
     default: []
+  mode: single
+- id: '1640119553542'
+  alias: zzMotion Porch Pic (Group Notif)
+  description: ''
+  trigger:
+  - platform: event
+    event_type: folder_watcher
+    event_data:
+      event_type: modified
+      folder: /config/www/Wyze/front_porch
+  condition: []
+  action:
+  - service: notify.d_and_nicks_notifications_grouped
+    data:
+      message: Frigate PORCH capture.  Check the home app for live view and recorded
+        clip.  Here's the image captured from '{{ states('input_datetime.wyze_porch_time')
+        }}'.
+      data:
+        image: https://hassio.unibutton.com/local/Wyze/front_porch/{{ trigger.event.data.file
+          }}
+  mode: single
+- id: '1640119897005'
+  alias: zzMotion Driveway Pic (Group Notif)
+  description: ''
+  trigger:
+  - platform: event
+    event_type: folder_watcher
+    event_data:
+      event_type: modified
+      folder: /config/www/Wyze/driveway
+  condition: []
+  action:
+  - service: notify.d_and_nicks_notifications_grouped
+    data:
+      message: Frigate DRIVEWAY capture.  Check the home app for live view and recorded
+        clip.  Here's the image captured from '{{ states('input_datetime.wyze_driveway_time')
+        }}'.
+      data:
+        image: https://hassio.unibutton.com/local/Wyze/driveway/{{ trigger.event.data.file
+          }}
   mode: single

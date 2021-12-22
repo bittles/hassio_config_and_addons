@@ -355,6 +355,7 @@ homeassistant:
   media_dirs:
     local: /media
     recordings: /share/Arlo
+    wyze: /config/www/Wyze
   allowlist_external_dirs:
   - /share
   - /config/www/Wyze/driveway
