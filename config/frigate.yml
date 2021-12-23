@@ -25,6 +25,7 @@ cameras:
           roles:
             - detect
             - rtmp
+#            - record
     motion:
       mask:
         - 0,234,0,576,172,576,157,301,283,293,275,179,272,71,310,30,443,31,429,0,257,0,136,0,0,0
@@ -42,8 +43,9 @@ cameras:
           min_area: 0
           max_area: 24000000
         person:
+          threshold: 0.6
           min_area: 0
-          max_area: 300000
+          max_area: 1600000
         bicycle:
           min_area: 0
           max_area: 24000000
@@ -70,14 +72,19 @@ cameras:
           roles:
             - detect
             - rtmp
+            - record
     motion:
+      contour_area: 550
       mask:
-        - 177,0,0,0,0,78
-        - 935,0,1024,0,1024,31
+        - 173,101,207,0,0,0,0,108
+        - 864,25,857,0,1024,0,1024,41
         - 883,540,890,563,998,565,994,539
-        - 0,131,59,32,107,75,84,96,79,120,137,137,112,226,213,246,215,355,123,378,78,409,0,551
+        - 0,131,0,35,107,75,84,96,79,120,137,137,112,226,213,246,215,355,123,378,78,409,0,551
         - 191,576,220,490,132,484,72,500,0,558,0,576
         - 1024,113,1024,576,984,576,936,319,961,224,1006,129
+    record:
+      enabled: True
+      retain_days: 1
     live:
       # Live camera view height default=720
       height: 576
@@ -88,7 +95,7 @@ cameras:
       filters:
         car:
           min_area: 0
-          max_area: 24000000
+          max_area: 500000
         person:
           min_area: 0
           max_area: 24000000
@@ -271,32 +278,31 @@ objects:
     dog:
       threshold: 0.55
 
-
 motion:
   # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
   # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
   # The value should be between 1 and 255.
   
-  threshold: 30
+  threshold: 64
   
   # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
   # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
   # moving objects.
   
-  contour_area: 100
+  contour_area: 200
   
   # Optional: Alpha value passed to cv2.accumulateWeighted when averaging the motion delta across multiple frames (default: shown below)
   # Higher values mean the current frame impacts the delta a lot, and a single raindrop may register as motion.
   # Too low and a fast moving person wont be detected as motion.
   
-  delta_alpha: 0.2
+  delta_alpha: 0.17
   
   # Optional: Alpha value passed to cv2.accumulateWeighted when averaging frames to determine the background (default: shown below)
   # Higher values mean the current frame impacts the average a lot, and a new object will be averaged into the background faster.
   # Low values will cause things like moving shadows to be detected as motion for longer.
   # https://www.geeksforgeeks.org/background-subtraction-in-an-image-using-concept-of-running-average/
   
-  frame_alpha: 0.2
+  frame_alpha: 0.21
   
   # Optional: Height of the resized motion frame  (default: 1/6th of the original frame height, but no less than 180)
   # This operates as an efficient blur alternative. Higher values will result in more granular motion detection at the expense of higher CPU usage.
@@ -306,4 +312,35 @@ motion:
   
   # Optional: motion mask
   # NOTE: see docs for more detailed info on creating masks
-  
+
+# Optional: Record configuration
+# NOTE: Can be overridden at the camera level
+#record:
+  # Optional: Enable recording (default: shown below)
+#  enabled: True
+  # Optional: Number of days to retain recordings regardless of events (default: shown below)
+  # NOTE: This should be set to 0 and retention should be defined in events section below
+  #       if you only want to retain recordings of events.
+#  retain_days: 1
+  # Optional: Event recording settings
+#  events:
+    # Optional: Maximum length of time to retain video during long events. (default: shown below)
+    # NOTE: If an object is being tracked for longer than this amount of time, the retained recordings
+    #       will be the last x seconds of the event unless retain_days under record is > 0.
+#    max_seconds: 10
+    # Optional: Number of seconds before the event to include (default: shown below)
+#    pre_capture: 5
+    # Optional: Number of seconds after the event to include (default: shown below)
+#    post_capture: 5
+    # Optional: Objects to save recordings for. (default: all tracked objects)
+#    objects:
+#      - person
+    # Optional: Restrict recordings to objects that entered any of the listed zones (default: no required zones)
+#    required_zones: []
+    # Optional: Retention settings for recordings of events
+#    retain:
+      # Required: Default retention days (default: shown below)
+#      default: 10
+      # Optional: Per object retention days
+#      objects:
+#        person: 15

@@ -3284,7 +3284,7 @@
       hours: 0
       minutes: 0
       seconds: 0
-      milliseconds: 400
+      milliseconds: 100
   - service: input_datetime.set_datetime
     target:
       entity_id: input_datetime.wyze_driveway_time
@@ -3323,7 +3323,7 @@
       hours: 0
       minutes: 0
       seconds: 0
-      milliseconds: 400
+      milliseconds: 600
   - service: input_datetime.set_datetime
     target:
       entity_id: input_datetime.wyze_porch_time
@@ -3473,9 +3473,9 @@
   action:
   - service: notify.d_and_nicks_notifications_grouped
     data:
-      message: Frigate PORCH capture.  Check the home app for live view and recorded
-        clip.  Here's the image captured from '{{ states('input_datetime.wyze_porch_time')
-        }}'.
+      message: '{{ states.sensor.porch_object.state }} detected on PORCH.  Check the
+        home app for live view and recorded clip.  Here''s the image captured from
+        ''{{ states(''input_datetime.wyze_porch_time'') }}''.'
       data:
         image: https://hassio.unibutton.com/local/Wyze/front_porch/{{ trigger.event.data.file
           }}
@@ -3493,9 +3493,9 @@
   action:
   - service: notify.d_and_nicks_notifications_grouped
     data:
-      message: Frigate DRIVEWAY capture.  Check the home app for live view and recorded
-        clip.  Here's the image captured from '{{ states('input_datetime.wyze_driveway_time')
-        }}'.
+      message: '{{ states.sensor.driveway_object.state }} detected in DRIVEWAY.  Check
+        the home app for live view and recorded clip.  Here''s the image captured
+        from ''{{ states(''input_datetime.wyze_driveway_time'') }}''.'
       data:
         image: https://hassio.unibutton.com/local/Wyze/driveway/{{ trigger.event.data.file
           }}
