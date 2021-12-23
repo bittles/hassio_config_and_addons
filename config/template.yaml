@@ -153,6 +153,114 @@
       state: "{{ state_attr('camera.aarlo_front_porch', 'last_thumbnail') }}"
 
 - trigger:
+    - platform: state
+      entity_id: binary_sensor.driveway_bicycle_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.driveway_bird_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.driveway_bus_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.driveway_car_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.driveway_cat_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.driveway_dog_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.driveway_motorcycle_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.driveway_person_motion
+      to: 'on'
+    - platform: state
+      entity_id: switch.frigate_driveway_motion
+      to: 'off'
+  sensor:
+    - name: Driveway Object
+      unique_id: dwayobject
+      state: >
+        {% if trigger.entity_id == 'binary_sensor.driveway_bicycle_motion' %}
+          BICYCLE
+        {%- elif trigger.entity_id == 'binary_sensor.driveway_bird_motion' -%}
+          BIRD
+        {%- elif trigger.entity_id == 'binary_sensor.driveway_bus_motion' -%}
+          BUS
+        {%- elif trigger.entity_id == 'binary_sensor.driveway_car_motion' -%}
+          CAR
+        {%- elif trigger.entity_id == 'binary_sensor.driveway_cat_motion' -%}
+          CAT
+        {%- elif trigger.entity_id == 'binary_sensor.driveway_dog_motion' -%}
+          DOG
+        {%- elif trigger.entity_id == 'binary_sensor.driveway_motorcycle_motion' -%}
+          MOTORCYCLE
+        {%- elif trigger.entity_id == 'binary_sensor.driveway_person_motion' -%}
+          PERSON
+        {%- elif trigger.entity_id == 'switch.frigate_driveway_motion' -%}
+          Nothing
+        {%- else -%}
+          Sensor not triggered yet
+        {%- endif -%}
+
+- trigger:
+    - platform: state
+      entity_id: binary_sensor.front_porch_bicycle_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.front_porch_bird_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.front_porch_bus_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.front_porch_car_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.front_porch_cat_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.front_porch_dog_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.front_porch_motorcycle_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.front_porch_person_motion
+      to: 'on'
+    - platform: state
+      entity_id: switch.frigate_porch_motion
+      to: 'off'
+  sensor:
+    - name: Porch Object
+      unique_id: porchobject
+      state: >
+        {% if trigger.entity_id == 'binary_sensor.front_porch_bicycle_motion' %}
+          BICYCLE
+        {%- elif trigger.entity_id == 'binary_sensor.front_porch_bird_motion' -%}
+          BIRD
+        {%- elif trigger.entity_id == 'binary_sensor.front_porch_bus_motion' -%}
+          BUS
+        {%- elif trigger.entity_id == 'binary_sensor.front_porch_car_motion' -%}
+          CAR
+        {%- elif trigger.entity_id == 'binary_sensor.front_porch_cat_motion' -%}
+          CAT
+        {%- elif trigger.entity_id == 'binary_sensor.front_porch_dog_motion' -%}
+          DOG
+        {%- elif trigger.entity_id == 'binary_sensor.front_porch_motorcycle_motion' -%}
+          MOTORCYCLE
+        {%- elif trigger.entity_id == 'binary_sensor.front_porch_person_motion' -%}
+          PERSON
+        {%- elif trigger.entity_id == 'switch.frigate_porch_motion' -%}
+          Nothing
+        {%- else -%}
+          Sensor not triggered yet
+        {%- endif -%}
+
+- trigger:
     - platform: mqtt
       topic: "My OpenGarage/OUT/DIST"
       payload: 'True'

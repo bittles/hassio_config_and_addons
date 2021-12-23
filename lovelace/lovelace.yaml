@@ -756,6 +756,8 @@ config:
       - entity: input_boolean.porch_motion
       - entity: switch.frigate_porch_motion
       - entity: switch.frigate_driveway_motion
+      - entity: sensor.driveway_object
+      - entity: sensor.porch_object
       type: entities
     path: frigate
     title: Frigate
