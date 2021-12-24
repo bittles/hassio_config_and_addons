@@ -3500,3 +3500,25 @@
         image: https://hassio.unibutton.com/local/Wyze/driveway/{{ trigger.event.data.file
           }}
   mode: single
+- id: '1640317120409'
+  alias: Frigate Notification Fork Driveway
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_notification.yaml
+    input:
+      camera: driveway
+      notify_device: 051c6fdebb2adccddfd61201d0899d94
+      base_url: https://hassio.unibutton.com
+      datetime: input_datetime.wyze_driveway_time
+      cooldown: 11
+- id: '1640317202470'
+  alias: Frigate Notification Fork Porch
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_notification.yaml
+    input:
+      notify_device: 051c6fdebb2adccddfd61201d0899d94
+      camera: front_porch
+      base_url: https://hassio.unibutton.com
+      datetime: input_datetime.wyze_porch_time
+      cooldown: 10
