@@ -72,7 +72,7 @@ blueprint:
       default: ''
       selector:
         entity: {}
-    datetime:
+    captime:
       name: Date/Time of Capture
       description: input_datetime entity_id used for time display of capture.
       default: ''
@@ -88,8 +88,8 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: seconds
-          step: 1.0
           mode: slider
+          step: 1.0
     silence_timer:
       name: (Optional) Silence Notifications for 30 minutes
       description: 'How long to silence notifications for this camera when requested
@@ -102,8 +102,8 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: minutes
-          step: 1.0
           mode: slider
+          step: 1.0
 mode: single
 max_exceeded: silent
 trigger:
@@ -127,7 +127,7 @@ variables:
   input_labels: !input 'labels'
   labels: '{{ input_labels | list }}'
   presence_entity: !input 'presence_filter'
-  datetime: !input 'datetime'
+  captime: !input 'captime'
 condition:
 - '{{ type != ''end'' }}'
 - '{{ not zone_only or entered_zones|length > 0 }}'
@@ -141,7 +141,8 @@ action:
     - device_id: !input 'notify_device'
       domain: mobile_app
       type: notify
-      message: A {{ label }} was detected on the {{ camera_name }} camera.
+      message: A {{ label }} was detected on the {{ camera_name }} camera {{ states(captime)
+        }}.
       data:
         tag: '{{ id }}'
         group: frigate-notification-{{ camera }}
@@ -151,7 +152,8 @@ action:
   default:
   - service: notify.{{ group_target }}
     data:
-      message: A {{ label }} was detected on the {{ camera_name }} camera.
+      message: A {{ label }} was detected on the {{ camera_name }} camera {{ states(captime)
+        }}.
       data:
         tag: '{{ id }}'
         group: frigate-notification-{{ camera }}
@@ -177,7 +179,7 @@ action:
           domain: mobile_app
           type: notify
           message: A {{ label }} was detected on the {{ camera_name }} camera at {{
-            states.datetime.state }}.
+            states(captime) }}.
           data:
             tag: '{{ id }}'
             group: frigate-notification-{{ camera }}
@@ -201,7 +203,7 @@ action:
       - service: notify.{{ group_target }}
         data:
           message: A {{ label }} was detected on the {{ camera_name }} camera at {{
-            states.datetime.state }}.
+            states(captime) }}.
           data:
             tag: '{{ id }}'
             group: frigate-notification-{{ camera }}
