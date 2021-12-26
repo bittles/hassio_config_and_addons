@@ -3501,7 +3501,7 @@
           }}
   mode: single
 - id: '1640396039361'
-  alias: Frigate Notification Fork Driveway
+  alias: Frigate Notification Fork Driveway (Darius)
   description: ''
   use_blueprint:
     path: bittles/frigate_notification.yaml
@@ -3512,7 +3512,7 @@
       captime: input_datetime.wyze_driveway_time
       cooldown: 10
 - id: '1640396107108'
-  alias: Frigate Notification Fork Porch
+  alias: Frigate Notification Fork Porch (Darius)
   description: ''
   use_blueprint:
     path: bittles/frigate_notification.yaml
@@ -3521,4 +3521,26 @@
       notify_device: f76e35c3824b4aa3b2bf069241084176
       base_url: https://hassio.unibutton.com
       captime: input_datetime.wyze_porch_time
+      cooldown: 10
+- id: '1640446434058'
+  alias: Frigate Notification Fork Porch (Nick)
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_notification.yaml
+    input:
+      camera: front_porch
+      notify_device: 051c6fdebb2adccddfd61201d0899d94
+      base_url: https://hassio.unibutton.com
+      captime: input_datetime.wyze_porch_time
+      cooldown: 10
+- id: '1640446463486'
+  alias: Frigate Notification Fork Driveway (Nick)
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_notification.yaml
+    input:
+      camera: driveway
+      notify_device: 051c6fdebb2adccddfd61201d0899d94
+      base_url: https://hassio.unibutton.com
+      captime: input_datetime.wyze_driveway_time
       cooldown: 10
