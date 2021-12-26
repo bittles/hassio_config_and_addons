@@ -268,8 +268,8 @@ objects:
       threshold: 0.51
       min_score: 0.48
     person:
-      threshold: 0.51
-      min_score: 0.48
+      threshold: 0.6
+      min_score: 0.55
     bicycle:
       threshold: 0.55
     motorcycle:
