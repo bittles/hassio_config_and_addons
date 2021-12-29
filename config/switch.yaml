@@ -43,11 +43,11 @@
         turn_on:
           service: input_boolean.turn_on
           data:
-            entity_id: input_boolean.porch_motion
+            entity_id: input_boolean.wyze_porch_dummy
         turn_off:
           service: input_boolean.turn_off
           data_template:
-            entity_id: input_boolean.porch_motion
+            entity_id: input_boolean.wyze_porch_dummy
 
       frigate_driveway_motion:
         friendly_name: Frigate Driveway Motion
@@ -56,11 +56,11 @@
         turn_on:
           service: input_boolean.turn_on
           data:
-            entity_id: input_boolean.driveway_motion
+            entity_id: input_boolean.wyze_driveway_dummy
         turn_off:
           service: input_boolean.turn_off
           data_template:
-            entity_id: input_boolean.driveway_motion
+            entity_id: input_boolean.wyze_driveway_dummy
 
       fakeswitch1:
         unique_id: fakeswitch1
