@@ -3544,3 +3544,150 @@
       base_url: https://hassio.unibutton.com
       captime: input_datetime.wyze_driveway_time
       cooldown: 10
+- id: '1641005202244'
+  alias: zzzzz.Bedroom Thermostat AC by Switch (Duplicate)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.bedroom_dummyac
+    to: 'on'
+    id: switchon
+  - platform: state
+    entity_id: switch.bedroom_dummyac
+    to: 'off'
+    id: switchoff
+  - platform: state
+    entity_id: sensor.shellytempfixed_timestamp_updater
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+    id: bedroom_temp_change
+  - platform: state
+    entity_id: climate.downstairs_the_nest
+    attribute: hvac_action
+    id: nestheat
+    to: cooling
+  condition:
+  - condition: state
+    entity_id: climate.master_bedroom_thermostat
+    state: cool
+  - condition: template
+    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: switchon
+      sequence:
+      - choose:
+        - conditions:
+          - condition: not
+            conditions:
+            - condition: device
+              device_id: 1f4e53d64461d767d63350604b93cd1e
+              domain: climate
+              entity_id: climate.downstairs_the_nest
+              type: is_hvac_mode
+              hvac_mode: cool
+          sequence:
+          - device_id: 1f4e53d64461d767d63350604b93cd1e
+            domain: climate
+            entity_id: climate.downstairs_the_nest
+            type: set_hvac_mode
+            hvac_mode: cool
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 15
+              milliseconds: 0
+          - service: climate.set_temperature
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+                - 3}}'
+        - conditions:
+          - condition: device
+            device_id: 1f4e53d64461d767d63350604b93cd1e
+            domain: climate
+            entity_id: climate.downstairs_the_nest
+            type: is_hvac_mode
+            hvac_mode: cool
+          sequence:
+          - service: climate.set_temperature
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+                - 3}}'
+        default: []
+    - conditions:
+      - condition: trigger
+        id: switchoff
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 3}}'
+    - conditions:
+      - condition: trigger
+        id: nestheat
+      - condition: state
+        entity_id: switch.bedroom_dummyac
+        state: 'off'
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 3}}'
+    default:
+    - choose:
+      - conditions:
+        - condition: template
+          value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)
+            - (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)))
+            < 3 }}'
+        - condition: trigger
+          id: bedroom_temp_change
+        - condition: state
+          entity_id: climate.downstairs_the_nest
+          attribute: hvac_action
+          state: cooling
+        - condition: state
+          entity_id: switch.bedroom_dummyac
+          state: 'on'
+        sequence:
+        - service: climate.set_temperature
+          target:
+            entity_id: climate.downstairs_the_nest
+          data:
+            temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+              - 3}}'
+      - conditions:
+        - condition: trigger
+          id: bedroom_temp_change
+        - condition: state
+          entity_id: climate.downstairs_the_nest
+          state: 'off'
+          attribute: hvac_action
+        - condition: state
+          entity_id: switch.bedroom_dummyac
+          state: 'on'
+          for:
+            hours: 0
+            minutes: 0
+            seconds: 15
+            milliseconds: 0
+        sequence:
+        - service: climate.set_temperature
+          target:
+            entity_id: climate.downstairs_the_nest
+          data:
+            temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+              - 3}}'
+  mode: single
