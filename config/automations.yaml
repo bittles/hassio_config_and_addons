@@ -3691,3 +3691,16 @@
             temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
               - 3}}'
   mode: single
+- id: '1641190010717'
+  alias: .kill hbonow
+  description: ''
+  trigger:
+  - platform: time
+    at: 02:40:00
+  condition: []
+  action:
+  - service: androidtv.adb_command
+    data:
+      entity_id: media_player.shield_adb
+      command: am force-stop com.hbo.hbonow
+  mode: single
