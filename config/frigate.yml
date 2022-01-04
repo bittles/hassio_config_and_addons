@@ -95,11 +95,11 @@ cameras:
       height: 576
       
       # Live camera view quality. default=8
-      quality: 20
+      quality: 18
     objects:
       filters:
         car:
-          min_area: 9000
+          min_area: 5000
           max_area: 500000
         person:
           min_area: 5000
