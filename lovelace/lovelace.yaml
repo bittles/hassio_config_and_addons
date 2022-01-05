@@ -141,7 +141,7 @@ config:
           action: toggle
       title: Switches
       type: glance
-    - entity: weather.weatherbit
+    - entity: weather.weatherbit_2
       secondary_info_attribute: precipitation
       show_forecast: true
       type: weather-forecast

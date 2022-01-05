@@ -472,6 +472,8 @@ recorder:
       - sensor.washing_machine_wattage
       - sensor.battery_consumption_sensor_back_door_battery_template
       - sensor.battery_consumption_sensor_august_smart_lock_pro_3rd_gen_battery_level
+      - sensor.driveway_object
+      - sensor.porch_object
 
 history:
   use_include_order: true
