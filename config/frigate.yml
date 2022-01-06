@@ -25,7 +25,7 @@ cameras:
   front_porch:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8554/front-porch-cam
+        - path: rtsp://192.168.29.189:8964/front-porch-cam
  #       - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
           roles:
             - detect
@@ -72,7 +72,7 @@ cameras:
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8554/driveway-cam
+        - path: rtsp://192.168.29.189:8964/driveway-cam
  #       - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
           roles:
             - detect
@@ -100,9 +100,9 @@ cameras:
       filters:
         car:
           min_area: 5000
-          max_area: 24000000
+          max_area: 500000
         person:
-          min_area: 5000
+          min_area: 1000
           max_area: 24000000
         bicycle:
           min_area: 5000
@@ -206,7 +206,7 @@ ffmpeg:
   # Optional: global input args (default: shown below)
 #  input_args: -avoid_negative_ts make_zero -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -fflags +genpts+discardcorrupt+nofillin+flush_packets
   
-  input_args: -r 20 -use_wallclock_as_timestamps 1 #-avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
+  input_args: -use_wallclock_as_timestamps 1 #-avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
   # DONT USE-rw_timeout 5000000
   #test removed
   #-strict experimental
@@ -222,8 +222,8 @@ ffmpeg:
   #  
   output_args:
 #    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v libx264 -an
-    rtmp: -c copy -f flv
-    detect: -c copy -f rawvideo -pix_fmt yuv420p
+    rtmp: -c copy -an -f flv
+    detect: -f rawvideo -pix_fmt yuv420p
 #    rtmp: -c:a libfdk_aac -b:a 100k -c:v copy -f flv
 #    rtmp: -c:v libx264 -an -f flv
 
@@ -349,3 +349,12 @@ record:
       # Optional: Per object retention days
 #      objects:
 #        person: 15
+# Optional: logger verbosity settings
+logger:
+  # Optional: Default log verbosity (default: shown below)
+  default: info
+  # Optional: Component specific logger overrides
+  logs:
+    frigate.event: debug
+    detector.cpu1: debug
+    detector.cpu2: debug
