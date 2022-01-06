@@ -46,9 +46,9 @@
 #     - lock.august_asl_03_smart_lock_locked
 #     - lock.front_door
      - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
-#     - input_boolean.nick
-#     - input_boolean.kara
-#     - input_boolean.darius
+     - input_boolean.nick
+     - input_boolean.kara
+     - input_boolean.darius
 #     - input_boolean.michelle
      - light.color_lights
      - camera.petcam
@@ -79,7 +79,7 @@
      - fan.bonus_room_fan
      - light.bonus_room_light
      - climate.master_bedroom_thermostat_heat
-     - light.desklamp
+     - light.desklampi
     exclude_entities:
      - media_player.onkyo
      - light.hue_go_1
