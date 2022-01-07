@@ -6,6 +6,20 @@
   - cry
   - connectivity
 
+#- platform: ffmpeg_motion
+#  input: -rtsp_transport tcp -i rtsp://192.168.29.189:8964/front-porch-cam rtsp://192.168.29.189:8964/driveway-cam
+#  name: FFMPEG Porch Motion
+#  extra_arguments: -pred 1 -q:v 2
+#  changes: 10
+#  reset: 10
+
+#- platform: ffmpeg_motion
+#  input: -rtsp_transport tcp -i rtsp://192.168.29.189:8964/driveway-cam
+#  name: FFMPEG Driveway Motion
+#  extra_arguments: -pred 1 -q:v 2
+#  changes: 10
+#  reset: 10
+
 #- platform: mqtt
 #  unique_id: scrypted-driveway
 #  device_class: motion
