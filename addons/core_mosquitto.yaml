@@ -1,7 +1,7 @@
-certfile: farmmooossl/cert.pem
+certfile: /ssl/nginxproxymanager/live/npm-20/cert.pem
 customize:
   active: false
   folder: mosquitto
-keyfile: farmmooossl/key.pem
+keyfile: /ssl/nginxproxymanager/live/npm-20/privkey.pem
 logins: []
 require_certificate: false

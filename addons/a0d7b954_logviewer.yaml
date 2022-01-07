@@ -1,4 +1,4 @@
-certfile: farmmooossl/cert.pem
-keyfile: farmmooossl/key.pem
+certfile: /ssl/nginxproxymanager/live/npm-20/cert.pem
+keyfile: /ssl/nginxproxymanager/live/npm-20/privkey.pem
 log_level: debug
 ssl: true

@@ -33,12 +33,13 @@ cameras:
             - record
     motion:
       mask:
-        - 0,234,0,576,172,576,157,301,283,293,275,179,272,71,310,30,443,31,429,0,257,0,136,0,0,0
-        - 1024,0,513,0,470,83,434,50,399,60,374,88,437,293,1024,509
-        - 876,564,1007,565,998,543,893,538
+        - 0,720,163,720,159,342,326,348,326,253,333,123,341,48,423,20,552,34,533,0,257,0,136,0,0,0
+        - 1280,0,664,0,582,96,511,84,472,101,512,373,654,388,932,353,1280,678
+        - 1154,706,1248,706,1242,674,1151,676
+
     live:
       # Live camera view height default=720
-      height: 576
+      height: 720
       
       # Live camera view quality. default=8
       quality: 20
@@ -69,33 +70,45 @@ cameras:
         dog:
           min_area: 130
           max_area: 300000
+
   driveway:
     ffmpeg:
       inputs:
         - path: rtsp://192.168.29.189:8964/driveway-cam
- #       - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
+#        - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
+
           roles:
             - detect
             - rtmp
             - record
+
     motion:
 #      contour_area: 490
       mask:
-        - 173,101,207,0,0,0,0,108
-        - 864,25,857,0,1024,0,1024,41
-        - 883,540,890,563,998,565,994,539
-        - 0,131,0,35,107,75,84,96,79,120,137,137,112,226,213,246,215,355,123,378,78,409,0,551
-        - 191,576,220,490,132,484,72,500,0,558,0,576
-        - 1024,113,1024,576,984,576,936,319,961,224,1006,129
+        - 237,0,0,0,0,103
+        - 1171,0,1280,0,1280,43
+        - 1156,673,1168,706,1241,706,1248,674
+        - 0,131,0,35,126,63,111,110,136,156,171,200,116,283,282,304,269,453,98,513,1,715
+        - 253,720,263,619,197,599,136,619,106,674,76,720
+        - 1280,179,1280,677,1242,682,1193,489,1178,371,1208,249
+
 #    record:
 #      enabled: True
 #      retain_days: 1
+
+#    zones:
+#      zone_0:
+#        coordinates: 294,185,872,175,752,0,376,0
+#      zone_1:
+#        coordinates: 866,151,1024,576,183,576,302,158
+
     live:
       # Live camera view height default=720
-      height: 576
+      height: 720
       
       # Live camera view quality. default=8
       quality: 18
+
     objects:
       filters:
         car:
@@ -104,6 +117,8 @@ cameras:
         person:
           min_area: 1000
           max_area: 24000000
+          threshold: 0.45
+          min_score: 0.4
         bicycle:
           min_area: 5000
           max_area: 24000000
@@ -126,10 +141,10 @@ cameras:
 detect:
   enabled: True
   # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
-  max_disappeared: 10
-  width: 1024
-  height: 576
-  fps: 3
+  max_disappeared: 16
+  width: 1280
+  height: 720
+  fps: 4
 
 # Optional: birdseye configuration
 birdseye:
@@ -189,10 +204,10 @@ snapshots:
 detectors:
   cpu1:
     type: cpu
-    num_threads: 5
+    num_threads: 7
   cpu2:
     type: cpu
-    num_threads: 5
+    num_threads: 7
 
 ffmpeg:
   # Optional: global ffmpeg args (default: shown below)
@@ -288,7 +303,7 @@ motion:
   # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
   # The value should be between 1 and 255.
   
-  threshold: 61
+  threshold: 255
   
   # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
   # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
@@ -320,6 +335,7 @@ motion:
 
 # Optional: Record configuration
 # NOTE: Can be overridden at the camera level
+
 record:
   # Optional: Enable recording (default: shown below)
   enabled: True
@@ -349,10 +365,11 @@ record:
       # Optional: Per object retention days
 #      objects:
 #        person: 15
+
 # Optional: logger verbosity settings
 logger:
   # Optional: Default log verbosity (default: shown below)
-  default: info
+  default: debug
   # Optional: Component specific logger overrides
   logs:
     frigate.event: debug

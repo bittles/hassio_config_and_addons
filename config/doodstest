@@ -1,0 +1,113 @@
+image_processing:
+  - platform: doods
+    scan_interval: 10000
+    url: "http://192.168.29.189:8080"
+    detector: default
+    file_out:
+      - "/share/doods/porch/{{ camera_entity.split('.')[1] }}_latest.jpg"
+      - "/share/doods/porch/{{ camera_entity.split('.')[1] }}_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg"
+    source:
+      - entity_id: camera.porch_cam_ffmpeg
+    confidence: 50
+#    area:
+      # All detections must be inside this area to trigger
+#      top: 1
+#      right: 1
+      # If true the entire detection must be inside the box
+      # If false if any part of the detection is in the box it will trigger
+      # defaults to true for legacy compatibility
+#      contains: true
+    labels:
+      - name: person
+        confidence: 40
+#        area:
+          # Exclude top 10% of image
+#          top: 0.1
+          # Exclude right 15% of image
+#          right: 0.85
+          # If true the entire detection must be inside the area
+          # If false, if any part of the detection is in the box it will trigger
+          # defaults to true for legacy compatibility
+#          contains: false
+      - name: car
+      - name: truck
+      - name: motorcycle
+      - name: bicycle
+      - name: cat
+      - name: dog
+      - name: bird
+
+  - platform: doods
+    scan_interval: 10000
+    url: "http://192.168.29.189:8080"
+    detector: default
+    file_out:
+      - "/share/doods/driveway/{{ camera_entity.split('.')[1] }}_latest.jpg"
+      - "/share/doods/driveway/{{ camera_entity.split('.')[1] }}_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg"
+    source:
+      - entity_id: camera.driveway_cam_ffmpeg
+    confidence: 50
+#    area:
+      # All detections must be inside this area to trigger
+#      top: 1
+#      right: 1
+      # If true the entire detection must be inside the box
+      # If false if any part of the detection is in the box it will trigger
+      # defaults to true for legacy compatibility
+#      contains: true
+    labels:
+      - name: person
+        confidence: 40
+#        area:
+          # Exclude top 10% of image
+#          top: 0.1
+          # Exclude right 15% of image
+#          right: 0.85
+          # If true the entire detection must be inside the area
+          # If false, if any part of the detection is in the box it will trigger
+          # defaults to true for legacy compatibility
+#          contains: false
+      - name: car
+      - name: truck
+      - name: motorcycle
+      - name: bicycle
+      - name: cat
+      - name: dog
+      - name: bird
+
+  - platform: doods
+    scan_interval: 10000
+    url: "http://192.168.29.189:8080"
+    detector: default
+    file_out:
+      - "/share/doods/{{ camera_entity.split('.')[1] }}_latest.jpg"
+    source:
+      - entity_id: camera.driveway_motion_snapshot
+    confidence: 50
+#    area:
+      # All detections must be inside this area to trigger
+#      top: 1
+#      right: 1
+      # If true the entire detection must be inside the box
+      # If false if any part of the detection is in the box it will trigger
+      # defaults to true for legacy compatibility
+#      contains: true
+    labels:
+      - name: person
+        confidence: 40
+#        area:
+          # Exclude top 10% of image
+#          top: 0.1
+          # Exclude right 15% of image
+#          right: 0.85
+          # If true the entire detection must be inside the area
+          # If false, if any part of the detection is in the box it will trigger
+          # defaults to true for legacy compatibility
+#          contains: false
+      - name: car
+      - name: truck
+      - name: motorcycle
+      - name: bicycle
+      - name: cat
+      - name: dog
+      - name: bird

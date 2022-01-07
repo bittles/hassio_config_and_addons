@@ -1,0 +1,11 @@
+doods.detectors:
+- hwAccel: false
+  labelFile: /opt/doods/models/coco_labels0.txt
+  modelFile: /opt/doods/models/coco_ssd_mobilenet_v1_1.0_quant.tflite
+  name: default
+  type: tflite
+logger:
+  level: debug
+server:
+  auth_key: ''
+  port: '8080'
