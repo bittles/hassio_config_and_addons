@@ -22,6 +22,8 @@ mqtt:
   password: mosquitto
 
 cameras:
+
+
   front_porch:
     ffmpeg:
       inputs:
@@ -31,6 +33,7 @@ cameras:
             - detect
             - rtmp
             - record
+
     motion:
       mask:
         - 0,720,163,720,159,342,326,348,326,253,333,123,341,48,423,20,552,34,533,0,257,0,136,0,0,0
@@ -43,30 +46,38 @@ cameras:
       
       # Live camera view quality. default=8
       quality: 20
+
     objects:
       filters:
         car:
           min_area: 100000
           max_area: 24000000
+
         person:
           threshold: 0.6
           min_area: 25000
           max_area: 1600000
+
         bicycle:
           min_area: 25000
           max_area: 24000000
+
         motorcycle:
           min_area: 25000
           max_area: 24000000
+
         bus:
           min_area: 25000
           max_area: 24000000
+
         bird:
           min_area: 130
           max_area: 300000
+
         cat:
           min_area: 130
-          max_area: 300000
+          max_area: 58000
+
         dog:
           min_area: 130
           max_area: 300000
@@ -96,11 +107,45 @@ cameras:
 #      enabled: True
 #      retain_days: 1
 
-#    zones:
-#      zone_0:
-#        coordinates: 294,185,872,175,752,0,376,0
-#      zone_1:
-#        coordinates: 866,151,1024,576,183,576,302,158
+    zones:
+      street_half_driveway:
+        coordinates: 351,290,1126,282,943,0,471,0
+        objects:
+          - car
+          - person
+          - bus
+          - motorcycle
+          - bicycle
+          - bird
+          - cat
+          - dog
+
+      house_half_driveway:
+        coordinates: 1123,268,1256,720,236,720,346,268
+        objects:
+          - person
+          - bicycle
+          - bird
+          - cat
+          - dog
+
+      zone_0:
+        coordinates: 244,720,0,720,0,0,481,0
+        objects:
+          - person
+          - bicycle
+          - bird
+          - cat
+          - dog
+
+      zone_1:
+        coordinates: 1237,720,1280,720,1280,0,934,0
+        objects:
+          - person
+          - bicycle
+          - bird
+          - cat
+          - dog
 
     live:
       # Live camera view height default=720
@@ -111,43 +156,53 @@ cameras:
 
     objects:
       filters:
+
         car:
           min_area: 5000
           max_area: 500000
+
         person:
           min_area: 1000
-          max_area: 24000000
-          threshold: 0.45
-          min_score: 0.4
+          max_area: 150000
+          threshold: 0.6
+          min_score: 0.55
+
         bicycle:
           min_area: 5000
           max_area: 24000000
+
         motorcycle:
           min_area: 5000
           max_area: 24000000
+
         bus:
           min_area: 120
           max_area: 24000000
+
         bird:
           min_area: 120
           max_area: 300000
+
         cat:
           min_area: 120
           max_area: 300000
+
         dog:
           min_area: 120
           max_area: 300000
 
 detect:
+
   enabled: True
   # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
-  max_disappeared: 16
+  max_disappeared: 20
   width: 1280
   height: 720
   fps: 4
 
 # Optional: birdseye configuration
 birdseye:
+
   # Optional: Enable birdseye view (default: shown below)
   enabled: False
   
@@ -168,6 +223,7 @@ birdseye:
   mode: continuous
 
 snapshots:
+
   # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
   # This value can be set via MQTT and will be updated in startup based on retained value
   enabled: True
@@ -210,6 +266,7 @@ detectors:
     num_threads: 7
 
 ffmpeg:
+
   # Optional: global ffmpeg args (default: shown below)
 #  global_args: -hide_banner -loglevel warning
   
@@ -238,13 +295,16 @@ ffmpeg:
   output_args:
 #    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v libx264 -an
     rtmp: -c copy -an -f flv
+    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an
     detect: -f rawvideo -pix_fmt yuv420p
 #    rtmp: -c:a libfdk_aac -b:a 100k -c:v copy -f flv
 #    rtmp: -c:v libx264 -an -f flv
 
 objects:
+
   # Optional: list of objects to track from labelmap.txt (default: shown below)
   track:
+
     - car
     - person
     - bicycle
@@ -282,28 +342,37 @@ objects:
     car:
       threshold: 0.51
       min_score: 0.48
+
     person:
       threshold: 0.6
       min_score: 0.55
+
     bicycle:
       threshold: 0.55
+
     motorcycle:
       threshold: 0.55
+
     bus:
       threshold: 0.55
+
     bird:
       threshold: 0.55
+
     cat:
-      threshold: 0.55
+      threshold: 0.6
+      min_score: 0.57
+
     dog:
       threshold: 0.55
 
 motion:
+
   # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
   # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
   # The value should be between 1 and 255.
   
-  threshold: 255
+  threshold: 40
   
   # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
   # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
@@ -315,7 +384,7 @@ motion:
   # Higher values mean the current frame impacts the delta a lot, and a single raindrop may register as motion.
   # Too low and a fast moving person wont be detected as motion.
   
-  delta_alpha: 0.175
+  delta_alpha: 0.185
   
   # Optional: Alpha value passed to cv2.accumulateWeighted when averaging frames to determine the background (default: shown below)
   # Higher values mean the current frame impacts the average a lot, and a new object will be averaged into the background faster.
@@ -336,32 +405,44 @@ motion:
 # Optional: Record configuration
 # NOTE: Can be overridden at the camera level
 
+
 record:
+
   # Optional: Enable recording (default: shown below)
   enabled: True
+
   # Optional: Number of days to retain recordings regardless of events (default: shown below)
   # NOTE: This should be set to 0 and retention should be defined in events section below
   #       if you only want to retain recordings of events.
   retain_days: 0
+
   # Optional: Event recording settings
   events:
+
     # Optional: Maximum length of time to retain video during long events. (default: shown below)
     # NOTE: If an object is being tracked for longer than this amount of time, the retained recordings
     #       will be the last x seconds of the event unless retain_days under record is > 0.
     max_seconds: 15
+
     # Optional: Number of seconds before the event to include (default: shown below)
     pre_capture: 6
+
     # Optional: Number of seconds after the event to include (default: shown below)
     post_capture: 1
+
     # Optional: Objects to save recordings for. (default: all tracked objects)
 #    objects:
 #      - person
+
     # Optional: Restrict recordings to objects that entered any of the listed zones (default: no required zones)
 #    required_zones: []
+
     # Optional: Retention settings for recordings of events
     retain:
+
       # Required: Default retention days (default: shown below)
       default: 30
+
       # Optional: Per object retention days
 #      objects:
 #        person: 15
