@@ -1,13 +1,13 @@
 API_THUMB: true
-DEBUG_FFMPEG: true
+DEBUG_FFMPEG: false
 FFMPEG_CMD: ''
-FRESH_DATA: true
+FRESH_DATA: false
 IGNORE_OFFLINE: true
 LAN_ONLY: true
 MQTT_AUTH: mqtt:mosquitto
 MQTT_DTOPIC: homeassistant
 MQTT_HOST: core-mosquitto:1883
-NET_MODE: ANY
+NET_MODE: LAN
 QUALITY: HD255
 RTSP_HLSDISABLE: 'yes'
 RTSP_RTMPDISABLE: 'yes'
