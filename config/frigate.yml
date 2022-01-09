@@ -109,7 +109,7 @@ cameras:
 
     zones:
       street_half_driveway:
-        coordinates: 351,290,1126,282,943,0,471,0
+        coordinates: 414,103,1011,89,943,0,471,0
         objects:
           - car
           - person
@@ -121,7 +121,7 @@ cameras:
           - dog
 
       house_half_driveway:
-        coordinates: 1123,268,1256,720,236,720,346,268
+        coordinates: 1038,79,1276,720,224,718,409,96
         objects:
           - person
           - bicycle
