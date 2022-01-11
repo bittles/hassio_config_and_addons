@@ -3304,6 +3304,7 @@
   - service: input_number.increment
     target:
       entity_id: input_number.wyze_driveway_captures
+  - service: rest_command.driveway_motion_on
   mode: single
 - id: '1639590891103'
   alias: zzMotion Update Porch Snapshot (Duplicate)
@@ -3343,6 +3344,7 @@
   - service: input_number.increment
     target:
       entity_id: input_number.wyze_front_porch_captures
+  - service: rest_command.porch_motion_on
   mode: single
 - id: '1639636571527'
   alias: zzzzzzzSSH Restart

@@ -38,19 +38,19 @@ input_select:
 
 rest_command:
   driveway_motion_on:
-    url: 'http://192.168.29.187:10080/endpoint/@scrypted/webhook/public/24/9ae328b5778ec680/turnOn'
+    url: 'https://192.168.29.187:10443/endpoint/@scrypted/webhook/public/24/9ae328b5778ec680/turnOn'
     method: post
     verify_ssl: false
   driveway_motion_off:
-    url: 'http://192.168.29.187:10080/endpoint/@scrypted/webhook/public/24/9ae328b5778ec680/turnOff'
+    url: 'https://192.168.29.187:10443/endpoint/@scrypted/webhook/public/24/9ae328b5778ec680/turnOff'
     method: post
     verify_ssl: false
   porch_motion_on:
-    url: 'http://192.168.29.187:10080/endpoint/@scrypted/webhook/public/31/4cba00a99e8bceef/turnOn'
+    url: 'https://192.168.29.187:10443/endpoint/@scrypted/webhook/public/31/4cba00a99e8bceef/turnOn'
     method: post
     verify_ssl: false
   porch_motion_off:
-    url: 'http://192.168.29.187:10080/endpoint/@scrypted/webhook/public/31/4cba00a99e8bceef/turnOff'
+    url: 'https://192.168.29.187:10443/endpoint/@scrypted/webhook/public/31/4cba00a99e8bceef/turnOff'
     method: post
     verify_ssl: false
 

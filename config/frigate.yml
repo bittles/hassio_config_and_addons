@@ -111,7 +111,7 @@ cameras:
       street_half_driveway:
         coordinates: 414,103,1011,89,943,0,471,0
         objects:
-          - car
+#          - car
           - person
           - bus
           - motorcycle
@@ -157,9 +157,9 @@ cameras:
     objects:
       filters:
 
-        car:
-          min_area: 5000
-          max_area: 500000
+#        car:
+#          min_area: 5000
+#          max_area: 500000
 
         person:
           min_area: 1000
@@ -305,7 +305,7 @@ objects:
   # Optional: list of objects to track from labelmap.txt (default: shown below)
   track:
 
-    - car
+#    - car
     - person
     - bicycle
     - motorcycle
@@ -339,9 +339,9 @@ objects:
     # mask:
     # Detection area polygon mask for this filter configuration
 
-    car:
-      threshold: 0.51
-      min_score: 0.48
+#    car:
+#      threshold: 0.51
+#      min_score: 0.48
 
     person:
       threshold: 0.6
