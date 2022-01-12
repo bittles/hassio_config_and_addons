@@ -111,7 +111,7 @@ cameras:
       street_half_driveway:
         coordinates: 414,103,1011,89,943,0,471,0
         objects:
-#          - car
+          - car
           - person
           - bus
           - motorcycle
@@ -119,6 +119,10 @@ cameras:
           - bird
           - cat
           - dog
+        filters:
+          car:
+            min_area: 5000
+            max_area: 500000
 
       house_half_driveway:
         coordinates: 1038,79,1276,720,224,718,409,96
@@ -198,7 +202,7 @@ detect:
   max_disappeared: 20
   width: 1280
   height: 720
-  fps: 4
+  fps: 5
 
 # Optional: birdseye configuration
 birdseye:
@@ -260,10 +264,10 @@ snapshots:
 detectors:
   cpu1:
     type: cpu
-    num_threads: 7
+    num_threads: 8
   cpu2:
     type: cpu
-    num_threads: 7
+    num_threads: 8
 
 ffmpeg:
 
@@ -305,7 +309,7 @@ objects:
   # Optional: list of objects to track from labelmap.txt (default: shown below)
   track:
 
-#    - car
+    - car
     - person
     - bicycle
     - motorcycle
@@ -339,9 +343,9 @@ objects:
     # mask:
     # Detection area polygon mask for this filter configuration
 
-#    car:
-#      threshold: 0.51
-#      min_score: 0.48
+    car:
+      threshold: 0.51
+      min_score: 0.48
 
     person:
       threshold: 0.6
