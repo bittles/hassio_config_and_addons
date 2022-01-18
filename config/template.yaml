@@ -278,21 +278,21 @@
         {%- endif %}
       device_class: occupancy
 
-- trigger:
-  - platform: state
-    entity_id: sensor.bonusroomtemp_air_temperature
-  sensor:
-    - name: bonusroomtemp
-      unit_of_measurement: "°F"
-      unique_id: bonusroom_temp
-      state: >
-        {% if trigger.to_state.state | int(default=0) < 50 %}
-          {{ Nan }}
-        {% else %}
-          {{ states.sensor.bonusroomtemp_air_temperature.state }}
-        {% endif %}
-      device_class: temperature
-#      state: '{{ states(''input_number.bonus_room_temperature'')|float(default=0) }}'
+#- trigger:
+#  - platform: state
+#    entity_id: sensor.bonusroomtemp_air_temperature
+#  sensor:
+#    - name: bonusroomtemp
+#      unit_of_measurement: "°F"
+#      unique_id: bonusroom_temp
+#      state: >
+#        {% if trigger.to_state.state | int(default=0) < 50 %}
+#          {{ Nan }}
+#        {% else %}
+#          {{ states.sensor.bonusroomtemp_air_temperature.state }}
+#        {% endif %}
+#      device_class: temperature
+##      state: '{{ states(''input_number.bonus_room_temperature'')|float(default=0) }}'
 
 #- trigger:
 #    - platform: state
