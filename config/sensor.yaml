@@ -119,6 +119,24 @@
     - cloud_cover
     - uv_index
 
+- platform: mqtt
+  unique_id: bonusroom_temp
+  name: Bonus Room Temperature MQTT
+  state_topic: zwave/bonus-room/bonus-room-temp/49/0/Air_temperature
+  value_template: >
+        {% if value_json.value | int(default=0) < 50 %}
+          {{ Nan }}
+        {% else %}
+          {{ value_json.value }}
+        {% endif %}
+  force_update: true
+  device_class: temperature
+  unit_of_measurement: "°F"
+  json_attributes_topic: zwave/bonus-room/bonus-room-temp/49/0/Air_temperature
+  json_attributes_template: >
+    {
+      "Last Updated": "{{ (value_json.time / 1000) | timestamp_local }}"
+    }
 
 #- platform: mqtt
 #  name: "Garage Opener Distance mqtt"
