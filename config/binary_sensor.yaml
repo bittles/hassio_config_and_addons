@@ -1,10 +1,10 @@
-- platform: aarlo
-  monitored_conditions:
-  - motion
-  - sound
-  - ding
-  - cry
-  - connectivity
+#- platform: aarlo
+#  monitored_conditions:
+#  - motion
+#  - sound
+#  - ding
+#  - cry
+#  - connectivity
 
 #- platform: ffmpeg_motion
 #  input: -rtsp_transport tcp -i rtsp://192.168.29.189:8964/front-porch-cam rtsp://192.168.29.189:8964/driveway-cam

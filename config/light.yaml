@@ -53,7 +53,7 @@
 #    payload_on: true
 #    state_value_template: '{{ value_json.value }}'
 
-  - platform: aarlo
+#  - platform: aarlo
 
   - platform: template
     lights:

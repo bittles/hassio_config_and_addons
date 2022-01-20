@@ -66,17 +66,17 @@
   resources:
     - type: processor_use
 
-- platform: aarlo
-  monitored_conditions:
-#  - total_cameras
-  - last_capture
-  - recent_activity
-#  - captured_today
-  - battery_level
-  - signal_strength
-#  - temperature
-#  - humidity
-#  - air_quality
+#- platform: aarlo
+#  monitored_conditions:
+##  - total_cameras
+#  - last_capture
+#  - recent_activity
+##  - captured_today
+#  - battery_level
+#  - signal_strength
+##  - temperature
+##  - humidity
+##  - air_quality
 
 - platform: pirateweather
   api_key: !secret pirateweather_api_key
