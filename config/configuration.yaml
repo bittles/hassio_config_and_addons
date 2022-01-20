@@ -143,30 +143,30 @@ shelly:
   settings:
     temperature: { decimals: 3 }
 
-aarlo:
-  tfa_source: imap
-  tfa_type: email
-  tfa_host: imap.gmail.com
-  tfa_username: !secret aarlo_rxuser
-  tfa_password: !secret aarlo_rxpass
-  username: !secret gmail_rxuser
-  password: !secret gmail_rxpass
-#  tfa_username: !secret aarlo_mainuser
-#  tfa_password: !secret aarlo_mainpass
-#  username: !secret gmail_mainuser
-#  password: !secret gmail_mainpass
-#  refresh_devices_every: 2
-#  refresh_modes_every: 20
-#  stream_timeout: 60
-#  reconnect_every: 45
-#  request_timeout: 120
-  save_media_to: "/share/Arlo/${N}/${m}-${d}-${Y}_${H}-${M}-${S}"
-#  stream_snapshot: true
-#  stream_snapshot_stop: 20
-#  media_retry:
-#    - 5
-#    - 15
-#    - 25
+#aarlo:
+#  tfa_source: imap
+#  tfa_type: email
+#  tfa_host: imap.gmail.com
+#  tfa_username: !secret aarlo_rxuser
+#  tfa_password: !secret aarlo_rxpass
+#  username: !secret gmail_rxuser
+#  password: !secret gmail_rxpass
+##  tfa_username: !secret aarlo_mainuser
+##  tfa_password: !secret aarlo_mainpass
+##  username: !secret gmail_mainuser
+##  password: !secret gmail_mainpass
+##  refresh_devices_every: 2
+##  refresh_modes_every: 20
+##  stream_timeout: 60
+##  reconnect_every: 45
+##  request_timeout: 120
+#  save_media_to: "/share/Arlo/${N}/${m}-${d}-${Y}_${H}-${M}-${S}"
+##  stream_snapshot: true
+##  stream_snapshot_stop: 20
+##  media_retry:
+##    - 5
+##    - 15
+##    - 25
 
 localtuya:
   - host: !secret localtuya1_ip
