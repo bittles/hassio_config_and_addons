@@ -1,11 +1,12 @@
 peers:
 - addresses:
-  - 172.27.66.2
+  - 192.168.29.81
   allowed_ips: []
   client_allowed_ips: []
   name: iphone
 server:
   addresses:
-  - 172.27.66.1
-  dns: []
+  - 192.168.29.80
+  dns:
+  - 192.168.29.1
   host: '!secret domain_url'
