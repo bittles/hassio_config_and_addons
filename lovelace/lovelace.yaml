@@ -538,6 +538,7 @@ config:
       - entity: input_boolean.porch_motion
       - entity: switch.frigate_porch_motion
       - entity: switch.frigate_driveway_motion
+      - entity: input_datetime.afternoon_temp_change
       type: entities
     - calibration_points:
       - map:
@@ -616,9 +617,6 @@ config:
       snapshot_retry: 2,5
       type: custom:aarlo-glance
     - entities:
-      - entity: light.aarlo_front_porch
-      - entity: light.aarlo_back_deck
-      - entity: light.aarlo_garage_camera
       - entity: input_boolean.driveway_motion
       - entity: input_boolean.porch_motion
       type: entities

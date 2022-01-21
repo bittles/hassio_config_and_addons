@@ -86,9 +86,9 @@ folder_watcher:
 #  - folder: /share/Arlo/Camera
 #    patterns:
 #      - '*.mp4'
-  - folder: "/share/Arlo/Front Porch"
-    patterns:
-      - '*.mp4'
+#  - folder: "/share/Arlo/Front Porch"
+#    patterns:
+#      - '*.mp4'
   - folder: "/config/www/Wyze/driveway"
     patterns:
       - '*.jpg'
@@ -354,7 +354,7 @@ homeassistant:
   #internal_url: !secret internalurl
   media_dirs:
     local: /media
-    recordings: /share/Arlo
+#    recordings: /share/Arlo
     wyze: /config/www/Wyze
   allowlist_external_dirs:
   - /share

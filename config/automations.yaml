@@ -3706,3 +3706,17 @@
       entity_id: media_player.shield_adb
       command: am force-stop com.hbo.hbonow
   mode: single
+- id: '1642702581833'
+  alias: Afternoon Temp Change
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.afternoon_temp_change
+  condition: []
+  action:
+  - service: climate.set_temperature
+    target:
+      entity_id: climate.master_bedroom_thermostat_heat
+    data:
+      temperature: 69.5
+  mode: single

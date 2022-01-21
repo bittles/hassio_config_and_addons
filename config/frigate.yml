@@ -344,7 +344,7 @@ objects:
     # Detection area polygon mask for this filter configuration
 
     car:
-      threshold: 0.51
+      threshold: 0.5
       min_score: 0.48
 
     person:
@@ -358,7 +358,7 @@ objects:
       threshold: 0.55
 
     bus:
-      threshold: 0.55
+      threshold: 0.6
 
     bird:
       min_score: 0.65
