@@ -2803,7 +2803,6 @@
       hours: 0
       minutes: 0
       seconds: 10
-      milliseconds: 0
     id: bedroom_temp_change
   - platform: state
     entity_id: climate.downstairs_the_nest
@@ -2832,6 +2831,12 @@
               entity_id: climate.downstairs_the_nest
               type: is_hvac_mode
               hvac_mode: heat
+          - condition: device
+            device_id: 1f4e53d64461d767d63350604b93cd1e
+            domain: climate
+            entity_id: climate.downstairs_the_nest
+            type: is_preset_mode
+            preset_mode: none
           sequence:
           - device_id: 1f4e53d64461d767d63350604b93cd1e
             domain: climate
@@ -2856,6 +2861,12 @@
             entity_id: climate.downstairs_the_nest
             type: is_hvac_mode
             hvac_mode: heat
+          - condition: device
+            device_id: 1f4e53d64461d767d63350604b93cd1e
+            domain: climate
+            entity_id: climate.downstairs_the_nest
+            type: is_preset_mode
+            preset_mode: none
           sequence:
           - service: climate.set_temperature
             target:
@@ -2867,6 +2878,12 @@
     - conditions:
       - condition: trigger
         id: switchoff
+      - condition: device
+        device_id: 1f4e53d64461d767d63350604b93cd1e
+        domain: climate
+        entity_id: climate.downstairs_the_nest
+        type: is_preset_mode
+        preset_mode: none
       sequence:
       - service: climate.set_temperature
         target:
@@ -2880,6 +2897,12 @@
       - condition: state
         entity_id: switch.bedroom_dummyheat
         state: 'off'
+      - condition: device
+        device_id: 1f4e53d64461d767d63350604b93cd1e
+        domain: climate
+        entity_id: climate.downstairs_the_nest
+        type: is_preset_mode
+        preset_mode: none
       sequence:
       - service: climate.set_temperature
         target:
@@ -2903,6 +2926,12 @@
         - condition: state
           entity_id: switch.bedroom_dummyheat
           state: 'on'
+        - condition: device
+          device_id: 1f4e53d64461d767d63350604b93cd1e
+          domain: climate
+          entity_id: climate.downstairs_the_nest
+          type: is_preset_mode
+          preset_mode: none
         sequence:
         - service: climate.set_temperature
           target:
@@ -2925,6 +2954,12 @@
             minutes: 0
             seconds: 15
             milliseconds: 0
+        - condition: device
+          device_id: 1f4e53d64461d767d63350604b93cd1e
+          domain: climate
+          entity_id: climate.downstairs_the_nest
+          type: is_preset_mode
+          preset_mode: none
         sequence:
         - service: climate.set_temperature
           target:
@@ -3718,5 +3753,5 @@
     target:
       entity_id: climate.master_bedroom_thermostat_heat
     data:
-      temperature: 69.5
+      temperature: 67
   mode: single
