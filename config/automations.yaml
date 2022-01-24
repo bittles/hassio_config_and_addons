@@ -1,5 +1,5 @@
 - id: '1572710134837'
-  alias: zNotify.Pi CPU Usage Above 35% for 10min then Notify
+  alias: zNotify.Odroid CPU Usage Above 50% for 10min then Notify
   description: ''
   trigger:
   - entity_id: sensor.processor_use
@@ -10,12 +10,12 @@
   - condition: not
     conditions:
     - condition: time
-      before: 07:30
+      before: 07:30:00
       after: 06:00:00
   action:
   - service: notify.mobile_app_rxniphone
     data:
-      message: CPU usage on Pi has been high for over 25 minutes!
+      message: CPU usage on Odroid has been high for over 10 minutes!
       title: Pi CPU USAGE!!
   mode: single
 - id: '1574873108236'
@@ -111,6 +111,23 @@
           - type: turn_on
             device_id: 746911e6923f45a897998898b5cd634b
             entity_id: switch.driveway_lights
+            domain: switch
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+      - repeat:
+          until:
+          - condition: device
+            type: is_on
+            device_id: d0bee64a1ce6eec283ca228325fab7fe
+            entity_id: switch.porch_lights
+            domain: switch
+          sequence:
+          - type: turn_on
+            device_id: d0bee64a1ce6eec283ca228325fab7fe
+            entity_id: switch.porch_lights
             domain: switch
           - delay:
               hours: 0
