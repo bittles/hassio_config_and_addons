@@ -3772,3 +3772,75 @@
     data:
       temperature: 67
   mode: single
+- id: '1643128686499'
+  alias: zzMotion Update Deck Snapshot (Duplicate)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.wyze_deck_motion
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: switch.frigate_deck_motion
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 100
+  - service: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.wyze_deck_time
+    data:
+      timestamp: '{{ now().timestamp() }}'
+  - service: camera.snapshot
+    data:
+      filename: /config/www/snapshot_camera.back_deck.jpg
+    target:
+      entity_id: camera.back_deck
+  - service: camera.snapshot
+    target:
+      entity_id: camera.back_deck
+    data:
+      filename: /config/www/Wyze/driveway/driveway_{{ states('input_number.input_number.wyze_deck_captures')
+        }}.jpg
+  - service: input_number.increment
+    target:
+      entity_id:
+      - input_number.wyze_deck_captures
+  - service: rest_command.deck_motion_on
+  mode: single
+- id: '1643128802871'
+  alias: Frigate Notification Fork Back Deck (Nick)
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_notification.yaml
+    input:
+      camera: back_deck
+      notify_device: 051c6fdebb2adccddfd61201d0899d94
+      base_url: https://hassio.unibutton.com
+      cooldown: 120
+      captime: input_datetime.wyze_deck_time
+- id: '1643136725154'
+  alias: Frigate Notification Fork Back Deck (Darius)
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_notification.yaml
+    input:
+      camera: back_deck
+      notify_device: f76e35c3824b4aa3b2bf069241084176
+      base_url: https://hassio.unibutton.com
+      cooldown: 10
+      captime: input_datetime.wyze_deck_time
+      labels:
+      - car
+      - person
+      - bicycle
+      - motorcycle
+      - bus
+      - bird
+      - cat
+      - bear

@@ -42,6 +42,12 @@ config:
       entity: camera.driveway_2
       title: Driveway
       type: picture-glance
+    - camera_image: camera.deck_motion_snapshot
+      entities:
+      - entity: lock.back_door
+      entity: camera.back_deck
+      title: Back Deck
+      type: picture-glance
     - entities:
       - entity: script.restart_shield
       - entity: climate.master_bedroom_thermostat_heat
@@ -74,7 +80,7 @@ config:
       - entity: sensor.battery_consumption_sensor_back_door_battery_template
       state_color: true
       type: glance
-    - columns: 6
+    - columns: 5
       entities:
       - entity: light.kitchen
         tap_action:
@@ -144,7 +150,7 @@ config:
     - showAzimuth: false
       showElevation: false
       type: custom:sun-card
-    - content: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
+    - content: .
       theme: Google Dark Theme
       type: markdown
     theme: night
