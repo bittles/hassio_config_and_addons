@@ -9,6 +9,10 @@
   still_image_url: http://127.0.0.1:8123/local/snapshot_camera.driveway.jpg
   name: Driveway Motion Snapshot
 
+- platform: generic
+  still_image_url: http://127.0.0.1:8123/local/snapshot_camera.back_deck.jpg
+  name: Deck Motion Snapshot
+
 #- platform: ffmpeg
 #  input: -rtsp_transport tcp -i rtsp://192.168.29.189:8964/front-porch-cam
 #  name: Porch Cam FFMPEG

@@ -53,6 +53,14 @@ rest_command:
     url: 'https://192.168.29.187:10443/endpoint/@scrypted/webhook/public/31/4cba00a99e8bceef/turnOff'
     method: post
     verify_ssl: false
+  deck_motion_on:
+    url: 'https://192.168.29.187:10443/endpoint/@scrypted/webhook/public/55/e2a11a50ba7bbec4/turnOn'
+    method: post
+    verify_ssl: false
+  deck_motion_off:
+    url: 'https://192.168.29.187:10443/endpoint/@scrypted/webhook/public/55/e2a11a50ba7bbec4/turnOff'
+    method: post
+    verify_ssl: false
 
 battery_consumption:
   front_door_batteries:

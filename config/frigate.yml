@@ -36,8 +36,8 @@ cameras:
 
     motion:
       mask:
-        - 0,720,333,720,297,355,454,348,437,219,432,128,421,50,459,21,503,0,257,0,136,0,0,0
-        - 1280,0,716,0,688,63,556,72,576,114,619,274,657,348,932,353,1280,678
+        - 0,720,296,720,237,392,394,372,377,219,360,61,431,45,496,21,503,0,257,0,136,0,0,0
+        - 1280,0,652,0,608,111,497,111,599,356,786,344,1111,403,1280,678
         - 1154,706,1248,706,1242,674,1151,676
 
     live:
@@ -82,6 +82,10 @@ cameras:
           min_area: 130
           max_area: 300000
 
+        bear:
+          min_area: 2500
+          max_area: 24000000
+
   driveway:
     ffmpeg:
       inputs:
@@ -111,7 +115,7 @@ cameras:
       street_half_driveway:
         coordinates: 414,103,1011,89,943,0,471,0
         objects:
-          - car
+     #     - car
           - person
           - bus
           - motorcycle
@@ -119,10 +123,10 @@ cameras:
           - bird
           - cat
           - dog
-        filters:
-          car:
-            min_area: 5000
-            max_area: 500000
+   #     filters:
+      #    car:
+     #       min_area: 5000
+     #       max_area: 500000
 
       house_half_driveway:
         coordinates: 1038,79,1276,720,224,718,409,96
@@ -167,7 +171,7 @@ cameras:
 
         person:
           min_area: 1000
-          max_area: 150000
+          max_area: 24000000
           threshold: 0.6
           min_score: 0.55
 
@@ -194,6 +198,73 @@ cameras:
         dog:
           min_area: 120
           max_area: 300000
+
+        bear:
+          min_area: 2500
+          max_area: 24000000
+
+  back_deck:
+    ffmpeg:
+      inputs:
+        - path: rtsp://192.168.29.189:8964/back-deck-cam
+ #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
+          roles:
+            - detect
+            - rtmp
+            - record
+
+    motion:
+      threshold: 30
+      contour_area: 200
+      delta_alpha: 0.185
+      frame_alpha: 0.18
+      frame_height: 100
+
+    live:
+      # Live camera view height default=720
+      height: 720
+      
+      # Live camera view quality. default=8
+      quality: 20
+
+    objects:
+      filters:
+        car:
+          min_area: 100000
+          max_area: 24000000
+
+        person:
+          threshold: 0.6
+          min_area: 25000
+          max_area: 1600000
+
+        bicycle:
+          min_area: 25000
+          max_area: 24000000
+
+        motorcycle:
+          min_area: 25000
+          max_area: 24000000
+
+        bus:
+          min_area: 25000
+          max_area: 24000000
+
+        bird:
+          min_area: 130
+          max_area: 300000
+
+        cat:
+          min_area: 130
+          max_area: 58000
+
+        dog:
+          min_area: 130
+          max_area: 300000
+
+        bear:
+          min_area: 2500
+          max_area: 24000000
 
 detect:
 
@@ -318,6 +389,7 @@ objects:
     - bird
     - cat
     - dog
+    - bear
 #    - boat
 #    - traffic light
 #    - fire hydrant
@@ -406,6 +478,7 @@ motion:
   
   # Optional: motion mask
   # NOTE: see docs for more detailed info on creating masks
+
 
 # Optional: Record configuration
 # NOTE: Can be overridden at the camera level
