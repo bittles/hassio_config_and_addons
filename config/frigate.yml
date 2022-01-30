@@ -427,7 +427,7 @@ objects:
       threshold: 0.55
 
     motorcycle:
-      threshold: 0.55
+      threshold: 0.65
 
     bus:
       threshold: 0.6
