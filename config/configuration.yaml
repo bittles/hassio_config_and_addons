@@ -114,42 +114,53 @@ folder_watcher:
 breaking_changes:
 
 shelly:
-  discover_by_ip:
-    - !secret shelly_ip
+  host_ip: !secret pi4_ip
+  discovery: false
+  version: true
   devices:      #devices to be added
     - id: !secret shelly_id
       name: Master Bedroom Thermometer
+      upgrade_switch: true
       settings:
         temperature: { decimals: 3 }
+        uptime: { decimals: 0, div: 1, unit: 's' }
+  additional_information: true
+  scan_interval: 15
+  sensors: 
+    - rssi
+    - uptime
+#    - all
   attributes:
-    - all
+    - ip_address
+    - shelly_type    
+    - shelly_id
+    - rssi
+    - uptime
+    - has_firmware_update
+    - latest_fw_version
+    - firmware_version
+    - payload
+#    - all
 #    - latest_fw_version
 #    - firmware_version
-#    - ip_address
-#    - shelly_type
-#    - shelly_id
 #    - has_firmware_update
 #    - mqtt_connected
 #    - device_temp
 #    - uptime
 #    - payload
-  mdns: true
-  sensors: 
-    - all
-  host_ip: !secret pi4_ip
-  version: true
-  scan_interval: 15
-  additional_information: true
   upgrade_switch: true
   upgrade_beta_switch: true
+  mdns: false
+  discover_by_ip:
+    - !secret shelly_ip
   mqtt_port: 0
-  discovery: false
   mqtt_server_host: !secret pi4_ip
   mqtt_server_port: !secret mqttport #Default 1883
   mqtt_server_username: !secret mqttuser
   mqtt_server_password: !secret mqttpass
   settings:
     temperature: { decimals: 3 }
+    uptime: { decimals: 0, div: 1, unit: 's' }
 
 #aarlo:
 #  tfa_source: imap

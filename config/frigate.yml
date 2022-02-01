@@ -219,6 +219,9 @@ cameras:
       delta_alpha: 0.185
       frame_alpha: 0.18
       frame_height: 100
+      mask:
+        - 0,0,191,0,166,43,137,100,67,131,0,165
+
 
     live:
       # Live camera view height default=720
@@ -228,27 +231,39 @@ cameras:
       quality: 20
 
     objects:
+      track:
+#      - car
+      - person
+      - bicycle
+      - motorcycle
+#      - bus
+      - car
+      - bird
+      - cat
+      - dog
+      - bear
       filters:
-        car:
-          min_area: 100000
-          max_area: 24000000
+#        car:
+#          min_area: 100000
+#          max_area: 700000
 
         person:
           threshold: 0.6
-          min_area: 25000
-          max_area: 1600000
+          min_area: 250
+          max_area: 700000
 
         bicycle:
+          threshold: 0.6
           min_area: 25000
-          max_area: 24000000
+          max_area: 700000
 
-        motorcycle:
-          min_area: 25000
-          max_area: 24000000
+#        motorcycle:
+#          min_area: 25000
+#          max_area: 700000
 
-        bus:
-          min_area: 25000
-          max_area: 24000000
+#        bus:
+#          min_area: 25000
+#          max_area: 700000
 
         bird:
           min_area: 130
@@ -264,7 +279,7 @@ cameras:
 
         bear:
           min_area: 2500
-          max_area: 24000000
+          max_area: 700000
 
 detect:
 
