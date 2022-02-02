@@ -5,7 +5,7 @@
   - entity_id: sensor.processor_use
     for: 00:10:00
     platform: numeric_state
-    above: '50'
+    above: '55'
   condition:
   - condition: not
     conditions:
