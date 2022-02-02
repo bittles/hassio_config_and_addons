@@ -48,8 +48,20 @@ cameras:
       quality: 20
 
     objects:
+      track:
+      - car
+      - person
+      - bicycle
+      - motorcycle
+      - bus
+      - car
+      - bird
+      - cat
+      - dog
+      - bear
       filters:
         car:
+          threshold: 0.99
           min_area: 100000
           max_area: 24000000
 
@@ -63,10 +75,12 @@ cameras:
           max_area: 24000000
 
         motorcycle:
+          threshold: 0.99
           min_area: 25000
           max_area: 24000000
 
         bus:
+          threshold: 0.99
           min_area: 25000
           max_area: 24000000
 
@@ -115,7 +129,7 @@ cameras:
       street_half_driveway:
         coordinates: 414,103,1011,89,943,0,471,0
         objects:
-     #     - car
+          - car
           - person
           - bus
           - motorcycle
@@ -123,10 +137,11 @@ cameras:
           - bird
           - cat
           - dog
-   #     filters:
-      #    car:
-     #       min_area: 5000
-     #       max_area: 500000
+        filters:
+          car:
+            threshold: 0.99
+            min_area: 5000
+            max_area: 500000
 
       house_half_driveway:
         coordinates: 1038,79,1276,720,224,718,409,96
@@ -166,6 +181,7 @@ cameras:
       filters:
 
 #        car:
+
 #          min_area: 5000
 #          max_area: 500000
 
@@ -243,9 +259,10 @@ cameras:
       - dog
       - bear
       filters:
-#        car:
-#          min_area: 100000
-#          max_area: 700000
+        car:
+          threshold: 0.99
+          min_area: 100000
+          max_area: 700000
 
         person:
           threshold: 0.6
@@ -257,13 +274,15 @@ cameras:
           min_area: 25000
           max_area: 700000
 
-#        motorcycle:
-#          min_area: 25000
-#          max_area: 700000
+        motorcycle:
+          threshold: 0.99
+          min_area: 25000
+          max_area: 700000
 
-#        bus:
-#          min_area: 25000
-#          max_area: 700000
+        bus:
+          threshold: 0.99
+          min_area: 25000
+          max_area: 700000
 
         bird:
           min_area: 130
@@ -274,6 +293,7 @@ cameras:
           max_area: 58000
 
         dog:
+          threshold: 0.575
           min_area: 130
           max_area: 300000
 
@@ -405,6 +425,7 @@ objects:
     - cat
     - dog
     - bear
+
 #    - boat
 #    - traffic light
 #    - fire hydrant
