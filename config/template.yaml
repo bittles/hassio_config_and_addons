@@ -261,6 +261,62 @@
         {%- endif -%}
 
 - trigger:
+    - platform: state
+      entity_id: binary_sensor.back_deck_bicycle_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.back_deck_bird_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.back_deck_bus_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.back_deck_car_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.back_deck_cat_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.back_deck_dog_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.back_deck_motorcycle_motion
+      to: 'on'
+    - platform: state
+      entity_id: binary_sensor.back_deck_person_motion
+      to: 'on'
+    - platform: state
+      entity_id: switch.frigate_deck_motion
+      to: 'off'
+  sensor:
+    - name: Deck Object
+      unique_id: deckobject
+      state: >
+        {% if trigger.entity_id == 'binary_sensor.back_deck_bicycle_motion' %}
+          BICYCLE
+        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bear_motion' -%}
+          BEAR
+        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bird_motion' -%}
+          BIRD
+        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bus_motion' -%}
+          BUS
+        {%- elif trigger.entity_id == 'binary_sensor.back_deck_car_motion' -%}
+          CAR
+        {%- elif trigger.entity_id == 'binary_sensor.back_deck_cat_motion' -%}
+          CAT
+        {%- elif trigger.entity_id == 'binary_sensor.back_deck_dog_motion' -%}
+          DOG
+        {%- elif trigger.entity_id == 'binary_sensor.back_deck_motorcycle_motion' -%}
+          MOTORCYCLE
+        {%- elif trigger.entity_id == 'binary_sensor.back_deck_person_motion' -%}
+          PERSON
+        {%- elif trigger.entity_id == 'switch.frigate_deck_motion' -%}
+          Nothing
+        {%- else -%}
+          Sensor not triggered yet
+        {%- endif -%}
+
+- trigger:
     - platform: mqtt
       topic: "My OpenGarage/OUT/DIST"
       payload: 'True'

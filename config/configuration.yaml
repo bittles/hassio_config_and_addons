@@ -493,6 +493,7 @@ recorder:
       - sensor.battery_consumption_sensor_august_smart_lock_pro_3rd_gen_battery_level
       - sensor.driveway_object
       - sensor.porch_object
+      - sensor.deck_object
       - sensor.count_tanner_s_water_was_empty
 
 history:

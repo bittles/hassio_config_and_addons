@@ -153,6 +153,77 @@ config:
     - content: .
       theme: Google Dark Theme
       type: markdown
+    - cards:
+      - entities:
+        - entity: sensor.back_deck_bear
+          name: Bear
+        - entity: binary_sensor.back_deck_bear_motion
+          name: Bear Motion
+        - entity: sensor.back_deck_bicycle
+          name: Bicycle
+        - entity: binary_sensor.back_deck_bicycle_motion
+          name: Bicycle Motion
+        - entity: sensor.back_deck_bird
+          name: Bird
+        - entity: binary_sensor.back_deck_bird_motion
+          name: Bird Motion
+        - entity: sensor.back_deck_bus
+          name: Bus
+        - entity: binary_sensor.back_deck_bus_motion
+          name: Bus Motion
+        - entity: sensor.back_deck_camera_fps
+          name: Camera Fps
+        - entity: sensor.back_deck_car
+          name: Car
+        - entity: binary_sensor.back_deck_car_motion
+          name: Car Motion
+        - entity: sensor.back_deck_cat
+          name: Cat
+        - entity: binary_sensor.back_deck_cat_motion
+          name: Cat Motion
+        - entity: sensor.back_deck_detection_fps
+          name: Detection Fps
+        - entity: sensor.back_deck_dog
+          name: Dog
+        - entity: binary_sensor.back_deck_dog_motion
+          name: Dog Motion
+        - entity: sensor.back_deck_motorcycle
+          name: Motorcycle
+        - entity: binary_sensor.back_deck_motorcycle_motion
+          name: Motorcycle Motion
+        - entity: sensor.back_deck_person
+          name: Person
+        - entity: binary_sensor.back_deck_person_motion
+          name: Person Motion
+        - entity: sensor.back_deck_process_fps
+          name: Process Fps
+        - entity: sensor.back_deck_skipped_fps
+          name: Skipped Fps
+        title: Back Deck
+        type: entities
+      - entity: camera.back_deck
+        type: picture-entity
+      - entity: camera.back_deck_bear
+        type: picture-entity
+      - entity: camera.back_deck_bicycle
+        type: picture-entity
+      - entity: camera.back_deck_bird
+        type: picture-entity
+      - entity: camera.back_deck_bus
+        type: picture-entity
+      - entity: camera.back_deck_car
+        type: picture-entity
+      - entity: camera.back_deck_cat
+        type: picture-entity
+      - entity: camera.back_deck_dog
+        type: picture-entity
+      - entity: camera.back_deck_motorcycle
+        type: picture-entity
+      - entity: camera.back_deck_person
+        type: picture-entity
+      columns: 1
+      square: false
+      type: grid
     theme: night
     title: Home
   - badges: []
@@ -714,10 +785,84 @@ config:
     - entities:
       - entity: input_boolean.driveway_motion
       - entity: input_boolean.porch_motion
+      - entity: input_boolean.wyze_deck_motion
       - entity: switch.frigate_porch_motion
       - entity: switch.frigate_driveway_motion
+      - entity: switch.frigate_deck_motion
       - entity: sensor.driveway_object
       - entity: sensor.porch_object
+      - entity: sensor.deck_object
       type: entities
+    - cards:
+      - entities:
+        - entity: sensor.back_deck_bear
+          name: Bear
+        - entity: binary_sensor.back_deck_bear_motion
+          name: Bear Motion
+        - entity: sensor.back_deck_bicycle
+          name: Bicycle
+        - entity: binary_sensor.back_deck_bicycle_motion
+          name: Bicycle Motion
+        - entity: sensor.back_deck_bird
+          name: Bird
+        - entity: binary_sensor.back_deck_bird_motion
+          name: Bird Motion
+        - entity: sensor.back_deck_bus
+          name: Bus
+        - entity: binary_sensor.back_deck_bus_motion
+          name: Bus Motion
+        - entity: sensor.back_deck_camera_fps
+          name: Camera Fps
+        - entity: sensor.back_deck_car
+          name: Car
+        - entity: binary_sensor.back_deck_car_motion
+          name: Car Motion
+        - entity: sensor.back_deck_cat
+          name: Cat
+        - entity: binary_sensor.back_deck_cat_motion
+          name: Cat Motion
+        - entity: sensor.back_deck_detection_fps
+          name: Detection Fps
+        - entity: sensor.back_deck_dog
+          name: Dog
+        - entity: binary_sensor.back_deck_dog_motion
+          name: Dog Motion
+        - entity: sensor.back_deck_motorcycle
+          name: Motorcycle
+        - entity: binary_sensor.back_deck_motorcycle_motion
+          name: Motorcycle Motion
+        - entity: sensor.back_deck_person
+          name: Person
+        - entity: binary_sensor.back_deck_person_motion
+          name: Person Motion
+        - entity: sensor.back_deck_process_fps
+          name: Process Fps
+        - entity: sensor.back_deck_skipped_fps
+          name: Skipped Fps
+        title: Back Deck
+        type: entities
+      - entity: camera.back_deck
+        type: picture-entity
+      - entity: camera.back_deck_bear
+        type: picture-entity
+      - entity: camera.back_deck_bicycle
+        type: picture-entity
+      - entity: camera.back_deck_bird
+        type: picture-entity
+      - entity: camera.back_deck_bus
+        type: picture-entity
+      - entity: camera.back_deck_car
+        type: picture-entity
+      - entity: camera.back_deck_cat
+        type: picture-entity
+      - entity: camera.back_deck_dog
+        type: picture-entity
+      - entity: camera.back_deck_motorcycle
+        type: picture-entity
+      - entity: camera.back_deck_person
+        type: picture-entity
+      columns: 1
+      square: false
+      type: grid
     path: frigate
     title: Frigate
