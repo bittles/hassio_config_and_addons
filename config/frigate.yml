@@ -23,7 +23,6 @@ mqtt:
 
 cameras:
 
-
   front_porch:
     ffmpeg:
       inputs:
@@ -229,6 +228,15 @@ cameras:
             - rtmp
             - record
 
+    detect:
+
+      enabled: True
+      # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
+      max_disappeared: 20
+      width: 1280
+      height: 720
+      fps: 3
+
     motion:
       threshold: 30
       contour_area: 200
@@ -237,6 +245,8 @@ cameras:
       frame_height: 100
       mask:
         - 0,0,191,0,166,43,137,100,67,131,0,165
+        - 357,0,356,40,364,130,309,169,247,183,213,159,171,100,196,0
+        - 1280,423,1258,421,1226,411,1194,364,1215,280,1280,208
 
 
     live:
@@ -308,7 +318,7 @@ detect:
   max_disappeared: 20
   width: 1280
   height: 720
-  fps: 5
+  fps: 4
 
 # Optional: birdseye configuration
 birdseye:
