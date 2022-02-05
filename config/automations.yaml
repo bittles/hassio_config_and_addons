@@ -18,36 +18,6 @@
       message: CPU usage on Odroid has been high for over 10 minutes!
       title: Pi CPU USAGE!!
   mode: single
-- id: '1574873108236'
-  alias: Front Door Autolock
-  description: ''
-  trigger:
-  - entity_id: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
-    for: 00:10:00
-    platform: state
-    to: 'off'
-  - entity_id: timer.frontdoorretry
-    platform: state
-    to: idle
-  - entity_id: lock.august_asl_03_smart_lock_locked
-    for: 00:10:00
-    platform: state
-    to: unlocked
-  condition:
-  - condition: state
-    entity_id: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
-    state: 'off'
-  - condition: state
-    entity_id: lock.august_asl_03_smart_lock_locked
-    state: unlocked
-  action:
-  - service: timer.start
-    entity_id: timer.frontdoorretry
-    data: {}
-  - service: lock.lock
-    data: {}
-    entity_id: lock.front_door
-  mode: single
 - id: '1574882881430'
   alias: Kitchen Lights Turns Cabinet Lights
   description: ''
@@ -1260,19 +1230,6 @@
       - service: script.bedroom_lights_night
     default: []
   mode: single
-- id: '1612574184047'
-  alias: Front Door Autolock Manually Locked Cancels Timer
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: lock.august_asl_03_smart_lock_locked
-    to: locked
-  condition: []
-  action:
-  - service: timer.cancel
-    data: {}
-    entity_id: timer.frontdoorretry
-  mode: single
 - id: '1612857978065'
   alias: yTanner Dinner Now Fed
   description: ''
@@ -1603,74 +1560,6 @@
       - automation.welcome_home_kara_garage
       - automation.welcome_home_nick_garage
   mode: single
-- id: '1620488535274'
-  alias: zzAarlo Porch Motion Picture
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: camera.aarlo_front_porch
-    attribute: last_video
-  condition:
-  - condition: not
-    conditions:
-    - condition: time
-      after: 00:00:00
-      before: 00:01:00
-  - type: is_not_open
-    condition: device
-    device_id: fc1eacd788f605dcfbf2b7e51f09d9ca
-    entity_id: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
-    domain: binary_sensor
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.porch_capture_time_capture_time
-    data:
-      timestamp: '{{ now().timestamp() }}'
-  - service: notify.d_and_nicks_notifications_grouped
-    data:
-      message: '''{{ state_attr(''sensor.aarlo_last_front_porch'', ''object_type'')
-        }}'' detected on front porch.  Check the home app for live view.  Here''s
-        the image captured from ''{{ states(''input_datetime.porch_video_capture_time'')
-        }}''.'
-      data:
-        image: '{{ state_attr(''camera.aarlo_front_porch'', ''last_thumbnail'') }}'
-  mode: single
-- id: '1620859025311'
-  alias: zzAarlo Porch Motion Clip
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: camera.aarlo_front_porch
-    attribute: last_video
-  condition:
-  - condition: state
-    entity_id: sensor.aarlo_recent_activity_front_porch
-    state: 'True'
-  - type: is_not_open
-    condition: device
-    device_id: fc1eacd788f605dcfbf2b7e51f09d9ca
-    entity_id: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
-    domain: binary_sensor
-  - condition: not
-    conditions:
-    - condition: time
-      after: 00:00:00
-      before: 00:01:00
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.porch_video_capture_time
-    data:
-      timestamp: '{{ now().timestamp() }}'
-  - service: notify.d_and_nicks_notifications_grouped
-    data:
-      message: Recorded clip of '{{ state_attr('sensor.aarlo_last_front_porch', 'object_type')
-        }}' from '{{ states('input_datetime.porch_video_capture_time') }}'.
-      data:
-        attachment:
-          url: '{{ state_attr(''camera.aarlo_front_porch'', ''last_video'') }}'
-  mode: single
 - id: '1621191007886'
   alias: zzzz.Homekit Device Tracker Updates (mqtt) nick
   description: ''
@@ -1761,33 +1650,6 @@
     entity_id: climate.downstairs_the_nest
     type: set_preset_mode
     preset_mode: none
-  mode: single
-- id: '1626906624466'
-  alias: ..Rain Alert
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.dark_sky_precip_probability
-    above: '50'
-  condition: []
-  action:
-  - service: notify.mobile_app_rxniphone
-    data:
-      title: RAIN
-      message: ITS RAINING BRO
-  mode: single
-- id: '1626987945731'
-  alias: ..Washing Machine On
-  description: ''
-  trigger:
-  - platform: time
-    at: '21:00:00'
-  condition: []
-  action:
-  - type: turn_on
-    device_id: e775c10059e17eb67294898a311be1dc
-    entity_id: switch.tasmota_2
-    domain: switch
   mode: single
 - id: '1629232161783'
   alias: zzzzz..Bedroom Thermostat AC
@@ -3063,41 +2925,6 @@
           retain: true
     default: []
   mode: single
-- id: '1636946965943'
-  alias: ..Morning Heat
-  description: ''
-  trigger:
-  - platform: time
-    id: heatstart
-    at: input_datetime.heat_start
-  - platform: time
-    id: heatend
-    at: input_datetime.heat_end
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: heatstart
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.master_bedroom_thermostat_heat
-        data:
-          temperature: '{{ states.input_number.heat_start_temp.state | float(default=0)
-            }}'
-    - conditions:
-      - condition: trigger
-        id: heatend
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.master_bedroom_thermostat_heat
-        data:
-          temperature: '{{ states.input_number.heat_end_temp.state | float(default=0)
-            }}'
-    default: []
-  mode: single
 - id: '1637818448968'
   alias: zzz.Desk Lamp
   description: ''
@@ -3558,29 +3385,29 @@
   alias: Frigate Notification Fork Driveway (Darius)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification.yaml
+    path: bittles/frigate_notification2.yaml
     input:
       camera: driveway
       notify_device: f76e35c3824b4aa3b2bf069241084176
       base_url: https://hassio.unibutton.com
-      captime: input_datetime.wyze_driveway_time
       cooldown: 90
+      captime: input_datetime.wyze_driveway_time
 - id: '1640396107108'
   alias: Frigate Notification Fork Porch (Darius)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification.yaml
+    path: bittles/frigate_notification2.yaml
     input:
       camera: front_porch
       notify_device: f76e35c3824b4aa3b2bf069241084176
       base_url: https://hassio.unibutton.com
-      captime: input_datetime.wyze_porch_time
       cooldown: 10
+      captime: input_datetime.wyze_porch_time
 - id: '1640446434058'
   alias: Frigate Notification Fork Porch (Nick)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification.yaml
+    path: bittles/frigate_notification2.yaml
     input:
       camera: front_porch
       notify_device: 051c6fdebb2adccddfd61201d0899d94
@@ -3591,13 +3418,13 @@
   alias: Frigate Notification Fork Driveway (Nick)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification.yaml
+    path: bittles/frigate_notification2.yaml
     input:
       camera: driveway
       notify_device: 051c6fdebb2adccddfd61201d0899d94
       base_url: https://hassio.unibutton.com
-      captime: input_datetime.wyze_driveway_time
       cooldown: 90
+      captime: input_datetime.wyze_driveway_time
 - id: '1641005202244'
   alias: zzzzz.Bedroom Thermostat AC by Switch (Duplicate)
   description: ''
@@ -3745,19 +3572,6 @@
             temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
               - 3}}'
   mode: single
-- id: '1641190010717'
-  alias: .kill hbonow
-  description: ''
-  trigger:
-  - platform: time
-    at: 02:40:00
-  condition: []
-  action:
-  - service: androidtv.adb_command
-    data:
-      entity_id: media_player.shield_adb
-      command: am force-stop com.hbo.hbonow
-  mode: single
 - id: '1642702581833'
   alias: Afternoon Temp Change
   description: ''
@@ -3817,7 +3631,7 @@
   alias: Frigate Notification Fork Back Deck (Nick)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification.yaml
+    path: bittles/frigate_notification2.yaml
     input:
       camera: back_deck
       notify_device: 051c6fdebb2adccddfd61201d0899d94
@@ -3828,15 +3642,12 @@
   alias: Frigate Notification Fork Back Deck (Darius)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification.yaml
+    path: bittles/frigate_notification2.yaml
     input:
       camera: back_deck
       notify_device: f76e35c3824b4aa3b2bf069241084176
       base_url: https://hassio.unibutton.com
-      cooldown: 120
-      captime: input_datetime.wyze_deck_time
       labels:
-      - car
       - person
       - bicycle
       - motorcycle
@@ -3844,6 +3655,8 @@
       - bird
       - cat
       - bear
+      cooldown: 120
+      captime: input_datetime.wyze_deck_time
 - id: '1643180514530'
   alias: zzMotion Frigate Snapshots on Interval
   description: ''

@@ -68,16 +68,18 @@ blueprint:
         object: {}
     presence_filter:
       name: (Optional) Presence Filter
-      description: Only notify if selected presence entity is not "home".
+      description: Only notify if selected person entity is not "home".
       default: ''
       selector:
-        entity: {}
+        entity:
+          domain: person
     captime:
       name: Date/Time of Capture
       description: input_datetime entity_id used for time display of capture.
       default: ''
       selector:
-        entity: {}
+        entity:
+          domain: input_datetime
     cooldown:
       name: (Optional) Cooldown
       description: Delay before sending another notification for this camera after
@@ -88,8 +90,8 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: seconds
-          mode: slider
           step: 1.0
+          mode: slider
     silence_timer:
       name: (Optional) Silence Notifications for 30 minutes
       description: 'How long to silence notifications for this camera when requested
@@ -102,8 +104,8 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: minutes
-          mode: slider
           step: 1.0
+          mode: slider
 mode: single
 max_exceeded: silent
 trigger:
@@ -148,7 +150,7 @@ action:
         group: frigate-notification-{{ camera }}
         image: /api/frigate/notifications/{{id}}/thumbnail.jpg?format=android
         attachment:
-          url: /api/frigate/notifications/{{id}}/thumbnail.jpg
+          url: /api/frigate/notifications/{{id}}/snapshot.jpg
   default:
   - service: notify.{{ group_target }}
     data:
@@ -159,7 +161,7 @@ action:
         group: frigate-notification-{{ camera }}
         image: /api/frigate/notifications/{{id}}/thumbnail.jpg?format=android
         attachment:
-          url: /api/frigate/notifications/{{id}}/thumbnail.jpg
+          url: /api/frigate/notifications/{{id}}/snapshot.jpg
 - repeat:
     sequence:
     - wait_for_trigger:
@@ -188,7 +190,7 @@ action:
             image: /api/frigate/notifications/{{id}}/thumbnail.jpg?format=android
             sound: none
             attachment:
-              url: /api/frigate/notifications/{{id}}/thumbnail.jpg
+              url: /api/frigate/notifications/{{id}}/snapshot.jpg
             actions:
             - action: URI
               title: View Clip
@@ -212,7 +214,7 @@ action:
             image: /api/frigate/notifications/{{id}}/thumbnail.jpg?format=android
             sound: none
             attachment:
-              url: /api/frigate/notifications/{{id}}/thumbnail.jpg
+              url: /api/frigate/notifications/{{id}}/snapshot.jpg
             actions:
             - action: URI
               title: View Clip
