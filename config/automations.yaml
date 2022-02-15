@@ -1640,7 +1640,6 @@
       hours: 0
       minutes: 0
       seconds: 10
-      milliseconds: 0
   condition:
   - condition: template
     value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
@@ -1650,6 +1649,66 @@
     entity_id: climate.downstairs_the_nest
     type: set_preset_mode
     preset_mode: none
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: climate.master_bedroom_thermostat_heat
+        state: heat
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: switch.bedroom_dummyheat
+            state: 'on'
+          sequence:
+          - service: climate.set_temperature
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+                + 3}}'
+        - conditions:
+          - condition: state
+            entity_id: switch.bedroom_dummyheat
+            state: 'off'
+          sequence:
+          - service: climate.set_temperature
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+                - 3}}'
+        default: []
+    - conditions:
+      - condition: state
+        entity_id: climate.master_bedroom_thermostat
+        state: cool
+      sequence:
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: switch.bedroom_dummyac
+            state: 'on'
+          sequence:
+          - service: climate.set_temperature
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+                - 3}}'
+        - conditions:
+          - condition: state
+            entity_id: switch.bedroom_dummyac
+            state: 'off'
+          sequence:
+          - service: climate.set_temperature
+            target:
+              entity_id: climate.downstairs_the_nest
+            data:
+              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+                + 3}}'
+        default: []
+    default: []
   mode: single
 - id: '1629232161783'
   alias: zzzzz..Bedroom Thermostat AC
@@ -3017,7 +3076,7 @@
       timestamp: '{{ now().timestamp() }}'
   - service: camera.snapshot
     target:
-      entity_id: camera.driveway_2
+      entity_id: camera.driveway
     data:
       filename: /config/www/snapshot_camera.driveway.jpg
   - delay:
@@ -3060,7 +3119,7 @@
     data:
       filename: /config/www/snapshot_camera.porch_camera.jpg
     target:
-      entity_id: camera.front_porch_2
+      entity_id: camera.front_porch
   - delay:
       hours: 0
       minutes: 0
@@ -3171,19 +3230,33 @@
       timestamp: '{{ now().timestamp() }}'
   - service: camera.snapshot
     target:
-      entity_id: camera.driveway_2
+      entity_id: camera.driveway
     data:
       filename: /config/www/snapshot_camera.driveway.jpg
   - service: camera.snapshot
     target:
-      entity_id: camera.driveway_2
+      entity_id: camera.driveway
     data:
       filename: /config/www/Wyze/driveway/driveway_{{ states('input_number.wyze_driveway_captures')
         }}.jpg
+  - service: rest_command.driveway_motion_on
+    data: {}
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_number.wyze_driveway_captures
+        state: '100'
+      sequence:
+      - service: input_number.set_value
+        data:
+          value: 1
+        target:
+          entity_id: input_number.wyze_driveway_captures
+    default: []
   - service: input_number.increment
     target:
       entity_id: input_number.wyze_driveway_captures
-  - service: rest_command.driveway_motion_on
+    data: {}
   mode: single
 - id: '1639590891103'
   alias: zzMotion Update Porch Snapshot (Duplicate)
@@ -3213,17 +3286,31 @@
     data:
       filename: /config/www/snapshot_camera.porch_camera.jpg
     target:
-      entity_id: camera.front_porch_2
+      entity_id: camera.front_porch
   - service: camera.snapshot
     data:
       filename: /config/www/Wyze/front_porch/front_porch_{{ states('input_number.wyze_front_porch_captures')
         }}.jpg
     target:
-      entity_id: camera.front_porch_2
+      entity_id: camera.front_porch
+  - service: rest_command.porch_motion_on
+    data: {}
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_number.wyze_front_porch_captures
+        state: '100'
+      sequence:
+      - service: input_number.set_value
+        data:
+          value: 1
+        target:
+          entity_id: input_number.wyze_front_porch_captures
+    default: []
   - service: input_number.increment
     target:
       entity_id: input_number.wyze_front_porch_captures
-  - service: rest_command.porch_motion_on
+    data: {}
   mode: single
 - id: '1639636571527'
   alias: zzzzzzzSSH Restart
@@ -3401,7 +3488,7 @@
       camera: front_porch
       notify_device: f76e35c3824b4aa3b2bf069241084176
       base_url: https://hassio.unibutton.com
-      cooldown: 10
+      cooldown: 30
       captime: input_datetime.wyze_porch_time
 - id: '1640446434058'
   alias: Frigate Notification Fork Porch (Nick)
@@ -3410,10 +3497,10 @@
     path: bittles/frigate_notification2.yaml
     input:
       camera: front_porch
-      notify_device: 051c6fdebb2adccddfd61201d0899d94
+      notify_device: 03b0f718cf58cab3a81faf6684107709
       base_url: https://hassio.unibutton.com
       captime: input_datetime.wyze_porch_time
-      cooldown: 10
+      cooldown: 30
 - id: '1640446463486'
   alias: Frigate Notification Fork Driveway (Nick)
   description: ''
@@ -3421,7 +3508,7 @@
     path: bittles/frigate_notification2.yaml
     input:
       camera: driveway
-      notify_device: 051c6fdebb2adccddfd61201d0899d94
+      notify_device: 03b0f718cf58cab3a81faf6684107709
       base_url: https://hassio.unibutton.com
       cooldown: 90
       captime: input_datetime.wyze_driveway_time
@@ -3621,11 +3708,25 @@
     data:
       filename: /config/www/Wyze/back_deck/back_deck_{{ states('input_number.input_number.wyze_deck_captures')
         }}.jpg
+  - service: rest_command.deck_motion_on
+    data: {}
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_number.wyze_deck_captures
+        state: '100'
+      sequence:
+      - service: input_number.set_value
+        data:
+          value: 1
+        target:
+          entity_id: input_number.wyze_deck_captures
+    default: []
   - service: input_number.increment
     target:
       entity_id:
       - input_number.wyze_deck_captures
-  - service: rest_command.deck_motion_on
+    data: {}
   mode: single
 - id: '1643128802871'
   alias: Frigate Notification Fork Back Deck (Nick)
@@ -3634,7 +3735,7 @@
     path: bittles/frigate_notification2.yaml
     input:
       camera: back_deck
-      notify_device: 051c6fdebb2adccddfd61201d0899d94
+      notify_device: 03b0f718cf58cab3a81faf6684107709
       base_url: https://hassio.unibutton.com
       cooldown: 120
       captime: input_datetime.wyze_deck_time
@@ -3674,13 +3775,13 @@
   - service: camera.snapshot
     target:
       entity_id:
-      - camera.front_porch_2
+      - camera.front_porch
     data:
       filename: /config/www/Wyze/snapshot_interval_front-porch.jpg
   - service: camera.snapshot
     target:
       entity_id:
-      - camera.driveway_2
+      - camera.driveway
     data:
       filename: /config/www/Wyze/snapshot_interval_driveway.jpg
   mode: single
