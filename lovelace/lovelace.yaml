@@ -32,14 +32,14 @@ config:
       entities:
       - entity: lock.august_asl_03_smart_lock_locked
       - entity: cover.garage_mqtt
-      entity: camera.front_porch_2
+      entity: camera.front_porch
       title: Front Porch
       type: picture-glance
     - camera_image: camera.driveway_motion_snapshot
       entities:
       - entity: lock.august_asl_03_smart_lock_locked
       - entity: cover.garage_mqtt
-      entity: camera.driveway_2
+      entity: camera.driveway
       title: Driveway
       type: picture-glance
     - camera_image: camera.deck_motion_snapshot
@@ -604,7 +604,6 @@ config:
       - entity: automation.zzsunday_reboot
       - entity: input_datetime.heat_start
       - entity: input_datetime.heat_end
-      - entity: automation.morning_heat
       - entity: input_number.heat_start_temp
       - entity: input_number.heat_end_temp
       - entity: input_boolean.driveway_motion
@@ -702,17 +701,17 @@ config:
           name: Motorcycle Motion
         - entity: binary_sensor.front_porch_person_motion
           name: Person Motion
-        - entity: sensor.front_porch_camera_fps_2
+        - entity: sensor.front_porch_camera_fps
           name: Camera Fps
-        - entity: sensor.front_porch_detection_fps_2
+        - entity: sensor.front_porch_detection_fps
           name: Detection Fps
-        - entity: sensor.front_porch_process_fps_2
+        - entity: sensor.front_porch_process_fps
           name: Process Fps
-        - entity: sensor.front_porch_skipped_fps_2
+        - entity: sensor.front_porch_skipped_fps
           name: Skipped Fps
         title: Front Porch
         type: entities
-      - entity: camera.front_porch_2
+      - entity: camera.front_porch
         type: picture-entity
       - entity: camera.front_porch_bicycle
         type: picture-entity
@@ -728,7 +727,7 @@ config:
         type: picture-entity
       - entity: camera.front_porch_motorcycle
         type: picture-entity
-      - entity: camera.front_porch_person_2
+      - entity: camera.front_porch_person
         type: picture-entity
       columns: 1
       square: false
@@ -761,7 +760,7 @@ config:
           name: Skipped Fps
         title: Driveway
         type: entities
-      - entity: camera.driveway_2
+      - entity: camera.driveway
         type: picture-entity
       - entity: camera.driveway_bicycle
         type: picture-entity
@@ -807,10 +806,6 @@ config:
           name: Bird
         - entity: binary_sensor.back_deck_bird_motion
           name: Bird Motion
-        - entity: sensor.back_deck_bus
-          name: Bus
-        - entity: binary_sensor.back_deck_bus_motion
-          name: Bus Motion
         - entity: sensor.back_deck_camera_fps
           name: Camera Fps
         - entity: sensor.back_deck_car
@@ -848,8 +843,6 @@ config:
       - entity: camera.back_deck_bicycle
         type: picture-entity
       - entity: camera.back_deck_bird
-        type: picture-entity
-      - entity: camera.back_deck_bus
         type: picture-entity
       - entity: camera.back_deck_car
         type: picture-entity
