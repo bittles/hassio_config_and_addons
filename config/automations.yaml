@@ -1293,8 +1293,9 @@
       sequence:
       - service: light.turn_on
         data:
-          brightness: 100
-        entity_id: light.color_lights
+          brightness_pct: 35
+        target:
+          entity_id: light.color_lights
       - delay:
           hours: 0
           minutes: 0
@@ -1317,26 +1318,6 @@
   - condition: template
     value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
   action:
-  - service: light.turn_off
-    data: {}
-    entity_id: light.color_lights
-  - repeat:
-      until:
-      - condition: state
-        entity_id: light.color_lights
-        state: 'off'
-      sequence:
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 3
-          milliseconds: 0
-      - service: light.turn_off
-        target:
-          entity_id: light.color_lights
-  - service: switch.turn_off
-    data: {}
-    entity_id: switch.idevices_switch
   - choose:
     - conditions:
       - condition: trigger
@@ -1359,6 +1340,7 @@
           - service: light.turn_off
             target:
               entity_id: light.color_lights
+            data: {}
     - conditions:
       - condition: trigger
         id: someone-home
@@ -1384,8 +1366,9 @@
           sequence:
           - service: light.turn_on
             data:
-              brightness: 254
-            entity_id: light.color_lights
+              brightness_pct: 35
+            target:
+              entity_id: light.color_lights
         default: []
       - choose:
         - conditions:
