@@ -1,11 +1,11 @@
-- platform: rest
-  resource: !secret git_addon_url
-  name: Git Exporter Status
-  value_template: '{{ value_json.data.state }}'
-  scan_interval: 2
-  headers:
-    Authorization: !secret api_token
-    Content-Type: application/json
+#- platform: rest
+#  resource: !secret git_addon_url
+#  name: Git Exporter Status
+#  value_template: '{{ value_json.data.state }}'
+#  scan_interval: 2
+#  headers:
+#    Authorization: !secret api_token
+#    Content-Type: application/json
 
 - platform: filter
   name: shellytempcombined_filter
