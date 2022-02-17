@@ -26,7 +26,7 @@ cameras:
   front_porch:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.189:8964/front-porch-cam
+        - path: rtsp://192.168.29.187:8964/front-porch-cam
  #       - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
           roles:
             - detect
@@ -102,7 +102,7 @@ cameras:
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.189:8964/driveway-cam
+        - path: rtsp://192.168.29.187:8964/driveway-cam
 #        - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
 
           roles:
@@ -221,7 +221,7 @@ cameras:
   back_deck:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.189:8964/back-deck-cam
+        - path: rtsp://192.168.29.187:8964/back-deck-cam
  #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
           roles:
             - detect
