@@ -903,7 +903,7 @@
   alias: zzzz.Alfred Cleans ZonesEveryNight
   description: ''
   trigger:
-  - at: 05:00
+  - at: input_datetime.alfred_cleaning_time
     platform: time
   condition: []
   action:
@@ -1436,16 +1436,14 @@
     entity_id: input_boolean.tanner_dinner_fed
   - repeat:
       until:
-      - condition: device
-        type: is_off
-        device_id: 647fbd4b922c53e19bda1f6af1603ef9
+      - condition: state
         entity_id: light.color_lights
-        domain: light
+        state: 'off'
       sequence:
-      - type: turn_off
-        device_id: 647fbd4b922c53e19bda1f6af1603ef9
-        entity_id: light.color_lights
-        domain: light
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.color_lights
       - delay:
           hours: 0
           minutes: 0
