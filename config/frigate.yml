@@ -277,7 +277,7 @@ cameras:
         person:
           threshold: 0.6
           min_area: 250
-          max_area: 700000
+          max_area: 450000
 
         bicycle:
           threshold: 0.6
