@@ -1,3 +1,7 @@
+Frigate FORK hass.io addons:
+  maintainer: bittles
+  slug: 49e3350b
+  source: https://github.com/bittles/old_frigate
 Frigate hass.io addons:
   maintainer: blakeblackshear
   slug: ccab4aaf
