@@ -1,26 +1,3 @@
-mqtt:
-  # Required: host name
-  host: 192.168.29.189
-
-  # Optional: port (default: shown below)
-  port: 1883
-
-  # Optional: topic prefix (default: shown below)
-  # NOTE: must be unique if you are running multiple instances
-  topic_prefix: frigate
-
-  # Optional: client id (default: shown below)
-  # NOTE: must be unique if you are running multiple instances
-  client_id: frigate
-
-  # Optional: user
-  user: mqtt
-
-  # Optional: password
-  # NOTE: MQTT password can be specified with an environment variables that must begin with 'FRIGATE_'.
-  #       e.g. password: '{FRIGATE_MQTT_PASSWORD}'
-  password: mosquitto
-
 cameras:
 
   front_porch:
@@ -311,6 +288,7 @@ cameras:
           min_area: 2500
           max_area: 700000
 
+
 detect:
 
   enabled: True
@@ -319,6 +297,27 @@ detect:
   width: 1280
   height: 720
   fps: 3
+
+  # Optional: Configuration for stationary object tracking
+#  stationary:
+    # Optional: Frequency for running detection on stationary objects (default: shown below)
+    # When set to 0, object detection will never be run on stationary objects. If set to 10, 
+    # it will be run on every 10th frame.
+#    interval: 10
+    # Optional: Number of frames without a position change for an object to be considered 
+    # stationary (default: 10x the frame rate or 10s)
+#    threshold: 30
+    # Optional: Define a maximum number of frames for tracking a stationary object (default: not set, track forever)
+    # This can help with false positives for objects that should only be stationary for a limited amount of time.
+    # It can also be used to disable stationary object tracking. For example, you may want to set a value for person,
+    # but leave car at the default.
+#    max_frames:
+      # Optional: Default for all object types (default: not set, track forever)
+#      default: 3000
+      # Optional: Object specific values
+#      objects:
+#        person: 1000
+
 
 # Optional: birdseye configuration
 birdseye:
@@ -341,6 +340,7 @@ birdseye:
   #   motion - cameras are included if motion was detected in the last 30 seconds
   #   continuous - all cameras are included always
   mode: continuous
+
 
 snapshots:
 
@@ -377,13 +377,6 @@ snapshots:
     #objects:
     #  person: 15
 
-detectors:
-  cpu1:
-    type: cpu
-    num_threads: 8
-  cpu2:
-    type: cpu
-    num_threads: 8
 
 ffmpeg:
 
@@ -398,7 +391,7 @@ ffmpeg:
   # Optional: global input args (default: shown below)
 #  input_args: -avoid_negative_ts make_zero -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -fflags +genpts+discardcorrupt+nofillin+flush_packets
   
-  input_args: -use_wallclock_as_timestamps 1 #-avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
+  input_args: -use_wallclock_as_timestamps 1 -avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
   # DONT USE-rw_timeout 5000000
   #test removed
   #-strict experimental
@@ -501,7 +494,7 @@ motion:
   # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
   # moving objects.
   
-  contour_area: 500
+#  contour_area: 500
   
   # Optional: Alpha value passed to cv2.accumulateWeighted when averaging the motion delta across multiple frames (default: shown below)
   # Higher values mean the current frame impacts the delta a lot, and a single raindrop may register as motion.
@@ -520,7 +513,7 @@ motion:
   # This operates as an efficient blur alternative. Higher values will result in more granular motion detection at the expense of higher CPU usage.
   # Lower values result in less CPU, but small changes may not register as motion.
   
-  frame_height: 100
+#  frame_height: 100
   
   # Optional: motion mask
   # NOTE: see docs for more detailed info on creating masks
@@ -539,7 +532,10 @@ record:
   # NOTE: This should be set to 0 and retention should be defined in events section below
   #       if you only want to retain recordings of events.
   retain_days: 0
-
+#  retain:
+#    days: 0
+#    mode: active_objects
+    
   # Optional: Event recording settings
   events:
 
@@ -566,7 +562,8 @@ record:
 
       # Required: Default retention days (default: shown below)
       default: 30
-
+#      mode: active_objects
+      
       # Optional: Per object retention days
 #      objects:
 #        person: 15
@@ -577,6 +574,41 @@ logger:
   default: debug
   # Optional: Component specific logger overrides
   logs:
-    frigate.event: debug
-    detector.cpu1: debug
-    detector.cpu2: debug
+    frigate.event: warning
+    detector.cpu1: warning
+    detector.cpu2: warning
+    detector.cpu3: warning
+
+detectors:
+  cpu1:
+    type: cpu
+    num_threads: 8
+  cpu2:
+    type: cpu
+    num_threads: 8
+  cpu3:
+    type: cpu
+    num_threads: 8
+
+mqtt:
+  # Required: host name
+  host: 192.168.29.189
+
+  # Optional: port (default: shown below)
+  port: 1883
+
+  # Optional: topic prefix (default: shown below)
+  # NOTE: must be unique if you are running multiple instances
+  topic_prefix: frigate
+
+  # Optional: client id (default: shown below)
+  # NOTE: must be unique if you are running multiple instances
+  client_id: frigate
+
+  # Optional: user
+  user: mqtt
+
+  # Optional: password
+  # NOTE: MQTT password can be specified with an environment variables that must begin with 'FRIGATE_'.
+  #       e.g. password: '{FRIGATE_MQTT_PASSWORD}'
+  password: mosquitto
