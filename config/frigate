@@ -387,11 +387,11 @@ ffmpeg:
   # NOTE: See hardware acceleration docs for your specific device
   
   hwaccel_args: -hwaccel drm -hwaccel_device /dev/dri/renderD128
-    
+  input_args: -use_wallclock_as_timestamps 1 -avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
+  
   # Optional: global input args (default: shown below)
 #  input_args: -avoid_negative_ts make_zero -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -fflags +genpts+discardcorrupt+nofillin+flush_packets
-  
-  input_args: -use_wallclock_as_timestamps 1 -avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
+
   # DONT USE-rw_timeout 5000000
   #test removed
   #-strict experimental
@@ -404,12 +404,12 @@ ffmpeg:
   #  record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an
   #  # Optional: output args for rtmp streams (default: shown below)
   #  rtmp: -c copy -f flv
-  #  
   output_args:
-#    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v libx264 -an
     rtmp: -c copy -an -f flv
     record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an
     detect: -f rawvideo -pix_fmt yuv420p
+
+#    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v libx264 -an
 #    rtmp: -c:a libfdk_aac -b:a 100k -c:v copy -f flv
 #    rtmp: -c:v libx264 -an -f flv
 
@@ -578,6 +578,8 @@ logger:
     detector.cpu1: warning
     detector.cpu2: warning
     detector.cpu3: warning
+    peewee.sqliteq: warning
+    peewee: warning
 
 detectors:
   cpu1:
