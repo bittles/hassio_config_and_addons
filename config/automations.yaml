@@ -194,7 +194,14 @@
   - condition: state
     entity_id: timer.dariusleft
     state: idle
+  - condition: state
+    entity_id: timer.garage_open_timer
+    state: idle
   action:
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.garage_open_timer
   - service: cover.open_cover
     data: {}
     target:
@@ -212,7 +219,14 @@
   - condition: state
     entity_id: timer.nickleft
     state: idle
+  - condition: state
+    entity_id: timer.garage_open_timer
+    state: idle
   action:
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.garage_open_timer
   - service: cover.open_cover
     data: {}
     target:
@@ -1100,7 +1114,14 @@
   - condition: state
     entity_id: timer.karaleft
     state: idle
+  - condition: state
+    entity_id: timer.garage_open_timer
+    state: idle
   action:
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.garage_open_timer
   - service: cover.open_cover
     data: {}
     target:

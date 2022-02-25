@@ -3,7 +3,7 @@
   unique_id: bedroom_hvac_ac
   heater: switch.bedroom_dummyac
   target_sensor: sensor.shellytempfixed
-  min_temp: 68
+  min_temp: 65
   max_temp: 80
   ac_mode: true
 #  target_temp: 74.5
