@@ -173,20 +173,12 @@ cameras:
             - detect
             - rtmp
             - record
-
-    detect:
-      enabled: True
-      # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
-      max_disappeared: 20
-      width: 1280
-      height: 720
-      fps: 3
     motion:
-      threshold: 30
-      contour_area: 200
-      delta_alpha: 0.185
-      frame_alpha: 0.18
-      frame_height: 100
+      threshold: 45
+#      contour_area: 200
+#      delta_alpha: 0.185
+#      frame_alpha: 0.18
+#      frame_height: 100
       mask:
         - 0,0,191,0,166,43,137,100,67,131,0,165
         - 357,0,356,40,364,130,309,169,247,183,213,159,171,100,196,0
@@ -259,8 +251,8 @@ detect:
   enabled: True
   # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
   max_disappeared: 20
-  width: 1280
-  height: 720
+#  width: 1280
+#  height: 720
   fps: 3
 
   # Optional: Configuration for stationary object tracking
@@ -268,7 +260,7 @@ detect:
     # Optional: Frequency for running detection on stationary objects (default: shown below)
     # When set to 0, object detection will never be run on stationary objects. If set to 10, 
     # it will be run on every 10th frame.
-    interval: 10
+    interval: 9
     # Optional: Number of frames without a position change for an object to be considered 
     # stationary (default: 10x the frame rate or 10s)
     threshold: 30
@@ -288,7 +280,7 @@ detect:
 birdseye:
 
   # Optional: Enable birdseye view (default: shown below)
-  enabled: False
+  enabled: True
   
   # Optional: Width of the output resolution (default: shown below)
   width: 1280
