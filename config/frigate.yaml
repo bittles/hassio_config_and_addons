@@ -138,7 +138,7 @@ cameras:
 #          min_area: 5000
 #          max_area: 500000
         person:
-          min_area: 3000
+          min_area: 4000
           max_area: 24000000
           threshold: 0.6
           min_score: 0.55
@@ -209,7 +209,7 @@ cameras:
           max_area: 700000
 
         person:
-          threshold: 0.6
+          threshold: 0.69
           min_area: 250
           max_area: 450000
 
@@ -411,21 +411,21 @@ objects:
     # Detection area polygon mask for this filter configuration
 
     car:
-      threshold: 0.5
-      min_score: 0.48
+      threshold: 0.65
+      min_score: 0.6
 
     person:
-      threshold: 0.6
-      min_score: 0.55
+      threshold: 0.65
+      min_score: 0.6
 
     bicycle:
-      threshold: 0.55
+      threshold: 0.62
 
     motorcycle:
       threshold: 0.65
 
     bus:
-      threshold: 0.6
+      threshold: 0.68
 
     bird:
       min_score: 0.65
