@@ -32,3 +32,22 @@
 #  initial_hvac_mode: "cool"
   away_temp: 69
   precision: 0.1
+
+- platform: dual_smart_thermostat
+  name: Bedroom Thermostat
+  heater: switch.bedroom_dummyheat
+  cooler: switch.bedroom_dummyac
+  target_sensor: sensor.shellytempfixed
+  openings:
+    - binary_sensor.back_door_template
+    - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+  min_temp: 64
+  max_temp: 78
+  min_cycle_duration:
+    minutes: 5
+  cold_tolerance: 1
+  hot_tolerance: 1
+  precision: 0.1
+#  target_temp_low: 67
+#  target_temp_high: 73
+#  target_temp: 68

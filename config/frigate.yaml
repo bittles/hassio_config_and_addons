@@ -99,8 +99,8 @@ cameras:
         filters:
           car:
             threshold: 0.99
-            min_area: 5000
-            max_area: 500000
+            min_area: 10000
+            max_area: 380000
       house_half_driveway:
         coordinates: 1038,79,1276,720,224,718,409,96
         objects:
@@ -134,9 +134,9 @@ cameras:
 
     objects:
       filters:
-#        car:
-#          min_area: 5000
-#          max_area: 500000
+        car:
+          min_area: 10000
+          max_area: 380000
         person:
           min_area: 4000
           max_area: 24000000

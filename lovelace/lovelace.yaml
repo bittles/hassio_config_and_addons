@@ -26,7 +26,6 @@ config:
     - entity: sensor.routerdlkbs
     - entity: sensor.routerulkbs
     - entity: binary_sensor.updater
-    - entity: sensor.potential_breaking_changes
     cards:
     - camera_image: camera.porch_motion_snapshot
       entities:
@@ -50,9 +49,6 @@ config:
       type: picture-glance
     - entities:
       - entity: script.restart_shield
-      - entity: climate.master_bedroom_thermostat_heat
-      - entity: climate.downstairs_the_nest
-      - entity: climate.master_bedroom_thermostat
       - entity: cover.garage_mqtt
       - entity: lock.august_asl_03_smart_lock_locked
       - entity: lock.back_door
@@ -68,6 +64,11 @@ config:
         entity: fan.bonus_room_fan
         name: Bonus Room Fan
         type: custom:fan-percent-button-row
+      - entity: climate.downstairs_the_nest
+      - entity: input_number.custom_thermostat_temp_high
+      - entity: input_number.custom_thermostat_temp_low
+      - entity: automation.zzzzz_store_bedroom_thermostat_temps
+      - entity: climate.bedroom_thermostat
       state_color: true
       type: entities
     - columns: 3
@@ -75,9 +76,9 @@ config:
       - entity: binary_sensor.caringaragestatus
       - entity: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
       - entity: binary_sensor.back_door_template
-      - entity: timer.frontdoorretry
-      - entity: sensor.battery_consumption_sensor_august_smart_lock_pro_3rd_gen_battery_level
-      - entity: sensor.battery_consumption_sensor_back_door_battery_template
+      show_icon: true
+      show_name: true
+      show_state: true
       state_color: true
       type: glance
     - columns: 5
@@ -143,8 +144,9 @@ config:
           action: toggle
       title: Switches
       type: glance
-    - entity: weather.weatherbit
+    - entity: weather.pirateweather
       secondary_info_attribute: precipitation
+      show_current: true
       show_forecast: true
       type: weather-forecast
     - showAzimuth: false
@@ -153,6 +155,8 @@ config:
     - content: .
       theme: Google Dark Theme
       type: markdown
+    - entity: climate.bedroom_thermostat
+      type: thermostat
     theme: night
     title: Home
   - badges: []
@@ -468,22 +472,25 @@ config:
     title: Washing Machine
   - badges: []
     cards:
-    - columns: 2
-      entities:
+    - entities:
       - entity: device_tracker.ipnickphone
       - entity: device_tracker.iphonenick_2
+      - entity: device_tracker.nickmqtttrigger
+      - entity: input_boolean.nick
       - entity: device_tracker.ipdariusphone
-      - entity: device_tracker.dariuss_iphone_2
+      - entity: device_tracker.dariuss_iphone
+      - entity: device_tracker.dariusmqtttrigger
+      - entity: input_boolean.darius
       - entity: device_tracker.ipkaraphone
       - entity: device_tracker.karas_iphone
-      - entity: input_boolean.noone
+      - entity: device_tracker.karamqtttrigger
+      - entity: input_boolean.kara
       - entity: binary_sensor.noone
-      show_icon: true
-      show_name: true
-      show_state: true
+      - entity: input_boolean.noone
+      show_header_toggle: false
       state_color: true
-      title: Device Trackers
-      type: glance
+      title: Trackers
+      type: entities
     - entities:
       - entity: timer.nickleft
       - entity: timer.dariusleft
@@ -491,17 +498,6 @@ config:
       show_header_toggle: false
       state_color: true
       title: Timers
-      type: entities
-    - entities:
-      - entity: input_boolean.nick
-      - entity: input_boolean.darius
-      - entity: input_boolean.kara
-      - entity: device_tracker.dariusmqtttrigger
-      - entity: device_tracker.nickmqtttrigger
-      - entity: device_tracker.karamqtttrigger
-      show_header_toggle: false
-      state_color: true
-      title: Homekit Triggers
       type: entities
     - entities:
       - entity: automation.welcome_home_front_door
@@ -542,6 +538,7 @@ config:
       - entity: input_datetime.afternoon_temp_change
       - entity: input_datetime.alfred_cleaning_time
       - entity: automation.alfred_cleans_zones_at_4am
+      - entity: automation.zzzz_back_door_autolock
       type: entities
     - calibration_points:
       - map:
