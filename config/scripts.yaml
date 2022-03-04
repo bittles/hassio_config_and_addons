@@ -324,3 +324,189 @@ bedroom_lights_night:
     entity_id: light.hue_go_2
     service: light.turn_on
   mode: single
+heat_switch_on:
+  alias: Custom Thermostat - Heat Switch On
+  sequence:
+  - choose:
+    - conditions:
+      - condition: not
+        conditions:
+        - condition: device
+          device_id: 1f4e53d64461d767d63350604b93cd1e
+          domain: climate
+          entity_id: climate.downstairs_the_nest
+          type: is_hvac_mode
+          hvac_mode: heat
+      sequence:
+      - device_id: 1f4e53d64461d767d63350604b93cd1e
+        domain: climate
+        entity_id: climate.downstairs_the_nest
+        type: set_hvac_mode
+        hvac_mode: heat
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 3}}'
+    - conditions:
+      - condition: device
+        device_id: 1f4e53d64461d767d63350604b93cd1e
+        domain: climate
+        entity_id: climate.downstairs_the_nest
+        type: is_hvac_mode
+        hvac_mode: heat
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 3}}'
+    default: []
+  mode: single
+custom_thermostat_heat_switch_off:
+  alias: Custom Thermostat - Heat Switch Off
+  sequence:
+  - service: climate.set_temperature
+    target:
+      entity_id: climate.downstairs_the_nest
+    data:
+      temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+        - 3}}'
+  mode: single
+custom_thermostat_ac_switch_on_duplicate:
+  alias: Custom Thermostat - AC Switch On
+  sequence:
+  - choose:
+    - conditions:
+      - condition: not
+        conditions:
+        - condition: device
+          device_id: 1f4e53d64461d767d63350604b93cd1e
+          domain: climate
+          entity_id: climate.downstairs_the_nest
+          type: is_hvac_mode
+          hvac_mode: cool
+      sequence:
+      - device_id: 1f4e53d64461d767d63350604b93cd1e
+        domain: climate
+        entity_id: climate.downstairs_the_nest
+        type: set_hvac_mode
+        hvac_mode: cool
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 10
+          milliseconds: 0
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            - 3}}'
+    - conditions:
+      - condition: device
+        device_id: 1f4e53d64461d767d63350604b93cd1e
+        domain: climate
+        entity_id: climate.downstairs_the_nest
+        type: is_hvac_mode
+        hvac_mode: heat
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 3}}'
+    default: []
+  mode: single
+custom_thermostat_ac_switch_off_duplicate:
+  alias: Custom Thermostat - AC Switch Off
+  sequence:
+  - service: climate.set_temperature
+    target:
+      entity_id: climate.downstairs_the_nest
+    data:
+      temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+        + 3}}'
+  mode: single
+custom_thermostat_discipline_nest:
+  alias: Custom Thermostat - Discipline Nest if Heating or Cooling Improperly
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: climate.downstairs_the_nest
+        attribute: hvac_action
+        state: heating
+      - condition: state
+        entity_id: switch.bedroom_dummyheat
+        state: 'off'
+      sequence:
+      - service: script.custom_thermostat_heat_switch_off
+        data: {}
+    - conditions:
+      - condition: state
+        entity_id: climate.downstairs_the_nest
+        attribute: hvac_action
+        state: cooling
+      - condition: state
+        entity_id: switch.bedroom_dummyac
+        state: 'off'
+      sequence:
+      - service: script.custom_thermostat_ac_switch_off_duplicate
+        data: {}
+    default: []
+  mode: single
+custom_thermostat_update_set_temp:
+  alias: Custom Thermostat - Update Set Temp
+  sequence:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: climate.downstairs_the_nest
+        state: heating
+        attribute: hvac_action
+      - condition: template
+        value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)
+          - (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)))
+          < 3 }}'
+      - condition: state
+        entity_id: switch.bedroom_dummyheat
+        state: 'on'
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 3}}'
+    - conditions:
+      - condition: state
+        entity_id: climate.downstairs_the_nest
+        attribute: hvac_action
+        state: cooling
+      - condition: template
+        value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)
+          - (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)))
+          < 3 }}'
+      - condition: state
+        entity_id: switch.bedroom_dummyac
+        state: 'on'
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            - 3}}'
+    default:
+    - service: script.custom_thermostat_discipline_nest
+      data: {}
+  mode: single

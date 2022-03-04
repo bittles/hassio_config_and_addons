@@ -3670,10 +3670,10 @@
   condition: []
   action:
   - service: climate.set_temperature
-    target:
-      entity_id: climate.master_bedroom_thermostat_heat
     data:
-      temperature: 67
+      target_temp_low: 67
+    target:
+      entity_id: climate.bedroom_thermostat
   mode: single
 - id: '1643128686499'
   alias: zzMotion Update Deck Snapshot (Duplicate)
@@ -3787,3 +3787,154 @@
     data:
       filename: /config/www/Wyze/snapshot_interval_driveway.jpg
   mode: single
+- id: '1646335859257'
+  alias: zzzzz.Bedroom Thermostat Combined
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.bedroom_dummyheat
+    to: 'on'
+    id: heat_switch_on
+  - platform: state
+    entity_id: switch.bedroom_dummyheat
+    id: heat_switch_off
+    to: 'off'
+  - platform: state
+    entity_id: switch.bedroom_dummyac
+    id: ac_switch_on
+    to: 'on'
+  - platform: state
+    entity_id: switch.bedroom_dummyac
+    id: ac_switch_off
+    to: 'off'
+  - platform: state
+    entity_id: climate.downstairs_the_nest
+    attribute: hvac_action
+    to: heating
+    id: nestheat
+  - platform: state
+    entity_id: climate.downstairs_the_nest
+    attribute: hvac_action
+    id: nestcool
+    to: cooling
+  - platform: state
+    entity_id: sensor.shellytempfixed_timestamp_updater
+    id: bedroom_temp_change
+  condition:
+  - condition: template
+    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: heat_switch_on
+      sequence:
+      - service: script.heat_switch_on
+        data: {}
+    - conditions:
+      - condition: trigger
+        id: heat_switch_off
+      sequence:
+      - service: script.custom_thermostat_heat_switch_off
+        data: {}
+    - conditions:
+      - condition: trigger
+        id: ac_switch_on
+      sequence:
+      - service: script.custom_thermostat_ac_switch_on_duplicate
+        data: {}
+    - conditions:
+      - condition: trigger
+        id: ac_switch_off
+      sequence:
+      - service: script.custom_thermostat_ac_switch_off_duplicate
+        data: {}
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: nestheat
+        - condition: trigger
+          id: nestcool
+      sequence:
+      - service: script.custom_thermostat_discipline_nest
+        data: {}
+    - conditions:
+      - condition: trigger
+        id: bedroom_temp_change
+      sequence:
+      - service: script.custom_thermostat_update_set_temp
+        data: {}
+    default: []
+  mode: single
+- id: '1646345300210'
+  alias: zzzzz.Store Bedroom Thermostat Temps
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: climate.bedroom_thermostat
+    attribute: target_temp_low
+    id: temp low changed
+  - platform: state
+    entity_id: climate.bedroom_thermostat
+    attribute: target_temp_high
+    id: temp high changed
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: temp low changed
+      sequence:
+      - service: input_number.set_value
+        data:
+          value: '{{ state_attr(''climate.bedroom_thermostat'', ''target_temp_low'')|float(default=67)
+            }}'
+        target:
+          entity_id: input_number.custom_thermostat_temp_low
+    - conditions:
+      - condition: trigger
+        id: temp high changed
+      sequence:
+      - service: input_number.set_value
+        data:
+          value: '{{ state_attr(''climate.bedroom_thermostat'', ''target_temp_high'')|float(default=72)
+            }}'
+        target:
+          entity_id: input_number.custom_thermostat_temp_high
+    default:
+    - service: climate.set_temperature
+      data:
+        target_temp_high: '{{ states.input_number.custom_thermostat_temp_high.state
+          }}'
+        target_temp_low: '{{ states.input_number.custom_thermostat_temp_low.state
+          }}'
+      target:
+        entity_id: climate.bedroom_thermostat
+  mode: single
+- id: '1646350932648'
+  alias: zzzz.Back Door Autolock
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.back_door_template
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+  condition:
+  - condition: device
+    device_id: ed8540b7667667aa76f6c1e9c8557dac
+    domain: lock
+    entity_id: lock.back_door
+    type: is_unlocked
+  action:
+  - device_id: ed8540b7667667aa76f6c1e9c8557dac
+    domain: lock
+    entity_id: lock.back_door
+    type: lock
+  mode: restart

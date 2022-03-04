@@ -62,18 +62,18 @@ rest_command:
     method: post
     verify_ssl: false
 
-battery_consumption:
-  front_door_batteries:
-    source: sensor.august_smart_lock_pro_3rd_gen_battery_level
-    unique_id: frontlockbatteries
-    battery_capacity: 45.6
-    unit_of_measurement: Wh
+#battery_consumption:
+#  front_door_batteries:
+#    source: sensor.august_smart_lock_pro_3rd_gen_battery_level
+#    unique_id: frontlockbatteries
+#    battery_capacity: 45.6
+#    unit_of_measurement: Wh
 
-  back_door_batteries:
-    source: sensor.back_door_battery_template
-    unique_id: backlockbatteries_consumption_template
-    battery_capacity: 45.6
-    unit_of_measurement: Wh
+#  back_door_batteries:
+#    source: sensor.back_door_battery_template
+#    unique_id: backlockbatteries_consumption_template
+#    battery_capacity: 45.6
+#    unit_of_measurement: Wh
 
 utility_meter:
   bedroom_outlets_energy:
@@ -84,8 +84,10 @@ utility_meter:
       days: 1
 
 weather:
-#  - platform: pirateweather
-#    api_key: !secret pirateweather_api_key
+  - platform: pirateweather
+    api_key: !secret pirateweather_api_key
+    latitude: 33.7553777
+    longitude: -78.8785383
 
 folder_watcher:
 #  - folder: /share/downloadtracker/
@@ -111,7 +113,7 @@ folder_watcher:
 #shell_command:
 #  unziptorrents: /share/zipscript.sh '{{ torrent }}'
 
-breaking_changes:
+#breaking_changes:
 
 shelly:
   host_ip: !secret pi4_ip

@@ -1,8 +1,8 @@
 - name: HassBridge
 #  auto_start: true
   filter:
-    include_domains:
-     - climate
+#    include_domains:
+#     - climate
     include_entities:
      - sensor.nest_thermostat_temperature
      - sensor.dark_sky_temperature
@@ -68,7 +68,7 @@
      - switch.door
 #     - light.zone2volume
      - sensor.bonusroomtemp
-     - climate.master_bedroom_thermostat
+#     - climate.master_bedroom_thermostat
      - light.aarlo_garage_camera
      - camera.bedroom_cam
      - camera.tanner_cam
@@ -78,8 +78,10 @@
      - switch.master_bathroom_fan
      - fan.bonus_room_fan
      - light.bonus_room_light
-     - climate.master_bedroom_thermostat_heat
+#     - climate.master_bedroom_thermostat_heat
+     - climate.bedroom_thermostat
      - light.desklamp
+     - climate.downstairs_the_nest
     exclude_entities:
      - media_player.onkyo
      - light.hue_go_1
@@ -112,6 +114,13 @@
      - sensor
      - switch
      - remote
+     - media_player
+     - input_select
+     - select
+     - button
+     - lock
+     - cover
+     - climate
   entity_config:
     camera.petcam:
       name: Tanner Cam
