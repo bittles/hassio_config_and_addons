@@ -44,7 +44,7 @@
   min_temp: 64
   max_temp: 78
   min_cycle_duration:
-    minutes: 5
+    minutes: 30
   cold_tolerance: 1
   hot_tolerance: 1
   precision: 0.1

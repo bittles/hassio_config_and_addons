@@ -13,7 +13,6 @@ config:
     - entity: person.darius
     - entity: person.kara
     - entity: binary_sensor.noone
-    - entity: binary_sensor.shelly_ping_sensor
     - entity: vacuum.rockrobo
     - entity: sensor.nest_thermostat_temperature
     - entity: sensor.nest_thermostat_humidity
@@ -25,7 +24,6 @@ config:
     - entity: sensor.processor_use
     - entity: sensor.routerdlkbs
     - entity: sensor.routerulkbs
-    - entity: binary_sensor.updater
     cards:
     - camera_image: camera.porch_motion_snapshot
       entities:
@@ -69,6 +67,8 @@ config:
       - entity: input_number.custom_thermostat_temp_low
       - entity: automation.zzzzz_store_bedroom_thermostat_temps
       - entity: climate.bedroom_thermostat
+      - entity: switch.bedroom_dummyheat
+      - entity: switch.bedroom_dummyac
       state_color: true
       type: entities
     - columns: 3
@@ -155,8 +155,6 @@ config:
     - content: .
       theme: Google Dark Theme
       type: markdown
-    - entity: climate.bedroom_thermostat
-      type: thermostat
     theme: night
     title: Home
   - badges: []
@@ -482,7 +480,7 @@ config:
       - entity: device_tracker.dariusmqtttrigger
       - entity: input_boolean.darius
       - entity: device_tracker.ipkaraphone
-      - entity: device_tracker.karas_iphone
+      - entity: device_tracker.karasiphone
       - entity: device_tracker.karamqtttrigger
       - entity: input_boolean.kara
       - entity: binary_sensor.noone

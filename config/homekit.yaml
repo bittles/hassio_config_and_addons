@@ -102,25 +102,34 @@
      - device_tracker.nbauers_iphone_2
      - switch.bonus_room_fan_action_switch
     exclude_domains:
-     - fan
-     - light
      - automation
-     - input_boolean
-     - script
      - binary_sensor
-     - sensor
+     - button
+     - camera
+     - climate
+     - cover
      - device_tracker
+     - fan
+     - group
+     - input_boolean
+     - input_datetime
+     - input_number
+     - input_select
+     - input_text
+     - light
+     - lock
+     - media_player
+     - person
+     - remote
      - scene
+     - script
+     - select
      - sensor
      - switch
-     - remote
-     - media_player
-     - input_select
-     - select
-     - button
-     - lock
-     - cover
-     - climate
+     - timer
+     - vacuum
+     - weather
+     - zone
   entity_config:
     camera.petcam:
       name: Tanner Cam
