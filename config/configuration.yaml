@@ -75,13 +75,13 @@ rest_command:
 #    battery_capacity: 45.6
 #    unit_of_measurement: Wh
 
-utility_meter:
-  bedroom_outlets_energy:
-    name: Monthly Bedroom Outlets Energy
-    source: sensor.bedroom_outlet_energy_in_kwh
-    cycle: monthly
-    offset:
-      days: 1
+#utility_meter:
+#  bedroom_outlets_energy:
+#    name: Monthly Bedroom Outlets Energy
+#    source: sensor.bedroom_outlet_energy_in_kwh
+#    cycle: monthly
+#    offset:
+#      days: 1
 
 weather:
   - platform: pirateweather
@@ -393,7 +393,6 @@ api:
 ffmpeg:
 config:
 sun:
-updater:
 mobile_app:
 python_script:
 person:

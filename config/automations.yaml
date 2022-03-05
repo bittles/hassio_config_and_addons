@@ -22,8 +22,6 @@
   alias: Kitchen Lights Turns Cabinet Lights
   description: ''
   trigger:
-  - entity_id: light.kitchen
-    platform: state
   - platform: state
     entity_id: switch.kitchen_light
   condition:
@@ -49,8 +47,8 @@
         data: {}
         entity_id: light.under_cabinet_light
     default: []
-  mode: single
-  max: 10
+  mode: queued
+  max: 3
 - id: '1574887131460'
   alias: zzz.Outdoor Lights at Sunset/Sunrise
   description: ''
@@ -919,6 +917,9 @@
   trigger:
   - at: input_datetime.alfred_cleaning_time
     platform: time
+  - platform: state
+    entity_id: binary_sensor.noone
+    to: 'on'
   condition: []
   action:
   - data:
@@ -940,9 +941,6 @@
     entity_id: media_player.onkyo_zone_2
     attribute: source
     to: Bluetooth
-  - platform: state
-    entity_id: media_player.onkyo_zone_2
-    to: 'on'
   condition:
   - condition: or
     conditions:
@@ -959,7 +957,8 @@
     data_template:
       option: '{{  trigger.to_state.attributes.source  }}'
     entity_id: input_select.zone_2_sources
-  mode: single
+  mode: queued
+  max: 3
 - id: '1604792588235'
   alias: zzzz.Restart Shield TV
   description: ''
@@ -2615,7 +2614,7 @@
       entity_id: input_datetime.bedroom_temp_change_time
     data:
       datetime: '{{ now() }}'
-  mode: single
+  mode: restart
 - id: '1635435382120'
   alias: zzzzz..Bedroom Thermostat Heat
   description: ''
@@ -3866,7 +3865,8 @@
       - service: script.custom_thermostat_update_set_temp
         data: {}
     default: []
-  mode: single
+  mode: queued
+  max: 5
 - id: '1646345300210'
   alias: zzzzz.Store Bedroom Thermostat Temps
   description: ''
@@ -3888,6 +3888,11 @@
       - condition: trigger
         id: temp low changed
       sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
       - service: input_number.set_value
         data:
           value: '{{ state_attr(''climate.bedroom_thermostat'', ''target_temp_low'')|float(default=67)
@@ -3898,6 +3903,11 @@
       - condition: trigger
         id: temp high changed
       sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
       - service: input_number.set_value
         data:
           value: '{{ state_attr(''climate.bedroom_thermostat'', ''target_temp_high'')|float(default=72)
@@ -3905,6 +3915,16 @@
         target:
           entity_id: input_number.custom_thermostat_temp_high
     default:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - service: climate.set_hvac_mode
+      data:
+        hvac_mode: heat_cool
+      target:
+        entity_id: climate.bedroom_thermostat
     - service: climate.set_temperature
       data:
         target_temp_high: '{{ states.input_number.custom_thermostat_temp_high.state
@@ -3913,7 +3933,8 @@
           }}'
       target:
         entity_id: climate.bedroom_thermostat
-  mode: single
+  mode: queued
+  max: 3
 - id: '1646350932648'
   alias: zzzz.Back Door Autolock
   description: ''

@@ -469,10 +469,6 @@ custom_thermostat_update_set_temp:
   sequence:
   - choose:
     - conditions:
-      - condition: state
-        entity_id: climate.downstairs_the_nest
-        state: heating
-        attribute: hvac_action
       - condition: template
         value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)
           - (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)))
@@ -488,10 +484,6 @@ custom_thermostat_update_set_temp:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             + 3}}'
     - conditions:
-      - condition: state
-        entity_id: climate.downstairs_the_nest
-        attribute: hvac_action
-        state: cooling
       - condition: template
         value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)
           - (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)))

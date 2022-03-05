@@ -138,7 +138,7 @@ cameras:
           min_area: 10000
           max_area: 380000
         person:
-          min_area: 4000
+          min_area: 15000
           max_area: 24000000
           threshold: 0.6
           min_score: 0.55
@@ -260,10 +260,10 @@ detect:
     # Optional: Frequency for running detection on stationary objects (default: shown below)
     # When set to 0, object detection will never be run on stationary objects. If set to 10, 
     # it will be run on every 10th frame.
-    interval: 9
+    interval: 20
     # Optional: Number of frames without a position change for an object to be considered 
     # stationary (default: 10x the frame rate or 10s)
-    threshold: 30
+    threshold: 20
     # Optional: Define a maximum number of frames for tracking a stationary object (default: not set, track forever)
     # This can help with false positives for objects that should only be stationary for a limited amount of time.
     # It can also be used to disable stationary object tracking. For example, you may want to set a value for person,
@@ -290,7 +290,7 @@ birdseye:
   
   # Optional: Encoding quality of the mpeg1 feed (default: shown below)
   # 1 is the highest quality, and 31 is the lowest. Lower quality feeds utilize less CPU resources.
-  quality: 8
+  quality: 20
   
   # Optional: Mode of the view. Available options are: objects, motion, and continuous
   #   objects - cameras are included if they have had a tracked object within the last 30 seconds
@@ -442,7 +442,7 @@ motion:
   # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
   # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
   # The value should be between 1 and 255.
-  threshold: 40
+  threshold: 45
 
   # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
   # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
@@ -453,13 +453,13 @@ motion:
   # Optional: Alpha value passed to cv2.accumulateWeighted when averaging the motion delta across multiple frames (default: shown below)
   # Higher values mean the current frame impacts the delta a lot, and a single raindrop may register as motion.
   # Too low and a fast moving person wont be detected as motion.
-  delta_alpha: 0.185
+  delta_alpha: 0.18
 
   # Optional: Alpha value passed to cv2.accumulateWeighted when averaging frames to determine the background (default: shown below)
   # Higher values mean the current frame impacts the average a lot, and a new object will be averaged into the background faster.
   # Low values will cause things like moving shadows to be detected as motion for longer.
   # https://www.geeksforgeeks.org/background-subtraction-in-an-image-using-concept-of-running-average/
-  frame_alpha: 0.18
+  frame_alpha: 0.2
 
   # Optional: Height of the resized motion frame  (default: 1/6th of the original frame height, but no less than 180)
   # This operates as an efficient blur alternative. Higher values will result in more granular motion detection at the expense of higher CPU usage.
