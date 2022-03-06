@@ -917,9 +917,6 @@
   trigger:
   - at: input_datetime.alfred_cleaning_time
     platform: time
-  - platform: state
-    entity_id: binary_sensor.noone
-    to: 'on'
   condition: []
   action:
   - data:
@@ -1213,11 +1210,20 @@
     conditions:
     - condition: and
       conditions:
-      - condition: trigger
-        id: karahome
-      - condition: state
-        entity_id: person.nick
-        state: home
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: karahome
+        - condition: trigger
+          id: nickhome
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: person.kara
+          state: home
+        - condition: state
+          entity_id: person.nick
+          state: home
   action:
   - choose:
     - conditions:
@@ -1234,6 +1240,7 @@
         state: above_horizon
       sequence:
       - service: script.bedroom_lights_day
+        data: {}
     - conditions:
       - condition: or
         conditions:
@@ -1248,6 +1255,7 @@
         state: below_horizon
       sequence:
       - service: script.bedroom_lights_night
+        data: {}
     default: []
   mode: single
 - id: '1612857978065'
@@ -1483,16 +1491,11 @@
     state: drying
   action:
   - delay: 00:00:10
-  - service: notify.mobile_app_darius_s_iphone
+  - service: notify.pharmlake_all_3_d_kara_nick_notifications
     data:
-      title: Washing Machine Done
       message: Your clothes are washed! Throw them in the dryer you lazy piece of
         shit!!
-  - service: notify.mobile_app_rxniphone
-    data:
       title: Washing Machine Done
-      message: Your clothes are washed! Throw them in the dryer you lazy piece of
-        shit!!
   mode: single
 - id: '1615078034361'
   alias: zzzzSunday Reboot
@@ -2407,66 +2410,6 @@
     default: []
   mode: parallel
   max: 10
-- id: '1631407504174'
-  alias: zzAarlo Garage Motion Clip
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: camera.aarlo_garage_camera
-    attribute: last_video
-  condition:
-  - condition: state
-    entity_id: sensor.aarlo_recent_activity_garage_camera
-    state: 'True'
-  - condition: not
-    conditions:
-    - condition: time
-      after: 00:00:00
-      before: 00:01:00
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.driveway_video_capture
-    data:
-      timestamp: '{{ now().timestamp() }}'
-  - service: notify.d_and_nicks_notifications_grouped
-    data:
-      message: Recorded clip in driveway of '{{ state_attr('sensor.aarlo_last_garage_camera',
-        'object_type') }}' from '{{ states('input_datetime.driveway_video_capture')
-        }}'.
-      data:
-        attachment:
-          url: '{{ state_attr(''camera.aarlo_garage_camera'', ''last_video'') }}'
-  mode: single
-- id: '1631407684486'
-  alias: zzAarlo Garage Motion Picture
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: camera.aarlo_garage_camera
-    attribute: last_video
-  condition:
-  - condition: not
-    conditions:
-    - condition: time
-      after: 00:00:00
-      before: 00:01:00
-  action:
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.driveway_video_capture
-    data:
-      timestamp: '{{ now().timestamp() }}'
-  - service: notify.d_and_nicks_notifications_grouped
-    data:
-      message: '''{{ state_attr(''sensor.aarlo_last_garage_camera'', ''object_type'')
-        }}'' detected in DRIVEWAY.  Check the home app for live view.  Here''s the
-        image captured from ''{{ states(''input_datetime.driveway_video_capture'')
-        }}''.'
-      data:
-        image: '{{ state_attr(''camera.aarlo_garage_camera'', ''last_thumbnail'')
-          }}'
-  mode: single
 - id: '1632339599194'
   alias: zzMaster Bath Fan On/Off
   description: ''
@@ -3002,221 +2945,12 @@
     entity_id: switch.desk_lamp
     domain: switch
   mode: single
-- id: '1639004807222'
-  alias: zzMotioneye Driveway On
-  description: ''
-  trigger:
-  - platform: webhook
-    webhook_id: driveway-motion-on
-  condition: []
-  action:
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.driveway_motion
-  mode: single
-- id: '1639004835546'
-  alias: zzMotioneye Driveway Off
-  description: ''
-  trigger:
-  - platform: webhook
-    webhook_id: driveway-motion-off
-  condition: []
-  action:
-  - service: input_boolean.turn_off
-    target:
-      entity_id: input_boolean.driveway_motion
-  mode: single
-- id: '1639096642296'
-  alias: zzMotioneye Porch On
-  description: ''
-  trigger:
-  - platform: webhook
-    webhook_id: porch-motion-on
-  condition: []
-  action:
-  - service: input_boolean.turn_on
-    target:
-      entity_id:
-      - input_boolean.porch_motion
-  mode: single
-- id: '1639096680539'
-  alias: zzMotioneye Porch Off
-  description: ''
-  trigger:
-  - platform: webhook
-    webhook_id: porch-motion-off
-  condition: []
-  action:
-  - service: input_boolean.turn_off
-    target:
-      entity_id: input_boolean.porch_motion
-  mode: single
-- id: '1639175749676'
+- id: '1639590820458'
   alias: zzMotion Update Driveway Snapshot
   description: ''
   trigger:
   - platform: state
-    entity_id: input_boolean.driveway_motion
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: switch.frigate_driveway_motion
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 400
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.wyze_driveway_time
-    data:
-      timestamp: '{{ now().timestamp() }}'
-  - service: camera.snapshot
-    target:
-      entity_id: camera.driveway
-    data:
-      filename: /config/www/snapshot_camera.driveway.jpg
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 100
-  - service: notify.mobile_app_rxniphone
-    data:
-      message: Frigate driveway capture.  Check the home app for live view.  Here's
-        the image captured from '{{ states('input_datetime.wyze_driveway_time') }}'.
-      data:
-        image: /local/snapshot_camera.driveway.jpg
-  mode: single
-- id: '1639179202364'
-  alias: zzMotion Update Porch Snapshot
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.porch_motion
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: switch.frigate_porch_motion
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 400
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.wyze_porch_time
-    data:
-      timestamp: '{{ now().timestamp() }}'
-  - service: camera.snapshot
-    data:
-      filename: /config/www/snapshot_camera.porch_camera.jpg
-    target:
-      entity_id: camera.front_porch
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 100
-  - service: notify.mobile_app_rxniphone
-    data:
-      message: Frigate porch capture.  Check the home app for live view.  Here's the
-        image captured from '{{ states('input_datetime.wyze_porch_time') }}'.
-      data:
-        image: /local/snapshot_camera.porch_camera.jpg
-  mode: single
-- id: '1639324601132'
-  alias: zzMotion Send Webhook to Scrypted
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.driveway_motion
-    id: drivewaymotion-on
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: input_boolean.porch_motion
-    id: porchmotion-on
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: input_boolean.porch_motion
-    id: porchmotion-off
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id: input_boolean.driveway_motion
-    id: drivewaymotion-off
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id: switch.frigate_driveway_motion
-    id: drivewaymotion-off
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id: switch.frigate_driveway_motion
-    id: drivewaymotion-on
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: switch.frigate_porch_motion
-    id: porchmotion-on
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: switch.frigate_porch_motion
-    id: porchmotion-off
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: drivewaymotion-on
-      sequence:
-      - service: rest_command.driveway_motion_on
-    - conditions:
-      - condition: trigger
-        id: drivewaymotion-off
-      sequence:
-      - service: rest_command.driveway_motion_off
-    default: []
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: porchmotion-on
-      sequence:
-      - service: rest_command.porch_motion_on
-    - conditions:
-      - condition: trigger
-        id: porchmotion-off
-      sequence:
-      - service: rest_command.porch_motion_off
-    default: []
-  mode: parallel
-  max: 10
-- id: '1639590820458'
-  alias: zzMotion Update Driveway Snapshot (Duplicate)
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.driveway_motion
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: switch.frigate_driveway_motion
-    from: 'off'
-    to: 'on'
+    entity_id: input_datetime.wyze_driveway_time
   condition: []
   action:
   - delay:
@@ -3224,11 +2958,6 @@
       minutes: 0
       seconds: 0
       milliseconds: 100
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.wyze_driveway_time
-    data:
-      timestamp: '{{ now().timestamp() }}'
   - service: camera.snapshot
     target:
       entity_id: camera.driveway
@@ -3240,8 +2969,6 @@
     data:
       filename: /config/www/Wyze/driveway/driveway_{{ states('input_number.wyze_driveway_captures')
         }}.jpg
-  - service: rest_command.driveway_motion_on
-    data: {}
   - choose:
     - conditions:
       - condition: state
@@ -3260,17 +2987,11 @@
     data: {}
   mode: single
 - id: '1639590891103'
-  alias: zzMotion Update Porch Snapshot (Duplicate)
+  alias: zzMotion Update Porch Snapshot
   description: ''
   trigger:
   - platform: state
-    entity_id: input_boolean.porch_motion
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: switch.frigate_porch_motion
-    from: 'off'
-    to: 'on'
+    entity_id: input_datetime.wyze_porch_time
   condition: []
   action:
   - delay:
@@ -3278,11 +2999,6 @@
       minutes: 0
       seconds: 0
       milliseconds: 600
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.wyze_porch_time
-    data:
-      timestamp: '{{ now().timestamp() }}'
   - service: camera.snapshot
     data:
       filename: /config/www/snapshot_camera.porch_camera.jpg
@@ -3294,8 +3010,6 @@
         }}.jpg
     target:
       entity_id: camera.front_porch
-  - service: rest_command.porch_motion_on
-    data: {}
   - choose:
     - conditions:
       - condition: state
@@ -3344,58 +3058,6 @@
     data:
       addon: ccab4aaf_frigate-fa
   mode: single
-- id: '1640042306096'
-  alias: zzMotion Driveway Pic (Nick Notif)
-  description: ''
-  trigger:
-  - platform: event
-    event_type: folder_watcher
-    event_data:
-      event_type: modified
-      folder: /config/www/Wyze/clips
-  condition:
-  - condition: template
-    value_template: '{% if trigger.event.data.file|truncate(11, true) == ''driveway...''
-      %}
-
-      true
-
-      {% endif %}'
-  action:
-  - service: notify.mobile_app_rxniphone
-    data:
-      message: Frigate DRIVEWAY DETECTION pic from '{{ states('input_datetime.wyze_driveway_time')
-        }}'.
-      data:
-        image: https://hassio.unibutton.com/local/Wyze/clips/{{ trigger.event.data.file
-          }}
-  mode: single
-- id: '1640043670626'
-  alias: zzMotion Porch Pic (Nick Notif)
-  description: ''
-  trigger:
-  - platform: event
-    event_type: folder_watcher
-    event_data:
-      event_type: modified
-      folder: /config/www/Wyze/clips
-  condition:
-  - condition: template
-    value_template: '{% if trigger.event.data.file|truncate(14, true) == ''front_porch...''
-      %}
-
-      true
-
-      {% endif %}'
-  action:
-  - service: notify.mobile_app_rxniphone
-    data:
-      message: Frigate PORCH DETECTION pic from '{{ states('input_datetime.wyze_porch_time')
-        }}'.
-      data:
-        image: https://hassio.unibutton.com/local/Wyze/clips/{{ trigger.event.data.file
-          }}
-  mode: single
 - id: '1640044752814'
   alias: zzMotion Reset Captures
   description: ''
@@ -3429,51 +3091,11 @@
           value: 0
     default: []
   mode: single
-- id: '1640119553542'
-  alias: zzMotion Porch Pic (Group Notif)
-  description: ''
-  trigger:
-  - platform: event
-    event_type: folder_watcher
-    event_data:
-      event_type: modified
-      folder: /config/www/Wyze/front_porch
-  condition: []
-  action:
-  - service: notify.d_and_nicks_notifications_grouped
-    data:
-      message: '{{ states.sensor.porch_object.state }} detected on PORCH.  Check the
-        home app for live view and recorded clip.  Here''s the image captured from
-        ''{{ states(''input_datetime.wyze_porch_time'') }}''.'
-      data:
-        image: https://hassio.unibutton.com/local/Wyze/front_porch/{{ trigger.event.data.file
-          }}
-  mode: single
-- id: '1640119897005'
-  alias: zzMotion Driveway Pic (Group Notif)
-  description: ''
-  trigger:
-  - platform: event
-    event_type: folder_watcher
-    event_data:
-      event_type: modified
-      folder: /config/www/Wyze/driveway
-  condition: []
-  action:
-  - service: notify.d_and_nicks_notifications_grouped
-    data:
-      message: '{{ states.sensor.driveway_object.state }} detected in DRIVEWAY.  Check
-        the home app for live view and recorded clip.  Here''s the image captured
-        from ''{{ states(''input_datetime.wyze_driveway_time'') }}''.'
-      data:
-        image: https://hassio.unibutton.com/local/Wyze/driveway/{{ trigger.event.data.file
-          }}
-  mode: single
 - id: '1640396039361'
   alias: Frigate Notification Fork Driveway (Darius)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification2.yaml
+    path: bittles/frigate_notification.yaml
     input:
       camera: driveway
       notify_device: f76e35c3824b4aa3b2bf069241084176
@@ -3484,7 +3106,7 @@
   alias: Frigate Notification Fork Porch (Darius)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification2.yaml
+    path: bittles/frigate_notification.yaml
     input:
       camera: front_porch
       notify_device: f76e35c3824b4aa3b2bf069241084176
@@ -3495,24 +3117,24 @@
   alias: Frigate Notification Fork Porch (Nick)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification2.yaml
+    path: bittles/frigate_notification.yaml
     input:
       camera: front_porch
-      notify_device: 03b0f718cf58cab3a81faf6684107709
       base_url: https://hassio.unibutton.com
       captime: input_datetime.wyze_porch_time
       cooldown: 30
+      notify_group: kara_and_nick_notifications
 - id: '1640446463486'
   alias: Frigate Notification Fork Driveway (Nick)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification2.yaml
+    path: bittles/frigate_notification.yaml
     input:
       camera: driveway
-      notify_device: 03b0f718cf58cab3a81faf6684107709
       base_url: https://hassio.unibutton.com
-      cooldown: 90
+      cooldown: 120
       captime: input_datetime.wyze_driveway_time
+      notify_group: kara_and_nick_notifications
 - id: '1641005202244'
   alias: zzzzz.Bedroom Thermostat AC by Switch (Duplicate)
   description: ''
@@ -3670,22 +3292,16 @@
   action:
   - service: climate.set_temperature
     data:
-      target_temp_low: 67
+      target_temp_low: 68
     target:
       entity_id: climate.bedroom_thermostat
   mode: single
 - id: '1643128686499'
-  alias: zzMotion Update Deck Snapshot (Duplicate)
+  alias: zzMotion Update Deck Snapshot
   description: ''
   trigger:
   - platform: state
-    entity_id: input_boolean.wyze_deck_motion
-    from: 'off'
-    to: 'on'
-  - platform: state
-    entity_id: switch.frigate_deck_motion
-    from: 'off'
-    to: 'on'
+    entity_id: input_datetime.wyze_deck_time
   condition: []
   action:
   - delay:
@@ -3693,11 +3309,6 @@
       minutes: 0
       seconds: 0
       milliseconds: 100
-  - service: input_datetime.set_datetime
-    target:
-      entity_id: input_datetime.wyze_deck_time
-    data:
-      timestamp: '{{ now().timestamp() }}'
   - service: camera.snapshot
     data:
       filename: /config/www/snapshot_camera.back_deck.jpg
@@ -3709,8 +3320,6 @@
     data:
       filename: /config/www/Wyze/back_deck/back_deck_{{ states('input_number.input_number.wyze_deck_captures')
         }}.jpg
-  - service: rest_command.deck_motion_on
-    data: {}
   - choose:
     - conditions:
       - condition: state
@@ -3733,18 +3342,18 @@
   alias: Frigate Notification Fork Back Deck (Nick)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification2.yaml
+    path: bittles/frigate_notification.yaml
     input:
       camera: back_deck
-      notify_device: 03b0f718cf58cab3a81faf6684107709
       base_url: https://hassio.unibutton.com
       cooldown: 120
       captime: input_datetime.wyze_deck_time
+      notify_group: kara_and_nick_notifications
 - id: '1643136725154'
   alias: Frigate Notification Fork Back Deck (Darius)
   description: ''
   use_blueprint:
-    path: bittles/frigate_notification2.yaml
+    path: bittles/frigate_notification.yaml
     input:
       camera: back_deck
       notify_device: f76e35c3824b4aa3b2bf069241084176
@@ -3757,8 +3366,8 @@
       - bird
       - cat
       - bear
-      cooldown: 120
       captime: input_datetime.wyze_deck_time
+      cooldown: 120
 - id: '1643180514530'
   alias: zzMotion Frigate Snapshots on Interval
   description: ''
@@ -3959,3 +3568,24 @@
     entity_id: lock.back_door
     type: lock
   mode: restart
+- id: '1646499054178'
+  alias: Frigate Webhook to Scrypted Back Deck
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_to_scrypted.yaml
+    input:
+      camera: back_deck
+- id: '1646499222062'
+  alias: Frigate Webhook to Scrypted Driveway
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_to_scrypted.yaml
+    input:
+      camera: driveway
+- id: '1646499262163'
+  alias: Frigate Webhook to Scrypted Front Porch
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_to_scrypted.yaml
+    input:
+      camera: front_porch

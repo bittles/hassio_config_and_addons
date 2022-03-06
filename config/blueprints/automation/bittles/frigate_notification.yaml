@@ -67,7 +67,7 @@ blueprint:
       selector:
         object: {}
     presence_filter:
-      name: (Optional) Presence Filter
+      name: (Optional) Person Filter
       description: Only notify if selected person entity is not "home".
       default: ''
       selector:
@@ -132,11 +132,17 @@ variables:
   captime: !input 'captime'
 condition:
 - '{{ type != ''end'' }}'
+- '{{ type != ''update'' }}'
 - '{{ not zone_only or entered_zones|length > 0 }}'
 - '{{ not zones|length or zones|select(''in'', entered_zones)|list|length > 0 }}'
 - '{{ not labels|length or object in labels }}'
 - '{{ not presence_entity or not is_state(presence_entity, ''home'') }}'
 action:
+- service: input_datetime.set_datetime
+  target:
+    entity_id: !input 'captime'
+  data:
+    timestamp: '{{ now().timestamp() }}'
 - choose:
   - conditions: '{{ not group_target }}'
     sequence:
@@ -148,9 +154,22 @@ action:
       data:
         tag: '{{ id }}'
         group: frigate-notification-{{ camera }}
+        url: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
+        clickAction: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
         image: /api/frigate/notifications/{{id}}/thumbnail.jpg?format=android
+        sound: none
         attachment:
           url: /api/frigate/notifications/{{id}}/snapshot.jpg
+        actions:
+        - action: URI
+          title: View Clip
+          uri: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
+        - action: URI
+          title: View Snapshot
+          uri: '{{base_url}}/api/frigate/notifications/{{id}}/snapshot.jpg'
+        - action: silence-{{ camera }}
+          title: Silence Notifications 30min
+          destructive: true
   default:
   - service: notify.{{ group_target }}
     data:
@@ -159,73 +178,22 @@ action:
       data:
         tag: '{{ id }}'
         group: frigate-notification-{{ camera }}
+        url: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
+        clickAction: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
         image: /api/frigate/notifications/{{id}}/thumbnail.jpg?format=android
+        sound: none
         attachment:
           url: /api/frigate/notifications/{{id}}/snapshot.jpg
-- repeat:
-    sequence:
-    - wait_for_trigger:
-      - platform: mqtt
-        topic: frigate/events
-        payload: '{{ id }}'
-        value_template: '{{ value_json[''after''][''id''] }}'
-      timeout:
-        minutes: 2
-      continue_on_timeout: false
-    - condition: template
-      value_template: '{{ wait.trigger.payload_json[''type''] == ''end'' }}'
-    - choose:
-      - conditions: '{{ not group_target }}'
-        sequence:
-        - device_id: !input 'notify_device'
-          domain: mobile_app
-          type: notify
-          message: A {{ label }} was detected on the {{ camera_name }} camera at {{
-            states(captime) }}.
-          data:
-            tag: '{{ id }}'
-            group: frigate-notification-{{ camera }}
-            url: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
-            clickAction: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
-            image: /api/frigate/notifications/{{id}}/thumbnail.jpg?format=android
-            sound: none
-            attachment:
-              url: /api/frigate/notifications/{{id}}/snapshot.jpg
-            actions:
-            - action: URI
-              title: View Clip
-              uri: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
-            - action: URI
-              title: View Snapshot
-              uri: '{{base_url}}/api/frigate/notifications/{{id}}/snapshot.jpg'
-            - action: silence-{{ camera }}
-              title: Silence Notifications 30min
-              destructive: true
-      default:
-      - service: notify.{{ group_target }}
-        data:
-          message: A {{ label }} was detected on the {{ camera_name }} camera at {{
-            states(captime) }}.
-          data:
-            tag: '{{ id }}'
-            group: frigate-notification-{{ camera }}
-            url: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
-            clickAction: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
-            image: /api/frigate/notifications/{{id}}/thumbnail.jpg?format=android
-            sound: none
-            attachment:
-              url: /api/frigate/notifications/{{id}}/snapshot.jpg
-            actions:
-            - action: URI
-              title: View Clip
-              uri: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
-            - action: URI
-              title: View Snapshot
-              uri: '{{base_url}}/api/frigate/notifications/{{id}}/snapshot.jpg'
-            - action: silence-{{ camera }}
-              title: Silence Notifications 30min
-              destructive: true
-    until: '{{ wait.trigger.payload_json[''type''] == ''end'' }}'
+        actions:
+        - action: URI
+          title: View Clip
+          uri: '{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4'
+        - action: URI
+          title: View Snapshot
+          uri: '{{base_url}}/api/frigate/notifications/{{id}}/snapshot.jpg'
+        - action: silence-{{ camera }}
+          title: Silence Notifications 30min
+          destructive: true
 - wait_for_trigger:
   - platform: event
     event_type: mobile_app_notification_action

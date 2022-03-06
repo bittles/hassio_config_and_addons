@@ -3,3 +3,14 @@
   services:
   - service: mobile_app_rxniphone
   - service: mobile_app_darius_s_iphone
+- platform: group
+  name: Kara and Nick Notifications
+  services:
+  - service: mobile_app_rxniphone
+  - service: mobile_app_karas_iphone
+- platform: group
+  name: Pharmlake All 3 D, Kara, Nick Notifications
+  services:
+  - service: mobile_app_rxniphone
+  - service: mobile_app_karas_iphone
+  - service: mobile_app_darius_s_iphone
