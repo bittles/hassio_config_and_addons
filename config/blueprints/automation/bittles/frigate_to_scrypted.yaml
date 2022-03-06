@@ -1,0 +1,114 @@
+blueprint:
+  name: Frigate Webhook to Scrypted
+  description: "## Frigate Scrypted Webhook\n\nThis blueprint will send a webhook\
+    \ to Scrypted when a Frigate event for the selected camera is fired.\n\nBased\
+    \ off of hunterjm/frigate_notification.yaml to grab mqtt events and then send\
+    \ webhook\n\n### Required entities:\n  - Frigate Camera Name\n  - Rest command\
+    \ service must be in format of (frigate camera name)_motion_on\n\n### Optional\
+    \ features:\n  - You can limit webhooks to objects entering **any** pre-defined\
+    \ [zones][1] in Frigate.\n  - You can specify which [zones][1] to send webhooks\
+    \ about. This must be a list (e.g.):\n    ```yaml\n    - backyard\n    ```\n \
+    \ - You can specify what type of [objects][2] to be send webhooks about. This\
+    \ must be a list (e.g.):\n    ```yaml\n    - person\n    - car\n    ```\n  - You\
+    \ can disable webhooks if a presence entity or group is \"home\".\n  - You can\
+    \ configure a cooldown for the camera to reduce the number of webhooks when back-to-back\
+    \ events occur.\n\n[1]: https://blakeblackshear.github.io/frigate/configuration/cameras#zones\n\
+    [2]: https://blakeblackshear.github.io/frigate/configuration/objects\n"
+  domain: automation
+  source_url: https://gist.github.com/bittles/102fde66a9114f147ff06677fd6dc3db
+  input:
+    camera:
+      name: Frigate Camera
+      description: The name of the camera as defined in your frigate configuration.
+    zone_filter:
+      name: (Optional) Zone Filter
+      description: Only notify if object has entered a defined zone.
+      default: false
+      selector:
+        boolean: {}
+    zones:
+      name: (Optional) Trigger Zones
+      description: A list (-) of zones you wish to send webhooks for.
+      default: []
+      selector:
+        object: {}
+    labels:
+      name: (Optional) Trigger Objects
+      description: A list (-) of objects you wish to send webhooks for.
+      default: []
+      selector:
+        object: {}
+    presence_filter:
+      name: (Optional) Presence Filter
+      description: Only notify if selected person entity is not "home".
+      default: ''
+      selector:
+        entity:
+          domain: person
+    cooldown:
+      name: (Optional) Cooldown
+      description: Delay before sending another webhook for this camera after the
+        last event.
+      default: 30
+      selector:
+        number:
+          max: 300.0
+          min: 0.0
+          unit_of_measurement: seconds
+          step: 1.0
+          mode: slider
+mode: single
+max_exceeded: silent
+trigger:
+  platform: mqtt
+  topic: frigate/events
+  payload: !input 'camera'
+  value_template: '{{ value_json[''after''][''camera''] }}'
+variables:
+  id: '{{ trigger.payload_json[''after''][''id''] }}'
+  camera: '{{ trigger.payload_json[''after''][''camera''] }}'
+  camera_name: '{{ camera | replace(''_'', '' '') | title }}'
+  object: '{{ trigger.payload_json[''after''][''label''] }}'
+  label: '{{ object | title }}'
+  entered_zones: '{{ trigger.payload_json[''after''][''entered_zones''] }}'
+  type: '{{ trigger.payload_json[''type''] }}'
+  zone_only: !input 'zone_filter'
+  input_zones: !input 'zones'
+  zones: '{{ input_zones | list }}'
+  input_labels: !input 'labels'
+  labels: '{{ input_labels | list }}'
+  presence_entity: !input 'presence_filter'
+condition:
+- '{{ type != ''end'' }}'
+- '{{ type != ''update'' }}'
+- '{{ not zone_only or entered_zones|length > 0 }}'
+- '{{ not zones|length or zones|select(''in'', entered_zones)|list|length > 0 }}'
+- '{{ not labels|length or object in labels }}'
+- '{{ not presence_entity or not is_state(presence_entity, ''home'') }}'
+action:
+- service: rest_command.{{ camera }}_motion_on
+  data: {}
+- repeat:
+    sequence:
+    - wait_for_trigger:
+      - platform: mqtt
+        topic: frigate/events
+        payload: '{{ id }}'
+        value_template: '{{ value_json[''after''][''id''] }}'
+      timeout:
+        minutes: 6
+      continue_on_timeout: false
+    - condition: template
+      value_template: '{{ wait.trigger.payload_json[''type''] == ''end'' }}'
+    - service: rest_command.{{ camera }}_motion_off
+      data: {}
+    until: '{{ wait.trigger.payload_json[''type''] == ''end'' }}'
+- wait_for_trigger:
+  - platform: event
+    event_type: call_service
+    event_data:
+      domain: rest_command
+      service: '{{ camera }}_motion_off'
+  timeout:
+    seconds: !input 'cooldown'
+  continue_on_timeout: false

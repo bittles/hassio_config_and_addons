@@ -604,6 +604,7 @@ config:
     - entities:
       - entity: input_boolean.driveway_motion
       - entity: input_boolean.porch_motion
+      - entity: input_boolean.wyze_deck_motion
       type: entities
     path: server-control
     title: Server Control
