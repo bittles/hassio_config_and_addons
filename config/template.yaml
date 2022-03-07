@@ -159,9 +159,9 @@
     - platform: state
       entity_id: binary_sensor.driveway_bird_motion
       to: 'on'
-    - platform: state
-      entity_id: binary_sensor.driveway_bus_motion
-      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.driveway_bus_motion
+#      to: 'on'
     - platform: state
       entity_id: binary_sensor.driveway_car_motion
       to: 'on'
@@ -188,8 +188,6 @@
           BICYCLE
         {%- elif trigger.entity_id == 'binary_sensor.driveway_bird_motion' -%}
           BIRD
-        {%- elif trigger.entity_id == 'binary_sensor.driveway_bus_motion' -%}
-          BUS
         {%- elif trigger.entity_id == 'binary_sensor.driveway_car_motion' -%}
           CAR
         {%- elif trigger.entity_id == 'binary_sensor.driveway_cat_motion' -%}
@@ -205,6 +203,8 @@
         {%- else -%}
           Sensor not triggered yet
         {%- endif -%}
+#        {%- elif trigger.entity_id == 'binary_sensor.driveway_bus_motion' -%}
+#          BUS
 
 - trigger:
     - platform: state
@@ -213,9 +213,9 @@
     - platform: state
       entity_id: binary_sensor.front_porch_bird_motion
       to: 'on'
-    - platform: state
-      entity_id: binary_sensor.front_porch_bus_motion
-      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.front_porch_bus_motion
+#      to: 'on'
     - platform: state
       entity_id: binary_sensor.front_porch_car_motion
       to: 'on'
@@ -242,8 +242,6 @@
           BICYCLE
         {%- elif trigger.entity_id == 'binary_sensor.front_porch_bird_motion' -%}
           BIRD
-        {%- elif trigger.entity_id == 'binary_sensor.front_porch_bus_motion' -%}
-          BUS
         {%- elif trigger.entity_id == 'binary_sensor.front_porch_car_motion' -%}
           CAR
         {%- elif trigger.entity_id == 'binary_sensor.front_porch_cat_motion' -%}
@@ -259,6 +257,9 @@
         {%- else -%}
           Sensor not triggered yet
         {%- endif -%}
+#        {%- elif trigger.entity_id == 'binary_sensor.front_porch_bus_motion' -%}
+#          BUS
+
 
 - trigger:
     - platform: state
@@ -267,9 +268,9 @@
     - platform: state
       entity_id: binary_sensor.back_deck_bird_motion
       to: 'on'
-    - platform: state
-      entity_id: binary_sensor.back_deck_bus_motion
-      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.back_deck_bus_motion
+#      to: 'on'
     - platform: state
       entity_id: binary_sensor.back_deck_car_motion
       to: 'on'
@@ -298,8 +299,6 @@
           BEAR
         {%- elif trigger.entity_id == 'binary_sensor.back_deck_bird_motion' -%}
           BIRD
-        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bus_motion' -%}
-          BUS
         {%- elif trigger.entity_id == 'binary_sensor.back_deck_car_motion' -%}
           CAR
         {%- elif trigger.entity_id == 'binary_sensor.back_deck_cat_motion' -%}
@@ -315,6 +314,9 @@
         {%- else -%}
           Sensor not triggered yet
         {%- endif -%}
+#        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bus_motion' -%}
+#          BUS
+
 
 - trigger:
     - platform: mqtt

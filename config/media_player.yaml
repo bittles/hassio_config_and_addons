@@ -10,98 +10,6 @@
       network: 'NET'
       bluetooth: 'Bluetooth'
 
-#  - platform: androidtv
-#    name: Shield ADB
-#    device_class: androidtv
-#    host: !secret shield_ip
-#    adb_server_ip: 127.0.0.1
-#    adb_server_port: !secret adb_port_androidtv
-#    get_sources: false
-#    apps:
-#      com.plexapp.android: "Plex"
-#      com.foxsports.android: "Fox Sports"
-#      com.netflix.ninja: "Netflix"
-#      com.curiositystream.androidtv: "Curiosity Stream"
-#      com.wolf.google.lm: "Launcher Manager"
-#      cm.aptoide.pt: "Aptoide"
-#      com.cloudmosa.puffinTV: "Puffin TV"
-#      eu.chainfire.tv.sideloadlauncher: "Sideload Launcher"
-#      com.jackboxgames.TJPP4Loader: "Jackbox Party Pack 4"
-#      com.alexvas.dvr.pro: "tinyCam PRO"
-#      com.google.android.youtuve.tv: "Youtube"
-#      com.fxnetworks.fxnow: "FX Now"
-#      org.mozilla.tv.firefox: "Firefox"
-#      com.nbcsports.apps.tv: "NBC Sports"
-#      com.liskovsoft.smarttubetv.beta: "SmartTube TV"
-#      com.fox.now: "Fox"
-#      com.videolan.vlc: "VLC"
-#      com.fandango.fandangonow.android.tv: "Fandango"
-#      tv.twitch.android.app: "Twitch"
-#      com.hbo.hbnow: "HBO Now"
-#      com.amazon.amazonvideo.livingroom: "Amazon Video"
-#      com.espn.score_center: "ESPN"
-#      com.fg127.twitch: "Twitch Advanced"
-#      com.hulu.livingroomplus: "Hulu"
-#      com.handmark.sportcaster: "CBS Sports"
-#      com.spotify.tv.android: "Spotify"
-      
-
-#  - platform: media_player_template
-#    media_players:
-#      harmony:
-#        friendly_name: Living Room Remote
-#        device_class: tv
-#        current_source_template: "{{ states('input_select.harmony_select') }}"
-#        value_template: >
-#          {% if is_state("remote.living_room", "on") -%}
-#            on
-#          {%- else -%}
-#            off
-#          {%- endif %}
-#        turn_on:
-#          service: remote.turn_on
-#          target:
-#            entity_id: remote.living_room
-#          data:
-#            activity: nvidia SHIELD
-#        turn_off:
-#          service: remote.turn_off
-#          data_template:
-#            entity_id: remote.living_room
-#        volume_up:
-#          service: media_player.volume_up
-#          data_template:
-#            entity_id: media_player.onkyo
-#        volume_down:
-#          service: media_player.volume_down
-#          data_template:
-#            entity_id: media_player.onkyo
-#        mute:
-#          service: media_player.volume_mute
-#          data_template:
-#            entity_id: media_player.onkyo
-#        set_volume:
-#          service: media_player.volume_set
-#          data:
-#            entity_id: media_player.onkyo
-#            value: "{{volume}}"
-#        inputs:
-#          nvidia SHIELD:
-#            service: remote.turn_on
-#            data_template:
-#              entity_id: remote.living_room
-#              activity: nvidia SHIELD
-#          Roku TV:
-#            service: remote.turn_on
-#            data_template:
-#              entity_id: remote.living_room
-#              activity: Roku TV
-#          PS5:
-#            service: remote.turn_on
-#            data_template:
-#              entity_id: remote.living_room
-#              activity: Play PS5
-
   - platform: universal
     name: Living Room Remote
     unique_id: livingroomremote
@@ -349,6 +257,98 @@
     attributes:
       source_list: input_select.zone_2_sources|options
       source: input_select.zone_2_sources
+
+#  - platform: androidtv
+#    name: Shield ADB
+#    device_class: androidtv
+#    host: !secret shield_ip
+#    adb_server_ip: 127.0.0.1
+#    adb_server_port: !secret adb_port_androidtv
+#    get_sources: false
+#    apps:
+#      com.plexapp.android: "Plex"
+#      com.foxsports.android: "Fox Sports"
+#      com.netflix.ninja: "Netflix"
+#      com.curiositystream.androidtv: "Curiosity Stream"
+#      com.wolf.google.lm: "Launcher Manager"
+#      cm.aptoide.pt: "Aptoide"
+#      com.cloudmosa.puffinTV: "Puffin TV"
+#      eu.chainfire.tv.sideloadlauncher: "Sideload Launcher"
+#      com.jackboxgames.TJPP4Loader: "Jackbox Party Pack 4"
+#      com.alexvas.dvr.pro: "tinyCam PRO"
+#      com.google.android.youtuve.tv: "Youtube"
+#      com.fxnetworks.fxnow: "FX Now"
+#      org.mozilla.tv.firefox: "Firefox"
+#      com.nbcsports.apps.tv: "NBC Sports"
+#      com.liskovsoft.smarttubetv.beta: "SmartTube TV"
+#      com.fox.now: "Fox"
+#      com.videolan.vlc: "VLC"
+#      com.fandango.fandangonow.android.tv: "Fandango"
+#      tv.twitch.android.app: "Twitch"
+#      com.hbo.hbnow: "HBO Now"
+#      com.amazon.amazonvideo.livingroom: "Amazon Video"
+#      com.espn.score_center: "ESPN"
+#      com.fg127.twitch: "Twitch Advanced"
+#      com.hulu.livingroomplus: "Hulu"
+#      com.handmark.sportcaster: "CBS Sports"
+#      com.spotify.tv.android: "Spotify"
+      
+
+#  - platform: media_player_template
+#    media_players:
+#      harmony:
+#        friendly_name: Living Room Remote
+#        device_class: tv
+#        current_source_template: "{{ states('input_select.harmony_select') }}"
+#        value_template: >
+#          {% if is_state("remote.living_room", "on") -%}
+#            on
+#          {%- else -%}
+#            off
+#          {%- endif %}
+#        turn_on:
+#          service: remote.turn_on
+#          target:
+#            entity_id: remote.living_room
+#          data:
+#            activity: nvidia SHIELD
+#        turn_off:
+#          service: remote.turn_off
+#          data_template:
+#            entity_id: remote.living_room
+#        volume_up:
+#          service: media_player.volume_up
+#          data_template:
+#            entity_id: media_player.onkyo
+#        volume_down:
+#          service: media_player.volume_down
+#          data_template:
+#            entity_id: media_player.onkyo
+#        mute:
+#          service: media_player.volume_mute
+#          data_template:
+#            entity_id: media_player.onkyo
+#        set_volume:
+#          service: media_player.volume_set
+#          data:
+#            entity_id: media_player.onkyo
+#            value: "{{volume}}"
+#        inputs:
+#          nvidia SHIELD:
+#            service: remote.turn_on
+#            data_template:
+#              entity_id: remote.living_room
+#              activity: nvidia SHIELD
+#          Roku TV:
+#            service: remote.turn_on
+#            data_template:
+#              entity_id: remote.living_room
+#              activity: Roku TV
+#          PS5:
+#            service: remote.turn_on
+#            data_template:
+#              entity_id: remote.living_room
+#              activity: Play PS5
 
 #  - platform: universal
 #    name: Living Room TV
