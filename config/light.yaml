@@ -1,60 +1,3 @@
-#  - platform: switch
-#    name: kitchen
-#    entity_id: switch.kitchen_switch
-
-#  - platform: switch
-#    name: lamp
-#    entity_id: switch.lamp_light
-    
-#  - platform: switch
-#    name: porch
-#    entity_id: switch.porch_switch
-    
-#  - platform: switch
-#    name: driveway
-#    entity_id: switch.driveway_lights
-    
-#  - platform: mqtt
-#    name: "Bonus Room Fan Light mqtt"
-#    state_topic: "stat/sonoff_fanlight/RESULT"
-#    value_template: "{{ value_json.POWER1 }}"
-#    command_topic: "cmnd/sonoff_fanlight/POWER1"
-###    availability_topic: "tele/sonoff_fanlight/LWT"
-#    qos: 1
-#    payload_on: "ON"
-#    payload_off: "OFF"
-###    payload_available: "Online"
-###    payload_not_available: "Offline"
-#    retain: true
-#    optimistic: false
-    
-#  - platform: mqtt
-#    name: "Bedroom Light"
-#    state_topic: "tele/treatfan/STATE"
-#    value_template: "{{ value_json.POWER2 }}"
-#    command_topic: "cmnd/treatfan/POWER2"
-#    availability_topic: "tele/treatfan/LWT"
-#    brightness_state_topic: "tele/treatfan/STATE"
-#    brightness_command_topic: "cmnd/treatfan/Dimmer"
-#    brightness_scale: 100
-#    brightness_value_template: "{{ value_json.Dimmer }}"
-#    qos: 1
-#    payload_on: "ON"
-#    payload_off: "OFF"
-#    payload_available: "Online"
-#    payload_not_available: "Offline"
-
-#  - platform: mqtt
-#    name: Kitchen Light mqtt manual
-#    unique_id: kitchen_light_manual_mqtt
-#    state_topic: zwave/kitchen/Kitchen/37/0/currentValue
-#    command_topic: zwave/kitchen/Kitchen/37/0/targetValue/set
-#    payload_off: false
-#    payload_on: true
-#    state_value_template: '{{ value_json.value }}'
-
-#  - platform: aarlo
-
   - platform: template
     lights:
 
@@ -122,6 +65,62 @@
           service: switch.turn_off
           data:
             entity_id: switch.desk_lamp
+#  - platform: switch
+#    name: kitchen
+#    entity_id: switch.kitchen_switch
+
+#  - platform: switch
+#    name: lamp
+#    entity_id: switch.lamp_light
+    
+#  - platform: switch
+#    name: porch
+#    entity_id: switch.porch_switch
+    
+#  - platform: switch
+#    name: driveway
+#    entity_id: switch.driveway_lights
+    
+#  - platform: mqtt
+#    name: "Bonus Room Fan Light mqtt"
+#    state_topic: "stat/sonoff_fanlight/RESULT"
+#    value_template: "{{ value_json.POWER1 }}"
+#    command_topic: "cmnd/sonoff_fanlight/POWER1"
+###    availability_topic: "tele/sonoff_fanlight/LWT"
+#    qos: 1
+#    payload_on: "ON"
+#    payload_off: "OFF"
+###    payload_available: "Online"
+###    payload_not_available: "Offline"
+#    retain: true
+#    optimistic: false
+    
+#  - platform: mqtt
+#    name: "Bedroom Light"
+#    state_topic: "tele/treatfan/STATE"
+#    value_template: "{{ value_json.POWER2 }}"
+#    command_topic: "cmnd/treatfan/POWER2"
+#    availability_topic: "tele/treatfan/LWT"
+#    brightness_state_topic: "tele/treatfan/STATE"
+#    brightness_command_topic: "cmnd/treatfan/Dimmer"
+#    brightness_scale: 100
+#    brightness_value_template: "{{ value_json.Dimmer }}"
+#    qos: 1
+#    payload_on: "ON"
+#    payload_off: "OFF"
+#    payload_available: "Online"
+#    payload_not_available: "Offline"
+
+#  - platform: mqtt
+#    name: Kitchen Light mqtt manual
+#    unique_id: kitchen_light_manual_mqtt
+#    state_topic: zwave/kitchen/Kitchen/37/0/currentValue
+#    command_topic: zwave/kitchen/Kitchen/37/0/targetValue/set
+#    payload_off: false
+#    payload_on: true
+#    state_value_template: '{{ value_json.value }}'
+
+#  - platform: aarlo
 
 #      zone2volume:
 #        friendly_name: Zone 2 Volume

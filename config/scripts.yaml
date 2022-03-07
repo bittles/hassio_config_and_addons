@@ -137,16 +137,6 @@ foyer_light_ten_min:
       device: '36419789'
     entity_id: remote.living_room
     service: remote.send_command
-'1580584668660':
-  alias: All Nick PC Outlets Off
-  sequence:
-  - delay: 00:00:20
-  - entity_id: switch.002006596001943c3b19_2
-    service: switch.turn_off
-  - entity_id: switch.002006596001943c3b19_3
-    service: switch.turn_off
-  - entity_id: switch.002006596001943c3b19_4
-    service: switch.turn_off
 '1580584719238':
   alias: All Nick PC Outlets On
   sequence:

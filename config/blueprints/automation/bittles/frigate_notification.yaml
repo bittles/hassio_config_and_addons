@@ -90,8 +90,8 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: seconds
-          step: 1.0
           mode: slider
+          step: 1.0
     silence_timer:
       name: (Optional) Silence Notifications for 30 minutes
       description: 'How long to silence notifications for this camera when requested
@@ -104,8 +104,8 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: minutes
-          step: 1.0
           mode: slider
+          step: 1.0
 mode: single
 max_exceeded: silent
 trigger:
@@ -168,7 +168,7 @@ action:
           title: View Snapshot
           uri: '{{base_url}}/api/frigate/notifications/{{id}}/snapshot.jpg'
         - action: silence-{{ camera }}
-          title: Silence Notifications 30min
+          title: Silence Notifications {{silence_timer}}min
           destructive: true
   default:
   - service: notify.{{ group_target }}

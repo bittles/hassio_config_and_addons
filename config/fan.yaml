@@ -1,3 +1,30 @@
+  - platform: template
+    fans:
+      bedroom_fan2:
+        friendly_name: Bedroom Fan
+        unique_id: bedroomfantemplate
+        value_template: "{{ states('fan.bedroom_fan') }}"
+        percentage_template: >
+          {% if state_attr('fan.bedroom_fan', 'percentage') == 75 %}
+            66
+          {% elif (state_attr('fan.bedroom_fan', 'percentage') == 50 or state_attr('fan.bedroom_fan', 'percentage') == 25) %}
+            33
+          {% else %}
+            {{ state_attr('fan.bedroom_fan', 'percentage') }}
+          {% endif %}
+        turn_on:
+          - service: fan.turn_on
+            entity_id: fan.bedroom_fan
+        turn_off:
+          - service: fan.turn_off
+            entity_id: fan.bedroom_fan
+        set_percentage:
+          - service: fan.set_percentage
+            entity_id: fan.bedroom_fan
+            data_template:
+              percentage: "{{ percentage }}"
+        speed_count: 3
+
 #  - platform: mqtt
 #    name: "Bedroom Fan mqtt"
 #    state_topic: "tele/treatfan/STATE"
@@ -50,33 +77,6 @@
 #    payload_on: "ON"
 #    payload_off: "OFF"
 
-
-  - platform: template
-    fans:
-      bedroom_fan2:
-        friendly_name: Bedroom Fan
-        unique_id: bedroomfantemplate
-        value_template: "{{ states('fan.bedroom_fan') }}"
-        percentage_template: >
-          {% if state_attr('fan.bedroom_fan', 'percentage') == 75 %}
-            66
-          {% elif (state_attr('fan.bedroom_fan', 'percentage') == 50 or state_attr('fan.bedroom_fan', 'percentage') == 25) %}
-            33
-          {% else %}
-            {{ state_attr('fan.bedroom_fan', 'percentage') }}
-          {% endif %}
-        turn_on:
-          - service: fan.turn_on
-            entity_id: fan.bedroom_fan
-        turn_off:
-          - service: fan.turn_off
-            entity_id: fan.bedroom_fan
-        set_percentage:
-          - service: fan.set_percentage
-            entity_id: fan.bedroom_fan
-            data_template:
-              percentage: "{{ percentage }}"
-        speed_count: 3
 
 #  - platform: template
 #    fans:

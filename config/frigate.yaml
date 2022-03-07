@@ -1,3 +1,55 @@
+objects:
+  # Optional: list of objects to track from labelmap.txt (default: shown below)
+  track:
+    - car
+    - person
+    - bicycle
+    - car
+    - bird
+    - cat
+    - dog
+    - bear
+#    - motorcycle
+#    - bus
+#    - boat
+#    - traffic light
+#    - fire hydrant
+#    - stop sign
+#    - parking meter
+#    - bench
+#    - train
+#    - airplane
+  filters:
+    # min_area:
+    # Minimum area of bounding box for object to be counted. default=0
+    # max_area:
+    # Maximum area of bounding box for object to be counted. default=24,000,000
+    # threshold:
+    # Average detection confidence threshold for object to be counted. default=0.7
+    # min_score:
+    # Minimum detection confidence for object to be counted. default=0.5
+    # mask:
+    # Detection area polygon mask for this filter configuration
+    car:
+      threshold: 0.65
+      min_score: 0.6
+    person:
+      threshold: 0.65
+      min_score: 0.6
+    bicycle:
+      threshold: 0.62
+    #motorcycle:
+    #  threshold: 0.65
+#    bus:
+#      threshold: 0.68
+    bird:
+      min_score: 0.65
+      threshold: 0.55
+    cat:
+      threshold: 0.6
+      min_score: 0.57
+    dog:
+      threshold: 0.55
 cameras:
   front_porch:
     ffmpeg:
@@ -9,7 +61,16 @@ cameras:
             - rtmp
             - record
     detect:
-      fps: 4
+      fps: 3
+      max_disappeared: 30
+      stationary:
+        # Optional: Frequency for running detection on stationary objects (default: shown below)
+        # When set to 0, object detection will never be run on stationary objects. If set to 10, 
+        # it will be run on every 10th frame.
+        interval: 20
+        # Optional: Number of frames without a position change for an object to be considered 
+        # stationary (default: 10x the frame rate or 10s)
+        threshold: 20
     motion:
       mask:
         - 0,720,296,720,237,392,394,372,377,219,360,61,431,45,496,21,503,0,257,0,136,0,0,0
@@ -23,21 +84,21 @@ cameras:
       quality: 20
     objects:
       track:
-      - car
-      - person
-      - bicycle
-      - motorcycle
-      - bus
-      - car
-      - bird
-      - cat
-      - dog
-      - bear
+        - person
+        - bicycle
+        - car
+        - bird
+        - cat
+        - dog
+        - bear
+#        - car
+#        - motorcycle
+#        - bus
       filters:
-        car:
-          threshold: 0.99
-          min_area: 100000
-          max_area: 24000000
+#        car:
+#          threshold: 0.99
+#          min_area: 100000
+#          max_area: 24000000
         person:
           threshold: 0.6
           min_area: 25000
@@ -45,14 +106,14 @@ cameras:
         bicycle:
           min_area: 25000
           max_area: 24000000
-        motorcycle:
-          threshold: 0.99
-          min_area: 25000
-          max_area: 24000000
-        bus:
-          threshold: 0.99
-          min_area: 25000
-          max_area: 24000000
+#        motorcycle:
+#          threshold: 0.99
+#          min_area: 25000
+#          max_area: 24000000
+#        bus:
+#          threshold: 0.99
+#          min_area: 25000
+#          max_area: 24000000
         bird:
           min_area: 130
           max_area: 300000
@@ -71,20 +132,29 @@ cameras:
       inputs:
         - path: rtsp://192.168.29.187:8964/driveway-cam
 #        - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
-
           roles:
             - detect
             - rtmp
             - record
-
+    detect:
+      fps: 3
+      max_disappeared: 30
+      stationary:
+        # Optional: Frequency for running detection on stationary objects (default: shown below)
+        # When set to 0, object detection will never be run on stationary objects. If set to 10, 
+        # it will be run on every 10th frame.
+        interval: 30
+        # Optional: Number of frames without a position change for an object to be considered 
+        # stationary (default: 10x the frame rate or 10s)
+        threshold: 14
     motion:
 #      contour_area: 490
       mask:
         - 237,0,0,0,0,103
         - 1171,0,1280,0,1280,43
         - 1156,673,1168,706,1241,706,1248,674
-        - 0,131,0,35,126,63,111,110,136,156,171,200,116,283,282,304,241,414,103,434,0,625
-        - 253,720,263,619,197,599,136,619,106,674,76,720
+        - 0,131,0,35,126,63,111,110,136,156,171,200,116,283,244,301,215,399,103,434,0,625
+        - 253,720,197,669,161,619,132,630,106,674,76,720
         - 1280,179,1280,677,1242,682,1193,489,1178,371,1208,249
       threshold: 65
     zones:
@@ -93,17 +163,13 @@ cameras:
         objects:
           - car
           - person
-          - bus
           - motorcycle
           - bicycle
           - bird
           - cat
           - dog
-        filters:
-          car:
-            threshold: 0.99
-            min_area: 10000
-            max_area: 380000
+          - bear
+#          - bus
       house_half_driveway:
         coordinates: 1038,79,1276,720,224,718,409,96
         objects:
@@ -112,6 +178,19 @@ cameras:
           - bird
           - cat
           - dog
+          - bear
+#          - car
+#          - bus
+#          - motorcycle
+        #filters:
+        #  car:
+        #    threshold: 0.99
+        #    min_area: 23999999
+        #    max_area: 24000000
+        #  motorcycle:
+        #    threshold: 0.99
+        #    min_area: 23999999
+        #    max_area: 24000000
       zone_0:
         coordinates: 244,720,0,720,0,0,481,0
         objects:
@@ -120,6 +199,20 @@ cameras:
           - bird
           - cat
           - dog
+          - bear
+#          - bus
+#          - motorcycle
+#          - car
+
+        #filters:
+        #  car:
+        #    threshold: 0.99
+        #    min_area: 23999999
+        #    max_area: 24000000
+        #  motorcycle:
+        #    threshold: 0.99
+        #    min_area: 23999999
+        #    max_area: 24000000
       zone_1:
         coordinates: 1237,720,1280,720,1280,0,934,0
         objects:
@@ -128,14 +221,35 @@ cameras:
           - bird
           - cat
           - dog
+          - bear
+#          - car
+#          - bus
+#          - motorcycle
+        filters:
+          car:
+            threshold: 0.99
+            min_area: 23999999
+            max_area: 24000000
+        #  motorcycle:
+        #    threshold: 0.99
+        #    min_area: 23999999
+        #    max_area: 24000000
     live:
       # Live camera view height default=720
       height: 720
-      
       # Live camera view quality. default=8
       quality: 18
-
     objects:
+      track:
+        - car
+        - person
+#        - bus
+        - motorcycle
+        - bicycle
+        - bird
+        - cat
+        - dog
+        - bear
       filters:
         car:
           min_area: 10000
@@ -151,9 +265,6 @@ cameras:
         motorcycle:
           min_area: 5000
           max_area: 24000000
-        bus:
-          min_area: 120
-          max_area: 24000000
         bird:
           min_area: 120
           max_area: 300000
@@ -166,7 +277,9 @@ cameras:
         bear:
           min_area: 2500
           max_area: 24000000
-
+#        bus:
+#          min_area: 120
+#          max_area: 24000000
   back_deck:
     ffmpeg:
       inputs:
@@ -178,6 +291,15 @@ cameras:
             - record
     detect:
       fps: 4
+      max_disappeared: 40
+      stationary:
+        # Optional: Frequency for running detection on stationary objects (default: shown below)
+        # When set to 0, object detection will never be run on stationary objects. If set to 10, 
+        # it will be run on every 10th frame.
+        interval: 40
+        # Optional: Number of frames without a position change for an object to be considered 
+        # stationary (default: 10x the frame rate or 10s)
+        threshold: 20
     motion:
       threshold: 45
 #      contour_area: 200
@@ -197,69 +319,52 @@ cameras:
       quality: 20
     objects:
       track:
-#      - car
-      - person
-      - bicycle
-      - motorcycle
-#      - bus
-      - car
-      - bird
-      - cat
-      - dog
-      - bear
+        - person
+        - bird
+        - cat
+        - dog
+        - bear
       filters:
-        car:
-          threshold: 0.99
-          min_area: 100000
-          max_area: 700000
-
         person:
           threshold: 0.69
           min_area: 250
           max_area: 450000
-
-        bicycle:
-          threshold: 0.6
-          min_area: 25000
-          max_area: 700000
-
-        motorcycle:
-          threshold: 0.99
-          min_area: 25000
-          max_area: 700000
-
-        bus:
-          threshold: 0.99
-          min_area: 25000
-          max_area: 700000
-
         bird:
           min_area: 130
           max_area: 300000
-
         cat:
           min_area: 130
           max_area: 58000
-
         dog:
           threshold: 0.575
           min_area: 130
           max_area: 300000
-
         bear:
           min_area: 2500
           max_area: 700000
-
-
+        # car:
+          # threshold: 0.99
+          # min_area: 100000
+          # max_area: 700000
+        #bicycle:
+        #  threshold: 0.99
+        #  min_area: 25000
+        #  max_area: 700000
+        #motorcycle:
+        #  threshold: 0.99
+        #  min_area: 25000
+        #  max_area: 700000
+        #bus:
+        #  threshold: 0.99
+        #  min_area: 25000
+        #  max_area: 700000
 detect:
-
   enabled: True
   # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
-  max_disappeared: 20
+#  max_disappeared: 20
 #  width: 1280
 #  height: 720
-  fps: 2
-
+#  fps: 2
   # Optional: Configuration for stationary object tracking
   stationary:
     # Optional: Frequency for running detection on stationary objects (default: shown below)
@@ -280,56 +385,40 @@ detect:
 #      objects:
 #        person: 1000
 
-
 # Optional: birdseye configuration
 birdseye:
-
   # Optional: Enable birdseye view (default: shown below)
   enabled: True
-  
   # Optional: Width of the output resolution (default: shown below)
   width: 1280
-  
   # Optional: Height of the output resolution (default: shown below)
   height: 720
-  
   # Optional: Encoding quality of the mpeg1 feed (default: shown below)
   # 1 is the highest quality, and 31 is the lowest. Lower quality feeds utilize less CPU resources.
   quality: 20
-  
   # Optional: Mode of the view. Available options are: objects, motion, and continuous
   #   objects - cameras are included if they have had a tracked object within the last 30 seconds
   #   motion - cameras are included if motion was detected in the last 30 seconds
   #   continuous - all cameras are included always
   mode: continuous
-
 snapshots:
-
   # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
   # This value can be set via MQTT and will be updated in startup based on retained value
   enabled: True
-  
   # Quality of the encoded jpeg (0-100).
   quality: 100
-  
   # Create a clean copy of the snapshot image
   clean_copy: False
-  
   # Optional: print a timestamp on the snapshots (default: shown below)
   timestamp: False
-  
   # Optional: draw bounding box on the snapshots (default: shown below)
   bounding_box: True
-  
   # Optional: crop the snapshot (default: shown below)
   crop: False
-  
   # Optional: height to resize the snapshot to (default: original size)
   #height: 175
-  
   # Optional: Restrict snapshots to objects that entered any of the listed zones (default: no required zones)
   required_zones: []
-  
   # Optional: Camera override for retention settings (default: global values)
   retain:
     # Required: Default retention days (default: shown below)
@@ -338,10 +427,12 @@ snapshots:
     # Optional: Per object retention days
     #objects:
     #  person: 15
-
-
 ffmpeg:
-
+  input_args: -use_wallclock_as_timestamps 1 #-avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
+  output_args:
+    rtmp: -c copy -an -f flv
+    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an
+    detect: -f rawvideo -pix_fmt yuv420p
   # Optional: global ffmpeg args (default: shown below)
 #  global_args: -hide_banner -loglevel warning
   
@@ -364,91 +455,15 @@ ffmpeg:
   #  record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an
   #  # Optional: output args for rtmp streams (default: shown below)
   #  rtmp: -c copy -f flv
-  input_args: -use_wallclock_as_timestamps 1 #-avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
-  output_args:
-    rtmp: -c copy -an -f flv
-    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an
-    detect: -f rawvideo -pix_fmt yuv420p
-
 #    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v libx264 -an
 #    rtmp: -c:a libfdk_aac -b:a 100k -c:v copy -f flv
 #    rtmp: -c:v libx264 -an -f flv
-
-objects:
-
-  # Optional: list of objects to track from labelmap.txt (default: shown below)
-  track:
-
-    - car
-    - person
-    - bicycle
-    - motorcycle
-    - bus
-    - car
-    - bird
-    - cat
-    - dog
-    - bear
-
-#    - boat
-#    - traffic light
-#    - fire hydrant
-#    - stop sign
-#    - parking meter
-#    - bench
-#    - train
-#    - airplane
-
-  filters:
-    # min_area:
-    # Minimum area of bounding box for object to be counted. default=0
-
-    # max_area:
-    # Maximum area of bounding box for object to be counted. default=24,000,000
-
-    # threshold:
-    # Average detection confidence threshold for object to be counted. default=0.7
-
-    # min_score:
-    # Minimum detection confidence for object to be counted. default=0.5
-
-    # mask:
-    # Detection area polygon mask for this filter configuration
-
-    car:
-      threshold: 0.65
-      min_score: 0.6
-
-    person:
-      threshold: 0.65
-      min_score: 0.6
-
-    bicycle:
-      threshold: 0.62
-
-    motorcycle:
-      threshold: 0.65
-
-    bus:
-      threshold: 0.68
-
-    bird:
-      min_score: 0.65
-      threshold: 0.55
-
-    cat:
-      threshold: 0.6
-      min_score: 0.57
-
-    dog:
-      threshold: 0.55
 
 motion:
   # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
   # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
   # The value should be between 1 and 255.
   threshold: 45
-
   # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
   # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
   # moving objects.
@@ -478,7 +493,6 @@ motion:
 record:
   # Optional: Enable recording (default: shown below)
   enabled: True
-
   # Optional: Number of days to retain recordings regardless of events (default: shown below)
   # NOTE: This should be set to 0 and retention should be defined in events section below
   #       if you only want to retain recordings of events.

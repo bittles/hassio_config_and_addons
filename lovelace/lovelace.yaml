@@ -25,6 +25,29 @@ config:
     - entity: sensor.routerdlkbs
     - entity: sensor.routerulkbs
     cards:
+    - entities:
+      - entity: script.restart_shield
+      - entity: cover.garage_mqtt
+      - entity: lock.august_asl_03_smart_lock_locked
+      - entity: lock.back_door
+      - customTheme: false
+        entity: fan.living_room_fan
+        name: Living Room Fan
+        type: custom:fan-percent-button-row
+      - customTheme: false
+        entity: fan.bedroom_fan2
+        name: Bedroom Fan
+        type: custom:fan-percent-button-row
+      - customTheme: false
+        entity: fan.bonus_room_fan
+        name: Bonus Room Fan
+        type: custom:fan-percent-button-row
+      - entity: climate.downstairs_the_nest
+      - entity: climate.bedroom_thermostat
+      - entity: switch.bedroom_dummyheat
+      - entity: switch.bedroom_dummyac
+      state_color: true
+      type: entities
     - camera_image: camera.porch_motion_snapshot
       entities:
       - entity: lock.august_asl_03_smart_lock_locked
@@ -45,32 +68,6 @@ config:
       entity: camera.back_deck
       title: Back Deck
       type: picture-glance
-    - entities:
-      - entity: script.restart_shield
-      - entity: cover.garage_mqtt
-      - entity: lock.august_asl_03_smart_lock_locked
-      - entity: lock.back_door
-      - customTheme: false
-        entity: fan.living_room_fan
-        name: Living Room Fan
-        type: custom:fan-percent-button-row
-      - customTheme: false
-        entity: fan.bedroom_fan2
-        name: Bedroom Fan
-        type: custom:fan-percent-button-row
-      - customTheme: false
-        entity: fan.bonus_room_fan
-        name: Bonus Room Fan
-        type: custom:fan-percent-button-row
-      - entity: climate.downstairs_the_nest
-      - entity: input_number.custom_thermostat_temp_high
-      - entity: input_number.custom_thermostat_temp_low
-      - entity: automation.zzzzz_store_bedroom_thermostat_temps
-      - entity: climate.bedroom_thermostat
-      - entity: switch.bedroom_dummyheat
-      - entity: switch.bedroom_dummyac
-      state_color: true
-      type: entities
     - columns: 3
       entities:
       - entity: binary_sensor.caringaragestatus
@@ -149,12 +146,12 @@ config:
       show_current: true
       show_forecast: true
       type: weather-forecast
-    - showAzimuth: false
-      showElevation: false
-      type: custom:sun-card
     - content: .
       theme: Google Dark Theme
       type: markdown
+    - showAzimuth: false
+      showElevation: false
+      type: custom:sun-card
     theme: night
     title: Home
   - badges: []
@@ -476,7 +473,7 @@ config:
       - entity: device_tracker.nickmqtttrigger
       - entity: input_boolean.nick
       - entity: device_tracker.ipdariusphone
-      - entity: device_tracker.dariuss_iphone
+      - entity: device_tracker.dariuss_iphone_2
       - entity: device_tracker.dariusmqtttrigger
       - entity: input_boolean.darius
       - entity: device_tracker.ipkaraphone
@@ -612,22 +609,6 @@ config:
     cards:
     - cards:
       - entities:
-        - entity: binary_sensor.front_porch_bicycle_motion
-          name: Bicycle Motion
-        - entity: binary_sensor.front_porch_bird_motion
-          name: Bird Motion
-        - entity: binary_sensor.front_porch_bus_motion
-          name: Bus Motion
-        - entity: binary_sensor.front_porch_car_motion
-          name: Car Motion
-        - entity: binary_sensor.front_porch_cat_motion
-          name: Cat Motion
-        - entity: binary_sensor.front_porch_dog_motion
-          name: Dog Motion
-        - entity: binary_sensor.front_porch_motorcycle_motion
-          name: Motorcycle Motion
-        - entity: binary_sensor.front_porch_person_motion
-          name: Person Motion
         - entity: sensor.front_porch_camera_fps
           name: Camera Fps
         - entity: sensor.front_porch_detection_fps
@@ -636,23 +617,45 @@ config:
           name: Process Fps
         - entity: sensor.front_porch_skipped_fps
           name: Skipped Fps
+        - entity: binary_sensor.front_porch_bear_motion
+        - entity: binary_sensor.front_porch_bicycle_motion
+          name: Bicycle Motion
+        - entity: binary_sensor.front_porch_bird_motion
+          name: Bird Motion
+        - entity: binary_sensor.front_porch_car_motion
+          name: Car Motion
+        - entity: binary_sensor.front_porch_cat_motion
+          name: Cat Motion
+        - entity: binary_sensor.front_porch_dog_motion
+          name: Dog Motion
+        - entity: binary_sensor.front_porch_person_motion
+          name: Person Motion
+        - entity: sensor.front_porch_bear
+        - entity: sensor.front_porch_car
+        - entity: sensor.front_porch_cat
+        - entity: sensor.front_porch_dog
+        - entity: sensor.front_porch_person
         title: Front Porch
         type: entities
-      - entity: camera.front_porch
+      - camera_view: auto
+        entity: camera.front_porch
+        show_name: true
+        show_state: true
+        type: picture-entity
+      - camera_view: auto
+        entity: camera.front_porch_bear
+        show_name: true
+        show_state: true
         type: picture-entity
       - entity: camera.front_porch_bicycle
         type: picture-entity
       - entity: camera.front_porch_bird
-        type: picture-entity
-      - entity: camera.front_porch_bus
         type: picture-entity
       - entity: camera.front_porch_car
         type: picture-entity
       - entity: camera.front_porch_cat
         type: picture-entity
       - entity: camera.front_porch_dog
-        type: picture-entity
-      - entity: camera.front_porch_motorcycle
         type: picture-entity
       - entity: camera.front_porch_person
         type: picture-entity
@@ -661,12 +664,19 @@ config:
       type: grid
     - cards:
       - entities:
+        - entity: sensor.driveway_camera_fps
+          name: Camera Fps
+        - entity: sensor.driveway_detection_fps
+          name: Detection Fps
+        - entity: sensor.driveway_process_fps
+          name: Process Fps
+        - entity: sensor.driveway_skipped_fps
+          name: Skipped Fps
+        - entity: binary_sensor.driveway_bear_motion
         - entity: binary_sensor.driveway_bicycle_motion
           name: Bicycle Motion
         - entity: binary_sensor.driveway_bird_motion
           name: Bird Motion
-        - entity: binary_sensor.driveway_bus_motion
-          name: Bus Motion
         - entity: binary_sensor.driveway_car_motion
           name: Car Motion
         - entity: binary_sensor.driveway_cat_motion
@@ -677,23 +687,33 @@ config:
           name: Motorcycle Motion
         - entity: binary_sensor.driveway_person_motion
           name: Person Motion
-        - entity: sensor.driveway_camera_fps
-          name: Camera Fps
-        - entity: sensor.driveway_detection_fps
-          name: Detection Fps
-        - entity: sensor.driveway_process_fps
-          name: Process Fps
-        - entity: sensor.driveway_skipped_fps
-          name: Skipped Fps
+        - entity: binary_sensor.driveway_bear_motion
+        - entity: sensor.driveway_bear
+        - entity: sensor.driveway_bicycle
+        - entity: sensor.driveway_bird
+        - entity: sensor.driveway_car
+        - entity: sensor.driveway_cat
+        - entity: sensor.driveway_dog
+        - entity: sensor.driveway_motorcycle
+        - entity: sensor.driveway_person
         title: Driveway
         type: entities
-      - entity: camera.driveway
+      - camera_view: auto
+        entity: camera.driveway
+        show_name: true
+        show_state: true
         type: picture-entity
-      - entity: camera.driveway_bicycle
+      - camera_view: auto
+        entity: camera.driveway_bear
+        show_name: true
+        show_state: true
+        type: picture-entity
+      - camera_view: auto
+        entity: camera.driveway_bicycle
+        show_name: true
+        show_state: true
         type: picture-entity
       - entity: camera.driveway_bird
-        type: picture-entity
-      - entity: camera.driveway_bus
         type: picture-entity
       - entity: camera.driveway_car
         type: picture-entity
@@ -701,88 +721,85 @@ config:
         type: picture-entity
       - entity: camera.driveway_dog
         type: picture-entity
-      - entity: camera.driveway_motorcycle
+      - camera_view: auto
+        entity: camera.driveway_motorcycle
+        show_name: true
+        show_state: true
         type: picture-entity
-      - entity: camera.driveway_person
+      - camera_view: auto
+        entity: camera.driveway_person
+        show_name: true
+        show_state: true
         type: picture-entity
       columns: 1
       square: false
       type: grid
-    - entities:
-      - entity: input_boolean.driveway_motion
-      - entity: input_boolean.porch_motion
-      - entity: input_boolean.wyze_deck_motion
-      - entity: switch.frigate_porch_motion
-      - entity: switch.frigate_driveway_motion
-      - entity: switch.frigate_deck_motion
-      - entity: sensor.driveway_object
-      - entity: sensor.porch_object
-      - entity: sensor.deck_object
-      type: entities
     - cards:
       - entities:
-        - entity: sensor.back_deck_bear
-          name: Bear
-        - entity: binary_sensor.back_deck_bear_motion
-          name: Bear Motion
-        - entity: sensor.back_deck_bicycle
-          name: Bicycle
-        - entity: binary_sensor.back_deck_bicycle_motion
-          name: Bicycle Motion
-        - entity: sensor.back_deck_bird
-          name: Bird
-        - entity: binary_sensor.back_deck_bird_motion
-          name: Bird Motion
         - entity: sensor.back_deck_camera_fps
           name: Camera Fps
-        - entity: sensor.back_deck_car
-          name: Car
-        - entity: binary_sensor.back_deck_car_motion
-          name: Car Motion
-        - entity: sensor.back_deck_cat
-          name: Cat
-        - entity: binary_sensor.back_deck_cat_motion
-          name: Cat Motion
         - entity: sensor.back_deck_detection_fps
           name: Detection Fps
-        - entity: sensor.back_deck_dog
-          name: Dog
-        - entity: binary_sensor.back_deck_dog_motion
-          name: Dog Motion
-        - entity: sensor.back_deck_motorcycle
-          name: Motorcycle
-        - entity: binary_sensor.back_deck_motorcycle_motion
-          name: Motorcycle Motion
-        - entity: sensor.back_deck_person
-          name: Person
-        - entity: binary_sensor.back_deck_person_motion
-          name: Person Motion
         - entity: sensor.back_deck_process_fps
           name: Process Fps
         - entity: sensor.back_deck_skipped_fps
           name: Skipped Fps
+        - entity: binary_sensor.back_deck_bear_motion
+          name: Bear Motion
+        - entity: binary_sensor.back_deck_bird_motion
+          name: Bird Motion
+        - entity: binary_sensor.back_deck_cat_motion
+          name: Cat Motion
+        - entity: binary_sensor.back_deck_dog_motion
+          name: Dog Motion
+        - entity: binary_sensor.back_deck_person_motion
+          name: Person Motion
+        - entity: sensor.back_deck_bear
+          name: Bear
+        - entity: sensor.back_deck_bird
+          name: Bird
+        - entity: sensor.back_deck_cat
+          name: Cat
+        - entity: sensor.back_deck_dog
+          name: Dog
+        - entity: sensor.back_deck_person
+          name: Person
         title: Back Deck
         type: entities
-      - entity: camera.back_deck
+      - camera_view: auto
+        entity: camera.back_deck
+        show_name: true
+        show_state: true
         type: picture-entity
       - entity: camera.back_deck_bear
         type: picture-entity
-      - entity: camera.back_deck_bicycle
-        type: picture-entity
       - entity: camera.back_deck_bird
-        type: picture-entity
-      - entity: camera.back_deck_car
         type: picture-entity
       - entity: camera.back_deck_cat
         type: picture-entity
       - entity: camera.back_deck_dog
-        type: picture-entity
-      - entity: camera.back_deck_motorcycle
         type: picture-entity
       - entity: camera.back_deck_person
         type: picture-entity
       columns: 1
       square: false
       type: grid
+    - entities:
+      - sensor.detection_fps
+      - sensor.cpu1_inference_speed
+      - sensor.cpu2_inference_speed
+      - sensor.cpu3_inference_speed
+      - entity: input_boolean.porch_motion
+      - entity: input_boolean.driveway_motion
+      - entity: input_boolean.wyze_deck_motion
+      - entity: switch.frigate_porch_motion
+      - entity: switch.frigate_driveway_motion
+      - entity: switch.frigate_deck_motion
+      - entity: sensor.porch_object
+      - entity: sensor.driveway_object
+      - entity: sensor.deck_object
+      show_header_toggle: false
+      title: Frigate
+      type: entities
     path: frigate
     title: Frigate

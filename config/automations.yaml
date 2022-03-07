@@ -1503,12 +1503,10 @@
   trigger:
   - platform: time
     at: input_datetime.sunday_reboot_time
-  condition:
-  - condition: time
-    weekday:
-    - sun
+  condition: []
   action:
   - service: hassio.host_reboot
+    data: {}
   mode: single
 - id: '1615243979556'
   alias: zzShower On then Airplay Server On
@@ -3102,6 +3100,7 @@
       base_url: https://hassio.unibutton.com
       cooldown: 90
       captime: input_datetime.wyze_driveway_time
+      labels: {}
 - id: '1640396107108'
   alias: Frigate Notification Fork Porch (Darius)
   description: ''
@@ -3113,6 +3112,7 @@
       base_url: https://hassio.unibutton.com
       cooldown: 30
       captime: input_datetime.wyze_porch_time
+      labels: {}
 - id: '1640446434058'
   alias: Frigate Notification Fork Porch (Nick)
   description: ''
@@ -3124,6 +3124,7 @@
       captime: input_datetime.wyze_porch_time
       cooldown: 30
       notify_group: kara_and_nick_notifications
+      labels: {}
 - id: '1640446463486'
   alias: Frigate Notification Fork Driveway (Nick)
   description: ''
@@ -3135,6 +3136,7 @@
       cooldown: 120
       captime: input_datetime.wyze_driveway_time
       notify_group: kara_and_nick_notifications
+      labels: {}
 - id: '1641005202244'
   alias: zzzzz.Bedroom Thermostat AC by Switch (Duplicate)
   description: ''
@@ -3349,6 +3351,7 @@
       cooldown: 120
       captime: input_datetime.wyze_deck_time
       notify_group: kara_and_nick_notifications
+      labels: {}
 - id: '1643136725154'
   alias: Frigate Notification Fork Back Deck (Darius)
   description: ''
@@ -3360,9 +3363,6 @@
       base_url: https://hassio.unibutton.com
       labels:
       - person
-      - bicycle
-      - motorcycle
-      - bus
       - bird
       - cat
       - bear
@@ -3575,6 +3575,7 @@
     path: bittles/frigate_to_scrypted.yaml
     input:
       camera: back_deck
+      cooldown: 60
 - id: '1646499222062'
   alias: Frigate Webhook to Scrypted Driveway
   description: ''
@@ -3582,6 +3583,8 @@
     path: bittles/frigate_to_scrypted.yaml
     input:
       camera: driveway
+      labels: {}
+      cooldown: 60
 - id: '1646499262163'
   alias: Frigate Webhook to Scrypted Front Porch
   description: ''
@@ -3589,3 +3592,4 @@
     path: bittles/frigate_to_scrypted.yaml
     input:
       camera: front_porch
+      cooldown: 60
