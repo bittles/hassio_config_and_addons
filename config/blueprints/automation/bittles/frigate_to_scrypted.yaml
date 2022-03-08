@@ -55,15 +55,15 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: seconds
-          step: 1.0
           mode: slider
+          step: 1.0
 mode: single
 max_exceeded: silent
 trigger:
   platform: mqtt
   topic: frigate/events
-  payload: '{{ camera }} new'
-  value_template: '{{ value_json[''after''][''camera''] }} {{ value_json[''type'']
+  payload: '{{ camera ~ '' new'' }}'
+  value_template: '{{ value_json[''after''][''camera''] ~ '' '' ~ value_json[''type'']
     }}'
 variables:
   id: '{{ trigger.payload_json[''after''][''id''] }}'
