@@ -917,6 +917,9 @@
   trigger:
   - at: input_datetime.alfred_cleaning_time
     platform: time
+  - platform: state
+    entity_id: binary_sensor.noone
+    to: 'on'
   condition: []
   action:
   - data:
