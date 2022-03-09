@@ -917,9 +917,6 @@
   trigger:
   - at: input_datetime.alfred_cleaning_time
     platform: time
-  - platform: state
-    entity_id: binary_sensor.noone
-    to: 'on'
   condition: []
   action:
   - data:
@@ -1358,10 +1355,7 @@
         data: {}
         entity_id: switch.idevices_switch
       - repeat:
-          until:
-          - condition: state
-            entity_id: light.color_lights
-            state: 'off'
+          count: '5'
           sequence:
           - delay:
               hours: 0
@@ -1429,11 +1423,7 @@
     state: 'off'
   action:
   - repeat:
-      until:
-      - condition: state
-        entity_id: light.color_lights
-        state: '1'
-        attribute: brightness
+      count: '5'
       sequence:
       - service: light.turn_on
         data:
