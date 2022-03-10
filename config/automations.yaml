@@ -3089,6 +3089,7 @@
     path: bittles/frigate_notification.yaml
     input:
       camera: driveway
+      camera_and_type: driveway new
       notify_device: f76e35c3824b4aa3b2bf069241084176
       base_url: https://hassio.unibutton.com
       cooldown: 90
@@ -3101,6 +3102,7 @@
     path: bittles/frigate_notification.yaml
     input:
       camera: front_porch
+      camera_and_type: front_porch new
       notify_device: f76e35c3824b4aa3b2bf069241084176
       base_url: https://hassio.unibutton.com
       cooldown: 30
@@ -3113,6 +3115,7 @@
     path: bittles/frigate_notification.yaml
     input:
       camera: front_porch
+      camera_and_type: front_porch new
       base_url: https://hassio.unibutton.com
       captime: input_datetime.wyze_porch_time
       cooldown: 30
@@ -3125,6 +3128,7 @@
     path: bittles/frigate_notification.yaml
     input:
       camera: driveway
+      camera_and_type: driveway new
       base_url: https://hassio.unibutton.com
       cooldown: 120
       captime: input_datetime.wyze_driveway_time
@@ -3340,6 +3344,7 @@
     path: bittles/frigate_notification.yaml
     input:
       camera: back_deck
+      camera_and_type: back_deck new
       base_url: https://hassio.unibutton.com
       cooldown: 120
       captime: input_datetime.wyze_deck_time
@@ -3352,6 +3357,7 @@
     path: bittles/frigate_notification.yaml
     input:
       camera: back_deck
+      camera_and_type: back_deck new
       notify_device: f76e35c3824b4aa3b2bf069241084176
       base_url: https://hassio.unibutton.com
       labels:
@@ -3568,7 +3574,8 @@
     path: bittles/frigate_to_scrypted.yaml
     input:
       camera: back_deck
-      cooldown: 60
+      cooldown: 300
+      camera_and_type: back_deck new
 - id: '1646499222062'
   alias: Frigate Webhook to Scrypted Driveway
   description: ''
@@ -3576,8 +3583,8 @@
     path: bittles/frigate_to_scrypted.yaml
     input:
       camera: driveway
-      labels: {}
-      cooldown: 60
+      camera_and_type: driveway new
+      cooldown: 300
 - id: '1646499262163'
   alias: Frigate Webhook to Scrypted Front Porch
   description: ''
@@ -3585,4 +3592,5 @@
     path: bittles/frigate_to_scrypted.yaml
     input:
       camera: front_porch
-      cooldown: 60
+      camera_and_type: front_porch new
+      cooldown: 300

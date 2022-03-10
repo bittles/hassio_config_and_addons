@@ -28,6 +28,10 @@ blueprint:
     camera:
       name: Frigate Camera
       description: The name of the camera as defined in your frigate configuration.
+    camera_and_type:
+      name: Frigate Camera with Frigate Event Type
+      description: The name of the camer and event type eg. 'camera_name new' the
+        type can be new, update, or end.
     notify_device:
       name: Device
       description: The device must run the official Home Assistant app to receive
@@ -90,8 +94,8 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: seconds
-          mode: slider
           step: 1.0
+          mode: slider
     silence_timer:
       name: (Optional) Silence Notifications for 30 minutes
       description: 'How long to silence notifications for this camera when requested
@@ -104,15 +108,16 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: minutes
-          mode: slider
           step: 1.0
+          mode: slider
 mode: single
 max_exceeded: silent
 trigger:
   platform: mqtt
   topic: frigate/events
-  payload: !input 'camera'
-  value_template: '{{ value_json[''after''][''camera''] }}'
+  payload: !input 'camera_and_type'
+  value_template: '{{ value_json[''after''][''camera''] ~ '' '' ~ value_json[''type'']
+    }}'
 variables:
   id: '{{ trigger.payload_json[''after''][''id''] }}'
   camera: '{{ trigger.payload_json[''after''][''camera''] }}'
@@ -130,6 +135,7 @@ variables:
   labels: '{{ input_labels | list }}'
   presence_entity: !input 'presence_filter'
   captime: !input 'captime'
+  silence_time: !input 'silence_timer'
 condition:
 - '{{ type != ''end'' }}'
 - '{{ type != ''update'' }}'
@@ -168,7 +174,7 @@ action:
           title: View Snapshot
           uri: '{{base_url}}/api/frigate/notifications/{{id}}/snapshot.jpg'
         - action: silence-{{ camera }}
-          title: Silence Notifications {{silence_timer}}min
+          title: Silence Notifications {{ silence_time }} min
           destructive: true
   default:
   - service: notify.{{ group_target }}
@@ -192,7 +198,7 @@ action:
           title: View Snapshot
           uri: '{{base_url}}/api/frigate/notifications/{{id}}/snapshot.jpg'
         - action: silence-{{ camera }}
-          title: Silence Notifications 30min
+          title: Silence Notifications {{ silence_time }} min
           destructive: true
 - wait_for_trigger:
   - platform: event
