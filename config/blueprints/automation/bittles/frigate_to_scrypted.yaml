@@ -20,6 +20,10 @@ blueprint:
     camera:
       name: Frigate Camera
       description: The name of the camera as defined in your frigate configuration.
+    camera_and_type:
+      name: Frigate Camera with Frigate Event Type
+      description: The name of the camer and event type eg. 'camera_name new' the
+        type can be new, update, or end.
     zone_filter:
       name: (Optional) Zone Filter
       description: Only notify if object has entered a defined zone.
@@ -55,14 +59,14 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: seconds
-          mode: slider
           step: 1.0
+          mode: slider
 mode: single
 max_exceeded: silent
 trigger:
   platform: mqtt
   topic: frigate/events
-  payload: '{{ camera ~ '' new'' }}'
+  payload: !input 'camera_and_type'
   value_template: '{{ value_json[''after''][''camera''] ~ '' '' ~ value_json[''type'']
     }}'
 variables:
