@@ -99,8 +99,8 @@ action:
         payload: '{{ id }}'
         value_template: '{{ value_json[''after''][''id''] }}'
       timeout:
-        minutes: 5
-      continue_on_timeout: false
+        seconds: 30
+      continue_on_timeout: true
     - condition: template
       value_template: '{{ wait.trigger.payload_json[''type''] == ''end'' }}'
     until: '{{ wait.trigger.payload_json[''type''] == ''end'' }}'
