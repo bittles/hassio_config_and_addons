@@ -912,12 +912,20 @@
         - title: Dismiss
   mode: single
 - id: '1594325734855'
-  alias: zzzz.Alfred Cleans ZonesEveryNight
+  alias: zzzz.Alfred Cleans Zones Weekday Mornings
   description: ''
   trigger:
   - at: input_datetime.alfred_cleaning_time
     platform: time
-  condition: []
+  condition:
+  - condition: time
+    before: 00:00:00
+    weekday:
+    - fri
+    - thu
+    - wed
+    - tue
+    - mon
   action:
   - data:
       command: zoned_cleanup
@@ -3119,8 +3127,8 @@
       base_url: https://hassio.unibutton.com
       captime: input_datetime.wyze_porch_time
       cooldown: 30
-      notify_group: kara_and_nick_notifications
       labels: {}
+      notify_device: 383ce8ce2def8523d79fe80a22d1297d
 - id: '1640446463486'
   alias: Frigate Notification Fork Driveway (Nick)
   description: ''
@@ -3292,6 +3300,8 @@
   - service: climate.set_temperature
     data:
       target_temp_low: 68
+      target_temp_high: '{{ states.input_number.custom_thermostat_temp_high.state
+        }}'
     target:
       entity_id: climate.bedroom_thermostat
   mode: single
@@ -3348,8 +3358,8 @@
       base_url: https://hassio.unibutton.com
       cooldown: 120
       captime: input_datetime.wyze_deck_time
-      notify_group: kara_and_nick_notifications
       labels: {}
+      notify_device: 383ce8ce2def8523d79fe80a22d1297d
 - id: '1643136725154'
   alias: Frigate Notification Fork Back Deck (Darius)
   description: ''
@@ -3574,7 +3584,7 @@
     path: bittles/frigate_to_scrypted.yaml
     input:
       camera: back_deck
-      cooldown: 300
+      cooldown: 10
       camera_and_type: back_deck new
 - id: '1646499222062'
   alias: Frigate Webhook to Scrypted Driveway
@@ -3584,7 +3594,7 @@
     input:
       camera: driveway
       camera_and_type: driveway new
-      cooldown: 300
+      cooldown: 10
 - id: '1646499262163'
   alias: Frigate Webhook to Scrypted Front Porch
   description: ''
@@ -3593,4 +3603,4 @@
     input:
       camera: front_porch
       camera_and_type: front_porch new
-      cooldown: 300
+      cooldown: 10

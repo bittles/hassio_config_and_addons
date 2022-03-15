@@ -449,9 +449,10 @@ recorder:
       - binary_sensor.caringaragestatus
       - camera.aarlo_front_porch
       - camera.aarlo_back_deck
+      - climate.bedroom_thermostat
       - climate.downstairs_the_nest
-      - climate.master_bedroom_thermostat
-      - climate.master_bedroom_thermostat_heat
+#      - climate.master_bedroom_thermostat
+#      - climate.master_bedroom_thermostat_heat
       - vacuum.rockrobo
       - sensor.aarlo_recent_activity_back_deck
       - sensor.aarlo_recent_activity_front_porch
@@ -537,7 +538,8 @@ history:
       - sensor.zoozluminance
       - sensor.master_bedroom_temperature_mqtt
 #      - climate.master_bedroom_thermostat
-      - climate.master_bedroom_thermostat_heat
+#      - climate.master_bedroom_thermostat_heat
+      - climate.bedroom_thermostat
 
 logbook:
   include:

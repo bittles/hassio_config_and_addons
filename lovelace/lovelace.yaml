@@ -602,6 +602,8 @@ config:
       - entity: input_boolean.driveway_motion
       - entity: input_boolean.porch_motion
       - entity: input_boolean.wyze_deck_motion
+      - entity: input_number.custom_thermostat_temp_high
+      - entity: input_number.custom_thermostat_temp_low
       type: entities
     path: server-control
     title: Server Control
