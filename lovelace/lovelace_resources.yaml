@@ -4,7 +4,7 @@ items:
   url: /hacsfiles/roku-card/roku-card.js?hacstag=164367214124
 - id: 09cc55915cfa4258807af4dca806c739
   type: module
-  url: /hacsfiles/mini-media-player/mini-media-player-bundle.js?hacstag=1485208381161
+  url: /hacsfiles/mini-media-player/mini-media-player-bundle.js?hacstag=1485208381162
 - id: 5e735fbbe8a24eddb43916f2eb2aec0c
   type: module
   url: /hacsfiles/lovelace-hass-aarlo/hass-aarlo.js
@@ -28,7 +28,7 @@ items:
   url: /hacsfiles/fan-percent-button-row/fan-percent-button-row.js?hacstag=34575320519
 - id: ea943d502d6945fcb2f8218196d9fe06
   type: module
-  url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js
+  url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js?hacstag=1933720442010
 - id: 8fac2f5b77874121b75d7e1789234589
   type: module
   url: /hacsfiles/lovelace-text-input-row/lovelace-text-input-row.js

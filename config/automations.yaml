@@ -3299,7 +3299,7 @@
   action:
   - service: climate.set_temperature
     data:
-      target_temp_low: 68
+      target_temp_low: 71
       target_temp_high: '{{ states.input_number.custom_thermostat_temp_high.state
         }}'
     target:
@@ -3604,3 +3604,43 @@
       camera: front_porch
       camera_and_type: front_porch new
       cooldown: 10
+- id: '1647382362383'
+  alias: Frigate AndroidTV Notification Fork Back Deck
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_androidtv_notification.yaml
+    input:
+      camera: back_deck
+      camera_and_type: back_deck new
+      base_url: https://hassio.unibutton.com
+      captime: input_datetime.wyze_deck_time
+      labels:
+      - person
+      - bird
+      - cat
+      - bear
+      notify_group: shield_notifs
+- id: '1647382406595'
+  alias: Frigate AndroidTV Notification Fork Driveway
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_androidtv_notification.yaml
+    input:
+      camera: driveway
+      camera_and_type: driveway new
+      base_url: https://hassio.unibutton.com
+      captime: input_datetime.wyze_driveway_time
+      labels: {}
+      notify_group: shield_notifs
+- id: '1647382442459'
+  alias: Frigate AndroidTV Notification Fork Front Porch
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_androidtv_notification.yaml
+    input:
+      camera: front_porch
+      camera_and_type: front_porch new
+      base_url: https://hassio.unibutton.com
+      captime: input_datetime.wyze_porch_time
+      labels: {}
+      notify_group: shield_notifs

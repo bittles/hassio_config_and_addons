@@ -492,3 +492,13 @@ custom_thermostat_update_set_temp:
     - service: script.custom_thermostat_discipline_nest
       data: {}
   mode: single
+alfred_cleans_living_room_and_kitchen:
+  alias: Alfred Cleans Living Room and Kitchen
+  sequence:
+  - service: vacuum.send_command
+    data:
+      command: '{ "command": "zoned_cleanup", "zone_ids": [ "Living Room and Kitchen"
+        ] }'
+    target:
+      entity_id: vacuum.rockrobo
+  mode: single
