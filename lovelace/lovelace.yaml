@@ -535,69 +535,125 @@ config:
       - entity: automation.alfred_cleans_zones_at_4am
       - entity: automation.zzzz_back_door_autolock
       type: entities
-    - calibration_points:
-      - map:
-          x: 270
-          y: 15
-        vacuum:
-          x: 22715
-          y: 13911
-      - map:
-          x: 1500
-          y: 15
-        vacuum:
-          x: 37862
-          y: 13911
-      - map:
-          x: 1500
-          y: 1000
-        vacuum:
-          x: 37862
-          y: 26070
-      default_mode: predefined_zones
+    - calibration_source:
+        calibration_points:
+        - map:
+            x: 169
+            y: 826
+          vacuum:
+            x: 19956
+            y: 26917
+        - map:
+            x: 875
+            y: 890
+          vacuum:
+            x: 28698
+            y: 27738
+        - map:
+            x: 57
+            y: 60
+          vacuum:
+            x: 18500
+            y: 17408
+        - map:
+            x: 595
+            y: 87
+          vacuum:
+            x: 25175
+            y: 17832
       entity: vacuum.rockrobo
-      map_camera: camera.rockrobo_map
-      modes:
-      - predefined_zones
-      service: python_script.vacuum_send_command
+      map_locked: true
+      map_modes:
+      - icon: mdi:floor-plan
+        max_repeats: 3
+        max_selections: 1
+        name: Predefined Zones
+        repeats_type: INTERNAL
+        selection_type: ROOM
+        service_call_schema:
+          predefined_selections:
+          - icon:
+              name: mdi:bed
+              x: 22932
+              y: 25400
+            id: Living Room and Kitchen
+            label:
+              offset_y: 35
+              text: Living Room and Kitchen
+              x: 22932
+              y: 25400
+            outline:
+            - - 17953
+              - 16665
+            - - 28826
+              - 16665
+            - - 28826
+              - 29802
+            - - 17953
+              - 29802
+          - icon:
+              name: mdi:bed
+              x: 22932
+              y: 25400
+            id: Sun Room
+            label:
+              offset_y: 35
+              text: Sun Room
+              x: 22932
+              y: 25400
+            outline:
+            - - 21230
+              - 16697
+            - - 21230
+              - 19920
+            - - 25586
+              - 16697
+            - - 25586
+              - 19920
+          service: vacuum.send_command
+          service_data:
+            command: '{ "command": "zoned_cleanup", "zone_ids": [ { "id": "[[selection]]",
+              "repeats": [[repeats]] } ] }'
+          target:
+            entity_id: '[[entity_id]]'
+      - icon: mdi:floor-plan
+        max_repeats: 3
+        max_selections: 1
+        name: Zones
+        repeats_type: INTERNAL
+        selection_type: ROOM
+        service_call_schema:
+          predefined_selections:
+          - icon:
+              name: mdi:bed
+              x: 22932
+              y: 25400
+            id: Living Room and Kitchen
+            label:
+              offset_y: 35
+              text: Living Room and Kitchen
+              x: 22932
+              y: 25400
+            outline:
+            - - 17953
+              - 16665
+            - - 28826
+              - 16665
+            - - 28826
+              - 29802
+            - - 17953
+              - 29802
+          service: vacuum.send_command
+          service_data:
+            command: '{ "command": "zoned_cleanup", "zone_ids": [ { "id": "[[selection]]",
+              "repeats": [[repeats]] } ] }'
+          target:
+            entity_id: '[[entity_id]]'
+      map_source:
+        camera: camera.rockrobo_map
+      preset_name: Live map
+      title: Xiaomi Vacuum Map Card
       type: custom:xiaomi-vacuum-map-card
-      zones:
-      - - - 22690
-          - 22778
-          - 32457
-          - 26013
-        - - 22725
-          - 18724
-          - 34759
-          - 22826
-        - - 30852
-          - 17148
-          - 34777
-          - 18825
-        - - 32605
-          - 16157
-          - 33980
-          - 17196
-      - - - 22689
-          - 17452
-          - 26864
-          - 18697
-        - - 22721
-          - 14028
-          - 29985
-          - 17449
-      - - - 26920
-          - 16975
-          - 29805
-          - 18513
-      - - - 29911
-          - 13811
-          - 33116
-          - 17067
-      - - - 33945
-          - 13551
-          - 38350
-          - 17410
     - entities:
       - entity: input_boolean.driveway_motion
       - entity: input_boolean.porch_motion

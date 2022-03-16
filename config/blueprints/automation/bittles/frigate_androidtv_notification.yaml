@@ -1,0 +1,145 @@
+blueprint:
+  name: Frigate AndroidTV Notification Fork
+  description: "## Frigate AndroidTV Notification\n\nThis blueprint will send a notification\
+    \ to your device when a Frigate event for the selected camera is fired. The notification\
+    \ will include the thumbnail of the detection.\n\nWith this blueprint, you may\
+    \ send the notification to multiple devices by leaving \"Device\" blank and instead\
+    \ use a [notification group][1].\n\n### Required entities:\n  - Frigate Camera\
+    \ Name\n  - AndroidTV Device \n\n### Optional features:\n  - You can limit notifications\
+    \ to objects entering **any** pre-defined [zones][2] in Frigate.\n  - You can\
+    \ specify which [zones][2] to be notified about. This must be a list (e.g.):\n\
+    \    ```yaml\n    - backyard\n    ```\n  - You can specify what type of [objects][3]\
+    \ to be notified about. This must be a list (e.g.):\n    ```yaml\n    - person\n\
+    \    - car\n    ```\n  - You can disable notifications if a presence entity or\
+    \ group is \"home\".\n  - You can configure a cooldown for the camera to reduce\
+    \ the number of notifications when back-to-back events occur.\n  - You can silence\
+    \ future notifications for a defined amount of time through actionable notifications.\
+    \ This is helpful in situations where you know you will be triggering detections\
+    \ for an extended period of time, like when the kids are playing outside.\n\n\
+    [1]: https://companion.home-assistant.io/docs/notifications/notifications-basic#sending-notifications-to-multiple-devices\n\
+    [2]: https://blakeblackshear.github.io/frigate/configuration/cameras#zones\n[3]:\
+    \ https://blakeblackshear.github.io/frigate/configuration/objects\n"
+  domain: automation
+  source_url: https://gist.github.com/bittles/4d833eb08305856dcf91ef29572211ad
+  input:
+    camera:
+      name: Frigate Camera
+      description: The name of the camera as defined in your frigate configuration.
+      default: ''
+    camera_and_type:
+      name: Frigate Camera with Frigate Event Type
+      description: The name of the camer and event type eg. 'camera_name new' the
+        type can be new, update, or end.
+      default: ''
+    notify_group:
+      name: Android TV Notification Name
+      description: The name of the Android TV notification service to call.
+      default: ''
+    base_url:
+      name: (Optional) Base URL
+      description: 'The external url for your Home Assistant instance. This will default
+        to a relative URL and will open the clips in the app instead of the browser,
+        which may cause issues on some devices.
+
+        '
+      default: ''
+    zone_filter:
+      name: (Optional) Zone Filter
+      description: Only notify if object has entered a defined zone.
+      default: false
+      selector:
+        boolean: {}
+    zones:
+      name: (Optional) Trigger Zones
+      description: A list (-) of zones you wish to recieve notifications for.
+      default: []
+      selector:
+        object: {}
+    labels:
+      name: (Optional) Trigger Objects
+      description: A list (-) of objects you wish to recieve notifications for.
+      default: []
+      selector:
+        object: {}
+    presence_filter:
+      name: (Optional) Person Filter
+      description: Only notify if selected person entity is not "home".
+      default: ''
+      selector:
+        entity:
+          domain: person
+    captime:
+      name: Date/Time of Capture
+      description: input_datetime entity_id used for time display of capture.
+      default: ''
+      selector:
+        entity:
+          domain: input_datetime
+    cooldown:
+      name: (Optional) Cooldown
+      description: Delay before sending another notification for this camera after
+        the last event.
+      default: 30
+      selector:
+        number:
+          max: 300.0
+          min: 0.0
+          unit_of_measurement: seconds
+          step: 1.0
+          mode: slider
+mode: single
+max_exceeded: silent
+trigger:
+  platform: mqtt
+  topic: frigate/events
+  payload: !input 'camera_and_type'
+  value_template: '{{ value_json[''after''][''camera''] ~ '' '' ~ value_json[''type'']
+    }}'
+variables:
+  id: '{{ trigger.payload_json[''after''][''id''] }}'
+  camera: '{{ trigger.payload_json[''after''][''camera''] }}'
+  camera_name: '{{ camera | replace(''_'', '' '') | title }}'
+  object: '{{ trigger.payload_json[''after''][''label''] }}'
+  label: '{{ object | title }}'
+  entered_zones: '{{ trigger.payload_json[''after''][''entered_zones''] }}'
+  type: '{{ trigger.payload_json[''type''] }}'
+  base_url: !input 'base_url'
+  group_target: !input 'notify_group'
+  zone_only: !input 'zone_filter'
+  input_zones: !input 'zones'
+  zones: '{{ input_zones | list }}'
+  input_labels: !input 'labels'
+  labels: '{{ input_labels | list }}'
+  presence_entity: !input 'presence_filter'
+  captime: !input 'captime'
+condition:
+- '{{ type != ''end'' }}'
+- '{{ type != ''update'' }}'
+- '{{ not zone_only or entered_zones|length > 0 }}'
+- '{{ not zones|length or zones|select(''in'', entered_zones)|list|length > 0 }}'
+- '{{ not labels|length or object in labels }}'
+- '{{ not presence_entity or not is_state(presence_entity, ''home'') }}'
+action:
+- service: input_datetime.set_datetime
+  target:
+    entity_id: !input 'captime'
+  data:
+    timestamp: '{{ now().timestamp() }}'
+- service: notify.{{ group_target }}
+  data:
+    message: A {{ label }} was detected on the {{ camera_name }} camera {{ states(captime)
+      }}.
+    data:
+      duration: 8
+      fontsize: medium
+      position: top-right
+      color: amber
+      transparency: 25%
+      timeout: 10
+      interrupt: false
+      image:
+        url: '{{base_url}}/api/frigate/notifications/{{id}}/snapshot.jpg'
+      icon:
+        url: '{{base_url}}/api/frigate/notifications/{{id}}/thumbnail.jpg?format=android'
+- delay:
+    minutes: !input 'cooldown'
