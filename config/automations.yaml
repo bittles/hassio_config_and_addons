@@ -3299,7 +3299,7 @@
   action:
   - service: climate.set_temperature
     data:
-      target_temp_low: 71
+      target_temp_low: 71.7
       target_temp_high: '{{ states.input_number.custom_thermostat_temp_high.state
         }}'
     target:

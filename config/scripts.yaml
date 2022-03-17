@@ -502,3 +502,40 @@ alfred_cleans_living_room_and_kitchen:
     target:
       entity_id: vacuum.rockrobo
   mode: single
+alfred_cleans_from_card:
+  alias: Alfred Cleans from Card
+  description: Tells Alfred to clean a zone
+  fields:
+    cleaner:
+      name: Vacuum
+      description: The vacuum to clean with
+      example: vacuum.rockrobo
+      selector:
+        text:
+      default: ''
+    zone_to_clean:
+      name: Name of the zone
+      description: The zone to clean
+      example: Living Room and Kitchen
+      selector:
+        text:
+      default: ''
+    number_of_times_to_clean:
+      name: Number of cleans
+      description: How many times should the zone be cleaned (1-3)
+      selector:
+        number:
+          min: 1
+          max: 3
+          step: 1
+          mode: slider
+      default: 1
+  sequence:
+  - service: vacuum.send_command
+    data:
+      command: '{ "command": "zoned_cleanup", "zone_ids": [ { "id": "{{ zone_to_clean|replace("[''",
+        "")|replace("'']", "") }}", "repeats": {{ number_of_times_to_clean }} } ]
+        }'
+    target:
+      entity_id: '{{ cleaner }}'
+  mode: single
