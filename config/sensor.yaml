@@ -135,7 +135,7 @@
   json_attributes_topic: zwave/bonus-room/bonus-room-temp/49/0/Air_temperature
   json_attributes_template: >
     {
-      "Last Updated": "{{ (value_json.time / 1000) | timestamp_local }}"
+    "Last Updated": "{{ (value_json.time / 1000) | timestamp_local }}"
     }
 
 #- platform: mqtt

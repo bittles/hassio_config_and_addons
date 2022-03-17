@@ -60,6 +60,47 @@ rest_command:
     method: post
     verify_ssl: false
 
+vacuum:
+  platform: mqtt
+  name: Alfred
+  unique_id: alfred_rockrobo
+  schema: state
+  device:
+    manufacturer: Roborock
+    model: roborock.vacuum.s5
+    name: alfred_rockrobo
+    identifiers:
+      - alfred_rockrobo
+    sw_version: 0.10.7
+  supported_features:
+    - start
+    - pause
+    - stop
+    - return_home
+    - battery
+    - status
+    - locate
+    - clean_spot
+    - fan_speed
+    - send_command
+  command_topic: valetudo/rockrobo/command
+  state_topic: valetudo/rockrobo/state
+  set_fan_speed_topic: valetudo/rockrobo/set_fan_speed
+  fan_speed_list:
+    - min
+    - medium
+    - high
+    - max
+    - mop
+  send_command_topic: valetudo/rockrobo/custom_command
+  json_attributes_topic: valetudo/rockrobo/attributes
+  json_attributes_template: >
+    {
+      "Last Run Duration": "{{ (value_json.last_run_stats.duration-68400)|timestamp_custom('%H:%M:%S') }}",
+      "mainBrush": "{{ value_json.mainBrush }}"
+    }
+
+
 #battery_consumption:
 #  front_door_batteries:
 #    source: sensor.august_smart_lock_pro_3rd_gen_battery_level

@@ -526,10 +526,6 @@ config:
       - entity: input_datetime.heat_end
       - entity: input_number.heat_start_temp
       - entity: input_number.heat_end_temp
-      - entity: input_boolean.driveway_motion
-      - entity: input_boolean.porch_motion
-      - entity: switch.frigate_porch_motion
-      - entity: switch.frigate_driveway_motion
       - entity: input_datetime.afternoon_temp_change
       - entity: input_datetime.alfred_cleaning_time
       - entity: automation.alfred_cleans_zones_at_4am
@@ -538,117 +534,78 @@ config:
     - calibration_source:
         calibration_points:
         - map:
-            x: 169
-            y: 826
+            x: 45
+            y: 303
           vacuum:
-            x: 19956
-            y: 26917
+            x: 18667
+            y: 20308
         - map:
-            x: 875
-            y: 890
+            x: 137
+            y: 798
           vacuum:
-            x: 28698
-            y: 27738
+            x: 19753
+            y: 26492
         - map:
-            x: 57
-            y: 60
+            x: 665
+            y: 977
           vacuum:
-            x: 18500
-            y: 17408
-        - map:
-            x: 595
-            y: 87
-          vacuum:
-            x: 25175
-            y: 17832
+            x: 26391
+            y: 28735
       entity: vacuum.rockrobo
       map_locked: true
       map_modes:
       - icon: mdi:floor-plan
         max_repeats: 3
         max_selections: 1
-        name: Predefined Zones
-        repeats_type: INTERNAL
+        name: Zoned Cleaning
+        predefined_selections:
+        - icon:
+            name: mdi:home-floor-1
+            x: 23000
+            y: 20900
+          id: Living Room and Kitchen
+          label:
+            offset_y: 35
+            text: Downstairs
+            x: 23000
+            y: 20900
+          outline:
+          - - 18626
+            - 16770
+          - - 28542
+            - 16770
+          - - 28542
+            - 28935
+          - - 18626
+            - 28935
+        - icon:
+            name: mdi:weather-sunny
+            x: 23500
+            y: 18300
+          id: Sun Room
+          label:
+            offset_y: 35
+            text: Sun Room
+            x: 23500
+            y: 18300
+          outline:
+          - - 21230
+            - 16697
+          - - 25586
+            - 16697
+          - - 25586
+            - 19920
+          - - 21230
+            - 19920
+        repeats_type: EXTERNAL
         selection_type: ROOM
         service_call_schema:
-          predefined_selections:
-          - icon:
-              name: mdi:bed
-              x: 22932
-              y: 25400
-            id: Living Room and Kitchen
-            label:
-              offset_y: 35
-              text: Living Room and Kitchen
-              x: 22932
-              y: 25400
-            outline:
-            - - 17953
-              - 16665
-            - - 28826
-              - 16665
-            - - 28826
-              - 29802
-            - - 17953
-              - 29802
-          - icon:
-              name: mdi:bed
-              x: 22932
-              y: 25400
-            id: Sun Room
-            label:
-              offset_y: 35
-              text: Sun Room
-              x: 22932
-              y: 25400
-            outline:
-            - - 21230
-              - 16697
-            - - 21230
-              - 19920
-            - - 25586
-              - 16697
-            - - 25586
-              - 19920
-          service: vacuum.send_command
+          service: script.alfred_cleans_from_card
           service_data:
-            command: '{ "command": "zoned_cleanup", "zone_ids": [ { "id": "[[selection]]",
-              "repeats": [[repeats]] } ] }'
-          target:
-            entity_id: '[[entity_id]]'
-      - icon: mdi:floor-plan
-        max_repeats: 3
-        max_selections: 1
-        name: Zones
-        repeats_type: INTERNAL
-        selection_type: ROOM
-        service_call_schema:
-          predefined_selections:
-          - icon:
-              name: mdi:bed
-              x: 22932
-              y: 25400
-            id: Living Room and Kitchen
-            label:
-              offset_y: 35
-              text: Living Room and Kitchen
-              x: 22932
-              y: 25400
-            outline:
-            - - 17953
-              - 16665
-            - - 28826
-              - 16665
-            - - 28826
-              - 29802
-            - - 17953
-              - 29802
-          service: vacuum.send_command
-          service_data:
-            command: '{ "command": "zoned_cleanup", "zone_ids": [ { "id": "[[selection]]",
-              "repeats": [[repeats]] } ] }'
-          target:
-            entity_id: '[[entity_id]]'
+            cleaner: '[[entity_id]]'
+            command: selection
+            number_of_times_to_clean: '[[repeats]]'
+            zone_to_clean: '[[selection]]'
       map_source:
         camera: camera.rockrobo_map
       preset_name: Live map
