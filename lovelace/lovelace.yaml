@@ -13,7 +13,7 @@ config:
     - entity: person.darius
     - entity: person.kara
     - entity: binary_sensor.noone
-    - entity: vacuum.rockrobo
+    - entity: vacuum.alfred
     - entity: sensor.nest_thermostat_temperature
     - entity: sensor.nest_thermostat_humidity
     - entity: sensor.shellytempfixed
@@ -530,6 +530,7 @@ config:
       - entity: input_datetime.alfred_cleaning_time
       - entity: automation.alfred_cleans_zones_at_4am
       - entity: automation.zzzz_back_door_autolock
+      - entity: automation.after_temp_change
       type: entities
     - calibration_source:
         calibration_points:
@@ -551,7 +552,60 @@ config:
           vacuum:
             x: 26391
             y: 28735
-      entity: vacuum.rockrobo
+      entity: vacuum.alfred
+      icons:
+      - icon: mdi:play-pause
+        tap_action:
+          action: call-service
+          service: vacuum.start_pause
+      - icon: mdi:map-search
+        tap_action:
+          action: call-service
+          service: vacuum.locate
+      - conditions:
+        - attribute: fan_speed
+          entity: vacuum.alfred
+          value: min
+        icon: mdi:fan-chevron-up
+        tap_action:
+          action: call-service
+          service: vacuum.set_fan_speed
+          service_data:
+            entity_id: vacuum.alfred
+            fan_speed: medium
+      - conditions:
+        - attribute: fan_speed
+          entity: vacuum.alfred
+          value: medium
+        icon: mdi:fan-chevron-up
+        tap_action:
+          action: call-service
+          service: vacuum.set_fan_speed
+          service_data:
+            entity_id: vacuum.alfred
+            fan_speed: high
+      - conditions:
+        - attribute: fan_speed
+          entity: vacuum.alfred
+          value: high
+        icon: mdi:fan-chevron-up
+        tap_action:
+          action: call-service
+          service: vacuum.set_fan_speed
+          service_data:
+            entity_id: vacuum.alfred
+            fan_speed: max
+      - conditions:
+        - attribute: fan_speed
+          entity: vacuum.alfred
+          value: max
+        icon: mdi:fan-chevron-up
+        tap_action:
+          action: call-service
+          service: vacuum.set_fan_speed
+          service_data:
+            entity_id: vacuum.alfred
+            fan_speed: min
       map_locked: true
       map_modes:
       - icon: mdi:floor-plan
@@ -607,9 +661,53 @@ config:
             number_of_times_to_clean: '[[repeats]]'
             zone_to_clean: '[[selection]]'
       map_source:
-        camera: camera.rockrobo_map
+        camera: camera.alfred_s_map
       preset_name: Live map
-      title: Xiaomi Vacuum Map Card
+      tiles:
+      - attribute: Current State
+        entity: vacuum.alfred
+        icon: mdi:robot-vacuum
+        label: Status
+        tap_action:
+          action: more-info
+      - attribute: fan_speed
+        entity: vacuum.alfred
+        icon: mdi:vacuum
+        label: Fan Speed
+        tap_action:
+          action: more-info
+      - attribute: battery_level
+        entity: vacuum.alfred
+        icon: mdi:battery
+        label: Battery Level
+        tap_action:
+          action: more-info
+        unit: '%'
+      - attribute: Last Run Duration
+        entity: vacuum.alfred
+        icon: mdi:horizontal-rotate-clockwise
+        label: Last Run Time
+        tap_action:
+          action: more-info
+      - attribute: Last Run Start Time
+        entity: vacuum.alfred
+        icon: mdi:clock-alert
+        label: Last Cleaning Start Time
+        tap_action:
+          action: more-info
+      - attribute: Last Run End Time
+        entity: vacuum.alfred
+        icon: mdi:clock-check
+        label: Last Cleaning Stop Time
+        tap_action:
+          action: more-info
+      - attribute: Bin Needs Emptied?
+        entity: vacuum.alfred
+        icon: mdi:delete-empty
+        label: Does Bin Need Emptied?
+        tap_action:
+          action: more-info
+      title: Alfred's Domain
       type: custom:xiaomi-vacuum-map-card
     - entities:
       - entity: input_boolean.driveway_motion

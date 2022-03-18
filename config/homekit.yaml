@@ -32,7 +32,7 @@
      - light.porch
      - light.bedroom_light
      - light.living_room_ligh_living_room_light
-     - vacuum.rockrobo
+     - vacuum.alfred
      - light.hallway
      - switch.receiver_outlet
      - person.nick

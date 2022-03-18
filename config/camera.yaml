@@ -1,17 +1,3 @@
-#- platform: aarlo
-
-#### Snapshots on an interval
-# http://192.168.29.189:8123/local/Wyze/snapshot_interval_front-porch.jpg
-# http://192.168.29.189:8123/local/Wyze/snapshot_interval_driveway.jpg
-# http://192.168.29.189:8123/local/Wyze/snapshot_interval_back-deck.jpg
-
-
-
-#### Snapshot from last movement
-# http://192.168.29.189:8123/local/snapshot_camera.back_deck.jpg
-# http://192.168.29.189:8123/local/snapshot_camera.porch_camera.jpg
-# http://192.168.29.189:8123/local/snapshot_camera.driveway.jpg
-
 - platform: generic
   still_image_url: http://127.0.0.1:8123/local/snapshot_camera.porch_camera.jpg
 #  stream_source: http://127.0.0.1:8123/local/10-10-2021_09-26-50.mp4
@@ -24,6 +10,28 @@
 - platform: generic
   still_image_url: http://127.0.0.1:8123/local/snapshot_camera.back_deck.jpg
   name: Deck Motion Snapshot
+
+- platform: mqtt
+  name: Alfred's Map
+  unique_id: alfred_map
+  device:
+    manufacturer: Roborock
+    name: rockrobo
+    identifiers:
+      - rockrobo_alfred
+  topic: valetudo/rockrobo/map
+
+#- platform: aarlo
+
+#### Snapshots on an interval
+# http://192.168.29.189:8123/local/Wyze/snapshot_interval_front-porch.jpg
+# http://192.168.29.189:8123/local/Wyze/snapshot_interval_driveway.jpg
+# http://192.168.29.189:8123/local/Wyze/snapshot_interval_back-deck.jpg
+
+#### Snapshot from last movement
+# http://192.168.29.189:8123/local/snapshot_camera.back_deck.jpg
+# http://192.168.29.189:8123/local/snapshot_camera.porch_camera.jpg
+# http://192.168.29.189:8123/local/snapshot_camera.driveway.jpg
 
 #- platform: ffmpeg
 #  input: -rtsp_transport tcp -i rtsp://192.168.29.189:8964/front-porch-cam
