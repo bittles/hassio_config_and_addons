@@ -59,6 +59,18 @@ rest_command:
     url: 'https://192.168.29.187:10443/endpoint/@scrypted/webhook/public/55/e2a11a50ba7bbec4/turnOff'
     method: post
     verify_ssl: false
+  scrypted_post:
+    url: 'https://192.168.29.187:10443/endpoint/@scrypted/webhook/public/{{ deviceID }}/{{ hook_command }}'
+    method: post
+    verify_ssl: false
+  alfred_rest:
+    url: 'http://192.168.29.211/api/{{ route }}'
+    method: put
+    payload: '{"{{ parameter }}":"{{ value }}"}'
+    content_type: 'application/json'
+    username: !secret alfred_user
+    password: !secret alfred_pass
+    verify_ssl: false
 
 vacuum:
   platform: mqtt
@@ -96,8 +108,17 @@ vacuum:
   json_attributes_topic: valetudo/rockrobo/attributes
   json_attributes_template: >
     {
+      "Current State": "{{ value_json.valetudo_state.name }}",
+      "Last Run Start Time": "{{ (value_json.last_run_stats.startTime/1000)|timestamp_custom('%a %I:%M %p',local=true) }}",
+      "Last Run End Time": "{{ (value_json.last_run_stats.endTime/1000)|timestamp_custom('%a %I:%M %p',local=true) }}",
       "Last Run Duration": "{{ (value_json.last_run_stats.duration-68400)|timestamp_custom('%H:%M:%S') }}",
-      "mainBrush": "{{ value_json.mainBrush }}"
+      "Last Run Area Cleaned": "{{ (value_json.last_run_stats.area|float*10.76)|round(0) ~ " sq ft" }}",
+      "Last Run Finish Fine?": "{% if value_json.last_run_stats.finishedFlag == True %}Yes{% else %}No{% endif %}",
+      "Last Run Error?": "{{ value_json.last_run_stats.errorDescription }}",
+      "Bin Needs Emptied?": "{% if value_json.last_run_stats.endTime > value_json.last_bin_out %}True{% else %}False{% endif %}",
+      "Total Cleaning Time": "{{ value_json.cleanTime ~ " hr"}}",
+      "Total Cleaning Area": "{{ (value_json.cleanArea|float/4460.9665)|round(2) ~ " football fields"}}",
+      "Total Times Told to Clean": "{{ value_json.cleanCount }}"
     }
 
 
@@ -536,6 +557,7 @@ recorder:
       - sensor.porch_object
       - sensor.deck_object
       - sensor.count_tanner_s_water_was_empty
+      - vacuum.alfred
 
 history:
   use_include_order: true
@@ -552,7 +574,7 @@ history:
       - person.darius
       - person.kara
       - sensor.living_roomtv
-#      - vacuum.rockrobo
+      - vacuum.alfred
 #      - camera.aarlo_back_deck
 #      - sensor.aarlo_last_back_deck
 #      - binary_sensor.aarlo_motion_back_deck

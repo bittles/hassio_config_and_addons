@@ -57,12 +57,25 @@ foyer_light_ten_min:
       entity_id: light.hallway
     service: light.turn_off
 '1579731744650':
-  alias: Bedroom Lamps Off
+  alias: Bedroom Lights Off
   sequence:
   - entity_id: light.hue_go_1
     service: light.turn_off
   - entity_id: light.hue_go_2
     service: light.turn_off
+  - type: turn_off
+    device_id: 490ba522f9e011ea8bb3712c68a17879
+    entity_id: light.under_bed_light
+    domain: light
+  - type: turn_off
+    device_id: f16c40fb140e80d596d2e81eaedfd61b
+    entity_id: light.bedroom_light
+    domain: light
+  - type: turn_off
+    device_id: 26bd4341424620a80a8b14c1eecb55a7
+    entity_id: light.kitchen_nightlight
+    domain: light
+  mode: single
 '1579731898503':
   alias: Speakers Off
   sequence:
@@ -275,7 +288,7 @@ bedroom_lights_day:
     domain: light
     brightness_pct: 75
   - type: turn_on
-    device_id: bc25d8622a074722810f69b745931250
+    device_id: 26bd4341424620a80a8b14c1eecb55a7
     entity_id: light.kitchen_nightlight
     domain: light
     brightness_pct: 100
@@ -289,7 +302,7 @@ bedroom_lights_night:
     domain: light
     brightness_pct: 5
   - type: turn_on
-    device_id: bc25d8622a074722810f69b745931250
+    device_id: 26bd4341424620a80a8b14c1eecb55a7
     entity_id: light.kitchen_nightlight
     domain: light
     brightness_pct: 50
@@ -300,9 +313,10 @@ bedroom_lights_night:
       milliseconds: 0
   - data:
       brightness_pct: 100
-      color_name: cornsilk
-    entity_id: light.hue_go_1
+      color_name: burlywood
     service: light.turn_on
+    target:
+      entity_id: light.hue_go_1
   - delay:
       hours: 0
       minutes: 0
@@ -310,9 +324,10 @@ bedroom_lights_night:
       milliseconds: 0
   - data:
       brightness_pct: 100
-      color_name: cornsilk
-    entity_id: light.hue_go_2
+      color_name: burlywood
     service: light.turn_on
+    target:
+      entity_id: light.hue_go_2
   mode: single
 heat_switch_on:
   alias: Custom Thermostat - Heat Switch On
@@ -500,7 +515,7 @@ alfred_cleans_living_room_and_kitchen:
       command: '{ "command": "zoned_cleanup", "zone_ids": [ "Living Room and Kitchen"
         ] }'
     target:
-      entity_id: vacuum.rockrobo
+      entity_id: vacuum.alfred
   mode: single
 alfred_cleans_from_card:
   alias: Alfred Cleans from Card

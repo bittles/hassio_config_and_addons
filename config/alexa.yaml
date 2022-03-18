@@ -87,7 +87,7 @@
         - switch.airplayserver_deck
         - light.desklamp
       exclude_entities:
-        - camera.rockrobo_map
+        - camera.alfred_s_map
         - input_number.tanner_water_bowl_dry_count
         - input_number.bedroom_light_brightness
         - input_number.bedroom_room_percent_fan_speeds

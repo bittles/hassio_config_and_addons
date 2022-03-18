@@ -932,7 +932,7 @@
       params:
         zone_ids:
         - Living Room and Kitchen
-    entity_id: vacuum.rockrobo
+    entity_id: vacuum.alfred
     service: vacuum.send_command
 - id: '1600464055158'
   alias: zzSave Zone 2 Sources
@@ -1087,24 +1087,20 @@
         entity_id: person.nick
         state: not_home
       sequence:
-      - service: light.turn_off
+      - service: script.1579731744650
         data: {}
-        entity_id: light.bedroom_light
-      - service: light.turn_off
-        data: {}
-        entity_id: light.hue_go_1
-      - service: light.turn_off
-        data: {}
-        entity_id: light.hue_go_2
-      - service: light.turn_off
-        data: {}
-        entity_id: light.under_bed_light
-      - service: light.turn_off
-        data: {}
-        entity_id: light.kitchen_nightlight
       - service: media_player.turn_off
         target:
           entity_id: media_player.bedroom_tcl_tv
+        data: {}
+      - service: media_player.turn_off
+        data: {}
+        target:
+          entity_id: media_player.forked_daapd_output_master_bedroom_apple_tv
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.airplayserver_bathroom
     default: []
   mode: single
 - id: '1612314765484'
@@ -1155,27 +1151,16 @@
         entity_id: person.kara
         state: not_home
       sequence:
-      - service: light.turn_off
+      - service: script.1579731744650
         data: {}
-        entity_id: light.bedroom_light
-      - service: light.turn_off
-        data: {}
-        entity_id: light.hue_go_1
-      - service: light.turn_off
-        data: {}
-        entity_id: light.hue_go_2
-      - service: light.turn_off
-        data: {}
-        entity_id: light.under_bed_light
-      - service: light.turn_off
-        data: {}
-        entity_id: light.kitchen_nightlight
       - service: media_player.turn_off
         target:
           entity_id: media_player.bedroom_tcl_tv
+        data: {}
       - service: media_player.turn_off
         data: {}
-        entity_id: media_player.forked_daapd_output_master_bedroom_apple_tv
+        target:
+          entity_id: media_player.forked_daapd_output_master_bedroom_apple_tv
       - service: switch.turn_off
         data: {}
         entity_id: switch.airplayserver_bathroom
@@ -3093,6 +3078,7 @@
 - id: '1640396039361'
   alias: Frigate Notification Fork Driveway (Darius)
   description: ''
+  initial_state: false
   use_blueprint:
     path: bittles/frigate_notification.yaml
     input:
@@ -3132,6 +3118,7 @@
 - id: '1640446463486'
   alias: Frigate Notification Fork Driveway (Nick)
   description: ''
+  initial_state: false
   use_blueprint:
     path: bittles/frigate_notification.yaml
     input:
@@ -3295,6 +3282,10 @@
   trigger:
   - platform: time
     at: input_datetime.afternoon_temp_change
+  - platform: state
+    entity_id: person.kara
+    from: not_home
+    to: home
   condition: []
   action:
   - service: climate.set_temperature
@@ -3589,6 +3580,7 @@
 - id: '1646499222062'
   alias: Frigate Webhook to Scrypted Driveway
   description: ''
+  initial_state: false
   use_blueprint:
     path: bittles/frigate_to_scrypted.yaml
     input:
@@ -3623,6 +3615,7 @@
 - id: '1647382406595'
   alias: Frigate AndroidTV Notification Fork Driveway
   description: ''
+  initial_state: false
   use_blueprint:
     path: bittles/frigate_androidtv_notification.yaml
     input:
@@ -3644,3 +3637,26 @@
       captime: input_datetime.wyze_porch_time
       labels: {}
       notify_group: shield_notifs
+- id: '1647572048515'
+  alias: Frigate Start Frigate Driveway Autos After HASS Reboot
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  - platform: event
+    event_type: automation_reloaded
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - service: automation.turn_on
+    data: {}
+    target:
+      entity_id:
+      - automation.frigate_androidtv_notification_fork_driveway
+      - automation.frigate_notification_fork_driveway
+      - automation.frigate_webhook_to_scrypted_driveway
+  mode: single
