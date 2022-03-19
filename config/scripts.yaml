@@ -215,7 +215,8 @@ living_room_play_pause:
         entity_id: remote.living_room_tcl_tv
       data:
         command: play_pause
-  mode: queued
+        device: '72686620'
+  mode: parallel
   max: 10
 living_room_rewind:
   alias: Living Room Rewind
@@ -246,7 +247,8 @@ living_room_rewind:
         entity_id: remote.living_room_tcl_tv
       data:
         command: reverse
-  mode: queued
+        device: '72686620'
+  mode: parallel
   max: 10
 living_room_fast_forward:
   alias: Living Room Fast Forward
@@ -277,7 +279,8 @@ living_room_fast_forward:
         entity_id: remote.living_room_tcl_tv
       data:
         command: forward
-  mode: queued
+        device: '72686620'
+  mode: parallel
   max: 10
 bedroom_lights_day:
   alias: Bedroom Lights Day

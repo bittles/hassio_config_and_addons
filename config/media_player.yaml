@@ -15,14 +15,20 @@
     unique_id: livingroomremote
     children:
       - media_player.onkyo
-    state_template: '{{ states(''remote.living_room'') }}'
+      #'{{ states(''remote.living_room'') }}'
+#    state_template: >
+#      {% if (is_state('switch.living_room_roku_tv', 'on') or is_state('switch.living_room_nvidia_shield', 'on') or is_state('switch.living_room_play_ps5', 'on') or is_state('switch.living_room_xbox_one', 'on') or is_state('switch.living_room_nintendo_switch', 'on') or is_state('switch.living_room_listen_to_music', 'on')) %}
+#      on
+#      {% else %}
+#      off
+#      {% endif %}
     commands:
       turn_on:
         service: remote.turn_on
         target:
           entity_id: remote.living_room
         data:
-          activity: nvidia SHIELD
+          activity: '{{ state_attr(''remote.living_room'', ''last_activity'') }}'
       turn_off:
         service: remote.turn_off
         target:
@@ -38,13 +44,17 @@
       media_next_track:
         service: script.living_room_fast_forward
       volume_up:
-        service: media_player.volume_up
+        service: remote.send_command
         data:
-          entity_id: media_player.onkyo
+          entity_id: remote.living_room_tcl_tv
+          command: VolumeUp
+          device: '72686615'
       volume_down:
-        service: media_player.volume_down
+        service: remote.send_command
         data:
-          entity_id: media_player.onkyo
+          entity_id: remote.living_room_tcl_tv
+          command: VolumeDown
+          device: '72686615'
       volume_set:
         service: media_player.volume_set
         data:
@@ -59,6 +69,8 @@
     attributes:
       source: input_select.living_room_sources
       source_list: input_select.living_room_sources|options
+      state: media_player.onkyo
+      volume_level: media_player.onkyo|volume_level
     device_class: tv
 
   - platform: universal

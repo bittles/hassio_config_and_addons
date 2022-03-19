@@ -592,7 +592,10 @@ class DualSmartThermostat(ClimateEntity, RestoreEntity):
     async def _async_control_heating(self, time=None, force=False):
         """Check if we need to turn heating on or off."""
         async with self._temp_lock:
-            if not self._active and None not in (self._cur_temp, self._target_temp):
+            if not self._active and None not in (
+                self._cur_temp,
+                self._target_temp
+            ):
                 self._active = True
                 _LOGGER.info(
                     "Obtained current and target temperature. "
@@ -604,24 +607,28 @@ class DualSmartThermostat(ClimateEntity, RestoreEntity):
             if not self._active or self._hvac_mode == HVAC_MODE_OFF:
                 return
 
-            if not force and time is None:
+            if not force and time is None and self.min_cycle_duration:
                 # If the `force` argument is True, we
                 # ignore `min_cycle_duration`.
                 # If the `time` argument is not none, we were invoked for
                 # keep-alive purposes, and `min_cycle_duration` is irrelevant.
-                if self.min_cycle_duration:
-                    if self._is_device_active:
-                        current_state = STATE_ON
-                    else:
-                        current_state = HVAC_MODE_OFF
+                if self._is_device_active:
+                    
+                    current_state = STATE_ON
+                else:
+                    current_state = HVAC_MODE_OFF
+                try:
                     long_enough = condition.state(
                         self.hass,
                         self.heater_entity_id,
                         current_state,
                         self.min_cycle_duration,
                     )
-                    if not long_enough:
-                        return
+                except ConditionError:
+                    long_enough = False
+                        
+                if not long_enough:
+                    return
 
             too_cold = self._target_temp >= self._cur_temp + self._cold_tolerance
             too_hot = self._cur_temp >= self._target_temp + self._hot_tolerance
@@ -676,16 +683,17 @@ class DualSmartThermostat(ClimateEntity, RestoreEntity):
             if not self._active or self._hvac_mode == HVAC_MODE_OFF:
                 return
 
-            if not force and time is None:
+            if not force and time is None and self.min_cycle_duration:
                 # If the `force` argument is True, we
                 # ignore `min_cycle_duration`.
                 # If the `time` argument is not none, we were invoked for
                 # keep-alive purposes, and `min_cycle_duration` is irrelevant.
-                if self.min_cycle_duration:
-                    if self._is_device_active:
-                        current_state = STATE_ON
-                    else:
-                        current_state = HVAC_MODE_OFF
+                
+                if self._is_device_active:
+                    current_state = STATE_ON
+                else:
+                    current_state = HVAC_MODE_OFF
+                try:
                     long_enough = condition.state(
                         self.hass,
                         self.heater_entity_id,
@@ -693,8 +701,10 @@ class DualSmartThermostat(ClimateEntity, RestoreEntity):
                         current_state,
                         self.min_cycle_duration,
                     )
-                    if not long_enough:
-                        return
+                except ConditionError:
+                    long_enough = False
+                if not long_enough:
+                    return
 
             too_cold = self._target_temp_low >= self._cur_temp + self._cold_tolerance
             too_hot = self._cur_temp >= self._target_temp_high + self._hot_tolerance
