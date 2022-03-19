@@ -366,8 +366,6 @@ config:
         title: Dreamscreen Scenes
         type: glance
       type: vertical-stack
-    - entity: switch.receiver_outlet
-      type: entity
     - entities:
       - entity: switch.hassz2
       - entity: switch.hassbathroomspeaker
@@ -660,6 +658,14 @@ config:
             command: selection
             number_of_times_to_clean: '[[repeats]]'
             zone_to_clean: '[[selection]]'
+      - icon: mdi:map
+        name: Go To Spot
+        selection_type: MANUAL_POINT
+        service_call_schema:
+          service: rest_command.alfred_rest
+          service_data:
+            parameters_and_values: '[[selection]]'
+            route: go_to
       map_source:
         camera: camera.alfred_s_map
       preset_name: Live map

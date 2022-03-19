@@ -696,8 +696,12 @@
     service: script.turn_on
   - entity_id: script.1579731898503
     service: script.turn_on
-  - entity_id: script.1579731744650
-    service: script.turn_on
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.hue_go_1
+      - light.hue_go_2
   - entity_id: remote.living_room
     service: remote.turn_off
   - entity_id: switch.receiver_outlet
@@ -917,15 +921,7 @@
   trigger:
   - at: input_datetime.alfred_cleaning_time
     platform: time
-  condition:
-  - condition: time
-    before: 00:00:00
-    weekday:
-    - fri
-    - thu
-    - wed
-    - tue
-    - mon
+  condition: []
   action:
   - data:
       command: zoned_cleanup
@@ -2199,6 +2195,7 @@
       - service: remote.send_command
         data:
           command: DirectionRight
+          device: '72686620'
         target:
           entity_id:
           - remote.living_room_tcl_tv
@@ -2209,6 +2206,7 @@
       - service: remote.send_command
         data:
           command: DirectionDown
+          device: '72686620'
         target:
           entity_id:
           - remote.living_room_tcl_tv
@@ -2219,6 +2217,7 @@
       - service: remote.send_command
         data:
           command: DirectionLeft
+          device: '72686620'
         target:
           entity_id:
           - remote.living_room_tcl_tv
@@ -2229,6 +2228,7 @@
       - service: remote.send_command
         data:
           command: DirectionUp
+          device: '72686620'
         target:
           entity_id:
           - remote.living_room_tcl_tv
@@ -2239,6 +2239,7 @@
       - service: remote.send_command
         data:
           command: Select
+          device: '72686620'
         target:
           entity_id: remote.living_room_tcl_tv
     - conditions:
@@ -2248,6 +2249,7 @@
       - service: remote.send_command
         data:
           command: Back
+          device: '72686620'
         target:
           entity_id: remote.living_room_tcl_tv
     - conditions:
@@ -2257,6 +2259,7 @@
       - service: remote.send_command
         data:
           command: Home
+          device: '72686620'
         target:
           entity_id: remote.living_room_tcl_tv
     default: []
