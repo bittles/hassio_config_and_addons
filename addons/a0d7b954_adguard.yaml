@@ -1,0 +1,3 @@
+certfile: /ssl/nginxproxymanager/live/npm-20/cert.pem
+keyfile: /ssl/nginxproxymanager/live/npm-20/privkey.pem
+ssl: true
