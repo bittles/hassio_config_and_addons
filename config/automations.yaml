@@ -2194,8 +2194,7 @@
       sequence:
       - service: remote.send_command
         data:
-          command: DirectionRight
-          device: '72686620'
+          command: right
         target:
           entity_id:
           - remote.living_room_tcl_tv
@@ -2205,8 +2204,7 @@
       sequence:
       - service: remote.send_command
         data:
-          command: DirectionDown
-          device: '72686620'
+          command: down
         target:
           entity_id:
           - remote.living_room_tcl_tv
@@ -2216,8 +2214,7 @@
       sequence:
       - service: remote.send_command
         data:
-          command: DirectionLeft
-          device: '72686620'
+          command: left
         target:
           entity_id:
           - remote.living_room_tcl_tv
@@ -2227,8 +2224,7 @@
       sequence:
       - service: remote.send_command
         data:
-          command: DirectionUp
-          device: '72686620'
+          command: up
         target:
           entity_id:
           - remote.living_room_tcl_tv
@@ -2238,8 +2234,7 @@
       sequence:
       - service: remote.send_command
         data:
-          command: Select
-          device: '72686620'
+          command: select
         target:
           entity_id: remote.living_room_tcl_tv
     - conditions:
@@ -2248,8 +2243,7 @@
       sequence:
       - service: remote.send_command
         data:
-          command: Back
-          device: '72686620'
+          command: back
         target:
           entity_id: remote.living_room_tcl_tv
     - conditions:
@@ -2258,8 +2252,7 @@
       sequence:
       - service: remote.send_command
         data:
-          command: Home
-          device: '72686620'
+          command: home
         target:
           entity_id: remote.living_room_tcl_tv
     default: []
