@@ -1178,14 +1178,18 @@
     platform: state
     to: home
     id: nickhome
-  - platform: state
-    entity_id: sun.sun
-    to: below_horizon
+  - platform: event
+    event_type: sun
     id: sundown
-  - platform: state
-    entity_id: sun.sun
-    to: above_horizon
+    event_data:
+      event: sunset
+      offset: -00:30:00
+  - platform: event
+    event_type: sun
     id: sunup
+    event_data:
+      event: sunrise
+      offset: -00:30:00
   condition:
   - condition: or
     conditions:
@@ -1224,9 +1228,14 @@
           id: nickhome
         - condition: trigger
           id: sunup
-      - condition: state
-        entity_id: sun.sun
-        state: above_horizon
+      - condition: or
+        conditions:
+        - condition: sun
+          after: sunrise
+          after_offset: -00:30:00
+        - condition: sun
+          before: sunset
+          before_offset: -00:30:00
       sequence:
       - service: script.bedroom_lights_day
         data: {}
@@ -1239,9 +1248,14 @@
           id: nickhome
         - condition: trigger
           id: sundown
-      - condition: state
-        entity_id: sun.sun
-        state: below_horizon
+      - condition: or
+        conditions:
+        - condition: sun
+          before: sunrise
+          before_offset: -00:30:00
+        - condition: sun
+          after: sunset
+          after_offset: -00:30:00
       sequence:
       - service: script.bedroom_lights_night
         data: {}

@@ -209,30 +209,11 @@ config:
       show_header_toggle: false
       title: TVs
       type: entities
-    - entity: media_player.bedroom_tcl_tv
-      type: custom:mini-media-player
-    - entities:
-      - entity: switch.airplayserver_bathroom
-      - entity: switch.airplayserver_deck
-      - entity: media_player.forked_daapd_output_master_bedroom_apple_tv
-      - entity: media_player.forked_daapd_output_shield
-      - entity: media_player.forked_daapd_output_garage_apple_tv
-      - entity: media_player.forked_daapd_output_living_room_tcl_tv
-      - entity: media_player.forked_daapd_output_receiver
-      - entity: media_player.forked_daapd_output_roku_streaming_stick
-      type: entities
     - entities:
       - entity: media_player.bathroom_speaker
-      - entity: switch.hassbathroomspeaker
-      - entity: switch.hassz2
-      type: entities
-    - entities:
       - entity: media_player.deck_speaker
-      - entity: switch.hassbackdeckspeaker
-      - entity: switch.hassz2
+      - entity: media_player.master_bedroom_tv
       type: entities
-    - entity: media_player.master_bedroom_tv
-      type: custom:mini-media-player
     path: bedroom-tv-remote
     title: Remotes
   - badges: []
@@ -392,8 +373,6 @@ config:
       volume_stateless: true
     - entity: remote.living_room
       type: entity
-    - entity: media_player.master_bedroom_tv
-      type: media-control
     - entity: media_player.living_room_remote
       type: media-control
     title: TV and Music
@@ -458,7 +437,6 @@ config:
       - entity: automation.washing_cycle_done_notifications
       type: entities
     - entities:
-      - entity: sensor.monthly_bedroom_outlets_energy
       - entity: sensor.kmc4_bedroom_energy
       type: entities
     path: washing-machine
@@ -721,6 +699,18 @@ config:
       - entity: input_boolean.wyze_deck_motion
       - entity: input_number.custom_thermostat_temp_high
       - entity: input_number.custom_thermostat_temp_low
+      - entity: sun.sun
+      - entity: sensor.sun_elevation
+      type: entities
+    - entities:
+      - entity: switch.airplayserver_bathroom
+      - entity: switch.airplayserver_deck
+      - entity: media_player.forked_daapd_output_master_bedroom_apple_tv
+      - entity: media_player.forked_daapd_output_shield
+      - entity: media_player.forked_daapd_output_garage_apple_tv
+      - entity: media_player.forked_daapd_output_living_room_tcl_tv
+      - entity: media_player.forked_daapd_output_receiver
+      - entity: media_player.forked_daapd_output_roku_streaming_stick
       type: entities
     path: server-control
     title: Server Control

@@ -557,6 +557,8 @@ recorder:
       - sensor.porch_object
       - sensor.deck_object
       - sensor.count_tanner_s_water_was_empty
+      - sensor.sun_elevation
+      - sun.sun
       - vacuum.alfred
 
 history:

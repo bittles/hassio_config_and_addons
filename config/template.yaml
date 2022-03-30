@@ -36,6 +36,10 @@
 #################         SENSORS        ########################################################################################
 - sensor:
 
+    - unique_id: sunelevation
+      name: Sun Elevation
+      state: '{{ state_attr(''sun.sun'', ''elevation'') }}'
+
     - unique_id: bedroom_temp_combiner
       name: shellytempfixed
       unit_of_measurement: "°F"
