@@ -78,23 +78,23 @@
     unique_id: bathroomspeakerplayer
     children:
       - media_player.onkyo_zone_2
-    state_template: >
-      {% if is_state('switch.hassz2', 'on') and is_state('switch.hassbathroomspeaker', 'on') %}
-        on
-      {% elif is_state('switch.hassz2', 'off') and is_state('switch.hassbathroomspeaker', 'off') %}
-        off
-      {% else %}
-        off
-      {% endif %}
+#    state_template: >
+#      {% if is_state('switch.hassz2', 'on') and is_state('switch.hassbathroomspeaker', 'on') %}
+#        on
+#      {% elif is_state('switch.hassz2', 'off') and is_state('switch.hassbathroomspeaker', 'off') %}
+#        off
+#      {% else %}
+#        off
+#      {% endif %}
     commands:
       turn_on: 
-        service: script.turn_on
+        service: switch.turn_on
         data:
-          entity_id: script.bathroom_speaker_media_player
+          entity_id: switch.airplayserver_bathroom
       turn_off:
-        service: homeassistant.turn_off
+        service: switch.turn_off
         data:
-          entity_id: group.zone2_bathroom
+          entity_id: switch.airplayserver_bathroom
       volume_set:
         service: media_player.volume_set
         data:
@@ -120,13 +120,14 @@
     attributes:
       source_list: input_select.zone_2_sources|options
       source: input_select.zone_2_sources
+      state: switch.airplayserver_bathroom
 
   - platform: universal
     name: Master Bedroom TV
     unique_id: bedroomtvremote
     children:
       - media_player.bedroom_tcl_tv
-    state_template: '{{ states(''remote.bedroom_tcl_tv'') }}'
+#    state_template: '{{ states(''remote.bedroom_tcl_tv'') }}'
     #>
     #      {% if is_state("media_player.bedroom_tcl_tv", "idle") -%}
     #        on
@@ -217,7 +218,7 @@
               {{ source }}
             {% endif %}
     attributes:
-#      state: remote.bedroom_tcl_tv
+      state: remote.bedroom_tcl_tv
 #      source: media_player.bedroom_tcl_tv|source
       source: input_select.bedroom_tv_source_list
       source_list: input_select.bedroom_tv_source_list|options
@@ -228,23 +229,23 @@
     unique_id: deckspeakerplayer
     children:
       - media_player.onkyo_zone_2
-    state_template: >
-      {% if is_state('switch.hassz2', 'on') and is_state('switch.hassbackdeckspeaker', 'on') %}
-        on
-      {% elif is_state('switch.hassz2', 'off') and is_state('switch.hassbackdeckspeaker', 'off') %}
-        off
-      {% else %}
-        off
-      {% endif %}
+#    state_template: >
+#      {% if is_state('switch.hassz2', 'on') and is_state('switch.hassbackdeckspeaker', 'on') %}
+#        on
+#      {% elif is_state('switch.hassz2', 'off') and is_state('switch.hassbackdeckspeaker', 'off') %}
+#        off
+#      {% else %}
+#        off
+#      {% endif %}
     commands:
       turn_on: 
-        service: script.turn_on
+        service: switch.turn_on
         data:
-          entity_id: script.backdeck_speaker_media_player
+          entity_id: switch.airplayserver_deck
       turn_off:
-        service: homeassistant.turn_off
+        service: switch.turn_off
         data:
-          entity_id: group.zone2_deck
+          entity_id: switch.airplayserver_deck
       volume_set:
         service: media_player.volume_set
         data:
@@ -269,6 +270,7 @@
     attributes:
       source_list: input_select.zone_2_sources|options
       source: input_select.zone_2_sources
+      state: switch.airplayserver_deck
 
 #  - platform: androidtv
 #    name: Shield ADB
