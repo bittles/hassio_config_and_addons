@@ -621,7 +621,6 @@
   - condition: template
     value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
   action:
-  - scene: scene.above_cabinet_lights_on_when_home
   - choose:
     - conditions:
       - condition: or
@@ -1178,18 +1177,14 @@
     platform: state
     to: home
     id: nickhome
-  - platform: event
-    event_type: sun
+  - platform: sun
+    event: sunset
+    offset: -00:30:00
     id: sundown
-    event_data:
-      event: sunset
-      offset: -00:30:00
-  - platform: event
-    event_type: sun
+  - platform: sun
+    event: sunrise
+    offset: -00:30:00
     id: sunup
-    event_data:
-      event: sunrise
-      offset: -00:30:00
   condition:
   - condition: or
     conditions:
@@ -1220,6 +1215,11 @@
   action:
   - choose:
     - conditions:
+      - condition: sun
+        after: sunrise
+        after_offset: -00:30:00
+        before: sunset
+        before_offset: -00:30:00
       - condition: or
         conditions:
         - condition: trigger
@@ -1228,18 +1228,18 @@
           id: nickhome
         - condition: trigger
           id: sunup
-      - condition: or
-        conditions:
-        - condition: sun
-          after: sunrise
-          after_offset: -00:30:00
-        - condition: sun
-          before: sunset
-          before_offset: -00:30:00
       sequence:
       - service: script.bedroom_lights_day
         data: {}
     - conditions:
+      - condition: or
+        conditions:
+        - condition: sun
+          after: sunset
+          after_offset: -00:30:30
+        - condition: sun
+          before: sunrise
+          before_offset: -00:30:00
       - condition: or
         conditions:
         - condition: trigger
@@ -1248,14 +1248,6 @@
           id: nickhome
         - condition: trigger
           id: sundown
-      - condition: or
-        conditions:
-        - condition: sun
-          before: sunrise
-          before_offset: -00:30:00
-        - condition: sun
-          after: sunset
-          after_offset: -00:30:00
       sequence:
       - service: script.bedroom_lights_night
         data: {}
@@ -1380,6 +1372,7 @@
             state: 'on'
           - condition: sun
             after: sunset
+            after_offset: -00:30:00
           sequence:
           - service: light.turn_on
             data:
@@ -1391,6 +1384,7 @@
             state: 'on'
           - condition: sun
             before: sunset
+            before_offset: -00:30:00
           sequence:
           - service: light.turn_on
             data:
@@ -1414,9 +1408,9 @@
   alias: yTanner Dims Sunroom at Sunset
   description: ''
   trigger:
-  - platform: state
-    entity_id: sun.sun
-    to: below_horizon
+  - platform: sun
+    event: sunset
+    offset: -00:30:00
   condition:
   - condition: state
     entity_id: input_boolean.tanner_breakfast_now_fed
@@ -3300,7 +3294,7 @@
   action:
   - service: climate.set_temperature
     data:
-      target_temp_low: 71.7
+      target_temp_low: '{{ states.input_number.kara_heat_temp.state }}'
       target_temp_high: '{{ states.input_number.custom_thermostat_temp_high.state
         }}'
     target:
