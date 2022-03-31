@@ -78,7 +78,7 @@ config:
       show_state: true
       state_color: true
       type: glance
-    - columns: 5
+    - columns: 3
       entities:
       - entity: light.kitchen
         tap_action:
@@ -501,12 +501,12 @@ config:
       - entity: input_datetime.heat_start
       - entity: input_datetime.heat_end
       - entity: input_number.heat_start_temp
-      - entity: input_number.heat_end_temp
-      - entity: input_datetime.afternoon_temp_change
       - entity: input_datetime.alfred_cleaning_time
       - entity: automation.alfred_cleans_zones_at_4am
       - entity: automation.zzzz_back_door_autolock
       - entity: automation.after_temp_change
+      - entity: input_datetime.afternoon_temp_change
+      - entity: input_number.kara_heat_temp
       type: entities
     - calibration_source:
         calibration_points:
@@ -718,6 +718,9 @@ config:
     cards:
     - cards:
       - entities:
+        - entity: switch.front_porch_detect
+        - entity: switch.front_porch_recordings
+        - entity: switch.front_porch_snapshots
         - entity: sensor.front_porch_camera_fps
           name: Camera Fps
         - entity: sensor.front_porch_detection_fps
@@ -744,6 +747,7 @@ config:
         - entity: sensor.front_porch_cat
         - entity: sensor.front_porch_dog
         - entity: sensor.front_porch_person
+        show_header_toggle: false
         title: Front Porch
         type: entities
       - camera_view: auto
@@ -773,6 +777,9 @@ config:
       type: grid
     - cards:
       - entities:
+        - entity: switch.driveway_detect
+        - entity: switch.driveway_recordings
+        - entity: switch.front_porch_snapshots
         - entity: sensor.driveway_camera_fps
           name: Camera Fps
         - entity: sensor.driveway_detection_fps
@@ -805,6 +812,7 @@ config:
         - entity: sensor.driveway_dog
         - entity: sensor.driveway_motorcycle
         - entity: sensor.driveway_person
+        show_header_toggle: false
         title: Driveway
         type: entities
       - camera_view: auto
@@ -845,6 +853,9 @@ config:
       type: grid
     - cards:
       - entities:
+        - entity: switch.back_deck_detect
+        - entity: switch.driveway_recordings
+        - entity: switch.front_porch_snapshots
         - entity: sensor.back_deck_camera_fps
           name: Camera Fps
         - entity: sensor.back_deck_detection_fps
@@ -873,6 +884,7 @@ config:
           name: Dog
         - entity: sensor.back_deck_person
           name: Person
+        show_header_toggle: false
         title: Back Deck
         type: entities
       - camera_view: auto

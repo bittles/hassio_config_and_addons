@@ -54,14 +54,20 @@ cameras:
   front_porch:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8964/front-porch-cam
+        - path: rtsp://192.168.29.187:8969/front-porch-cam
  #       - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
           roles:
             - detect
             - rtmp
             - record
+    live:
+      # Live camera view height default=720
+      height: 720
+      
+      # Live camera view quality. default=8
+#      quality: 20
     detect:
-      fps: 3
+      fps: 5
       max_disappeared: 30
       stationary:
         # Optional: Frequency for running detection on stationary objects (default: shown below)
@@ -73,15 +79,11 @@ cameras:
         threshold: 20
     motion:
       mask:
-        - 0,720,296,720,237,392,394,372,377,219,360,61,431,45,496,21,503,0,257,0,136,0,0,0
-        - 1280,0,652,0,608,111,497,111,599,356,786,344,1111,403,1280,678
-        - 1154,706,1248,706,1242,674,1151,676
-    live:
-      # Live camera view height default=720
-      height: 720
-      
-      # Live camera view quality. default=8
-      quality: 20
+        - 597,357,628,352,622,334,606,335
+#720p mask
+#        - 0,720,296,720,237,392,394,372,377,219,360,61,431,45,496,21,503,0,257,0,136,0,0,0
+#        - 1280,0,652,0,608,111,497,111,599,356,786,344,1111,403,1280,678
+#        - 1154,706,1248,706,1242,674,1151,676
     objects:
       track:
         - person
@@ -101,7 +103,7 @@ cameras:
 #          max_area: 24000000
         person:
           threshold: 0.6
-          min_area: 25000
+#          min_area: 25000
           max_area: 1600000
         bicycle:
           min_area: 25000
@@ -115,29 +117,34 @@ cameras:
 #          min_area: 25000
 #          max_area: 24000000
         bird:
-          min_area: 130
+#          min_area: 130
           max_area: 300000
         cat:
-          min_area: 130
+#          min_area: 130
           max_area: 58000
         dog:
-          min_area: 130
+#          min_area: 130
           max_area: 300000
         bear:
-          min_area: 2500
+#          min_area: 2500
           max_area: 24000000
 
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8964/driveway-cam
+        - path: rtsp://192.168.29.187:8969/driveway-cam
 #        - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
           roles:
             - detect
             - rtmp
             - record
+    live:
+      # Live camera view height default=720
+      height: 720
+      # Live camera view quality. default=8
+#      quality: 18
     detect:
-      fps: 3
+      fps: 5
       max_disappeared: 30
       stationary:
         # Optional: Frequency for running detection on stationary objects (default: shown below)
@@ -150,60 +157,43 @@ cameras:
     motion:
 #      contour_area: 490
       mask:
-        - 237,0,0,0,0,103
-        - 1171,0,1280,0,1280,43
-        - 1156,673,1168,706,1241,706,1248,674
-        - 0,131,0,35,126,63,111,110,136,156,171,200,116,283,244,301,215,399,103,434,0,625
-        - 253,720,197,669,161,619,132,630,106,674,76,720
-        - 1280,179,1280,677,1242,682,1193,489,1178,371,1208,249
+        - 101,0,0,0,0,50
+        - 640,0,640,21,593,0
+        - 597,357,628,352,622,334,606,335
+#720p mask
+#        - 237,0,0,0,0,103
+#        - 1171,0,1280,0,1280,43
+#        - 1156,673,1168,706,1241,706,1248,674
+#        - 0,131,0,35,126,63,111,110,136,156,171,200,116,283,244,301,215,399,103,434,0,625
+#        - 253,720,197,669,161,619,132,630,106,674,76,720
+#        - 1280,179,1280,677,1242,682,1193,489,1178,371,1208,249
       threshold: 65
-    zones:
-      street_half_driveway:
-        coordinates: 414,103,1011,89,943,0,471,0
-        objects:
-          - car
-          - person
-          - motorcycle
-          - bicycle
-          - bird
-          - cat
-          - dog
-          - bear
-#          - bus
-      house_half_driveway:
-        coordinates: 1038,79,1276,720,224,718,409,96
-        objects:
-          - person
-          - bicycle
-          - bird
-          - cat
-          - dog
-          - bear
+#    zones:
+#      street_half_driveway:
+#        coordinates: 414,103,1011,89,943,0,471,0
+#        objects:
 #          - car
-#          - bus
+#          - person
 #          - motorcycle
-        #filters:
-        #  car:
-        #    threshold: 0.99
-        #    min_area: 23999999
-        #    max_area: 24000000
-        #  motorcycle:
-        #    threshold: 0.99
-        #    min_area: 23999999
-        #    max_area: 24000000
-      zone_0:
-        coordinates: 244,720,0,720,0,0,481,0
-        objects:
-          - person
-          - bicycle
-          - bird
-          - cat
-          - dog
-          - bear
+#          - bicycle
+#          - bird
+#          - cat
+#          - dog
+#          - bear
 #          - bus
-#          - motorcycle
-#          - car
+#      house_half_driveway:
+#        coordinates: 1038,79,1276,720,224,718,409,96
+#        objects:
+#          - person
+#          - bicycle
+#          - bird
+#          - cat
+#          - dog
+#          - bear
 
+#          - car
+#          - bus
+#          - motorcycle
         #filters:
         #  car:
         #    threshold: 0.99
@@ -213,32 +203,55 @@ cameras:
         #    threshold: 0.99
         #    min_area: 23999999
         #    max_area: 24000000
-      zone_1:
-        coordinates: 1237,720,1280,720,1280,0,934,0
-        objects:
-          - person
-          - bicycle
-          - bird
-          - cat
-          - dog
-          - bear
-#          - car
+
+#      zone_0:
+##        coordinates: 244,720,0,720,0,0,481,0
+#        objects:
+#          - person
+#          - bicycle
+#          - bird
+#          - cat
+#          - dog
+#          - bear
+
 #          - bus
 #          - motorcycle
-        filters:
-          car:
-            threshold: 0.99
-            min_area: 23999999
-            max_area: 24000000
+#          - car
+        #filters:
+        #  car:
+        #    threshold: 0.99
+        #    min_area: 23999999
+        #    max_area: 24000000
         #  motorcycle:
         #    threshold: 0.99
         #    min_area: 23999999
         #    max_area: 24000000
-    live:
-      # Live camera view height default=720
-      height: 720
-      # Live camera view quality. default=8
-      quality: 18
+
+#      zone_1:
+#        coordinates: 1237,720,1280,720,1280,0,934,0
+#        objects:
+#          - person
+#         - bicycle
+#          - bird
+#          - cat
+#          - dog
+#          - bear
+
+#          - car
+#          - bus
+#          - motorcycle
+
+#        filters:
+#          car:
+#            threshold: 0.99
+#            min_area: 23999999
+#            max_area: 24000000
+
+        #  motorcycle:
+        #    threshold: 0.99
+        #    min_area: 23999999
+        #    max_area: 24000000
+
     objects:
       track:
         - car
@@ -252,30 +265,30 @@ cameras:
         - bear
       filters:
         car:
-          min_area: 10000
+#          min_area: 10000
           max_area: 380000
         person:
-          min_area: 15000
+#          min_area: 15000
           max_area: 24000000
           threshold: 0.6
           min_score: 0.55
         bicycle:
-          min_area: 5000
+#          min_area: 5000
           max_area: 24000000
         motorcycle:
-          min_area: 5000
+#          min_area: 5000
           max_area: 24000000
         bird:
-          min_area: 120
+#          min_area: 120
           max_area: 300000
         cat:
-          min_area: 120
+#          min_area: 120
           max_area: 300000
         dog:
-          min_area: 120
+#          min_area: 120
           max_area: 300000
         bear:
-          min_area: 2500
+#          min_area: 2500
           max_area: 24000000
 #        bus:
 #          min_area: 120
@@ -283,14 +296,20 @@ cameras:
   back_deck:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8964/back-deck-cam
+        - path: rtsp://192.168.29.187:8969/back-deck-cam
  #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
           roles:
             - detect
             - rtmp
             - record
+    live:
+      # Live camera view height default=720
+      height: 720
+      
+      # Live camera view quality. default=8
+#      quality: 20
     detect:
-      fps: 4
+      fps: 5
       max_disappeared: 40
       stationary:
         # Optional: Frequency for running detection on stationary objects (default: shown below)
@@ -307,16 +326,14 @@ cameras:
 #      frame_alpha: 0.18
 #      frame_height: 100
       mask:
-        - 0,0,191,0,166,43,137,100,67,131,0,165
-        - 357,0,356,40,364,130,309,169,247,183,213,159,171,100,196,0
-        - 1280,423,1258,421,1226,411,1194,364,1215,280,1280,208
-        - 1167,709,1245,706,1249,673,1162,680
-    live:
-      # Live camera view height default=720
-      height: 720
-      
-      # Live camera view quality. default=8
-      quality: 20
+        - 0,0,76,0,62,43,35,61,0,57
+#        - 141,0,149,23,159,53,119,62,104,2
+        - 597,357,628,352,622,334,606,335
+#720p mask
+#        - 0,0,191,0,166,43,137,100,67,131,0,165
+#        - 357,0,356,40,364,130,309,169,247,183,213,159,171,100,196,0
+#        - 1280,423,1258,421,1226,411,1194,364,1215,280,1280,208
+#        - 1167,709,1245,706,1249,673,1162,680
     objects:
       track:
         - person
@@ -327,20 +344,20 @@ cameras:
       filters:
         person:
           threshold: 0.69
-          min_area: 250
+#          min_area: 250
           max_area: 450000
         bird:
-          min_area: 130
+#          min_area: 130
           max_area: 300000
         cat:
-          min_area: 130
+#          min_area: 130
           max_area: 58000
         dog:
           threshold: 0.575
-          min_area: 130
+#          min_area: 130
           max_area: 300000
         bear:
-          min_area: 2500
+#          min_area: 2500
           max_area: 700000
         # car:
           # threshold: 0.99
@@ -362,8 +379,8 @@ detect:
   enabled: True
   # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
 #  max_disappeared: 20
-#  width: 1280
-#  height: 720
+  width: 640
+  height: 360
 #  fps: 2
   # Optional: Configuration for stationary object tracking
   stationary:
@@ -428,7 +445,7 @@ snapshots:
     #objects:
     #  person: 15
 ffmpeg:
-  input_args: -use_wallclock_as_timestamps 1 #-avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
+  input_args: -use_wallclock_as_timestamps 1 #-copyts -avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
   output_args:
     rtmp: -c copy -an -f flv
     record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an

@@ -12,8 +12,8 @@
   entity_id: sensor.shellytempfixed_timestamp_updater
   filters:
     - filter: outlier
-      window_size: 15
-      radius: 10.0
+      window_size: 30
+      radius: 5.0
 
 #- platform: history_stats
 #  name: Total Time Tanner's Water Empty mqtt

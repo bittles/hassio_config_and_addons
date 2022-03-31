@@ -558,6 +558,7 @@ recorder:
       - sensor.deck_object
       - sensor.count_tanner_s_water_was_empty
       - sensor.sun_elevation
+      - sensor.shellytempcombined_filter
       - sun.sun
       - vacuum.alfred
 
@@ -635,6 +636,24 @@ logbook:
       - binary_sensor.bonusroomtemp_home_security_motion_detection
       - binary_sensor.aarlo_connected_base_station
       - binary_sensor.shelly_ping_sensor
+      - device_tracker.augconnect
+      - switch.bedroom_dummyac
+      - switch.tasmota_2
+      - switch.front_porch_snapshots
+      - switch.front_porch_recordings
+      - switch.front_porch_detect
+      - switch.driveway_recordings
+      - switch.driveway_snapshots
+      - switch.driveway_detect
+      - switch.back_deck_recordings
+      - switch.back_deck_snapshots
+      - switch.back_deck_detect
+      - switch.bedroom_outlet_2
+      - switch.bedroom_outlet_3
+      - switch.bedroom_outlet_1
+      - switch.dualsmartoutlet_switch_2
+      - light.switch_00118392
+      - sensor.shelly_version
     domains:
       - automation
 
