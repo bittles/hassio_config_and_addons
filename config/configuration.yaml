@@ -654,6 +654,20 @@ logbook:
       - switch.dualsmartoutlet_switch_2
       - light.switch_00118392
       - sensor.shelly_version
+      - sensor.sun_elevation
+      - sensor.tannerwaterbowl_node_status
+      - sensor.living_roomtv
+      - light.under_cabinet_light
+      - switch.tasmota2_3
+      - switch.tasmota3
+      - switch.driveway_lights_led
+      - light.color_lights
+      - switch.living_room_nvidia_shield
+      - switch.frigate_deck_motion
+      - switch.frigate_driveway_motion
+      - switch.hassbathroomspeaker
+      - switch.hassz2
+      - switch.frigate_porch_motion
     domains:
       - automation
 
