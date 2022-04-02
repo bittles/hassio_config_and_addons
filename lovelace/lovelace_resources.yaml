@@ -11,9 +11,6 @@ items:
 - id: 9194a1de09ce41d294f1f8345e060535
   type: module
   url: /hacsfiles/lovelace-notify-card/notify-card.js?hacstag=3589626564459742
-- id: bedaa6ee2a114830aa2c9fa5fa409ce3
-  type: module
-  url: /hacsfiles/Multiline-Entity-Card/multiline-entity-card.js?hacstag=351472550113
 - id: 01d0248cc5ca4442aadedc23e84e048e
   type: module
   url: /hacsfiles/entity-attributes-card/entity-attributes-card.js

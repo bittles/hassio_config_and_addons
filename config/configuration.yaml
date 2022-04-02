@@ -109,8 +109,8 @@ vacuum:
   json_attributes_template: >
     {
       "Current State": "{{ value_json.valetudo_state.name }}",
-      "Last Run Start Time": "{{ (value_json.last_run_stats.startTime/1000)|timestamp_custom('%a %I:%M %p',local=true) }}",
-      "Last Run End Time": "{{ (value_json.last_run_stats.endTime/1000)|timestamp_custom('%a %I:%M %p',local=true) }}",
+      "Last Run Start Time": "{{ (value_json.last_run_stats.startTime/1000)|timestamp_custom('%m/%d %a %I:%M %p',local=true) }}",
+      "Last Run End Time": "{{ (value_json.last_run_stats.endTime/1000)|timestamp_custom('%m/%d %a %I:%M %p',local=true) }}",
       "Last Run Duration": "{{ (value_json.last_run_stats.duration-68400)|timestamp_custom('%H:%M:%S') }}",
       "Last Run Area Cleaned": "{{ (value_json.last_run_stats.area|float*10.76)|round(0) ~ " sq ft" }}",
       "Last Run Finish Fine?": "{% if value_json.last_run_stats.finishedFlag == True %}Yes{% else %}No{% endif %}",
@@ -622,21 +622,33 @@ logbook:
       - cover
     entities:
       - automation.zzzzz_bedroom_thermostat_heat_by_switch
+      - media_player.master_bedroom_tv
   exclude:
     entities:
-      - switch.garagedoorswitch
-      - switch.lamp_light
-      - switch.kitchen_light
       - input_boolean.noone
-      - switch.driveway_lights
-      - switch.porch_lights
-      - sensor.aarlo_last_front_porch
-      - switch.bathroom_speaker
       - binary_sensor.back_door
       - binary_sensor.bonusroomtemp_home_security_motion_detection
       - binary_sensor.aarlo_connected_base_station
       - binary_sensor.shelly_ping_sensor
       - device_tracker.augconnect
+      - light.switch_00118392
+      - light.under_cabinet_light
+      - light.color_lights
+      - sensor.shelly_version
+      - sensor.sun_elevation
+      - sensor.tannerwaterbowl_node_status
+      - sensor.living_roomtv
+      - sensor.aarlo_last_front_porch
+      - switch.living_room_nvidia_shield
+      - switch.frigate_deck_motion
+      - switch.frigate_driveway_motion
+      - switch.hassbathroomspeaker
+      - switch.hassz2
+      - switch.frigate_porch_motion
+      - switch.bedroomtvswitch
+      - switch.garagedoorswitch
+      - switch.lamp_light
+      - switch.kitchen_light
       - switch.bedroom_dummyac
       - switch.tasmota_2
       - switch.front_porch_snapshots
@@ -652,22 +664,12 @@ logbook:
       - switch.bedroom_outlet_3
       - switch.bedroom_outlet_1
       - switch.dualsmartoutlet_switch_2
-      - light.switch_00118392
-      - sensor.shelly_version
-      - sensor.sun_elevation
-      - sensor.tannerwaterbowl_node_status
-      - sensor.living_roomtv
-      - light.under_cabinet_light
       - switch.tasmota2_3
       - switch.tasmota3
       - switch.driveway_lights_led
-      - light.color_lights
-      - switch.living_room_nvidia_shield
-      - switch.frigate_deck_motion
-      - switch.frigate_driveway_motion
-      - switch.hassbathroomspeaker
-      - switch.hassz2
-      - switch.frigate_porch_motion
+      - switch.driveway_lights
+      - switch.porch_lights
+      - switch.bathroom_speaker
     domains:
       - automation
 

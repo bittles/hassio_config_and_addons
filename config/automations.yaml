@@ -3407,6 +3407,10 @@
     entity_id: switch.bedroom_dummyheat
     to: 'on'
     id: heat_switch_on
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 20
   - platform: state
     entity_id: switch.bedroom_dummyheat
     id: heat_switch_off
@@ -3415,6 +3419,10 @@
     entity_id: switch.bedroom_dummyac
     id: ac_switch_on
     to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 20
   - platform: state
     entity_id: switch.bedroom_dummyac
     id: ac_switch_off
