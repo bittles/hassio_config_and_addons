@@ -174,6 +174,12 @@ config:
           service_data:
             command: volume_up
             entity_id: remote.bedroom_tcl_tv
+    - entities:
+      - entity: media_player.living_room_remote
+      - entity: media_player.master_bedroom_tv
+      - entity: media_player.bathroom_speaker
+      - entity: media_player.deck_speaker
+      type: entities
     - activities:
       - device: NVIDIA Game Console
         name: nvidia SHIELD
@@ -203,17 +209,6 @@ config:
       type: custom:harmony-card
       volume_device: Onkyo AV Receiver
       volume_entity: media_player.onkyo
-    - entities:
-      - entity: remote.living_room
-      - entity: sensor.living_roomtv
-      show_header_toggle: false
-      title: TVs
-      type: entities
-    - entities:
-      - entity: media_player.bathroom_speaker
-      - entity: media_player.deck_speaker
-      - entity: media_player.master_bedroom_tv
-      type: entities
     path: bedroom-tv-remote
     title: Remotes
   - badges: []
@@ -349,18 +344,16 @@ config:
       type: vertical-stack
     - entities:
       - entity: switch.hassz2
-      - entity: switch.hassbathroomspeaker
       - entity: switch.bathroom_speaker
       - entity: switch.deck_speaker
-      - entity: switch.hassbackdeckspeaker
       - entity: switch.porch_speaker
+      - entity: switch.hassbathroomspeaker
+      - entity: switch.hassbackdeckspeaker
       - entity: switch.hassfrontporchspeaker
       - entity: media_player.forked_daapd_output_receiver
       - entity: media_player.bathroom_speaker
-      - entity: remote.bedroom_tcl_tv
-      - entity: input_select.bedroom_tv_source_list
-      - entity: input_select.living_room_sources
       - entity: switch.receiver_outlet
+      show_header_toggle: false
       type: entities
     - artwork: cover
       entity: media_player.roku_streaming_stick
@@ -371,10 +364,6 @@ config:
       toggle_power: false
       type: custom:mini-media-player
       volume_stateless: true
-    - entity: remote.living_room
-      type: entity
-    - entity: media_player.living_room_remote
-      type: media-control
     title: TV and Music
   - badges: []
     cards:
@@ -779,7 +768,7 @@ config:
       - entities:
         - entity: switch.driveway_detect
         - entity: switch.driveway_recordings
-        - entity: switch.front_porch_snapshots
+        - entity: switch.driveway_snapshots
         - entity: sensor.driveway_camera_fps
           name: Camera Fps
         - entity: sensor.driveway_detection_fps
@@ -854,8 +843,8 @@ config:
     - cards:
       - entities:
         - entity: switch.back_deck_detect
-        - entity: switch.driveway_recordings
-        - entity: switch.front_porch_snapshots
+        - entity: switch.back_deck_recordings
+        - entity: switch.back_deck_snapshots
         - entity: sensor.back_deck_camera_fps
           name: Camera Fps
         - entity: sensor.back_deck_detection_fps

@@ -277,7 +277,7 @@ cameras:
           max_area: 24000000
         motorcycle:
 #          min_area: 5000
-          max_area: 24000000
+          max_area: 85000
         bird:
 #          min_area: 120
           max_area: 300000
