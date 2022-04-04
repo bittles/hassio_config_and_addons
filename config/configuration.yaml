@@ -170,8 +170,9 @@ folder_watcher:
       - 'driveway-*.jpg'
       - 'front_porch-*.jpg'
 
-#shell_command:
-#  unziptorrents: /share/zipscript.sh '{{ torrent }}'
+shell_command:
+  upnpports: '/usr/bin/ssh -i /ssl/odroidopensshkey hassio@192.168.29.189 -p 9722 ''upnpc -r 9722 tcp 8443 443 tcp 8880 80 tcp'''
+  #  unziptorrents: /share/zipscript.sh '{{ torrent }}'
 
 #breaking_changes:
 
