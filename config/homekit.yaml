@@ -82,6 +82,7 @@
      - climate.bedroom_thermostat
      - light.desklamp
      - climate.downstairs_the_nest
+#     - media_player.living_room_remote
     exclude_entities:
      - media_player.onkyo
      - light.hue_go_1
@@ -101,6 +102,7 @@
      - device_tracker.nbauers_iphone
      - device_tracker.nbauers_iphone_2
      - switch.bonus_room_fan_action_switch
+     - media_player.living_room_remote
     exclude_domains:
      - automation
      - binary_sensor
@@ -131,6 +133,12 @@
      - weather
      - zone
   entity_config:
+#    media_player.living_room_remote:
+#      name: Living Room Remote
+#      feature_list:
+#        - feature: on_off
+#        - feature: play_pause
+#        - feature: toggle_mute
     camera.petcam:
       name: Tanner Cam
       max_fps: 20
@@ -247,6 +255,19 @@
 #    light.color_lights:
 #      name: Xmas Room Light
 
+- name: Living Room Remote
+  port: 59743
+  mode: accessory
+  filter:
+    include_entities:
+     - media_player.living_room_remote
+  entity_config:
+    media_player.living_room_remote:
+      name: Living Room Remote
+      feature_list:
+       - feature: on_off
+       - feature: play_pause
+       - feature: toggle_mute
 #- name: August Bridge
 #  port: 51821
 #  mode: accessory
