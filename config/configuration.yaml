@@ -489,7 +489,9 @@ system_log:
   
 recorder:
   db_url: !secret mariadb_url_auth
+  auto_purge: true
   purge_keep_days: 30
+  commit_interval: 2
   include:
     domains:
       - switch
@@ -506,17 +508,17 @@ recorder:
     entities:
 #      - sensor.nest_thermostat_temperature
 #      - sensor.nest_thermostat_target
-      - binary_sensor.aarlo_motion_front_porch
+#      - binary_sensor.aarlo_motion_front_porch
       - binary_sensor.back_door_mqtt_any
 #      - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
       - binary_sensor.caringaragestatus
-      - camera.aarlo_front_porch
-      - camera.aarlo_back_deck
+#      - camera.aarlo_front_porch
+#      - camera.aarlo_back_deck
       - climate.bedroom_thermostat
       - climate.downstairs_the_nest
 #      - climate.master_bedroom_thermostat
 #      - climate.master_bedroom_thermostat_heat
-      - vacuum.rockrobo
+#      - vacuum.rockrobo
       - sensor.aarlo_recent_activity_back_deck
       - sensor.aarlo_recent_activity_front_porch
       - sensor.aarlo_last_back_deck
