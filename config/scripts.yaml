@@ -362,6 +362,24 @@ heat_switch_on:
         data:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             + 3}}'
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: climate.downstairs_the_nest
+            attribute: fan_mode
+            state: 'on'
+          sequence:
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 5
+              milliseconds: 0
+          - service: climate.set_fan_mode
+            data:
+              fan_mode: 'off'
+            target:
+              entity_id: climate.downstairs_the_nest
+        default: []
     - conditions:
       - condition: device
         device_id: 1f4e53d64461d767d63350604b93cd1e
@@ -376,6 +394,24 @@ heat_switch_on:
         data:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             + 3}}'
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: climate.downstairs_the_nest
+            attribute: fan_mode
+            state: 'on'
+          sequence:
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 5
+              milliseconds: 0
+          - service: climate.set_fan_mode
+            data:
+              fan_mode: 'off'
+            target:
+              entity_id: climate.downstairs_the_nest
+        default: []
     default: []
   mode: single
 custom_thermostat_heat_switch_off:
@@ -418,20 +454,66 @@ custom_thermostat_ac_switch_on_duplicate:
         data:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             - 3}}'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 2
+          milliseconds: 0
+      - service: climate.set_fan_mode
+        data:
+          fan_mode: 'on'
+        target:
+          entity_id: climate.downstairs_the_nest
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: climate.downstairs_the_nest
+            attribute: fan_mode
+            state: 'off'
+          sequence:
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 5
+              milliseconds: 0
+          - service: climate.set_fan_mode
+            data:
+              fan_mode: 'on'
+            target:
+              entity_id: climate.downstairs_the_nest
+        default: []
     - conditions:
       - condition: device
         device_id: 1f4e53d64461d767d63350604b93cd1e
         domain: climate
         entity_id: climate.downstairs_the_nest
         type: is_hvac_mode
-        hvac_mode: heat
+        hvac_mode: cool
       sequence:
       - service: climate.set_temperature
         target:
           entity_id: climate.downstairs_the_nest
         data:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            + 3}}'
+            - 3}}'
+      - choose:
+        - conditions:
+          - condition: state
+            entity_id: climate.downstairs_the_nest
+            attribute: fan_mode
+            state: 'off'
+          sequence:
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 5
+              milliseconds: 0
+          - service: climate.set_fan_mode
+            data:
+              fan_mode: 'on'
+            target:
+              entity_id: climate.downstairs_the_nest
+        default: []
     default: []
   mode: single
 custom_thermostat_ac_switch_off_duplicate:
