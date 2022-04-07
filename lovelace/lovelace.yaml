@@ -46,6 +46,7 @@ config:
       - entity: climate.bedroom_thermostat
       - entity: switch.bedroom_dummyheat
       - entity: switch.bedroom_dummyac
+      - entity: timer.custom_thermostat_ac_timer
       state_color: true
       type: entities
     - camera_image: camera.porch_motion_snapshot
@@ -200,8 +201,12 @@ config:
           command: VolumeDown
           device: Onkyo AV Receiver
           icon: mdi:chevron-down
+        dpad_center:
+          command: Select
+          hide: false
+          icon: mdi:checkbox-blank-circle
         xbox:
-          command: Home,
+          command: Home
           icon: mdi:home
       entity: remote.living_room
       name: Living Room TV

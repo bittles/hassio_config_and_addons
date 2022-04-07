@@ -52,10 +52,10 @@ foyer_light_ten_min:
       brightness: 255
       entity_id: light.hallway
     service: light.turn_on
-  - delay: 00:10:00
-  - data:
-      entity_id: light.hallway
-    service: light.turn_off
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.foyer_light_on
 '1579731744650':
   alias: Bedroom Lights Off
   sequence:
@@ -454,6 +454,10 @@ custom_thermostat_ac_switch_on_duplicate:
         data:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             - 3}}'
+      - service: timer.start
+        data: {}
+        target:
+          entity_id: timer.custom_thermostat_ac_timer
       - delay:
           hours: 0
           minutes: 0
@@ -496,6 +500,10 @@ custom_thermostat_ac_switch_on_duplicate:
         data:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             - 3}}'
+      - service: timer.start
+        data: {}
+        target:
+          entity_id: timer.custom_thermostat_ac_timer
       - choose:
         - conditions:
           - condition: state
@@ -519,12 +527,32 @@ custom_thermostat_ac_switch_on_duplicate:
 custom_thermostat_ac_switch_off_duplicate:
   alias: Custom Thermostat - AC Switch Off
   sequence:
-  - service: climate.set_temperature
-    target:
-      entity_id: climate.downstairs_the_nest
-    data:
-      temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-        + 3}}'
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: timer.custom_thermostat_ac_timer
+        state: idle
+      - condition: state
+        entity_id: switch.bedroom_dummyac
+        state: 'off'
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 3}}'
+    - conditions:
+      - condition: state
+        entity_id: timer.custom_thermostat_ac_timer
+        state: active
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+    default: []
   mode: single
 custom_thermostat_discipline_nest:
   alias: Custom Thermostat - Discipline Nest if Heating or Cooling Improperly
