@@ -264,10 +264,10 @@
   entity_config:
     media_player.living_room_remote:
       name: Living Room Remote
-      feature_list:
-       - feature: on_off
-       - feature: play_pause
-       - feature: toggle_mute
+#      feature_list:
+#       - feature: on_off
+#       - feature: play_pause
+#       - feature: toggle_mute
 #- name: August Bridge
 #  port: 51821
 #  mode: accessory

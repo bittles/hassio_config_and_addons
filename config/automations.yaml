@@ -3440,6 +3440,11 @@
   - platform: state
     entity_id: sensor.shellytempfixed_timestamp_updater
     id: bedroom_temp_change
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.custom_thermostat_ac_timer
+    id: actimedone
   condition:
   - condition: template
     value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
@@ -3464,8 +3469,12 @@
       - service: script.custom_thermostat_ac_switch_on_duplicate
         data: {}
     - conditions:
-      - condition: trigger
-        id: ac_switch_off
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: ac_switch_off
+        - condition: trigger
+          id: actimedone
       sequence:
       - service: script.custom_thermostat_ac_switch_off_duplicate
         data: {}
@@ -3566,8 +3575,14 @@
     to: 'off'
     for:
       hours: 0
-      minutes: 20
+      minutes: 0
       seconds: 0
+    id: doorclose
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.back_door_autolock
+    id: timeup
   condition:
   - condition: device
     device_id: ed8540b7667667aa76f6c1e9c8557dac
@@ -3575,10 +3590,37 @@
     entity_id: lock.back_door
     type: is_unlocked
   action:
-  - device_id: ed8540b7667667aa76f6c1e9c8557dac
-    domain: lock
-    entity_id: lock.back_door
-    type: lock
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: doorclose
+      sequence:
+      - service: timer.start
+        data: {}
+        target:
+          entity_id: timer.back_door_autolock
+    - conditions:
+      - condition: trigger
+        id: timeup
+      sequence:
+      - choose:
+        - conditions:
+          - type: is_not_open
+            condition: device
+            device_id: 1aa7939233487e840564b60ba8391d8c
+            entity_id: binary_sensor.back_door
+            domain: binary_sensor
+          sequence:
+          - device_id: ed8540b7667667aa76f6c1e9c8557dac
+            domain: lock
+            entity_id: lock.back_door
+            type: lock
+        default:
+        - service: timer.start
+          data: {}
+          target:
+            entity_id: timer.back_door_autolock
+    default: []
   mode: restart
 - id: '1646499054178'
   alias: Frigate Webhook to Scrypted Back Deck
@@ -3671,4 +3713,19 @@
       - automation.frigate_androidtv_notification_fork_driveway
       - automation.frigate_notification_fork_driveway
       - automation.frigate_webhook_to_scrypted_driveway
+  mode: single
+- id: '1649274419299'
+  alias: zPresence.Foyer Light Off with Timer
+  description: ''
+  trigger:
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.foyer_light_on
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.hallway
   mode: single
