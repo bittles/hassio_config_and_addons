@@ -3411,10 +3411,12 @@
       hours: 0
       minutes: 0
       seconds: 20
+    from: 'off'
   - platform: state
     entity_id: switch.bedroom_dummyheat
     id: heat_switch_off
     to: 'off'
+    from: 'on'
   - platform: state
     entity_id: switch.bedroom_dummyac
     id: ac_switch_on
@@ -3423,10 +3425,12 @@
       hours: 0
       minutes: 0
       seconds: 20
+    from: 'off'
   - platform: state
     entity_id: switch.bedroom_dummyac
     id: ac_switch_off
     to: 'off'
+    from: 'on'
   - platform: state
     entity_id: climate.downstairs_the_nest
     attribute: hvac_action
@@ -3445,9 +3449,7 @@
     event_data:
       entity_id: timer.custom_thermostat_ac_timer
     id: actimedone
-  condition:
-  - condition: template
-    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
+  condition: []
   action:
   - choose:
     - conditions:
