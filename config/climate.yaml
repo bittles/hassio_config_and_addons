@@ -11,7 +11,7 @@
   min_cycle_duration:
     minutes: 30
   cold_tolerance: 0.5
-  hot_tolerance: 0.4
+  hot_tolerance: 0.1
   precision: 0.1
 #  target_temp_low: 67
 #  target_temp_high: 73
