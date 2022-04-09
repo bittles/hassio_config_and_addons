@@ -3,7 +3,7 @@ allow_hosts:
 - 172.16.0.0/12
 - 192.168.0.0/16
 - fe80::/10
-compatibility_mode: false
+compatibility_mode: true
 password: T!g0le86
 username: homeassistant
 veto_files:
