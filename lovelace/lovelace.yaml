@@ -47,6 +47,8 @@ config:
       - entity: switch.bedroom_dummyheat
       - entity: switch.bedroom_dummyac
       - entity: timer.custom_thermostat_ac_timer
+      - entity: timer.custom_thermostat_heat_timer
+      show_header_toggle: false
       state_color: true
       type: entities
     - camera_image: camera.porch_motion_snapshot
