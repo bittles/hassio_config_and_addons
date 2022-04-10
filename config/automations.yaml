@@ -3449,6 +3449,11 @@
     event_data:
       entity_id: timer.custom_thermostat_ac_timer
     id: actimedone
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.custom_thermostat_heat_timer
+    id: heattimedone
   condition: []
   action:
   - choose:
@@ -3459,8 +3464,12 @@
       - service: script.heat_switch_on
         data: {}
     - conditions:
-      - condition: trigger
-        id: heat_switch_off
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: heat_switch_off
+        - condition: trigger
+          id: heattimedone
       sequence:
       - service: script.custom_thermostat_heat_switch_off
         data: {}

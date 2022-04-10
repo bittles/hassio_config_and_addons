@@ -362,6 +362,10 @@ heat_switch_on:
         data:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             + 3}}'
+      - service: timer.start
+        data: {}
+        target:
+          entity_id: timer.custom_thermostat_heat_timer
       - choose:
         - conditions:
           - condition: state
@@ -394,6 +398,10 @@ heat_switch_on:
         data:
           temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             + 3}}'
+      - service: timer.start
+        data: {}
+        target:
+          entity_id: timer.custom_thermostat_heat_timer
       - choose:
         - conditions:
           - condition: state
@@ -417,12 +425,32 @@ heat_switch_on:
 custom_thermostat_heat_switch_off:
   alias: Custom Thermostat - Heat Switch Off
   sequence:
-  - service: climate.set_temperature
-    target:
-      entity_id: climate.downstairs_the_nest
-    data:
-      temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-        - 3}}'
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: timer.custom_thermostat_heat_timer
+        state: idle
+      - condition: state
+        entity_id: switch.bedroom_dummyheat
+        state: 'off'
+      sequence:
+      - service: climate.set_temperature
+        target:
+          entity_id: climate.downstairs_the_nest
+        data:
+          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            - 3}}'
+    - conditions:
+      - condition: state
+        entity_id: timer.custom_thermostat_heat_timer
+        state: active
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+    default: []
   mode: single
 custom_thermostat_ac_switch_on_duplicate:
   alias: Custom Thermostat - AC Switch On
