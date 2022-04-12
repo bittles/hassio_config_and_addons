@@ -48,6 +48,10 @@ config:
       - entity: switch.bedroom_dummyac
       - entity: timer.custom_thermostat_ac_timer
       - entity: timer.custom_thermostat_heat_timer
+      - entity: climate.new_bedroom_thermostat
+      - entity: switch.bedroom_fan_power
+      - entity: switch.living_room_fan_power
+      - entity: switch.nest_thermostat_fan
       show_header_toggle: false
       state_color: true
       type: entities
@@ -706,7 +710,6 @@ config:
       - entity: media_player.forked_daapd_output_garage_apple_tv
       - entity: media_player.forked_daapd_output_living_room_tcl_tv
       - entity: media_player.forked_daapd_output_receiver
-      - entity: media_player.forked_daapd_output_roku_streaming_stick
       type: entities
     path: server-control
     title: Server Control

@@ -1,21 +1,42 @@
-- platform: dual_smart_thermostat
-  name: Bedroom Thermostat
+- platform: dualmode_generic
+  name: New Bedroom Thermostat
+  unique_id: new_bedroom_thermostat
   heater: switch.bedroom_dummyheat
   cooler: switch.bedroom_dummyac
+  fan: switch.bedroom_fan_power
+  fan_behavior: cooler
+  dryer: switch.living_room_fan_power
+  dryer_behavior: cooler
   target_sensor: sensor.shellytempfixed
-  openings:
-    - binary_sensor.back_door_template
-    - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+#  target_humidity_sensor: sensor.shelly_shht_1_6bb145_humidity
+  reverse_cycle: fan, dryer
+  enable_heat_cool: True
   min_temp: 64
   max_temp: 78
-  min_cycle_duration:
-    minutes: 30
   cold_tolerance: 0.5
   hot_tolerance: 0.1
   precision: 0.1
-#  target_temp_low: 67
-#  target_temp_high: 73
-#  target_temp: 68
+  min_cycle_duration:
+    minutes: 15
+
+#- platform: dual_smart_thermostat
+#  name: Bedroom Thermostat
+#  heater: switch.bedroom_dummyheat
+#  cooler: switch.bedroom_dummyac
+#  target_sensor: sensor.shellytempfixed
+#  openings:
+#    - binary_sensor.back_door_template
+#    - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+#  min_temp: 64
+#  max_temp: 78
+#  min_cycle_duration:
+#    minutes: 30
+#  cold_tolerance: 0.5
+#  hot_tolerance: 0.1
+#  precision: 0.1
+##  target_temp_low: 67
+##  target_temp_high: 73
+##  target_temp: 68
 
 #- platform: generic_thermostat
 #  name: Master Bedroom Thermostat

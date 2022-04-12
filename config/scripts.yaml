@@ -335,92 +335,32 @@ bedroom_lights_night:
 heat_switch_on:
   alias: Custom Thermostat - Heat Switch On
   sequence:
-  - choose:
-    - conditions:
-      - condition: not
-        conditions:
-        - condition: device
-          device_id: 1f4e53d64461d767d63350604b93cd1e
-          domain: climate
-          entity_id: climate.downstairs_the_nest
-          type: is_hvac_mode
-          hvac_mode: heat
-      sequence:
-      - device_id: 1f4e53d64461d767d63350604b93cd1e
-        domain: climate
-        entity_id: climate.downstairs_the_nest
-        type: set_hvac_mode
-        hvac_mode: heat
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 10
-          milliseconds: 0
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            + 3}}'
-      - service: timer.start
-        data: {}
-        target:
-          entity_id: timer.custom_thermostat_heat_timer
-      - choose:
-        - conditions:
-          - condition: state
-            entity_id: climate.downstairs_the_nest
-            attribute: fan_mode
-            state: 'on'
-          sequence:
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 5
-              milliseconds: 0
-          - service: climate.set_fan_mode
-            data:
-              fan_mode: 'off'
-            target:
-              entity_id: climate.downstairs_the_nest
-        default: []
-    - conditions:
-      - condition: device
-        device_id: 1f4e53d64461d767d63350604b93cd1e
-        domain: climate
-        entity_id: climate.downstairs_the_nest
-        type: is_hvac_mode
-        hvac_mode: heat
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            + 3}}'
-      - service: timer.start
-        data: {}
-        target:
-          entity_id: timer.custom_thermostat_heat_timer
-      - choose:
-        - conditions:
-          - condition: state
-            entity_id: climate.downstairs_the_nest
-            attribute: fan_mode
-            state: 'on'
-          sequence:
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 5
-              milliseconds: 0
-          - service: climate.set_fan_mode
-            data:
-              fan_mode: 'off'
-            target:
-              entity_id: climate.downstairs_the_nest
-        default: []
-    default: []
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: climate.set_temperature
+    target:
+      entity_id: climate.downstairs_the_nest
+    data:
+      target_temp_high: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_high'')
+        }}'
+      target_temp_low: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+        + 3}}'
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.custom_thermostat_heat_timer
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.nest_thermostat_fan
   mode: single
 custom_thermostat_heat_switch_off:
   alias: Custom Thermostat - Heat Switch Off
@@ -438,8 +378,10 @@ custom_thermostat_heat_switch_off:
         target:
           entity_id: climate.downstairs_the_nest
         data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            - 3}}'
+          target_temp_high: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_high'')
+            }}'
+          target_temp_low: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            - 6}}'
     - conditions:
       - condition: state
         entity_id: timer.custom_thermostat_heat_timer
@@ -457,100 +399,42 @@ custom_thermostat_ac_switch_on_duplicate:
   sequence:
   - choose:
     - conditions:
-      - condition: not
-        conditions:
-        - condition: device
-          device_id: 1f4e53d64461d767d63350604b93cd1e
-          domain: climate
-          entity_id: climate.downstairs_the_nest
-          type: is_hvac_mode
-          hvac_mode: cool
+      - condition: state
+        entity_id: fan.bedroom_fan2
+        state: 'off'
       sequence:
-      - device_id: 1f4e53d64461d767d63350604b93cd1e
-        domain: climate
-        entity_id: climate.downstairs_the_nest
-        type: set_hvac_mode
-        hvac_mode: cool
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 10
-          milliseconds: 0
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
+      - service: fan.turn_on
         data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            - 3}}'
-      - service: timer.start
-        data: {}
+          percentage: 66
         target:
-          entity_id: timer.custom_thermostat_ac_timer
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 2
-          milliseconds: 0
-      - service: climate.set_fan_mode
-        data:
-          fan_mode: 'on'
-        target:
-          entity_id: climate.downstairs_the_nest
-      - choose:
-        - conditions:
-          - condition: state
-            entity_id: climate.downstairs_the_nest
-            attribute: fan_mode
-            state: 'off'
-          sequence:
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 5
-              milliseconds: 0
-          - service: climate.set_fan_mode
-            data:
-              fan_mode: 'on'
-            target:
-              entity_id: climate.downstairs_the_nest
-        default: []
-    - conditions:
-      - condition: device
-        device_id: 1f4e53d64461d767d63350604b93cd1e
-        domain: climate
-        entity_id: climate.downstairs_the_nest
-        type: is_hvac_mode
-        hvac_mode: cool
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            - 3}}'
-      - service: timer.start
-        data: {}
-        target:
-          entity_id: timer.custom_thermostat_ac_timer
-      - choose:
-        - conditions:
-          - condition: state
-            entity_id: climate.downstairs_the_nest
-            attribute: fan_mode
-            state: 'off'
-          sequence:
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 5
-              milliseconds: 0
-          - service: climate.set_fan_mode
-            data:
-              fan_mode: 'on'
-            target:
-              entity_id: climate.downstairs_the_nest
-        default: []
+          entity_id: fan.bedroom_fan2
     default: []
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - service: climate.set_temperature
+    data:
+      target_temp_high: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+        - 3}}'
+      target_temp_low: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_low'')
+        }}'
+    target:
+      entity_id: climate.downstairs_the_nest
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.custom_thermostat_ac_timer
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.nest_thermostat_fan
   mode: single
 custom_thermostat_ac_switch_off_duplicate:
   alias: Custom Thermostat - AC Switch Off
@@ -564,12 +448,27 @@ custom_thermostat_ac_switch_off_duplicate:
         entity_id: switch.bedroom_dummyac
         state: 'off'
       sequence:
+      - service: fan.turn_off
+        data: {}
+        target:
+          entity_id: fan.bedroom_fan2
       - service: climate.set_temperature
         target:
           entity_id: climate.downstairs_the_nest
         data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            + 3}}'
+          target_temp_high: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 6}}'
+          target_temp_low: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_low'')
+            }}'
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 2
+          milliseconds: 0
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.nest_thermostat_fan
     - conditions:
       - condition: state
         entity_id: timer.custom_thermostat_ac_timer
@@ -617,7 +516,7 @@ custom_thermostat_update_set_temp:
     - conditions:
       - condition: template
         value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)
-          - (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)))
+          - (state_attr(''climate.downstairs_the_nest'', ''target_temp_low'')|int(default=0)))
           < 3 }}'
       - condition: state
         entity_id: switch.bedroom_dummyheat
@@ -627,11 +526,13 @@ custom_thermostat_update_set_temp:
         target:
           entity_id: climate.downstairs_the_nest
         data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+          target_temp_high: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_high'')
+            }}'
+          target_temp_low: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             + 3}}'
     - conditions:
       - condition: template
-        value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)
+        value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''target_temp_high'')|int(default=0)
           - (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)))
           < 3 }}'
       - condition: state
@@ -642,8 +543,10 @@ custom_thermostat_update_set_temp:
         target:
           entity_id: climate.downstairs_the_nest
         data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+          target_temp_high: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             - 3}}'
+          target_temp_low: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_low'')
+            }}'
     default:
     - service: script.custom_thermostat_discipline_nest
       data: {}
