@@ -36,6 +36,49 @@
 #          data:
 #            entity_id: switch.office_tv_power
 
+      nest_thermostat_fan:
+        friendly_name: Nest Fan
+        unique_id: nest_fan
+        value_template: "{{ is_state_attr('climate.downstairs_the_nest', 'fan_mode', 'on') }}"
+        turn_on:
+          service: climate.set_fan_mode
+          data:
+            fan_mode: 'on'
+          target:
+            entity_id: climate.downstairs_the_nest
+        turn_off:
+          service: climate.set_fan_mode
+          data:
+            fan_mode: 'off'
+          target:
+            entity_id: climate.downstairs_the_nest
+
+      bedroom_fan_power:
+        friendly_name: Bedroom Fan Switch
+        unique_id: bedroom_fan_switch
+        value_template: "{{ is_state('fan.bedroom_fan2', 'on') }}"
+        turn_on:
+          service: fan.turn_on
+          data:
+            entity_id: fan.bedroom_fan2
+        turn_off:
+          service: fan.turn_off
+          data_template:
+            entity_id: fan.bedroom_fan2
+
+      living_room_fan_power:
+        friendly_name: Living Room Fan Switch
+        unique_id: living_room_fan_switch
+        value_template: "{{ is_state('fan.living_room_fan', 'on') }}"
+        turn_on:
+          service: fan.turn_on
+          data:
+            entity_id: fan.living_room_fan
+        turn_off:
+          service: fan.turn_off
+          data_template:
+            entity_id: fan.living_room_fan
+
       frigate_porch_motion:
         friendly_name: Frigate Porch Motion
         unique_id: frigateporch
@@ -190,15 +233,15 @@
       door:
         friendly_name: Door
         unique_id: dummydoory
-        value_template: "{{ is_state('lock.front_door', 'unlocked') }}"
+        value_template: "{{ is_state('lock.august_asl_03_smart_lock_locked', 'unlocked') }}"
         turn_on:
           service: lock.unlock
           data:
-            entity_id: lock.front_door
+            entity_id: lock.august_asl_03_smart_lock_locked
         turn_off:
           service: lock.lock
           data:
-            entity_id: lock.front_door
+            entity_id: lock.august_asl_03_smart_lock_locked
             
       hassbackdeckspeaker:
         friendly_name: Back Deck Speaker HASS

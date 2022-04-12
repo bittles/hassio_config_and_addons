@@ -79,7 +79,7 @@
      - fan.bonus_room_fan
      - light.bonus_room_light
 #     - climate.master_bedroom_thermostat_heat
-     - climate.bedroom_thermostat
+     - climate.new_bedroom_thermostat
      - light.desklamp
      - climate.downstairs_the_nest
 #     - media_player.living_room_remote

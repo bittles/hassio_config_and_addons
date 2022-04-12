@@ -929,6 +929,16 @@
         - Living Room and Kitchen
     entity_id: vacuum.alfred
     service: vacuum.send_command
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: vacuum.set_fan_speed
+    data:
+      fan_speed: high
+    target:
+      entity_id: vacuum.alfred
 - id: '1600464055158'
   alias: zzSave Zone 2 Sources
   description: ''
@@ -1480,12 +1490,16 @@
     entity_id: input_select.washing_cycle
     state: drying
   action:
-  - delay: 00:00:10
-  - service: notify.pharmlake_all_3_d_kara_nick_notifications
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: notify.kara_and_nick_notifications
     data:
       message: Your clothes are washed! Throw them in the dryer you lazy piece of
         shit!!
-      title: Washing Machine Done
+      title: Washing Machine Done!
   mode: single
 - id: '1615078034361'
   alias: zzzzSunday Reboot
@@ -3295,10 +3309,8 @@
   - service: climate.set_temperature
     data:
       target_temp_low: '{{ states.input_number.kara_heat_temp.state }}'
-      target_temp_high: '{{ states.input_number.custom_thermostat_temp_high.state
-        }}'
     target:
-      entity_id: climate.bedroom_thermostat
+      entity_id: climate.new_bedroom_thermostat
   mode: single
 - id: '1643128686499'
   alias: zzMotion Update Deck Snapshot
@@ -3722,7 +3734,6 @@
     target:
       entity_id:
       - automation.frigate_androidtv_notification_fork_driveway
-      - automation.frigate_notification_fork_driveway
       - automation.frigate_webhook_to_scrypted_driveway
   mode: single
 - id: '1649274419299'
