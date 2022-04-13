@@ -3456,16 +3456,6 @@
   - platform: state
     entity_id: sensor.shellytempfixed_timestamp_updater
     id: bedroom_temp_change
-  - platform: event
-    event_type: timer.finished
-    event_data:
-      entity_id: timer.custom_thermostat_ac_timer
-    id: actimedone
-  - platform: event
-    event_type: timer.finished
-    event_data:
-      entity_id: timer.custom_thermostat_heat_timer
-    id: heattimedone
   condition: []
   action:
   - choose:
@@ -3476,12 +3466,8 @@
       - service: script.heat_switch_on
         data: {}
     - conditions:
-      - condition: or
-        conditions:
-        - condition: trigger
-          id: heat_switch_off
-        - condition: trigger
-          id: heattimedone
+      - condition: trigger
+        id: heat_switch_off
       sequence:
       - service: script.custom_thermostat_heat_switch_off
         data: {}
@@ -3492,12 +3478,8 @@
       - service: script.custom_thermostat_ac_switch_on_duplicate
         data: {}
     - conditions:
-      - condition: or
-        conditions:
-        - condition: trigger
-          id: ac_switch_off
-        - condition: trigger
-          id: actimedone
+      - condition: trigger
+        id: ac_switch_off
       sequence:
       - service: script.custom_thermostat_ac_switch_off_duplicate
         data: {}
