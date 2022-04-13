@@ -5,18 +5,9 @@ items:
 - id: 09cc55915cfa4258807af4dca806c739
   type: module
   url: /hacsfiles/mini-media-player/mini-media-player-bundle.js?hacstag=1485208381162
-- id: 5e735fbbe8a24eddb43916f2eb2aec0c
-  type: module
-  url: /hacsfiles/lovelace-hass-aarlo/hass-aarlo.js
 - id: 9194a1de09ce41d294f1f8345e060535
   type: module
   url: /hacsfiles/lovelace-notify-card/notify-card.js?hacstag=3589626564459742
-- id: 01d0248cc5ca4442aadedc23e84e048e
-  type: module
-  url: /hacsfiles/entity-attributes-card/entity-attributes-card.js
-- id: e0639fe17400420b84db079cde91876f
-  type: module
-  url: /hacsfiles/state-attribute-element/state-attribute-element.js
 - id: 613204f3587b41a59ebe7d045301c7b0
   type: module
   url: /hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js
@@ -35,3 +26,6 @@ items:
 - id: 60595b530cf04f9abe68e9722a0d6627
   type: module
   url: /hacsfiles/popup-backdrop-filter/popup-backdrop-filter.js?hacstag=20407589458119
+- id: 79c11d729c6641feb90c299f3a92874f
+  type: module
+  url: /hacsfiles/simple-thermostat/simple-thermostat.js?hacstag=158654878243

@@ -42,19 +42,28 @@ config:
         entity: fan.bonus_room_fan
         name: Bonus Room Fan
         type: custom:fan-percent-button-row
-      - entity: climate.downstairs_the_nest
-      - entity: climate.bedroom_thermostat
-      - entity: switch.bedroom_dummyheat
-      - entity: switch.bedroom_dummyac
-      - entity: timer.custom_thermostat_ac_timer
-      - entity: timer.custom_thermostat_heat_timer
       - entity: climate.new_bedroom_thermostat
-      - entity: switch.bedroom_fan_power
-      - entity: switch.living_room_fan_power
-      - entity: switch.nest_thermostat_fan
+      - entity: climate.downstairs_the_nest
       show_header_toggle: false
       state_color: true
       type: entities
+    - control: false
+      entity: climate.new_bedroom_thermostat
+      header:
+        faults:
+        - entity: switch.nest_thermostat_fan
+        icon: mdi:sofa
+        name: Bedroom Thermostat
+        toggle:
+          entity: switch.nest_thermostat_fan
+          name: Fan
+      layout:
+        mode:
+          names: true
+        step: row
+      setpoints:
+        temperature: null
+      type: custom:simple-thermostat
     - camera_image: camera.porch_motion_snapshot
       entities:
       - entity: lock.august_asl_03_smart_lock_locked
