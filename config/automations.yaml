@@ -936,7 +936,7 @@
       milliseconds: 0
   - service: vacuum.set_fan_speed
     data:
-      fan_speed: high
+      fan_speed: medium
     target:
       entity_id: vacuum.alfred
 - id: '1600464055158'
@@ -3295,20 +3295,16 @@
               - 3}}'
   mode: single
 - id: '1642702581833'
-  alias: Afternoon Temp Change
+  alias: Nick Start Temp Change
   description: ''
   trigger:
   - platform: time
     at: input_datetime.afternoon_temp_change
-  - platform: state
-    entity_id: person.kara
-    from: not_home
-    to: home
   condition: []
   action:
   - service: climate.set_temperature
     data:
-      target_temp_low: '{{ states.input_number.kara_heat_temp.state }}'
+      temperature: '{{ states.input_number.kara_heat_temp.state }}'
     target:
       entity_id: climate.new_bedroom_thermostat
   mode: single
@@ -3733,3 +3729,41 @@
     target:
       entity_id: light.hallway
   mode: single
+- id: '1649837064752'
+  alias: Nick End Temp Change
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.heat_start
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ states.input_number.nick_end.state }}'
+    target:
+      entity_id: climate.new_bedroom_thermostat
+  mode: single
+- id: '1649884397530'
+  alias: Frigate Switch on Event Driveway
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_to_homebridge.yaml
+    input:
+      camera: driveway
+      camera_and_type: driveway new
+- id: '1649884432068'
+  alias: Frigate Switch on Event Back Deck
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_to_homebridge.yaml
+    input:
+      camera: back_deck
+      camera_and_type: back_deck new
+- id: '1649884479228'
+  alias: Frigate Switch on Event Front Porch
+  description: ''
+  use_blueprint:
+    path: bittles/frigate_to_homebridge.yaml
+    input:
+      camera: front_porch
+      camera_and_type: front_porch new
