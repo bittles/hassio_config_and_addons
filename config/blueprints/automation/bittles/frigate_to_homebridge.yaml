@@ -1,0 +1,125 @@
+blueprint:
+  name: Frigate Switch on Event
+  description: "## Frigate Switch on Event\n\nThis blueprint will turn on a switch\
+    \ with the same name as the Frigate camera with a configurable amount of time\
+    \ before turning off.\n\nBased off of hunterjm/frigate_notification.yaml to grab\
+    \ mqtt events and then send webhook\n\n### Required entities:\n  - Frigate Camera\
+    \ Name\n  - Switch entity ID must be in format switch.(camera_name)\n\n### Optional\
+    \ features:\n  - You can limit webhooks to objects entering **any** pre-defined\
+    \ [zones][1] in Frigate.\n  - You can specify which [zones][1] to send webhooks\
+    \ about. This must be a list (e.g.):\n    ```yaml\n    - backyard\n    ```\n \
+    \ - You can specify what type of [objects][2] to be send webhooks about. This\
+    \ must be a list (e.g.):\n    ```yaml\n    - person\n    - car\n    ```\n  - You\
+    \ can disable webhooks if a presence entity or group is \"home\".\n  - You can\
+    \ configure a cooldown for the camera to reduce the number of webhooks when back-to-back\
+    \ events occur.\n\n[1]: https://blakeblackshear.github.io/frigate/configuration/cameras#zones\n\
+    [2]: https://blakeblackshear.github.io/frigate/configuration/objects\n"
+  domain: automation
+  source_url: https://gist.github.com/bittles/80622970168e5451da89fa6967ac7f1a
+  input:
+    camera:
+      name: Frigate Camera
+      description: The name of the camera as defined in your frigate configuration.
+    camera_and_type:
+      name: Frigate Camera with Frigate Event Type
+      description: The name of the camer and event type eg. 'camera_name new' the
+        type can be new, update, or end.
+    zone_filter:
+      name: (Optional) Zone Filter
+      description: Only notify if object has entered a defined zone.
+      default: false
+      selector:
+        boolean: {}
+    zones:
+      name: (Optional) Trigger Zones
+      description: A list (-) of zones you wish to send webhooks for.
+      default: []
+      selector:
+        object: {}
+    labels:
+      name: (Optional) Trigger Objects
+      description: A list (-) of objects you wish to send webhooks for.
+      default: []
+      selector:
+        object: {}
+    presence_filter:
+      name: (Optional) Presence Filter
+      description: Only notify if selected person entity is not "home".
+      default: ''
+      selector:
+        entity:
+          domain: person
+          multiple: false
+    cooldown:
+      name: (Optional) Cooldown
+      description: Delay before turning this switch on again for this camera after
+        the last event.
+      default: 30
+      selector:
+        number:
+          max: 300.0
+          min: 0.0
+          unit_of_measurement: seconds
+          mode: slider
+          step: 1.0
+    mqtttimeout:
+      name: (Optional) Switch Motion Timeout
+      description: How long before turning off switch.
+      default: 12
+      selector:
+        number:
+          max: 300.0
+          min: 0.0
+          unit_of_measurement: seconds
+          mode: slider
+          step: 1.0
+mode: single
+max_exceeded: silent
+trigger:
+  platform: mqtt
+  topic: frigate/events
+  payload: !input 'camera_and_type'
+  value_template: '{{ value_json[''after''][''camera''] ~ '' '' ~ value_json[''type'']
+    }}'
+variables:
+  id: '{{ trigger.payload_json[''after''][''id''] }}'
+  camera: '{{ trigger.payload_json[''after''][''camera''] }}'
+  camera_name: '{{ camera | replace(''_'', '' '') | title }}'
+  object: '{{ trigger.payload_json[''after''][''label''] }}'
+  label: '{{ object | title }}'
+  entered_zones: '{{ trigger.payload_json[''after''][''entered_zones''] }}'
+  type: '{{ trigger.payload_json[''type''] }}'
+  zone_only: !input 'zone_filter'
+  input_zones: !input 'zones'
+  zones: '{{ input_zones | list }}'
+  input_labels: !input 'labels'
+  labels: '{{ input_labels | list }}'
+  presence_entity: !input 'presence_filter'
+condition:
+- '{{ not zone_only or entered_zones|length > 0 }}'
+- '{{ not zones|length or zones|select(''in'', entered_zones)|list|length > 0 }}'
+- '{{ not labels|length or object in labels }}'
+- '{{ not presence_entity or not is_state(presence_entity, ''home'') }}'
+action:
+- service: switch.turn_on
+  data: {}
+  target:
+    entity_id: switch.{{ camera }}
+- repeat:
+    sequence:
+    - wait_for_trigger:
+      - platform: mqtt
+        topic: frigate/events
+        payload: '{{ id }}'
+        value_template: '{{ value_json[''after''][''id''] }}'
+      timeout:
+        seconds: !input 'mqtttimeout'
+      continue_on_timeout: true
+    - condition: template
+      value_template: '{{ wait.trigger.payload_json[''type''] == ''end'' }}'
+    until: '{{ wait.trigger.payload_json[''type''] == ''end'' }}'
+- service: switch.turn_off
+  data: {}
+  target:
+    entity_id: switch.{{ camera }}
+- delay: !input 'cooldown'

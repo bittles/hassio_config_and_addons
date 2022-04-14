@@ -507,15 +507,16 @@ config:
       - entity: automation.new_automation_2
       - entity: input_datetime.sunday_reboot_time
       - entity: automation.zzsunday_reboot
-      - entity: input_datetime.heat_start
       - entity: input_datetime.heat_end
-      - entity: input_number.heat_start_temp
       - entity: input_datetime.alfred_cleaning_time
       - entity: automation.alfred_cleans_zones_at_4am
       - entity: automation.zzzz_back_door_autolock
       - entity: automation.after_temp_change
       - entity: input_datetime.afternoon_temp_change
       - entity: input_number.kara_heat_temp
+      - entity: input_datetime.heat_start
+      - entity: input_number.nick_end
+      - entity: automation.afternoon_temp_change_duplicate
       type: entities
     - calibration_source:
         calibration_points:
@@ -703,9 +704,6 @@ config:
       title: Alfred's Domain
       type: custom:xiaomi-vacuum-map-card
     - entities:
-      - entity: input_boolean.driveway_motion
-      - entity: input_boolean.porch_motion
-      - entity: input_boolean.wyze_deck_motion
       - entity: input_number.custom_thermostat_temp_high
       - entity: input_number.custom_thermostat_temp_low
       - entity: sun.sun
@@ -914,10 +912,10 @@ config:
       square: false
       type: grid
     - entities:
-      - sensor.detection_fps
-      - sensor.cpu1_inference_speed
-      - sensor.cpu2_inference_speed
-      - sensor.cpu3_inference_speed
+      - entity: sensor.detection_fps
+      - entity: sensor.cpu1_inference_speed
+      - entity: sensor.cpu2_inference_speed
+      - entity: sensor.cpu3_inference_speed
       - entity: input_boolean.porch_motion
       - entity: input_boolean.driveway_motion
       - entity: input_boolean.wyze_deck_motion
@@ -927,6 +925,9 @@ config:
       - entity: sensor.porch_object
       - entity: sensor.driveway_object
       - entity: sensor.deck_object
+      - entity: switch.front_porch
+      - entity: switch.driveway
+      - entity: switch.back_deck
       show_header_toggle: false
       title: Frigate
       type: entities
