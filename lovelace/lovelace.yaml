@@ -44,6 +44,7 @@ config:
         type: custom:fan-percent-button-row
       - entity: climate.new_bedroom_thermostat
       - entity: climate.downstairs_the_nest
+      - entity: switch.bedroom_dummyac
       show_header_toggle: false
       state_color: true
       type: entities
@@ -162,7 +163,19 @@ config:
       show_current: true
       show_forecast: true
       type: weather-forecast
-    - content: .
+    - content: '-i rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
+
+        rtsp://localhost:31040/e8c8a6a2729b4845
+
+
+        rtsp://localhost:31040/fc948661eb63cb1e
+
+        -i rtsp://backdeck:wt2g6VXd4V@192.168.29.118/live
+
+
+        -i rtsp://frontporch:Hz6YAm3LPt@192.168.29.113/live
+
+        '
       theme: Google Dark Theme
       type: markdown
     - showAzimuth: false
@@ -927,6 +940,7 @@ config:
       - entity: sensor.deck_object
       - entity: switch.front_porch
       - entity: switch.driveway
+      - entity: script.driveway
       - entity: switch.back_deck
       show_header_toggle: false
       title: Frigate

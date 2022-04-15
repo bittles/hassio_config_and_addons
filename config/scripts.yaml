@@ -553,3 +553,15 @@ alfred_cleans_from_card:
     target:
       entity_id: '{{ cleaner }}'
   mode: single
+driveway:
+  alias: Driveway Motion Off
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: wyzehksv/driveway/motion/OFF
+      payload: '{ "on":false }'
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.driveway
+  mode: single
