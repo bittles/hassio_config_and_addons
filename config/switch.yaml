@@ -27,10 +27,16 @@
   device_class: switch
   state_topic: "wyzehksv/driveway/motion"
   command_topic: "wyzehksv/driveway/motion"
-  payload_on: "ON"
-  payload_off: "OFF"
+  payload_on: >
+   {
+   "on":true
+   }
+  payload_off: >
+   {
+   "on":false
+   }
   qos: 1
-  retain: false
+  retain: true
 
 - platform: mqtt
   unique_id: front-porch-homebridge-mqtt
@@ -38,10 +44,16 @@
   device_class: switch
   state_topic: "wyzehksv/front_porch/motion"
   command_topic: "wyzehksv/front_porch/motion"
-  payload_on: "ON"
-  payload_off: "OFF"
+  payload_on: >
+   {
+   "on":true
+   }
+  payload_off: >
+   {
+   "on":false
+   }
   qos: 1
-  retain: false
+  retain: true
 
 - platform: mqtt
   unique_id: back-deck-homebridge-mqtt
@@ -49,10 +61,16 @@
   device_class: switch
   state_topic: "wyzehksv/back_deck/motion"
   command_topic: "wyzehksv/back_deck/motion"
-  payload_on: "ON"
-  payload_off: "OFF"
+  payload_on: >
+   {
+   "on":true
+   }
+  payload_off: >
+   {
+   "on":false
+   }
   qos: 1
-  retain: false
+  retain: true
 
 - platform: template
   switches:

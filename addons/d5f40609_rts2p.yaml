@@ -1,0 +1,9 @@
+server:
+  http_port: '8080'
+  password: ''
+  port: '5554'
+  username: ''
+streams:
+- name: test
+  still: http://192.168.29.189:8123/local/Wyze/snapshot_interval_driveway.jpg
+  url: rtsp://192.168.29.187:31040/e8c8a6a2729b4845

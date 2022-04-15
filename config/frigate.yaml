@@ -55,7 +55,7 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://192.168.29.187:8969/front-porch-cam
- #       - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
+#        - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.113/live
           roles:
             - detect
             - rtmp
@@ -68,6 +68,7 @@ cameras:
 #      quality: 20
     detect:
       fps: 5
+      height: 360
       max_disappeared: 30
       stationary:
         # Optional: Frequency for running detection on stationary objects (default: shown below)
@@ -133,7 +134,7 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://192.168.29.187:8969/driveway-cam
-#        - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
+  #      - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
           roles:
             - detect
             - rtmp
@@ -146,6 +147,7 @@ cameras:
     detect:
       fps: 5
       max_disappeared: 30
+      height: 360
       stationary:
         # Optional: Frequency for running detection on stationary objects (default: shown below)
         # When set to 0, object detection will never be run on stationary objects. If set to 10, 
@@ -268,7 +270,7 @@ cameras:
 #          min_area: 10000
           max_area: 380000
         person:
-#          min_area: 15000
+          min_area: 1000
           max_area: 24000000
           threshold: 0.6
           min_score: 0.55
@@ -375,6 +377,39 @@ cameras:
         #  threshold: 0.99
         #  min_area: 25000
         #  max_area: 700000
+#  front_porch_proxy:
+#    ffmpeg:
+#      inputs:
+#        - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
+# #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
+#          roles:
+#            - rtmp
+#      input_args: -re -thread_queue_size 512 -rtsp_transport tcp
+#      output_args:
+#        rtmp: -c:v copy -c:a libfdk_aac -f flv
+
+#  driveway_proxy:
+#    ffmpeg:
+#      inputs:
+#        - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
+# #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
+#          roles:
+#            - rtmp
+#      input_args: -re -thread_queue_size 512 -rtsp_transport tcp
+#      output_args:
+#        rtmp: -c:v copy -c:a libfdk_aac -f flv
+
+#  back_deck_proxy:
+#    ffmpeg:
+#      inputs:
+#        - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
+# #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
+#          roles:
+#            - rtmp
+#      input_args: -re -thread_queue_size 512 -rtsp_transport tcp
+#      output_args:
+#        rtmp: -c:v copy -c:a libfdk_aac -f flv
+
 detect:
   enabled: True
   # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
