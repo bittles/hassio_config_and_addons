@@ -12,6 +12,7 @@ config:
     - entity: person.nick
     - entity: person.darius
     - entity: person.kara
+    - entity: person.caroline
     - entity: binary_sensor.noone
     - entity: vacuum.alfred
     - entity: sensor.nest_thermostat_temperature
@@ -22,8 +23,6 @@ config:
     - entity: sensor.bonusroomtemp_humidity
     - entity: automation.alfred_cleans_zones_at_4am
     - entity: sensor.processor_use
-    - entity: sensor.routerdlkbs
-    - entity: sensor.routerulkbs
     cards:
     - entities:
       - entity: script.restart_shield
@@ -48,23 +47,6 @@ config:
       show_header_toggle: false
       state_color: true
       type: entities
-    - control: false
-      entity: climate.new_bedroom_thermostat
-      header:
-        faults:
-        - entity: switch.nest_thermostat_fan
-        icon: mdi:sofa
-        name: Bedroom Thermostat
-        toggle:
-          entity: switch.nest_thermostat_fan
-          name: Fan
-      layout:
-        mode:
-          names: true
-        step: row
-      setpoints:
-        temperature: null
-      type: custom:simple-thermostat
     - camera_image: camera.porch_motion_snapshot
       entities:
       - entity: lock.august_asl_03_smart_lock_locked
@@ -163,17 +145,7 @@ config:
       show_current: true
       show_forecast: true
       type: weather-forecast
-    - content: '-i rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
-
-        rtsp://localhost:31040/e8c8a6a2729b4845
-
-
-        rtsp://localhost:31040/fc948661eb63cb1e
-
-        -i rtsp://backdeck:wt2g6VXd4V@192.168.29.118/live
-
-
-        -i rtsp://frontporch:Hz6YAm3LPt@192.168.29.113/live
+    - content: '.
 
         '
       theme: Google Dark Theme
@@ -512,8 +484,6 @@ config:
     - entities:
       - entity: input_datetime.zzdaily_maintenance
       - entity: automation.daily_4am_maintenance
-      - entity: automation.restart_hass
-      - entity: input_datetime.zzdaily_post_maintenance
       - entity: input_datetime.zzdaily_shield_restart_maintenance
       - entity: input_datetime.zzdaily_shield_restart_post_maintenance
       - entity: automation.restart_shield_tv
@@ -822,7 +792,6 @@ config:
           name: Motorcycle Motion
         - entity: binary_sensor.driveway_person_motion
           name: Person Motion
-        - entity: binary_sensor.driveway_bear_motion
         - entity: sensor.driveway_bear
         - entity: sensor.driveway_bicycle
         - entity: sensor.driveway_bird
@@ -940,7 +909,6 @@ config:
       - entity: sensor.deck_object
       - entity: switch.front_porch
       - entity: switch.driveway
-      - entity: script.driveway
       - entity: switch.back_deck
       show_header_toggle: false
       title: Frigate

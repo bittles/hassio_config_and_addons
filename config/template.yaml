@@ -95,10 +95,90 @@
       unique_id: backdoorbatterytemplate
       unit_of_measurement: "%"
 
-#  sensor:
     - name: Number of Persons at Home
       unique_id: number_ppl_at_home
       state: '{{ dict((states.person)|groupby(''state''))[''home'']|count }}'
+
+    - name: Driveway Object
+      unique_id: dwayobject
+      state: >
+        {% if is_state('binary_sensor.driveway_bear_motion', 'on') %}
+          {{ 'BEAR ' }}
+        {%- endif -%}
+        {% if is_state('binary_sensor.driveway_bicycle_motion', 'on') %}
+          {{ 'BICYCLE ' }}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.driveway_bird_motion', 'on') -%}
+          {{ 'BIRD ' }}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.driveway_car_motion', 'on') -%}
+          {{ 'CAR ' }}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.driveway_cat_motion', 'on') -%}
+          {{ 'CAT '}}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.driveway_dog_motion', 'on') -%}
+          {{ 'DOG '}}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.driveway_motorcycle_motion', 'on') -%}
+          {{ 'MOTORCYCLE '}}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.driveway_person_motion', 'on') -%}
+          {{ 'PERSON' }}
+        {%- endif -%}
+        {%- if is_state('switch.frigate_driveway_motion', 'off') -%}
+          Nothing
+        {%- endif -%}
+
+    - name: Porch Object
+      unique_id: porchobject
+      state: >
+        {% if is_state('binary_sensor.front_porch_bear_motion', 'on') %}
+          {{ 'BEAR ' }}
+        {%- endif -%}
+        {% if is_state('binary_sensor.front_porch_bicycle_motion', 'on') %}
+          {{ 'BICYCLE ' }}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.front_porch_bird_motion', 'on') -%}
+          {{ 'BIRD ' }}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.front_porch_car_motion', 'on') -%}
+          {{ 'CAR ' }}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.front_porch_cat_motion', 'on') -%}
+          {{ 'CAT '}}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.front_porch_dog_motion', 'on') -%}
+          {{ 'DOG '}}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.front_porch_person_motion', 'on') -%}
+          {{ 'PERSON' }}
+        {%- endif -%}
+        {%- if is_state('switch.frigate_porch_motion', 'off') -%}
+          Nothing
+        {%- endif -%}
+
+    - name: Deck Object
+      unique_id: deckobject
+      state: >
+        {% if is_state('binary_sensor.back_deck_bear_motion', 'on') %}
+          {{ 'BEAR ' }}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.back_deck_bird_motion', 'on') -%}
+          {{ 'BIRD ' }}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.back_deck_cat_motion', 'on') -%}
+          {{ 'CAT '}}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.back_deck_dog_motion', 'on') -%}
+          {{ 'DOG '}}
+        {%- endif -%}
+        {%- if is_state('binary_sensor.back_deck_person_motion', 'on') -%}
+          {{ 'PERSON' }}
+        {%- endif -%}
+        {%- if is_state('switch.frigate_deck_motion', 'off') -%}
+          Nothing
+        {%- endif -%}
 
 #    - name: garage_status
 ##      friendly_name: 'Garage Door Status'
@@ -145,181 +225,181 @@
 
 #################################################################################################################################
 #################        TRIGGER SENSORS        #################################################################################
-- trigger:
-    - platform: state
-      entity_id: camera.aarlo_front_porch
-      attribute: last_thumbnail
-      for:
-        seconds: 1
-        milliseconds: 50
-  sensor:
-    - name: "Porch Thumbnail URL"
-      state: "{{ state_attr('camera.aarlo_front_porch', 'last_thumbnail') }}"
-
-- trigger:
-    - platform: state
-      entity_id: binary_sensor.driveway_bicycle_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.driveway_bird_motion
-      to: 'on'
+#- trigger:
 #    - platform: state
-#      entity_id: binary_sensor.driveway_bus_motion
+#      entity_id: camera.aarlo_front_porch
+#      attribute: last_thumbnail
+#      for:
+#        seconds: 1
+#        milliseconds: 50
+#  sensor:
+#    - name: "Porch Thumbnail URL"
+#      state: "{{ state_attr('camera.aarlo_front_porch', 'last_thumbnail') }}"
+
+#- trigger:
+#    - platform: state
+#      entity_id: binary_sensor.driveway_bicycle_motion
 #      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.driveway_car_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.driveway_cat_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.driveway_dog_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.driveway_motorcycle_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.driveway_person_motion
-      to: 'on'
-    - platform: state
-      entity_id: switch.frigate_driveway_motion
-      to: 'off'
-  sensor:
-    - name: Driveway Object
-      unique_id: dwayobject
-      state: >
-        {% if trigger.entity_id == 'binary_sensor.driveway_bicycle_motion' %}
-          BICYCLE
-        {%- elif trigger.entity_id == 'binary_sensor.driveway_bird_motion' -%}
-          BIRD
-        {%- elif trigger.entity_id == 'binary_sensor.driveway_car_motion' -%}
-          CAR
-        {%- elif trigger.entity_id == 'binary_sensor.driveway_cat_motion' -%}
-          CAT
-        {%- elif trigger.entity_id == 'binary_sensor.driveway_dog_motion' -%}
-          DOG
-        {%- elif trigger.entity_id == 'binary_sensor.driveway_motorcycle_motion' -%}
-          MOTORCYCLE
-        {%- elif trigger.entity_id == 'binary_sensor.driveway_person_motion' -%}
-          PERSON
-        {%- elif trigger.entity_id == 'switch.frigate_driveway_motion' -%}
-          Nothing
-        {%- else -%}
-          Sensor not triggered yet
-        {%- endif -%}
+#    - platform: state
+#      entity_id: binary_sensor.driveway_bird_motion
+#      to: 'on'
+##    - platform: state
+##      entity_id: binary_sensor.driveway_bus_motion
+##      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.driveway_car_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.driveway_cat_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.driveway_dog_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.driveway_motorcycle_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.driveway_person_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: switch.frigate_driveway_motion
+#      to: 'off'
+#  sensor:
+#    - name: Driveway Object
+#      unique_id: dwayobject
+#      state: >
+#        {% if trigger.entity_id == 'binary_sensor.driveway_bicycle_motion' %}
+#          BICYCLE
+#        {%- elif trigger.entity_id == 'binary_sensor.driveway_bird_motion' -%}
+#          BIRD
+#        {%- elif trigger.entity_id == 'binary_sensor.driveway_car_motion' -%}
+#          CAR
+#        {%- elif trigger.entity_id == 'binary_sensor.driveway_cat_motion' -%}
+#          CAT
+#        {%- elif trigger.entity_id == 'binary_sensor.driveway_dog_motion' -%}
+#          DOG
+#        {%- elif trigger.entity_id == 'binary_sensor.driveway_motorcycle_motion' -%}
+#          MOTORCYCLE
+#        {%- elif trigger.entity_id == 'binary_sensor.driveway_person_motion' -%}
+#          PERSON
+#        {%- elif trigger.entity_id == 'switch.frigate_driveway_motion' -%}
+#          Nothing
+#        {%- else -%}
+#          Sensor not triggered yet
+#        {%- endif -%}
 #        {%- elif trigger.entity_id == 'binary_sensor.driveway_bus_motion' -%}
 #          BUS
 
-- trigger:
-    - platform: state
-      entity_id: binary_sensor.front_porch_bicycle_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.front_porch_bird_motion
-      to: 'on'
+#- trigger:
 #    - platform: state
-#      entity_id: binary_sensor.front_porch_bus_motion
+#      entity_id: binary_sensor.front_porch_bicycle_motion
 #      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.front_porch_car_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.front_porch_cat_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.front_porch_dog_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.front_porch_motorcycle_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.front_porch_person_motion
-      to: 'on'
-    - platform: state
-      entity_id: switch.frigate_porch_motion
-      to: 'off'
-  sensor:
-    - name: Porch Object
-      unique_id: porchobject
-      state: >
-        {% if trigger.entity_id == 'binary_sensor.front_porch_bicycle_motion' %}
-          BICYCLE
-        {%- elif trigger.entity_id == 'binary_sensor.front_porch_bird_motion' -%}
-          BIRD
-        {%- elif trigger.entity_id == 'binary_sensor.front_porch_car_motion' -%}
-          CAR
-        {%- elif trigger.entity_id == 'binary_sensor.front_porch_cat_motion' -%}
-          CAT
-        {%- elif trigger.entity_id == 'binary_sensor.front_porch_dog_motion' -%}
-          DOG
-        {%- elif trigger.entity_id == 'binary_sensor.front_porch_motorcycle_motion' -%}
-          MOTORCYCLE
-        {%- elif trigger.entity_id == 'binary_sensor.front_porch_person_motion' -%}
-          PERSON
-        {%- elif trigger.entity_id == 'switch.frigate_porch_motion' -%}
-          Nothing
-        {%- else -%}
-          Sensor not triggered yet
-        {%- endif -%}
-#        {%- elif trigger.entity_id == 'binary_sensor.front_porch_bus_motion' -%}
-#          BUS
+#    - platform: state
+#      entity_id: binary_sensor.front_porch_bird_motion
+#      to: 'on'
+##    - platform: state
+##      entity_id: binary_sensor.front_porch_bus_motion
+##      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.front_porch_car_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.front_porch_cat_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.front_porch_dog_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.front_porch_motorcycle_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.front_porch_person_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: switch.frigate_porch_motion
+#      to: 'off'
+#  sensor:
+#    - name: Porch Object
+#      unique_id: porchobject
+#      state: >
+#        {% if trigger.entity_id == 'binary_sensor.front_porch_bicycle_motion' %}
+#          BICYCLE
+#        {%- elif trigger.entity_id == 'binary_sensor.front_porch_bird_motion' -%}
+#          BIRD
+#        {%- elif trigger.entity_id == 'binary_sensor.front_porch_car_motion' -%}
+#          CAR
+#        {%- elif trigger.entity_id == 'binary_sensor.front_porch_cat_motion' -%}
+#          CAT
+#        {%- elif trigger.entity_id == 'binary_sensor.front_porch_dog_motion' -%}
+#          DOG
+#        {%- elif trigger.entity_id == 'binary_sensor.front_porch_motorcycle_motion' -%}
+#          MOTORCYCLE
+#        {%- elif trigger.entity_id == 'binary_sensor.front_porch_person_motion' -%}
+#          PERSON
+#        {%- elif trigger.entity_id == 'switch.frigate_porch_motion' -%}
+#          Nothing
+#        {%- else -%}
+#          Sensor not triggered yet
+#        {%- endif -%}
+##        {%- elif trigger.entity_id == 'binary_sensor.front_porch_bus_motion' -%}
+##          BUS
 
 
-- trigger:
-    - platform: state
-      entity_id: binary_sensor.back_deck_bicycle_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.back_deck_bird_motion
-      to: 'on'
+#- trigger:
 #    - platform: state
-#      entity_id: binary_sensor.back_deck_bus_motion
+#      entity_id: binary_sensor.back_deck_bicycle_motion
 #      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.back_deck_car_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.back_deck_cat_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.back_deck_dog_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.back_deck_motorcycle_motion
-      to: 'on'
-    - platform: state
-      entity_id: binary_sensor.back_deck_person_motion
-      to: 'on'
-    - platform: state
-      entity_id: switch.frigate_deck_motion
-      to: 'off'
-  sensor:
-    - name: Deck Object
-      unique_id: deckobject
-      state: >
-        {% if trigger.entity_id == 'binary_sensor.back_deck_bicycle_motion' %}
-          BICYCLE
-        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bear_motion' -%}
-          BEAR
-        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bird_motion' -%}
-          BIRD
-        {%- elif trigger.entity_id == 'binary_sensor.back_deck_car_motion' -%}
-          CAR
-        {%- elif trigger.entity_id == 'binary_sensor.back_deck_cat_motion' -%}
-          CAT
-        {%- elif trigger.entity_id == 'binary_sensor.back_deck_dog_motion' -%}
-          DOG
-        {%- elif trigger.entity_id == 'binary_sensor.back_deck_motorcycle_motion' -%}
-          MOTORCYCLE
-        {%- elif trigger.entity_id == 'binary_sensor.back_deck_person_motion' -%}
-          PERSON
-        {%- elif trigger.entity_id == 'switch.frigate_deck_motion' -%}
-          Nothing
-        {%- else -%}
-          Sensor not triggered yet
-        {%- endif -%}
-#        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bus_motion' -%}
-#          BUS
+#    - platform: state
+#      entity_id: binary_sensor.back_deck_bird_motion
+#      to: 'on'
+##    - platform: state
+##      entity_id: binary_sensor.back_deck_bus_motion
+##      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.back_deck_car_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.back_deck_cat_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.back_deck_dog_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.back_deck_motorcycle_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: binary_sensor.back_deck_person_motion
+#      to: 'on'
+#    - platform: state
+#      entity_id: switch.frigate_deck_motion
+#      to: 'off'
+#  sensor:
+#    - name: Deck Object
+#      unique_id: deckobject
+#      state: >
+#        {% if trigger.entity_id == 'binary_sensor.back_deck_bicycle_motion' %}
+#          BICYCLE
+#        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bear_motion' -%}
+#          BEAR
+##        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bird_motion' -%}
+#          BIRD
+#        {%- elif trigger.entity_id == 'binary_sensor.back_deck_car_motion' -%}
+#          CAR
+#        {%- elif trigger.entity_id == 'binary_sensor.back_deck_cat_motion' -%}
+#          CAT
+#        {%- elif trigger.entity_id == 'binary_sensor.back_deck_dog_motion' -%}
+#          DOG
+#        {%- elif trigger.entity_id == 'binary_sensor.back_deck_motorcycle_motion' -%}
+#          MOTORCYCLE
+#        {%- elif trigger.entity_id == 'binary_sensor.back_deck_person_motion' -%}
+#          PERSON
+#        {%- elif trigger.entity_id == 'switch.frigate_deck_motion' -%}
+#          Nothing
+#        {%- else -%}
+#          Sensor not triggered yet
+#        {%- endif -%}
+##        {%- elif trigger.entity_id == 'binary_sensor.back_deck_bus_motion' -%}
+##          BUS
 
 
 - trigger:
