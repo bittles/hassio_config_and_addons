@@ -156,7 +156,7 @@
   - condition: template
     value_template: '{{ trigger.to_state.state > trigger.from_state.state }}'
   - condition: template
-    value_template: '{{ not trigger.to_state.state == ''unavailable'' }}'
+    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
   action:
   - data: {}
     service: lock.unlock
@@ -230,24 +230,6 @@
     target:
       entity_id: cover.garage_mqtt
   initial_state: false
-  mode: single
-- id: '1575057048062'
-  alias: zzzz.Post Maintenance Restart HASS
-  description: ''
-  trigger:
-  - at: input_datetime.zzdaily_post_maintenance
-    platform: time
-  condition:
-  - condition: time
-    weekday:
-    - mon
-    - tue
-    - wed
-    - thu
-    - fri
-    - sat
-  action:
-  - service: homeassistant.restart
   mode: single
 - id: '1575057878601'
   alias: zzDreamscreen
@@ -713,48 +695,12 @@
   alias: zPresence.Noone On
   description: ''
   trigger:
-  - entity_id: person.darius
-    from: home
+  - entity_id: sensor.number_of_persons_at_home
     platform: state
-  - entity_id: person.nick
-    from: home
-    platform: state
-  - platform: state
-    entity_id: person.kara
-    from: home
+    to: '0'
   condition:
-  - condition: and
-    conditions:
-    - condition: template
-      value_template: '{% if not is_state(''person.darius'' , ''home'') %}
-
-        True
-
-        {% else %}
-
-        False
-
-        {% endif %}'
-    - condition: template
-      value_template: '{% if not is_state(''person.nick'' , ''home'') %}
-
-        True
-
-        {% else %}
-
-        False
-
-        {% endif %}'
-    - condition: template
-      value_template: '{% if not is_state(''person.kara'' , ''home'') %}
-
-        True
-
-        {% else %}
-
-        False
-
-        {% endif %}'
+  - condition: template
+    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
   action:
   - entity_id: input_boolean.noone
     service: input_boolean.turn_on
@@ -763,16 +709,14 @@
   alias: zPresence. Noone Off
   description: ''
   trigger:
-  - entity_id: person.darius
+  - entity_id: sensor.number_of_persons_at_home
     platform: state
-    to: home
-  - entity_id: person.nick
-    platform: state
-    to: home
-  - entity_id: person.kara
-    platform: state
-    to: home
-  condition: []
+    from: '0'
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.state > trigger.from_state.state }}'
+  - condition: template
+    value_template: '{{ not trigger.to_state.state == ''unavailable'' }}'
   action:
   - entity_id: input_boolean.noone
     service: input_boolean.turn_off
@@ -795,7 +739,7 @@
     platform: time
   condition:
   - after: 06:59
-    before: '23:59'
+    before: '23:59:00'
     condition: time
   action:
   - delay:
@@ -809,21 +753,21 @@
       entity_id:
       - automation.welcome_home_nick_garage
       - automation.welcome_home_d_garage
-  - data: {}
-    service: automation.turn_on
-    entity_id: automation.welcome_home_kara_garage
+      - automation.welcome_home_kara_garage
+      - automation.zpresence_welcome_home_caroline_garage
   - service: automation.turn_on
     entity_id: automation.welcome_home_front_door
   - service: input_boolean.turn_on
     target:
       entity_id: input_boolean.welcomehomeautomations
+    data: {}
   mode: restart
   max: 10
 - id: '1580496037388'
   alias: Garage Auto Off at Midnight
   description: ''
   trigger:
-  - at: 00:00
+  - at: 00:00:00
     platform: time
   - platform: state
     entity_id: input_boolean.welcomehomeautomations
@@ -831,7 +775,7 @@
     to: 'off'
   condition:
   - after: 00:00
-    before: 07:00
+    before: 07:00:00
     condition: time
   action:
   - service: automation.turn_off
@@ -840,11 +784,12 @@
       entity_id:
       - automation.welcome_home_nick_garage
       - automation.welcome_home_d_garage
-  - entity_id: automation.welcome_home_kara_garage
-    service: automation.turn_off
+      - automation.zpresence_welcome_home_caroline_garage
+      - automation.welcome_home_kara_garage
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.welcomehomeautomations
+    data: {}
   mode: restart
 - id: '1590522357368'
   alias: zNotify.Garage Door Open and Noone Home then Notify
@@ -1091,6 +1036,9 @@
       - condition: state
         entity_id: person.nick
         state: not_home
+      - condition: state
+        entity_id: person.caroline
+        state: not_home
       sequence:
       - service: script.1579731744650
         data: {}
@@ -1142,8 +1090,7 @@
     platform: state
   condition: []
   action:
-  - data:
-      duration: '0'
+  - data: {}
     service: timer.start
     target:
       entity_id: timer.nickleft
@@ -1154,6 +1101,9 @@
     - conditions:
       - condition: state
         entity_id: person.kara
+        state: not_home
+      - condition: state
+        entity_id: person.caroline
         state: not_home
       sequence:
       - service: script.1579731744650
@@ -1195,6 +1145,10 @@
     event: sunrise
     offset: -00:30:00
     id: sunup
+  - platform: state
+    entity_id: person.caroline
+    to: home
+    id: carolinehome
   condition:
   - condition: or
     conditions:
@@ -1203,6 +1157,9 @@
       state: home
     - condition: state
       entity_id: person.nick
+      state: home
+    - condition: state
+      entity_id: person.caroline
       state: home
   - condition: not
     conditions:
@@ -1214,6 +1171,8 @@
           id: karahome
         - condition: trigger
           id: nickhome
+        - condition: trigger
+          id: carolinehome
       - condition: and
         conditions:
         - condition: state
@@ -1221,6 +1180,9 @@
           state: home
         - condition: state
           entity_id: person.nick
+          state: home
+        - condition: state
+          entity_id: person.caroline
           state: home
   action:
   - choose:
@@ -1238,6 +1200,8 @@
           id: nickhome
         - condition: trigger
           id: sunup
+        - condition: trigger
+          id: carolinehome
       sequence:
       - service: script.bedroom_lights_day
         data: {}
@@ -1258,6 +1222,8 @@
           id: nickhome
         - condition: trigger
           id: sundown
+        - condition: trigger
+          id: carolinehome
       sequence:
       - service: script.bedroom_lights_night
         data: {}
@@ -1558,6 +1524,7 @@
   - service: switch.turn_off
     target:
       entity_id: switch.welcome_automations
+    data: {}
   - service: automation.turn_off
     target:
       entity_id:
@@ -1565,6 +1532,8 @@
       - automation.welcome_home_front_door
       - automation.welcome_home_kara_garage
       - automation.welcome_home_nick_garage
+      - automation.zpresence_welcome_home_caroline_garage
+    data: {}
   mode: single
 - id: '1621191007886'
   alias: zzzz.Homekit Device Tracker Updates (mqtt) nick
@@ -1605,211 +1574,6 @@
           retain: true
     default: []
   mode: single
-- id: '1625618059379'
-  alias: Nest Back Door Open > 1 min
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.back_door_template
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-      milliseconds: 0
-  condition: []
-  action:
-  - device_id: 1f4e53d64461d767d63350604b93cd1e
-    domain: climate
-    entity_id: climate.downstairs_the_nest
-    type: set_preset_mode
-    preset_mode: eco
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 5
-      milliseconds: 0
-  - service: climate.set_fan_mode
-    target:
-      entity_id: climate.downstairs_the_nest
-    data:
-      fan_mode: 'off'
-  mode: single
-- id: '1625618122535'
-  alias: Nest Back Door Closed
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.back_door_template
-    to: 'off'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
-  condition:
-  - condition: template
-    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
-  action:
-  - device_id: 1f4e53d64461d767d63350604b93cd1e
-    domain: climate
-    entity_id: climate.downstairs_the_nest
-    type: set_preset_mode
-    preset_mode: none
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: climate.master_bedroom_thermostat_heat
-        state: heat
-      sequence:
-      - choose:
-        - conditions:
-          - condition: state
-            entity_id: switch.bedroom_dummyheat
-            state: 'on'
-          sequence:
-          - service: climate.set_temperature
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-                + 3}}'
-        - conditions:
-          - condition: state
-            entity_id: switch.bedroom_dummyheat
-            state: 'off'
-          sequence:
-          - service: climate.set_temperature
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-                - 3}}'
-        default: []
-    - conditions:
-      - condition: state
-        entity_id: climate.master_bedroom_thermostat
-        state: cool
-      sequence:
-      - choose:
-        - conditions:
-          - condition: state
-            entity_id: switch.bedroom_dummyac
-            state: 'on'
-          sequence:
-          - service: climate.set_temperature
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-                - 3}}'
-        - conditions:
-          - condition: state
-            entity_id: switch.bedroom_dummyac
-            state: 'off'
-          sequence:
-          - service: climate.set_temperature
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-                + 3}}'
-        default: []
-    default: []
-  mode: single
-- id: '1629232161783'
-  alias: zzzzz..Bedroom Thermostat AC
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.shellytempfixed_timestamp_updater
-    id: settempchanged
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
-  - platform: state
-    entity_id: climate.master_bedroom_thermostat
-    attribute: temperature
-    id: roomtempchanged
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
-  - platform: template
-    id: morethanone
-    value_template: '{{ (states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)
-      - state_attr(''climate.master_bedroom_thermostat'', ''temperature'')|float(default=0))
-      > 1 }}'
-  condition:
-  - condition: state
-    entity_id: climate.master_bedroom_thermostat
-    state: cool
-  - condition: template
-    value_template: '{{ trigger.to_state.state != trigger.from_state.state }}'
-  action:
-  - service: climate.set_hvac_mode
-    target:
-      entity_id: climate.downstairs_the_nest
-    data:
-      hvac_mode: cool
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)
-          > state_attr(''climate.master_bedroom_thermostat'', ''temperature'') }}'
-      - condition: not
-        conditions:
-        - condition: device
-          device_id: 1f4e53d64461d767d63350604b93cd1e
-          domain: climate
-          entity_id: climate.downstairs_the_nest
-          type: is_preset_mode
-          preset_mode: eco
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            - 3}}'
-      - choose:
-        - conditions:
-          - condition: trigger
-            id: morethanone
-          sequence:
-          - service: climate.set_fan_mode
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              fan_mode: 'on'
-        default: []
-    - conditions:
-      - condition: template
-        value_template: '{{ states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)
-          < state_attr(''climate.master_bedroom_thermostat'', ''temperature'') }}'
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            + 3}}'
-    default: []
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: morethanone
-      sequence:
-      - service: climate.set_fan_mode
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          fan_mode: 'on'
-    default: []
-  mode: single
-  max: 10
 - id: '1629944626908'
   alias: zzBedroom TV Source Select
   description: ''
@@ -2560,100 +2324,6 @@
     data:
       datetime: '{{ now() }}'
   mode: restart
-- id: '1635435382120'
-  alias: zzzzz..Bedroom Thermostat Heat
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.shellytempfixed_timestamp_updater
-    id: settempchanged
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
-  - platform: state
-    entity_id: climate.master_bedroom_thermostat_heat
-    attribute: temperature
-    id: roomtempchanged
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
-  - platform: template
-    id: morethanone
-    value_template: '{{ (state_attr(''climate.master_bedroom_thermostat_heat'', ''temperature'')|float(default=0)
-      - states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)) > 10
-      }}'
-  condition:
-  - condition: state
-    entity_id: climate.master_bedroom_thermostat_heat
-    state: heat
-  action:
-  - service: climate.set_hvac_mode
-    target:
-      entity_id: climate.downstairs_the_nest
-    data:
-      hvac_mode: heat
-  - choose:
-    - conditions:
-      - condition: template
-        value_template: '{{ state_attr(''climate.master_bedroom_thermostat_heat'',
-          ''temperature'') > states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)
-          }}'
-      - condition: not
-        conditions:
-        - condition: device
-          device_id: 1f4e53d64461d767d63350604b93cd1e
-          domain: climate
-          entity_id: climate.downstairs_the_nest
-          type: is_preset_mode
-          preset_mode: eco
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            + 3}}'
-      - choose:
-        - conditions:
-          - condition: trigger
-            id: morethanone
-          sequence:
-          - service: climate.set_fan_mode
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              fan_mode: 'on'
-        default: []
-    - conditions:
-      - condition: template
-        value_template: '{{ states(''sensor.shellytempfixed_timestamp_updater'')|float(default=0)
-          > state_attr(''climate.master_bedroom_thermostat_heat'', ''temperature'')
-          }}'
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            - 3}}'
-    default: []
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: morethanone
-      sequence:
-      - service: climate.set_fan_mode
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          fan_mode: 'on'
-    default: []
-  mode: single
-  max: 10
 - id: '1635547220186'
   alias: zzzBack Door Last Opened
   description: ''
@@ -2668,189 +2338,6 @@
       entity_id: input_datetime.back_door_last_opened_time
     data:
       datetime: '{{ now() }}'
-  mode: single
-- id: '1636120295184'
-  alias: zzzzz.Bedroom Thermostat Heat by Switch
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.bedroom_dummyheat
-    to: 'on'
-    id: switchon
-  - platform: state
-    entity_id: switch.bedroom_dummyheat
-    to: 'off'
-    id: switchoff
-  - platform: state
-    entity_id: sensor.shellytempfixed_timestamp_updater
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
-    id: bedroom_temp_change
-  - platform: state
-    entity_id: climate.downstairs_the_nest
-    attribute: hvac_action
-    to: heating
-    id: nestheat
-  condition:
-  - condition: state
-    entity_id: climate.master_bedroom_thermostat_heat
-    state: heat
-  - condition: template
-    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: switchon
-      sequence:
-      - choose:
-        - conditions:
-          - condition: not
-            conditions:
-            - condition: device
-              device_id: 1f4e53d64461d767d63350604b93cd1e
-              domain: climate
-              entity_id: climate.downstairs_the_nest
-              type: is_hvac_mode
-              hvac_mode: heat
-          - condition: device
-            device_id: 1f4e53d64461d767d63350604b93cd1e
-            domain: climate
-            entity_id: climate.downstairs_the_nest
-            type: is_preset_mode
-            preset_mode: none
-          sequence:
-          - device_id: 1f4e53d64461d767d63350604b93cd1e
-            domain: climate
-            entity_id: climate.downstairs_the_nest
-            type: set_hvac_mode
-            hvac_mode: heat
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 15
-              milliseconds: 0
-          - service: climate.set_temperature
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-                + 3}}'
-        - conditions:
-          - condition: device
-            device_id: 1f4e53d64461d767d63350604b93cd1e
-            domain: climate
-            entity_id: climate.downstairs_the_nest
-            type: is_hvac_mode
-            hvac_mode: heat
-          - condition: device
-            device_id: 1f4e53d64461d767d63350604b93cd1e
-            domain: climate
-            entity_id: climate.downstairs_the_nest
-            type: is_preset_mode
-            preset_mode: none
-          sequence:
-          - service: climate.set_temperature
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-                + 3}}'
-        default: []
-    - conditions:
-      - condition: trigger
-        id: switchoff
-      - condition: device
-        device_id: 1f4e53d64461d767d63350604b93cd1e
-        domain: climate
-        entity_id: climate.downstairs_the_nest
-        type: is_preset_mode
-        preset_mode: none
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            - 3}}'
-    - conditions:
-      - condition: trigger
-        id: nestheat
-      - condition: state
-        entity_id: switch.bedroom_dummyheat
-        state: 'off'
-      - condition: device
-        device_id: 1f4e53d64461d767d63350604b93cd1e
-        domain: climate
-        entity_id: climate.downstairs_the_nest
-        type: is_preset_mode
-        preset_mode: none
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            - 3}}'
-    default:
-    - choose:
-      - conditions:
-        - condition: template
-          value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)
-            - (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)))
-            < 3 }}'
-        - condition: trigger
-          id: bedroom_temp_change
-        - condition: state
-          entity_id: climate.downstairs_the_nest
-          state: heating
-          attribute: hvac_action
-        - condition: state
-          entity_id: switch.bedroom_dummyheat
-          state: 'on'
-        - condition: device
-          device_id: 1f4e53d64461d767d63350604b93cd1e
-          domain: climate
-          entity_id: climate.downstairs_the_nest
-          type: is_preset_mode
-          preset_mode: none
-        sequence:
-        - service: climate.set_temperature
-          target:
-            entity_id: climate.downstairs_the_nest
-          data:
-            temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-              + 3}}'
-      - conditions:
-        - condition: trigger
-          id: bedroom_temp_change
-        - condition: state
-          entity_id: climate.downstairs_the_nest
-          state: 'off'
-          attribute: hvac_action
-        - condition: state
-          entity_id: switch.bedroom_dummyheat
-          state: 'on'
-          for:
-            hours: 0
-            minutes: 0
-            seconds: 15
-            milliseconds: 0
-        - condition: device
-          device_id: 1f4e53d64461d767d63350604b93cd1e
-          domain: climate
-          entity_id: climate.downstairs_the_nest
-          type: is_preset_mode
-          preset_mode: none
-        sequence:
-        - service: climate.set_temperature
-          target:
-            entity_id: climate.downstairs_the_nest
-          data:
-            temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-              + 3}}'
   mode: single
 - id: '1636499910042'
   alias: zzzz.Homekit Device Tracker Updates (mqtt) d
@@ -3041,25 +2528,6 @@
     data:
       addon: a0d7b954_ssh
   mode: single
-- id: '1639989263629'
-  alias: ..Restart Cams
-  description: ''
-  trigger:
-  - platform: time
-    at: 06:30:00
-  - platform: homeassistant
-    event: start
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 1
-      seconds: 0
-      milliseconds: 0
-  - service: hassio.addon_restart
-    data:
-      addon: ccab4aaf_frigate-fa
-  mode: single
 - id: '1640044752814'
   alias: zzMotion Reset Captures
   description: ''
@@ -3092,207 +2560,6 @@
         data:
           value: 0
     default: []
-  mode: single
-- id: '1640396039361'
-  alias: Frigate Notification Fork Driveway (Darius)
-  description: ''
-  initial_state: false
-  use_blueprint:
-    path: bittles/frigate_notification.yaml
-    input:
-      camera: driveway
-      camera_and_type: driveway new
-      notify_device: f76e35c3824b4aa3b2bf069241084176
-      base_url: https://hassio.unibutton.com
-      cooldown: 90
-      captime: input_datetime.wyze_driveway_time
-      labels: {}
-- id: '1640396107108'
-  alias: Frigate Notification Fork Porch (Darius)
-  description: ''
-  use_blueprint:
-    path: bittles/frigate_notification.yaml
-    input:
-      camera: front_porch
-      camera_and_type: front_porch new
-      notify_device: f76e35c3824b4aa3b2bf069241084176
-      base_url: https://hassio.unibutton.com
-      cooldown: 30
-      captime: input_datetime.wyze_porch_time
-      labels: {}
-- id: '1640446434058'
-  alias: Frigate Notification Fork Porch (Nick)
-  description: ''
-  use_blueprint:
-    path: bittles/frigate_notification.yaml
-    input:
-      camera: front_porch
-      camera_and_type: front_porch new
-      base_url: https://hassio.unibutton.com
-      captime: input_datetime.wyze_porch_time
-      cooldown: 30
-      labels: {}
-      notify_device: 383ce8ce2def8523d79fe80a22d1297d
-- id: '1640446463486'
-  alias: Frigate Notification Fork Driveway (Nick)
-  description: ''
-  initial_state: false
-  use_blueprint:
-    path: bittles/frigate_notification.yaml
-    input:
-      camera: driveway
-      camera_and_type: driveway new
-      base_url: https://hassio.unibutton.com
-      cooldown: 120
-      captime: input_datetime.wyze_driveway_time
-      notify_group: kara_and_nick_notifications
-      labels: {}
-- id: '1641005202244'
-  alias: zzzzz.Bedroom Thermostat AC by Switch (Duplicate)
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: switch.bedroom_dummyac
-    to: 'on'
-    id: switchon
-  - platform: state
-    entity_id: switch.bedroom_dummyac
-    to: 'off'
-    id: switchoff
-  - platform: state
-    entity_id: sensor.shellytempfixed_timestamp_updater
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
-    id: bedroom_temp_change
-  - platform: state
-    entity_id: climate.downstairs_the_nest
-    attribute: hvac_action
-    id: nestheat
-    to: cooling
-  condition:
-  - condition: state
-    entity_id: climate.master_bedroom_thermostat
-    state: cool
-  - condition: template
-    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: switchon
-      sequence:
-      - choose:
-        - conditions:
-          - condition: not
-            conditions:
-            - condition: device
-              device_id: 1f4e53d64461d767d63350604b93cd1e
-              domain: climate
-              entity_id: climate.downstairs_the_nest
-              type: is_hvac_mode
-              hvac_mode: cool
-          sequence:
-          - device_id: 1f4e53d64461d767d63350604b93cd1e
-            domain: climate
-            entity_id: climate.downstairs_the_nest
-            type: set_hvac_mode
-            hvac_mode: cool
-          - delay:
-              hours: 0
-              minutes: 0
-              seconds: 15
-              milliseconds: 0
-          - service: climate.set_temperature
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-                - 3}}'
-        - conditions:
-          - condition: device
-            device_id: 1f4e53d64461d767d63350604b93cd1e
-            domain: climate
-            entity_id: climate.downstairs_the_nest
-            type: is_hvac_mode
-            hvac_mode: cool
-          sequence:
-          - service: climate.set_temperature
-            target:
-              entity_id: climate.downstairs_the_nest
-            data:
-              temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-                - 3}}'
-        default: []
-    - conditions:
-      - condition: trigger
-        id: switchoff
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            + 3}}'
-    - conditions:
-      - condition: trigger
-        id: nestheat
-      - condition: state
-        entity_id: switch.bedroom_dummyac
-        state: 'off'
-      sequence:
-      - service: climate.set_temperature
-        target:
-          entity_id: climate.downstairs_the_nest
-        data:
-          temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-            + 3}}'
-    default:
-    - choose:
-      - conditions:
-        - condition: template
-          value_template: '{{ (state_attr(''climate.downstairs_the_nest'', ''temperature'')|int(default=0)
-            - (state_attr(''climate.downstairs_the_nest'', ''current_temperature'')|int(default=0)))
-            < 3 }}'
-        - condition: trigger
-          id: bedroom_temp_change
-        - condition: state
-          entity_id: climate.downstairs_the_nest
-          attribute: hvac_action
-          state: cooling
-        - condition: state
-          entity_id: switch.bedroom_dummyac
-          state: 'on'
-        sequence:
-        - service: climate.set_temperature
-          target:
-            entity_id: climate.downstairs_the_nest
-          data:
-            temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-              - 3}}'
-      - conditions:
-        - condition: trigger
-          id: bedroom_temp_change
-        - condition: state
-          entity_id: climate.downstairs_the_nest
-          state: 'off'
-          attribute: hvac_action
-        - condition: state
-          entity_id: switch.bedroom_dummyac
-          state: 'on'
-          for:
-            hours: 0
-            minutes: 0
-            seconds: 15
-            milliseconds: 0
-        sequence:
-        - service: climate.set_temperature
-          target:
-            entity_id: climate.downstairs_the_nest
-          data:
-            temperature: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
-              - 3}}'
   mode: single
 - id: '1642702581833'
   alias: Nick Start Temp Change
@@ -3350,42 +2617,12 @@
       - input_number.wyze_deck_captures
     data: {}
   mode: single
-- id: '1643128802871'
-  alias: Frigate Notification Fork Back Deck (Nick)
-  description: ''
-  use_blueprint:
-    path: bittles/frigate_notification.yaml
-    input:
-      camera: back_deck
-      camera_and_type: back_deck new
-      base_url: https://hassio.unibutton.com
-      cooldown: 120
-      captime: input_datetime.wyze_deck_time
-      labels: {}
-      notify_device: 383ce8ce2def8523d79fe80a22d1297d
-- id: '1643136725154'
-  alias: Frigate Notification Fork Back Deck (Darius)
-  description: ''
-  use_blueprint:
-    path: bittles/frigate_notification.yaml
-    input:
-      camera: back_deck
-      camera_and_type: back_deck new
-      notify_device: f76e35c3824b4aa3b2bf069241084176
-      base_url: https://hassio.unibutton.com
-      labels:
-      - person
-      - bird
-      - cat
-      - bear
-      captime: input_datetime.wyze_deck_time
-      cooldown: 120
 - id: '1643180514530'
   alias: zzMotion Frigate Snapshots on Interval
   description: ''
   trigger:
   - platform: time_pattern
-    seconds: /10
+    seconds: /9
   condition: []
   action:
   - service: camera.snapshot
@@ -3498,74 +2735,6 @@
     default: []
   mode: queued
   max: 5
-- id: '1646345300210'
-  alias: zzzzz.Store Bedroom Thermostat Temps
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: climate.bedroom_thermostat
-    attribute: target_temp_low
-    id: temp low changed
-  - platform: state
-    entity_id: climate.bedroom_thermostat
-    attribute: target_temp_high
-    id: temp high changed
-  - platform: homeassistant
-    event: start
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: temp low changed
-      sequence:
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 1
-          milliseconds: 0
-      - service: input_number.set_value
-        data:
-          value: '{{ state_attr(''climate.bedroom_thermostat'', ''target_temp_low'')|float(default=67)
-            }}'
-        target:
-          entity_id: input_number.custom_thermostat_temp_low
-    - conditions:
-      - condition: trigger
-        id: temp high changed
-      sequence:
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 1
-          milliseconds: 0
-      - service: input_number.set_value
-        data:
-          value: '{{ state_attr(''climate.bedroom_thermostat'', ''target_temp_high'')|float(default=72)
-            }}'
-        target:
-          entity_id: input_number.custom_thermostat_temp_high
-    default:
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    - service: climate.set_hvac_mode
-      data:
-        hvac_mode: heat_cool
-      target:
-        entity_id: climate.bedroom_thermostat
-    - service: climate.set_temperature
-      data:
-        target_temp_high: '{{ states.input_number.custom_thermostat_temp_high.state
-          }}'
-        target_temp_low: '{{ states.input_number.custom_thermostat_temp_low.state
-          }}'
-      target:
-        entity_id: climate.bedroom_thermostat
-  mode: queued
-  max: 3
 - id: '1646350932648'
   alias: zzzz.Back Door Autolock
   description: ''
@@ -3776,3 +2945,112 @@
       camera: front_porch
       camera_and_type: front_porch new
       mqtttimeout: 30
+- id: '1650047572393'
+  alias: zzzz.Homekit Device Tracker Updates (mqtt) Caroline
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.caroline
+    from: 'off'
+    to: 'on'
+    id: carolinehome
+  - platform: state
+    entity_id: input_boolean.caroline
+    from: 'on'
+    to: 'off'
+    id: carolineleft
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: carolinehome
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: location/caroline
+          payload: home
+          qos: '1'
+          retain: true
+    - conditions:
+      - condition: trigger
+        id: carolineleft
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: location/caroline
+          payload: not_home
+          qos: '1'
+          retain: true
+    default: []
+  mode: single
+- id: '1650049481978'
+  alias: zPresence.Welcome Home Caroline Garage
+  description: ''
+  trigger:
+  - entity_id: person.caroline
+    platform: state
+    to: home
+  condition:
+  - condition: state
+    entity_id: timer.caroline
+    state: idle
+  - condition: state
+    entity_id: timer.garage_open_timer
+    state: idle
+  action:
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.garage_open_timer
+  - service: cover.open_cover
+    data: {}
+    target:
+      entity_id: cover.garage_mqtt
+  mode: single
+  initial_state: false
+- id: '1650053881981'
+  alias: zPresence.Leaving Caroline
+  description: ''
+  trigger:
+  - entity_id: person.caroline
+    from: home
+    platform: state
+  condition: []
+  action:
+  - data: {}
+    service: timer.start
+    target:
+      entity_id: timer.caroline
+  - data: {}
+    service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.caroline
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.kara
+        state: not_home
+      - condition: state
+        entity_id: person.nick
+        state: not_home
+      sequence:
+      - service: script.1579731744650
+        data: {}
+      - service: media_player.turn_off
+        target:
+          entity_id: media_player.bedroom_tcl_tv
+        data: {}
+      - service: media_player.turn_off
+        data: {}
+        target:
+          entity_id: media_player.forked_daapd_output_master_bedroom_apple_tv
+      - service: switch.turn_off
+        data: {}
+        entity_id: switch.airplayserver_bathroom
+      - type: turn_off
+        device_id: 5e5a2b32c5848dc960a5fa9d3bc41b26
+        entity_id: switch.desk_lamp
+        domain: switch
+    default: []
+  mode: single

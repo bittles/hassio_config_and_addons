@@ -286,6 +286,7 @@ device_tracker:
       nickmqtttrigger: "location/nick"
       dariusmqtttrigger: "location/darius"
       karamqtttrigger: "location/kara"
+      carolinemqtttrigger: "location/caroline"
     qos: 1
 
 gc100:
@@ -633,6 +634,7 @@ logbook:
   exclude:
     domains:
       - climate
+      - automation
     entities:
       - input_boolean.noone
       - binary_sensor.back_door
@@ -679,8 +681,7 @@ logbook:
       - switch.driveway_lights
       - switch.porch_lights
       - switch.bathroom_speaker
-    domains:
-      - automation
+
 
 # Enables the frontend
 frontend:

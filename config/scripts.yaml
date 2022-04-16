@@ -384,7 +384,7 @@ custom_thermostat_ac_switch_on_duplicate:
       sequence:
       - service: fan.turn_on
         data:
-          percentage: 66
+          percentage: 33
         target:
           entity_id: fan.bedroom_fan2
     default: []
