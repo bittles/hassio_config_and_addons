@@ -1461,11 +1461,29 @@
       minutes: 0
       seconds: 5
       milliseconds: 0
-  - service: notify.kara_and_nick_notifications
-    data:
-      message: Your clothes are washed! Throw them in the dryer you lazy piece of
-        shit!!
-      title: Washing Machine Done!
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.kara
+        state: home
+      sequence:
+      - service: notify.mobile_app_karas_iphone
+        data:
+          message: Your clothes are washed! They gon' get smelly if you don't dry
+            them
+          title: Washing Machine Done!
+    default: []
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.nick
+        state: home
+      sequence:
+      - service: notify.mobile_app_rxniphone
+        data:
+          title: Washing Machine Done!
+          message: Washer is done motherfuckah
+    default: []
   mode: single
 - id: '1615078034361'
   alias: zzzzSunday Reboot
