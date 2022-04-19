@@ -865,6 +865,9 @@
   trigger:
   - at: input_datetime.alfred_cleaning_time
     platform: time
+  - platform: state
+    entity_id: person.nick
+    to: not_home
   condition: []
   action:
   - data:
@@ -3070,5 +3073,56 @@
         device_id: 5e5a2b32c5848dc960a5fa9d3bc41b26
         entity_id: switch.desk_lamp
         domain: switch
+    default: []
+  mode: single
+- id: '1650259546530'
+  alias: yButters Timer Done
+  description: ''
+  trigger:
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.butters_litter_box_empty_timer
+    id: timerdone
+  - platform: state
+    entity_id: person.kara
+    to: home
+    for:
+      hours: 0
+      minutes: 45
+      seconds: 0
+    id: kara_home_10min
+    from: not_home
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: timerdone
+      sequence:
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id: input_boolean.butters_litter_box_toggle
+    - conditions:
+      - condition: trigger
+        id: kara_home_10min
+      - condition: state
+        entity_id: input_boolean.butters_litter_box_toggle
+        state: 'on'
+      sequence:
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.butters_litter_box_toggle
+      - service: notify.mobile_app_karas_iphone
+        data:
+          title: BUTTERS POOPS ALOT
+          message: It's been 3 days since you've gotten this notification that Butters
+            does, in fact, poop a lot and his box probably needs emptied!
+      - service: timer.start
+        data: {}
+        target:
+          entity_id: timer.butters_litter_box_empty_timer
     default: []
   mode: single

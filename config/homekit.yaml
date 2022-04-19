@@ -12,6 +12,7 @@
      - fan.living_room_fan
      - fan.bedroom_fan2
 
+     - input_boolean.caroline
      - input_boolean.nick
      - input_boolean.kara
      - input_boolean.darius
