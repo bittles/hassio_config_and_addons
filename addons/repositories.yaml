@@ -1,3 +1,7 @@
+B Tasker HomeAssistant Addons:
+  maintainer: B Tasker
+  slug: 93f0ddc5
+  source: https://github.com/bentasker/HomeAssistantAddons
 Frigate hass.io addons:
   maintainer: blakeblackshear
   slug: ccab4aaf

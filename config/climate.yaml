@@ -17,7 +17,7 @@
   hot_tolerance: 0.3
   precision: 0.1
   min_cycle_duration:
-    minutes: 15
+    minutes: 10
 
 #- platform: dual_smart_thermostat
 #  name: Bedroom Thermostat

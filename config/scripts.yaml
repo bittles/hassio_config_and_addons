@@ -378,10 +378,19 @@ custom_thermostat_ac_switch_on_duplicate:
       - condition: state
         entity_id: fan.bedroom_fan2
         state: 'off'
-      - condition: state
-        entity_id: person.nick
-        state: home
+      - condition: or
+        conditions:
+        - condition: state
+          entity_id: person.nick
+          state: home
+        - condition: state
+          entity_id: person.caroline
+          state: home
       sequence:
+      - service: input_boolean.turn_on
+        data: {}
+        target:
+          entity_id: input_boolean.custom_thermostat_fan_already_on
       - service: fan.turn_on
         data:
           percentage: 33
@@ -398,7 +407,7 @@ custom_thermostat_ac_switch_on_duplicate:
       target_temp_high: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
         - 3}}'
       target_temp_low: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_low'')
-        }}'
+        - 3 }}'
     target:
       entity_id: climate.downstairs_the_nest
   - delay:
@@ -414,10 +423,21 @@ custom_thermostat_ac_switch_on_duplicate:
 custom_thermostat_ac_switch_off_duplicate:
   alias: Custom Thermostat - AC Switch Off
   sequence:
-  - service: fan.turn_off
-    data: {}
-    target:
-      entity_id: fan.bedroom_fan2
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.custom_thermostat_fan_already_on
+        state: 'on'
+      sequence:
+      - service: fan.turn_off
+        data: {}
+        target:
+          entity_id: fan.bedroom_fan2
+      - service: input_boolean.turn_off
+        data: {}
+        target:
+          entity_id: input_boolean.custom_thermostat_fan_already_on
+    default: []
   - service: climate.set_temperature
     target:
       entity_id: climate.downstairs_the_nest
@@ -435,6 +455,10 @@ custom_thermostat_ac_switch_off_duplicate:
     data: {}
     target:
       entity_id: switch.nest_thermostat_fan
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.custom_thermostat_fan_already_on
   mode: single
 custom_thermostat_discipline_nest:
   alias: Custom Thermostat - Discipline Nest if Heating or Cooling Improperly

@@ -67,7 +67,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 20
     detect:
-      fps: 5
+      fps: 6
       height: 360
       max_disappeared: 30
       stationary:
@@ -145,7 +145,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 18
     detect:
-      fps: 5
+      fps: 6
       max_disappeared: 30
       height: 360
       stationary:
@@ -270,7 +270,7 @@ cameras:
 #          min_area: 10000
           max_area: 380000
         person:
-          min_area: 1000
+          min_area: 800
           max_area: 24000000
           threshold: 0.6
           min_score: 0.55
@@ -311,7 +311,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 20
     detect:
-      fps: 5
+      fps: 6
       max_disappeared: 40
       stationary:
         # Optional: Frequency for running detection on stationary objects (default: shown below)
@@ -480,7 +480,7 @@ snapshots:
     #objects:
     #  person: 15
 ffmpeg:
-  input_args: -use_wallclock_as_timestamps 1 #-copyts -avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
+#  input_args: -use_wallclock_as_timestamps 1 #-copyts -avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
   output_args:
     rtmp: -c copy -an -f flv
     record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an
