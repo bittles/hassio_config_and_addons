@@ -40,6 +40,7 @@
      - person.nick
      - person.kara
      - person.darius
+     - person.caroline
 
      - sensor.bonusroomtemp
      - sensor.shellytempfixed
