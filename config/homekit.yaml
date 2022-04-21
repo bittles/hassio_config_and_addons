@@ -16,6 +16,7 @@
      - input_boolean.nick
      - input_boolean.kara
      - input_boolean.darius
+    # - input_select.alfred_should_clean_when
 
      - light.lamp
      - light.kitchen
