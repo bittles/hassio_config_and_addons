@@ -865,9 +865,6 @@
   trigger:
   - at: input_datetime.alfred_cleaning_time
     platform: time
-  - platform: state
-    entity_id: person.nick
-    to: not_home
   condition: []
   action:
   - data:
