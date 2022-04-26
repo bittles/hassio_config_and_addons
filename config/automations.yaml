@@ -352,6 +352,21 @@
       - condition: state
         entity_id: binary_sensor.noone
         state: 'off'
+      - condition: time
+        before: 06:00:00
+      sequence:
+      - service: light.turn_off
+        target:
+          device_id: 490c4c1cf9e011ea8c0593a9ad4edd66
+    - conditions:
+      - condition: state
+        entity_id: sun.sun
+        state: below_horizon
+      - condition: state
+        entity_id: binary_sensor.noone
+        state: 'off'
+      - condition: time
+        after: 06:00:00
       sequence:
       - service: light.turn_on
         data:

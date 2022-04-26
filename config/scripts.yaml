@@ -344,8 +344,8 @@ heat_switch_on:
     target:
       entity_id: climate.downstairs_the_nest
     data:
-      target_temp_high: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_high'')
-        }}'
+      target_temp_high: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+        + 6}}'
       target_temp_low: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
         + 3}}'
   - delay:
@@ -406,8 +406,8 @@ custom_thermostat_ac_switch_on_duplicate:
     data:
       target_temp_high: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
         - 3}}'
-      target_temp_low: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_low'')
-        - 3 }}'
+      target_temp_low: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+        - 6 }}'
     target:
       entity_id: climate.downstairs_the_nest
   - delay:
