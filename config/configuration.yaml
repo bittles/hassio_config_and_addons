@@ -92,34 +92,48 @@ vacuum:
     - battery
     - status
     - locate
-    - clean_spot
+#    - clean_spot
     - fan_speed
-    - send_command
-  command_topic: valetudo/rockrobo/command
-  state_topic: valetudo/rockrobo/state
-  set_fan_speed_topic: valetudo/rockrobo/set_fan_speed
+#    - send_command
+  command_topic: valetudo/valetudorockrobo/hass/valetudorockrobo_vacuum/command
+  payload_start: START
+  payload_pause: PAUSE
+  payload_return_to_base: HOME
+  payload_stop: STOP
+  payload_locate: LOCATE
+  state_topic: valetudo/valetudorockrobo/hass/valetudorockrobo_vacuum/state
+  set_fan_speed_topic: valetudo/valetudorockrobo/FanSpeedControlCapability/preset/set
   fan_speed_list:
-    - min
+    - low
     - medium
     - high
     - max
-    - mop
-  send_command_topic: valetudo/rockrobo/custom_command
-  json_attributes_topic: valetudo/rockrobo/attributes
+    - 'off'
+#  send_command_topic: valetudo/rockrobo/custom_command
+#  battery_level_topic: valetudo/valetudorockrobo/BatteryStateAttribute/level
+#  battery_level_template: "{{ value }}"
+#  charging_topic: valetudo/valetudorockrobo/BatteryStateAttribute/status
+#  charging_template: "{{ value }}"
+#  error_topic: valetudo/valetudorockrobo/StatusStateAttribute/error
+#  error_template: "{{ value }}"
+  json_attributes_topic: valetudo/valetudorockrobo
   json_attributes_template: >
     {
-      "Current State": "{{ value_json.valetudo_state.name }}",
-      "Last Run Start Time": "{{ (value_json.last_run_stats.startTime/1000)|timestamp_custom('%m/%d %a %I:%M %p',local=true) }}",
-      "Last Run End Time": "{{ (value_json.last_run_stats.endTime/1000)|timestamp_custom('%m/%d %a %I:%M %p',local=true) }}",
-      "Last Run Duration": "{{ (value_json.last_run_stats.duration-68400)|timestamp_custom('%H:%M:%S') }}",
-      "Last Run Area Cleaned": "{{ (value_json.last_run_stats.area|float*10.76)|round(0) ~ " sq ft" }}",
-      "Last Run Finish Fine?": "{% if value_json.last_run_stats.finishedFlag == True %}Yes{% else %}No{% endif %}",
-      "Last Run Error?": "{{ value_json.last_run_stats.errorDescription }}",
-      "Bin Needs Emptied?": "{% if value_json.last_run_stats.endTime > value_json.last_bin_out %}True{% else %}False{% endif %}",
-      "Total Cleaning Time": "{{ value_json.cleanTime ~ " hr"}}",
-      "Total Cleaning Area": "{{ (value_json.cleanArea|float/4460.9665)|round(2) ~ " football fields"}}",
-      "Total Times Told to Clean": "{{ value_json.cleanCount }}"
+      "Last Run Duration": "{{ (value_json.CurrentStatisticsCapability.time)|timestamp_custom('%H:%M:%S') }}",
+      "Last Run Area Cleaned": "{{ (value_json.CurrentStatisticsCapability.area|float*10.76)|round(0) ~ " sq ft" }}",
+      "Last Run Error?": "{{ value_json.StatusStateAttribute.error }}"
     }
+#      "Current State": "{{ value_json.valetudo_state.name }}",
+#      "Last Run Start Time": "{{ (value_json.last_run_stats.startTime/1000)|timestamp_custom('%m/%d %a %I:%M %p',local=true) }}",
+#      "Last Run End Time": "{{ (value_json.last_run_stats.endTime/1000)|timestamp_custom('%m/%d %a %I:%M %p',local=true) }}",
+
+#      "Last Run Finish Fine?": "{% if value_json.last_run_stats.finishedFlag == True %}Yes{% else %}No{% endif %}",
+
+#      "Bin Needs Emptied?": "{% if value_json.last_run_stats.endTime > value_json.last_bin_out %}True{% else %}False{% endif %}",
+#      "Total Cleaning Time": "{{ value_json.cleanTime ~ " hr"}}",
+#      "Total Cleaning Area": "{{ (value_json.cleanArea|float/4460.9665)|round(2) ~ " football fields"}}",
+#      "Total Times Told to Clean": "{{ value_json.cleanCount }}"
+#    }
 
 
 #battery_consumption:
