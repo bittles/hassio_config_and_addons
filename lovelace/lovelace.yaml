@@ -14,7 +14,7 @@ config:
     - entity: person.kara
     - entity: person.caroline
     - entity: binary_sensor.noone
-    - entity: vacuum.alfred
+    - entity: vacuum.valetudo_valetudorockrobo
     - entity: sensor.nest_thermostat_temperature
     - entity: sensor.nest_thermostat_humidity
     - entity: sensor.shellytempfixed
@@ -522,7 +522,7 @@ config:
           vacuum:
             x: 26391
             y: 28735
-      entity: vacuum.alfred
+      entity: vacuum.valetudo_valetudorockrobo
       icons:
       - icon: mdi:play-pause
         tap_action:
@@ -534,48 +534,48 @@ config:
           service: vacuum.locate
       - conditions:
         - attribute: fan_speed
-          entity: vacuum.alfred
-          value: min
+          entity: vacuum.valetudo_valetudorockrobo
+          value: low
         icon: mdi:fan-chevron-up
         tap_action:
           action: call-service
           service: vacuum.set_fan_speed
           service_data:
-            entity_id: vacuum.alfred
+            entity_id: vacuum.valetudo_valetudorockrobo
             fan_speed: medium
       - conditions:
         - attribute: fan_speed
-          entity: vacuum.alfred
+          entity: vacuum.valetudo_valetudorockrobo
           value: medium
         icon: mdi:fan-chevron-up
         tap_action:
           action: call-service
           service: vacuum.set_fan_speed
           service_data:
-            entity_id: vacuum.alfred
+            entity_id: vacuum.valetudo_valetudorockrobo
             fan_speed: high
       - conditions:
         - attribute: fan_speed
-          entity: vacuum.alfred
+          entity: vacuum.valetudo_valetudorockrobo
           value: high
         icon: mdi:fan-chevron-up
         tap_action:
           action: call-service
           service: vacuum.set_fan_speed
           service_data:
-            entity_id: vacuum.alfred
+            entity_id: vacuum.valetudo_valetudorockrobo
             fan_speed: max
       - conditions:
         - attribute: fan_speed
-          entity: vacuum.alfred
+          entity: vacuum.valetudo_valetudorockrobo
           value: max
         icon: mdi:fan-chevron-up
         tap_action:
           action: call-service
           service: vacuum.set_fan_speed
           service_data:
-            entity_id: vacuum.alfred
-            fan_speed: min
+            entity_id: vacuum.valetudo_valetudorockrobo
+            fan_speed: low
       map_locked: true
       map_modes:
       - icon: mdi:floor-plan
@@ -639,7 +639,7 @@ config:
             parameters_and_values: '[[selection]]'
             route: go_to
       map_source:
-        camera: camera.alfred_s_map
+        camera: camera.valetudorockrobo_rendered_map
       preset_name: Live map
       tiles:
       - attribute: Current State
@@ -649,7 +649,7 @@ config:
         tap_action:
           action: more-info
       - attribute: fan_speed
-        entity: vacuum.alfred
+        entity: vacuum.valetudo_valetudorockrobo
         icon: mdi:vacuum
         label: Fan Speed
         tap_action:
@@ -702,6 +702,9 @@ config:
       - entity: media_player.forked_daapd_output_living_room_tcl_tv
       - entity: media_player.forked_daapd_output_receiver
       type: entities
+    - title: Alfred's Domain
+      type: custom:valetudo-map-card
+      vacuum: valetudo_valetudorockrobo
     path: server-control
     title: Server Control
   - badges: []

@@ -29,3 +29,6 @@ items:
 - id: 79c11d729c6641feb90c299f3a92874f
   type: module
   url: /hacsfiles/simple-thermostat/simple-thermostat.js?hacstag=158654878243
+- id: 77932c4d67084c6bb753bb9c669c58df
+  type: module
+  url: /hacsfiles/lovelace-valetudo-map-card/valetudo-map-card.js?hacstag=2030361082022012

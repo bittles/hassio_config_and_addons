@@ -1,4 +1,5 @@
 FRESH_DATA: true
+IMG_TYPE: jpg
 MQTT_AUTH: mqtt:mosquitto
 MQTT_DTOPIC: homeassistant
 MQTT_HOST: 192.168.29.189:1883

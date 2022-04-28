@@ -589,3 +589,11 @@ driveway:
     target:
       entity_id: switch.driveway
   mode: single
+alfred_cleans_living_room_and_kitchen_2:
+  alias: Alfred Cleans Living Room and Kitchen Valetudo
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: valetudo/valetudorockrobo/ZoneCleaningCapability/start/set
+      payload: 0bedfb06-c3bc-4427-98a2-fd52a556c309
+  mode: single

@@ -933,23 +933,18 @@
     platform: time
   condition: []
   action:
-  - data:
-      command: zoned_cleanup
-      params:
-        zone_ids:
-        - Living Room and Kitchen
-    entity_id: vacuum.alfred
-    service: vacuum.send_command
+  - service: vacuum.set_fan_speed
+    data:
+      fan_speed: medium
+    target:
+      entity_id: vacuum.valetudo_valetudorockrobo
   - delay:
       hours: 0
       minutes: 0
       seconds: 5
       milliseconds: 0
-  - service: vacuum.set_fan_speed
-    data:
-      fan_speed: medium
-    target:
-      entity_id: vacuum.alfred
+  - service: script.alfred_cleans_living_room_and_kitchen_2
+    data: {}
 - id: '1600464055158'
   alias: zzSave Zone 2 Sources
   description: ''
