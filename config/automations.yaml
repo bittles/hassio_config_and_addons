@@ -2864,6 +2864,23 @@
             domain: lock
             entity_id: lock.back_door
             type: lock
+          - repeat:
+              until:
+              - condition: device
+                device_id: ed8540b7667667aa76f6c1e9c8557dac
+                domain: lock
+                entity_id: lock.back_door
+                type: is_locked
+              sequence:
+              - service: lock.lock
+                data: {}
+                target:
+                  entity_id: lock.back_door
+              - delay:
+                  hours: 0
+                  minutes: 1
+                  seconds: 0
+                  milliseconds: 0
         - conditions:
           - type: is_open
             condition: device

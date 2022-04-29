@@ -505,19 +505,19 @@ config:
     - calibration_source:
         calibration_points:
         - map:
-            x: 45
-            y: 303
+            x: 90
+            y: 298
           vacuum:
             x: 18667
             y: 20308
         - map:
-            x: 137
+            x: 185
             y: 798
           vacuum:
             x: 19753
             y: 26492
         - map:
-            x: 665
+            x: 750
             y: 977
           vacuum:
             x: 26391
@@ -602,25 +602,6 @@ config:
             - 28935
           - - 18626
             - 28935
-        - icon:
-            name: mdi:weather-sunny
-            x: 23500
-            y: 18300
-          id: Sun Room
-          label:
-            offset_y: 35
-            text: Sun Room
-            x: 23500
-            y: 18300
-          outline:
-          - - 21230
-            - 16697
-          - - 25586
-            - 16697
-          - - 25586
-            - 19920
-          - - 21230
-            - 19920
         repeats_type: EXTERNAL
         selection_type: ROOM
         service_call_schema:
@@ -642,8 +623,7 @@ config:
         camera: camera.valetudorockrobo_rendered_map
       preset_name: Live map
       tiles:
-      - attribute: Current State
-        entity: vacuum.alfred
+      - entity: vacuum.valetudo_valetudorockrobo
         icon: mdi:robot-vacuum
         label: Status
         tap_action:
@@ -655,36 +635,20 @@ config:
         tap_action:
           action: more-info
       - attribute: battery_level
-        entity: vacuum.alfred
+        entity: vacuum.valetudo_valetudorockrobo
         icon: mdi:battery
         label: Battery Level
         tap_action:
           action: more-info
         unit: '%'
-      - attribute: Last Run Duration
-        entity: vacuum.alfred
+      - entity: sensor.valetudo_valetudorockrobo_current_statistics_time
         icon: mdi:horizontal-rotate-clockwise
         label: Last Run Time
+        multiplier: 0.0166
+        precision: 1
         tap_action:
           action: more-info
-      - attribute: Last Run Start Time
-        entity: vacuum.alfred
-        icon: mdi:clock-alert
-        label: Last Cleaning Start Time
-        tap_action:
-          action: more-info
-      - attribute: Last Run End Time
-        entity: vacuum.alfred
-        icon: mdi:clock-check
-        label: Last Cleaning Stop Time
-        tap_action:
-          action: more-info
-      - attribute: Bin Needs Emptied?
-        entity: vacuum.alfred
-        icon: mdi:delete-empty
-        label: Does Bin Need Emptied?
-        tap_action:
-          action: more-info
+        unit: ' min'
       title: Alfred's Domain
       type: custom:xiaomi-vacuum-map-card
     - entities:
@@ -702,7 +666,15 @@ config:
       - entity: media_player.forked_daapd_output_living_room_tcl_tv
       - entity: media_player.forked_daapd_output_receiver
       type: entities
-    - title: Alfred's Domain
+    - crop:
+        bottom: 0
+        left: 29
+        right: 0
+        top: 0
+      map_scale: 1.7
+      show_battery_level: true
+      show_home_button: true
+      title: Alfred's Domain
       type: custom:valetudo-map-card
       vacuum: valetudo_valetudorockrobo
     path: server-control
