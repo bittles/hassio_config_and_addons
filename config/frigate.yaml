@@ -55,6 +55,8 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://192.168.29.187:8969/front-porch-cam
+        #rtsp://192.168.29.187:31040/b99573d3037d84ca
+        #http://192.168.29.187:8898/front-porch-cam/stream.m3u8
 #        - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.113/live
           roles:
             - detect
@@ -67,7 +69,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 20
     detect:
-      fps: 6
+      fps: 12
       height: 360
       max_disappeared: 30
       stationary:
@@ -134,6 +136,9 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://192.168.29.187:8969/driveway-cam
+        #rtsp://192.168.29.187:31040/a9cb73e34e025a2d
+        #http://192.168.29.187:8898/driveway-cam/stream.m3u8
+        #
   #      - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
           roles:
             - detect
@@ -145,7 +150,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 18
     detect:
-      fps: 6
+      fps: 12
       max_disappeared: 30
       height: 360
       stationary:
@@ -299,6 +304,9 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://192.168.29.187:8969/back-deck-cam
+        #rtsp://192.168.29.187:31040/d0a37ac8b922d29b
+        #http://192.168.29.187:8898/back-deck-cam/stream.m3u8
+        #
  #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
           roles:
             - detect
@@ -311,7 +319,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 20
     detect:
-      fps: 6
+      fps: 12
       max_disappeared: 40
       stationary:
         # Optional: Frequency for running detection on stationary objects (default: shown below)
@@ -480,11 +488,13 @@ snapshots:
     #objects:
     #  person: 15
 ffmpeg:
-#  input_args: -use_wallclock_as_timestamps 1 #-copyts -avoid_negative_ts make_zero -flags low_delay -fflags +genpts+discardcorrupt+nobuffer
   output_args:
-    rtmp: -c copy -an -f flv
-    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an
+    rtmp: -c:v copy -an -f flv
+    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v copy -an
     detect: -f rawvideo -pix_fmt yuv420p
+
+# Optional: global input args (default: shown below)
+#  input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -r 20/1
   # Optional: global ffmpeg args (default: shown below)
 #  global_args: -hide_banner -loglevel warning
   
@@ -515,7 +525,7 @@ motion:
   # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
   # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
   # The value should be between 1 and 255.
-  threshold: 45
+  threshold: 40
   # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
   # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
   # moving objects.
