@@ -877,7 +877,7 @@
     entity_id: cover.garage_mqtt
     state: open
   action:
-  - service: notify.mobile_app_rxniphone
+  - service: notify.kara_and_nick_notifications
     data:
       data:
         actions:
@@ -913,7 +913,7 @@
     to: open
   condition: []
   action:
-  - service: notify.mobile_app_rxniphone
+  - service: notify.kara_and_nick_notifications
     data:
       title: Should the garage be open??
       message: Garage door has been open for 20 minutes!
