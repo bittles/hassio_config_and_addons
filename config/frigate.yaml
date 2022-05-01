@@ -69,7 +69,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 20
     detect:
-      fps: 12
+      fps: 10
       height: 360
       max_disappeared: 30
       stationary:
@@ -150,7 +150,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 18
     detect:
-      fps: 12
+      fps: 10
       max_disappeared: 30
       height: 360
       stationary:
@@ -319,7 +319,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 20
     detect:
-      fps: 12
+      fps: 10
       max_disappeared: 40
       stationary:
         # Optional: Frequency for running detection on stationary objects (default: shown below)
@@ -494,7 +494,7 @@ ffmpeg:
     detect: -f rawvideo -pix_fmt yuv420p
 
 # Optional: global input args (default: shown below)
-#  input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -r 20/1
+  input_args: -fflags +discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1
   # Optional: global ffmpeg args (default: shown below)
 #  global_args: -hide_banner -loglevel warning
   
