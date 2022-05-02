@@ -943,7 +943,7 @@
       minutes: 0
       seconds: 5
       milliseconds: 0
-  - service: script.alfred_cleans_living_room_and_kitchen_2
+  - service: script.alfred_cleans_living_room_and_kitchen
     data: {}
 - id: '1600464055158'
   alias: zzSave Zone 2 Sources

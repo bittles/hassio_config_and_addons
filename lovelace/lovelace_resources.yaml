@@ -32,3 +32,6 @@ items:
 - id: 77932c4d67084c6bb753bb9c669c58df
   type: module
   url: /hacsfiles/lovelace-valetudo-map-card/valetudo-map-card.js?hacstag=2030361082022012
+- id: e4f2f24ad6b74e2caf51d74be1b356c6
+  type: module
+  url: /hacsfiles/frigate-hass-card/frigate-hass-card.js?hacstag=394082552300

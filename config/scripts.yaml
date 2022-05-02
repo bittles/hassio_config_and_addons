@@ -538,7 +538,8 @@ alfred_cleans_living_room_and_kitchen:
       command: '{ "command": "zoned_cleanup", "zone_ids": [ "Living Room and Kitchen"
         ] }'
     target:
-      entity_id: vacuum.alfred
+      entity_id:
+      - vacuum.alfred_re
   mode: single
 alfred_cleans_from_card:
   alias: Alfred Cleans from Card
@@ -596,4 +597,32 @@ alfred_cleans_living_room_and_kitchen_2:
     data:
       topic: valetudo/valetudorockrobo/ZoneCleaningCapability/start/set
       payload: 0bedfb06-c3bc-4427-98a2-fd52a556c309
+  mode: single
+alfred_butters_defense:
+  alias: Alfred Butters Defense Valetudo
+  sequence:
+  - service: mqtt.publish
+    data:
+      topic: valetudo/valetudorockrobo/ZoneCleaningCapability/start/set
+      payload: a034ef9c-5a6f-41af-9abb-b9330d1c65d8
+  mode: single
+alfred_butters_defense_re:
+  alias: Alfred Butters Defense RE
+  sequence:
+  - service: vacuum.send_command
+    data:
+      command: '{ "command": "zoned_cleanup", "zone_ids": [ "Butters Defense" ] }'
+    target:
+      entity_id:
+      - vacuum.alfred_re
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: vacuum.set_fan_speed
+    data:
+      fan_speed: min
+    target:
+      entity_id: vacuum.alfred_re
   mode: single
