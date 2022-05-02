@@ -14,7 +14,7 @@ config:
     - entity: person.kara
     - entity: person.caroline
     - entity: binary_sensor.noone
-    - entity: vacuum.valetudo_valetudorockrobo
+    - entity: vacuum.alfred_re
     - entity: sensor.nest_thermostat_temperature
     - entity: sensor.nest_thermostat_humidity
     - entity: sensor.shellytempfixed
@@ -48,26 +48,28 @@ config:
       show_header_toggle: false
       state_color: true
       type: entities
-    - camera_image: camera.porch_motion_snapshot
-      entities:
-      - entity: lock.august_asl_03_smart_lock_locked
-      - entity: cover.garage_mqtt
-      entity: camera.front_porch
-      title: Front Porch
-      type: picture-glance
-    - camera_image: camera.driveway_motion_snapshot
-      entities:
-      - entity: lock.august_asl_03_smart_lock_locked
-      - entity: cover.garage_mqtt
-      entity: camera.driveway
-      title: Driveway
-      type: picture-glance
-    - camera_image: camera.deck_motion_snapshot
-      entities:
-      - entity: lock.back_door
-      entity: camera.back_deck
-      title: Back Deck
-      type: picture-glance
+    - cameras:
+      - camera_entity: camera.driveway
+      - camera_entity: camera.front_porch
+      - camera_entity: camera.back_deck
+      dimensions:
+        aspect_ratio_mode: unconstrained
+      event_gallery:
+        min_columns: 1
+      event_viewer:
+        auto_play: false
+      live:
+        auto_unmute: true
+      menu:
+        buttons:
+          download: false
+          fullscreen: false
+          image: false
+        mode: overlay-left
+      type: custom:frigate-card
+      view:
+        camera_select: clip
+        default: snapshot
     - columns: 3
       entities:
       - entity: binary_sensor.caringaragestatus
@@ -522,7 +524,7 @@ config:
           vacuum:
             x: 26391
             y: 28735
-      entity: vacuum.valetudo_valetudorockrobo
+      entity: vacuum.alfred_re
       icons:
       - icon: mdi:play-pause
         tap_action:
@@ -534,47 +536,47 @@ config:
           service: vacuum.locate
       - conditions:
         - attribute: fan_speed
-          entity: vacuum.valetudo_valetudorockrobo
+          entity: vacuum.alfred_re
           value: low
         icon: mdi:fan-chevron-up
         tap_action:
           action: call-service
           service: vacuum.set_fan_speed
           service_data:
-            entity_id: vacuum.valetudo_valetudorockrobo
+            entity_id: vacuum.alfred_re
             fan_speed: medium
       - conditions:
         - attribute: fan_speed
-          entity: vacuum.valetudo_valetudorockrobo
+          entity: vacuum.alfred_re
           value: medium
         icon: mdi:fan-chevron-up
         tap_action:
           action: call-service
           service: vacuum.set_fan_speed
           service_data:
-            entity_id: vacuum.valetudo_valetudorockrobo
+            entity_id: vacuum.alfred_re
             fan_speed: high
       - conditions:
         - attribute: fan_speed
-          entity: vacuum.valetudo_valetudorockrobo
+          entity: vacuum.alfred_re
           value: high
         icon: mdi:fan-chevron-up
         tap_action:
           action: call-service
           service: vacuum.set_fan_speed
           service_data:
-            entity_id: vacuum.valetudo_valetudorockrobo
+            entity_id: vacuum.alfred_re
             fan_speed: max
       - conditions:
         - attribute: fan_speed
-          entity: vacuum.valetudo_valetudorockrobo
+          entity: vacuum.alfred_re
           value: max
         icon: mdi:fan-chevron-up
         tap_action:
           action: call-service
           service: vacuum.set_fan_speed
           service_data:
-            entity_id: vacuum.valetudo_valetudorockrobo
+            entity_id: vacuum.alfred_re
             fan_speed: low
       map_locked: true
       map_modes:
@@ -620,22 +622,22 @@ config:
             parameters_and_values: '[[selection]]'
             route: go_to
       map_source:
-        camera: camera.valetudorockrobo_rendered_map
+        camera: camera.alfred_map
       preset_name: Live map
       tiles:
-      - entity: vacuum.valetudo_valetudorockrobo
+      - entity: vacuum.alfred_re
         icon: mdi:robot-vacuum
         label: Status
         tap_action:
           action: more-info
       - attribute: fan_speed
-        entity: vacuum.valetudo_valetudorockrobo
+        entity: vacuum.alfred_re
         icon: mdi:vacuum
         label: Fan Speed
         tap_action:
           action: more-info
       - attribute: battery_level
-        entity: vacuum.valetudo_valetudorockrobo
+        entity: vacuum.alfred_re
         icon: mdi:battery
         label: Battery Level
         tap_action:
@@ -677,6 +679,26 @@ config:
       title: Alfred's Domain
       type: custom:valetudo-map-card
       vacuum: valetudo_valetudorockrobo
+    - camera_image: camera.deck_motion_snapshot
+      entities:
+      - entity: lock.back_door
+      entity: camera.back_deck
+      title: Back Deck
+      type: picture-glance
+    - camera_image: camera.porch_motion_snapshot
+      entities:
+      - entity: lock.august_asl_03_smart_lock_locked
+      - entity: cover.garage_mqtt
+      entity: camera.front_porch
+      title: Front Porch
+      type: picture-glance
+    - camera_image: camera.driveway_motion_snapshot
+      entities:
+      - entity: lock.august_asl_03_smart_lock_locked
+      - entity: cover.garage_mqtt
+      entity: camera.driveway
+      title: Driveway
+      type: picture-glance
     path: server-control
     title: Server Control
   - badges: []

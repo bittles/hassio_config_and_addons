@@ -109,7 +109,7 @@ vacuum:
     - high
     - max
     - 'off'
-#  send_command_topic: valetudo/rockrobo/custom_command
+  send_command_topic: valetudo/rockrobo/custom_command
 #  battery_level_topic: valetudo/valetudorockrobo/BatteryStateAttribute/level
 #  battery_level_template: "{{ value }}"
 #  charging_topic: valetudo/valetudorockrobo/BatteryStateAttribute/status
