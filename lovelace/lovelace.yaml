@@ -260,6 +260,13 @@ config:
       - entity: sensor.total_time_tanner_s_water_empty
       - entity: sensor.count_tanner_s_water_was_empty
       type: entities
+    - entities:
+      - entity: script.alfred_butters_defense_re
+      - entity: input_datetime.butters_defense_start_time
+      - entity: input_datetime.butters_defense_stop_time
+      - entity: timer.butters_clean_timer
+      - entity: automation.butters_defense
+      type: entities
     title: Tanner
   - badges: []
     cards:

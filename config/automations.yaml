@@ -3201,3 +3201,33 @@
           entity_id: timer.butters_litter_box_empty_timer
     default: []
   mode: single
+- id: '1651548497088'
+  alias: Butters Defense
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.butters_defense_start_time
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.butters_clean_timer
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        before: input_datetime.butters_defense_stop_time
+      sequence:
+      - service: script.alfred_butters_defense_re
+        data: {}
+      - delay:
+          hours: 0
+          minutes: 1
+          seconds: 0
+          milliseconds: 0
+      - service: timer.start
+        data: {}
+        target:
+          entity_id: timer.butters_clean_timer
+    default: []
+  mode: single
