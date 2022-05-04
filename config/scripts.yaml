@@ -505,8 +505,8 @@ custom_thermostat_update_set_temp:
         target:
           entity_id: climate.downstairs_the_nest
         data:
-          target_temp_high: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_high'')
-            }}'
+          target_temp_high: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            + 6}}'
           target_temp_low: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             + 3}}'
     - conditions:
@@ -524,8 +524,8 @@ custom_thermostat_update_set_temp:
         data:
           target_temp_high: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
             - 3}}'
-          target_temp_low: '{{ state_attr(''climate.downstairs_the_nest'', ''target_temp_low'')
-            }}'
+          target_temp_low: '{{ states(''sensor.nest_thermostat_temperature'')|int(default=0)
+            - 6}}'
     default:
     - service: script.custom_thermostat_discipline_nest
       data: {}
