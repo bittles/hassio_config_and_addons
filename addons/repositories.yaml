@@ -14,6 +14,10 @@ Home Assistant Add-ons (@MikeJMcGuire):
   maintainer: Mike J McGuire <mike@mikejmcguire.com>
   slug: e4641267
   source: https://github.com/MikeJMcGuire/HASSAddons
+Home Assistant Community Add-ons:
+  maintainer: Franck Nijhof <frenck@addons.community>
+  slug: a0d7b954
+  source: https://github.com/hassio-addons/repository
 Home Assistant Developer Add-ons:
   maintainer: Home Assistant Team <info@home-assistant.io>
   slug: ae6e943c
