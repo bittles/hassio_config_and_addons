@@ -675,17 +675,6 @@ config:
       - entity: media_player.forked_daapd_output_living_room_tcl_tv
       - entity: media_player.forked_daapd_output_receiver
       type: entities
-    - crop:
-        bottom: 0
-        left: 29
-        right: 0
-        top: 0
-      map_scale: 1.7
-      show_battery_level: true
-      show_home_button: true
-      title: Alfred's Domain
-      type: custom:valetudo-map-card
-      vacuum: valetudo_valetudorockrobo
     - camera_image: camera.deck_motion_snapshot
       entities:
       - entity: lock.back_door

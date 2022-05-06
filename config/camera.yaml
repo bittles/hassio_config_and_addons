@@ -11,15 +11,37 @@
   still_image_url: http://127.0.0.1:8123/local/snapshot_camera.back_deck.jpg
   name: Deck Motion Snapshot
 
-- platform: mqtt
-  name: Alfred's Map
-  unique_id: alfred_map
-  device:
-    manufacturer: Roborock
-    name: rockrobo
-    identifiers:
-      - rockrobo_alfred
-  topic: valetudo/rockrobo/map
+#- platform: mqtt
+#  name: Alfred's Map
+#  unique_id: alfred_map
+#  device:
+#    manufacturer: Roborock
+#    name: rockrobo
+#    identifiers:
+#      - rockrobo_alfred
+#  topic: valetudo/rockrobo/map
+
+#- platform: mqtt
+#  unique_id: wyzefrontporch2
+#  name: Wyze_Front_Porch
+#  topic: wyze-bridge/wyzebridge/front-porch-cam/image
+#  json_attributes_topic: wyze-bridge/wyzebridge/front-porch-cam/attributes"
+#  availability_topic: wyze-bridge/wyzebridge/front-porch-cam/state
+
+#- platform: mqtt
+#  unique_id: wyzedriveway2
+#  name: Wyze_Driveway
+#  topic: wyze-bridge/wyzebridge/driveway-cam/image
+#  json_attributes_topic: wyze-bridge/wyzebridge/front-porch-cam/attributes"
+#  availability_topic: wyze-bridge/wyzebridge/driveway-cam/state
+
+#- platform: mqtt
+#  unique_id: wyzebackdeck2
+#  name: Wyze_Back_Deck
+#  topic: wyze-bridge/wyzebridge/back-deck-cam/image
+#  json_attributes_topic: wyze-bridge/wyzebridge/front-porch-cam/attributes"
+#  availability_topic: wyze-bridge/wyzebridge/back-deck-cam/state
+#  availability_template:
 
 #- platform: aarlo
 
