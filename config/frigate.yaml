@@ -261,7 +261,7 @@ cameras:
 
     objects:
       track:
-        - car
+#        - car
         - person
 #        - bus
         - motorcycle
@@ -271,9 +271,9 @@ cameras:
         - dog
         - bear
       filters:
-        car:
-#          min_area: 10000
-          max_area: 380000
+#        car:
+##          min_area: 10000
+ #         max_area: 380000
         person:
           min_area: 800
           max_area: 24000000
