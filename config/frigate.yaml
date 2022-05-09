@@ -54,7 +54,7 @@ cameras:
   front_porch:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8969/front-porch-cam
+        - path: rtsp://192.168.29.189:8969/front-porch-cam
         #rtsp://192.168.29.187:31040/b99573d3037d84ca
         #http://192.168.29.187:8898/front-porch-cam/stream.m3u8
 #        - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.113/live
@@ -135,7 +135,7 @@ cameras:
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8969/driveway-cam
+        - path: rtsp://192.168.29.189:8969/driveway-cam
         #rtsp://192.168.29.187:31040/a9cb73e34e025a2d
         #http://192.168.29.187:8898/driveway-cam/stream.m3u8
         #
@@ -174,7 +174,7 @@ cameras:
 #        - 0,131,0,35,126,63,111,110,136,156,171,200,116,283,244,301,215,399,103,434,0,625
 #        - 253,720,197,669,161,619,132,630,106,674,76,720
 #        - 1280,179,1280,677,1242,682,1193,489,1178,371,1208,249
-      threshold: 65
+#      threshold: 40
 #    zones:
 #      street_half_driveway:
 #        coordinates: 414,103,1011,89,943,0,471,0
@@ -303,7 +303,7 @@ cameras:
   back_deck:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8969/back-deck-cam
+        - path: rtsp://192.168.29.189:8969/back-deck-cam
         #rtsp://192.168.29.187:31040/d0a37ac8b922d29b
         #http://192.168.29.187:8898/back-deck-cam/stream.m3u8
         #
@@ -494,7 +494,7 @@ ffmpeg:
     detect: -f rawvideo -pix_fmt yuv420p
 
 # Optional: global input args (default: shown below)
-  input_args: -fflags +discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1
+  input_args: -fflags +discardcorrupt+flush_packets+nobuffer -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1
   # Optional: global ffmpeg args (default: shown below)
 #  global_args: -hide_banner -loglevel warning
   
@@ -525,7 +525,7 @@ motion:
   # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
   # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
   # The value should be between 1 and 255.
-  threshold: 40
+  threshold: 37
   # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
   # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
   # moving objects.
