@@ -42,3 +42,11 @@ docker-wyze-bridge:
   maintainer: unknown
   slug: 7094bb28
   source: https://github.com/mrlt8/docker-wyze-bridge
+docker-wyze-bridge fork:
+  maintainer: unknown
+  slug: 0816151b
+  source: https://github.com/bittles/docker-wyze-bridge-fork
+docker-wyze-bridge fork-low:
+  maintainer: unknown
+  slug: c7c669ec
+  source: https://github.com/bittles/docker-wyze-bridge-fork-low

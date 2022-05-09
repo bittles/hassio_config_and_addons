@@ -1,0 +1,14 @@
+AUDIO_CODEC: LIBOPUS
+ENABLE_AUDIO: true
+FORCE_FPS_{CAM_NAME}: 20
+FRESH_DATA: true
+MQTT_DTOPIC: homeassistant
+NET_MODE: ANY
+QUALITY: SD90
+RTSP_HLSDISABLE: 'yes'
+RTSP_RTMPDISABLE: 'yes'
+RTSP_RTSPDISABLE: 'no'
+SNAPSHOT: API
+WYZE_EMAIL: bauern.sc@gmail.com
+WYZE_PASSWORD: '%9Kla1NMPLgF2seD'
+freetext_environmental_options: {}
