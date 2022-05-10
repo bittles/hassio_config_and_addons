@@ -1,6 +1,6 @@
 AUDIO_CODEC: LIBOPUS
 ENABLE_AUDIO: true
-FORCE_FPS_{CAM_NAME}: 20
+FFMPEG_FLAGS: -flags low_delay+global_header -fflags +genpts+flush_packets+nobuffer
 FRESH_DATA: true
 MQTT_DTOPIC: homeassistant
 NET_MODE: ANY
@@ -11,4 +11,3 @@ RTSP_RTSPDISABLE: 'no'
 SNAPSHOT: API
 WYZE_EMAIL: bauern.sc@gmail.com
 WYZE_PASSWORD: '%9Kla1NMPLgF2seD'
-freetext_environmental_options: {}

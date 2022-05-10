@@ -9,8 +9,6 @@ from collections.abc import Callable, Awaitable
 from datetime import datetime, timedelta
 from typing import Any, TypeVar
 
-from asusrouter import AsusRouter
-
 from homeassistant.components.device_tracker.const import (
     CONF_CONSIDER_HOME,
     DEFAULT_CONSIDER_HOME,
@@ -24,6 +22,7 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_PORT,
     CONF_VERIFY_SSL,
+    CONF_SSL,
 )
 from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryNotReady
@@ -32,48 +31,33 @@ from homeassistant.helpers.device_registry import format_mac
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.event import async_track_time_interval
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import dt as dt_util
 
 from .bridge import AsusRouterBridge
 from .const import (
-    CONF_USE_SSL,
-    CONF_CERT_PATH,
     CONF_CACHE_TIME,
-    CONF_ENABLE_MONITOR,
     CONF_ENABLE_CONTROL,
-    DEFAULT_PORT,
-    DEFAULT_HTTP,
-    DEFAULT_USE_SSL,
-    DEFAULT_VERIFY_SSL,
+    CONF_ENABLE_MONITOR,
+    CONF_REQ_RELOAD,
     DEFAULT_CACHE_TIME,
-    DEFAULT_ENABLE_MONITOR,
     DEFAULT_ENABLE_CONTROL,
-    SENSORS_CONNECTED_DEVICES,
+    DEFAULT_ENABLE_MONITOR,
+    DEFAULT_HTTP,
+    DEFAULT_PORT,
+    DEFAULT_PORTS,
+    DEFAULT_SSL,
+    DEFAULT_VERIFY_SSL,
     DOMAIN,
+    KEY_COORDINATOR,
+    DEFAULT_SCAN_INTERVAL,
+    SENSORS_CONNECTED_DEVICES,
+    SENSORS_TYPE_DEVICES,
 )
 
-CONF_REQ_RELOAD = [
-    CONF_CACHE_TIME
-]
 
-KEY_COORDINATOR = "coordinator"
-KEY_SENSORS = "sensors"
-KEY_SENSORS_CPU = "cpu"
-KEY_SENSORS_RAM = "ram"
-KEY_SENSORS_NETWORK_STAT = "network_stat"
-KEY_SENSORS_DEVICES = "devices"
-KEY_SENSORS_MISC = "misc"
+from asusrouter import ConnectedDevice
 
-SCAN_INTERVAL = timedelta(seconds = 30)
-
-SENSORS_TYPE_MAIN = "sensors_main"
-SENSORS_TYPE_CPU = "cpu"
-SENSORS_TYPE_RAM = "ram"
-SENSORS_TYPE_NETWORK_STAT = "network_stat"
-SENSORS_TYPE_DEVICES = "devices"
-SENSORS_TYPE_CHANGE = "change"
-SENSORS_TYPE_MISC = "misc"
 
 _T = TypeVar("_T")
 
@@ -122,7 +106,7 @@ class AsusRouterSensorHandler:
             _LOGGER,
             name = sensor_type,
             update_method = method,
-            update_interval = SCAN_INTERVAL if should_poll else None,
+            update_interval = DEFAULT_SCAN_INTERVAL if should_poll else None,
         )
         await coordinator.async_refresh()
 
@@ -143,18 +127,18 @@ class AsusRouterDevInfo:
         self._connection_time : str | None = None
 
 
-    def update(self, dev_info : dict[str, Any] | None = None, consider_home : int = 0):
+    def update(self, dev_info : dict[str, ConnectedDevice] | None = None, consider_home : int = 0):
         """Update AsusRouter device info"""
 
         utc_point_in_time = dt_util.utcnow()
 
         if dev_info:
-            self._name = dev_info["name"]
-            self._ip = dev_info["IP"]
+            self._name = dev_info.name
+            self._ip = dev_info.ip
             self._last_activity = utc_point_in_time
             self._connected = True
-            if "timestamp" in dev_info["connection"]:
-                self._connection_time = datetime.fromtimestamp(dev_info["connection"]["timestamp"])
+            if dev_info.connected_since:
+                self._connection_time = dev_info.connected_since
         elif self._connected:
             self._connected = (
                 utc_point_in_time - self._last_activity
@@ -235,7 +219,7 @@ class AsusRouterObj:
         self._on_close : list[Callable] = []
 
         self._options = {
-            CONF_USE_SSL: DEFAULT_USE_SSL,
+            CONF_SSL: DEFAULT_SSL,
             CONF_VERIFY_SSL: DEFAULT_VERIFY_SSL,
             CONF_CACHE_TIME: DEFAULT_CACHE_TIME,
             CONF_ENABLE_MONITOR: DEFAULT_ENABLE_MONITOR, 
@@ -244,8 +228,8 @@ class AsusRouterObj:
 
         self._options.update(entry.options)
 
-        if self._port == "":
-            self._port = DEFAULT_PORT["ssl"] if self._options[CONF_VERIFY_SSL] else DEFAULT_PORT["no_ssl"]
+        if self._port == DEFAULT_PORT:
+            self._port = DEFAULT_PORTS["ssl"] if self._options[CONF_VERIFY_SSL] else DEFAULT_PORTS["no_ssl"]
 
 
     async def setup(self) -> None:
@@ -309,7 +293,7 @@ class AsusRouterObj:
         await self.init_sensors_coordinator()
 
         self.async_on_close(
-            async_track_time_interval(self.hass, self.update_all, SCAN_INTERVAL)
+            async_track_time_interval(self.hass, self.update_all, DEFAULT_SCAN_INTERVAL)
         )
 
 

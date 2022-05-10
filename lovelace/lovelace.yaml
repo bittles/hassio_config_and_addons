@@ -512,25 +512,7 @@ config:
       - entity: automation.afternoon_temp_change_duplicate
       type: entities
     - calibration_source:
-        calibration_points:
-        - map:
-            x: 90
-            y: 298
-          vacuum:
-            x: 18667
-            y: 20308
-        - map:
-            x: 185
-            y: 798
-          vacuum:
-            x: 19753
-            y: 26492
-        - map:
-            x: 750
-            y: 977
-          vacuum:
-            x: 26391
-            y: 28735
+        entity: sensor.alfred_calibration
       entity: vacuum.alfred_re
       icons:
       - icon: mdi:play-pause
@@ -587,21 +569,18 @@ config:
             fan_speed: low
       map_locked: true
       map_modes:
-      - icon: mdi:floor-plan
-        max_repeats: 3
-        max_selections: 1
-        name: Zoned Cleaning
+      - name: Zoned Cleaning
         predefined_selections:
         - icon:
             name: mdi:home-floor-1
-            x: 23000
-            y: 20900
+            x: 24000
+            y: 21000
           id: Living Room and Kitchen
           label:
             offset_y: 35
-            text: Downstairs
-            x: 23000
-            y: 20900
+            text: Living Room and Kitchen
+            x: 24000
+            y: 21000
           outline:
           - - 18626
             - 16770
@@ -611,23 +590,9 @@ config:
             - 28935
           - - 18626
             - 28935
-        repeats_type: EXTERNAL
-        selection_type: ROOM
-        service_call_schema:
-          service: script.alfred_cleans_from_card
-          service_data:
-            cleaner: '[[entity_id]]'
-            command: selection
-            number_of_times_to_clean: '[[repeats]]'
-            zone_to_clean: '[[selection]]'
-      - icon: mdi:map
-        name: Go To Spot
-        selection_type: MANUAL_POINT
-        service_call_schema:
-          service: rest_command.alfred_rest
-          service_data:
-            parameters_and_values: '[[selection]]'
-            route: go_to
+        template: vacuum_clean_segment
+        variables:
+          topic: vacuum/rockrobo
       map_source:
         camera: camera.alfred_map
       preset_name: Live map
@@ -650,16 +615,19 @@ config:
         tap_action:
           action: more-info
         unit: '%'
-      - entity: sensor.valetudo_valetudorockrobo_current_statistics_time
+      - entity: sensor.last_alfred_start_time
         icon: mdi:horizontal-rotate-clockwise
-        label: Last Run Time
-        multiplier: 0.0166
-        precision: 1
+        label: Last Run Start Time
         tap_action:
           action: more-info
-        unit: ' min'
+      - entity: sensor.last_alfred_end_time
+        icon: mdi:horizontal-rotate-clockwise
+        label: Last Run End Time
+        tap_action:
+          action: more-info
       title: Alfred's Domain
       type: custom:xiaomi-vacuum-map-card
+      vacuum_platform: rand256/ValetudoRE
     - entities:
       - entity: input_number.custom_thermostat_temp_high
       - entity: input_number.custom_thermostat_temp_low
@@ -695,6 +663,49 @@ config:
       entity: camera.driveway
       title: Driveway
       type: picture-glance
+    - entities:
+      - entity: sensor.rt_ac88u_wan_download_speed
+        name: WAN Download Speed
+      - entity: sensor.rt_ac88u_bridge_download_speed
+        name: BRIDGE Download Speed
+      - entity: sensor.rt_ac88u_wired_download_speed
+        name: WIRED Download Speed
+      - entity: sensor.rt_ac88u_wlan0_download_speed
+        name: WLAN0 Download Speed
+      - entity: sensor.rt_ac88u_wlan1_download_speed
+        name: WLAN1 Download Speed
+      - entity: sensor.rt_ac88u_wan_upload_speed
+        name: WAN Upload Speed
+      - entity: sensor.rt_ac88u_bridge_upload_speed
+        name: BRIDGE Upload Speed
+      - entity: sensor.rt_ac88u_wired_upload_speed
+        name: WIRED Upload Speed
+      - entity: sensor.rt_ac88u_wlan0_upload_speed
+        name: WLAN0 Upload Speed
+      - entity: sensor.rt_ac88u_wlan1_upload_speed
+        name: WLAN1 Upload Speed
+      - entity: sensor.rt_ac88u_bridge_download
+        name: BRIDGE Download
+      - entity: sensor.rt_ac88u_wan_download
+        name: WAN Download
+      - entity: sensor.rt_ac88u_wired_download
+        name: WIRED Download
+      - entity: sensor.rt_ac88u_wlan0_download
+        name: WLAN0 Download
+      - entity: sensor.rt_ac88u_wlan1_download
+        name: WLAN1 Download
+      - entity: sensor.rt_ac88u_bridge_upload
+        name: BRIDGE Upload
+      - entity: sensor.rt_ac88u_wan_upload
+        name: WAN Upload
+      - entity: sensor.rt_ac88u_wired_upload
+        name: WIRED Upload
+      - entity: sensor.rt_ac88u_wlan0_upload
+        name: WLAN0 Upload
+      - entity: sensor.rt_ac88u_wlan1_upload
+        name: WLAN1 Upload
+      title: RT-AC88U
+      type: entities
     path: server-control
     title: Server Control
   - badges: []

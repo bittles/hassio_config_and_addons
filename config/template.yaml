@@ -36,6 +36,14 @@
 #################         SENSORS        ########################################################################################
 - sensor:
 
+    - unique_id: alfred-start-time
+      name: Last Alfred Start Time
+      state: '{{ (state_attr(''vacuum.alfred_re'', ''last_run_stats'').startTime/1000)|timestamp_custom(''%I:%M %p'') }}'
+
+    - unique_id: alfred-end-time
+      name: Last Alfred End Time
+      state: '{{ (state_attr(''vacuum.alfred_re'', ''last_run_stats'').endTime/1000)|timestamp_custom(''%I:%M %p'') }}'
+
     - unique_id: sunelevation
       name: Sun Elevation
       state: '{{ state_attr(''sun.sun'', ''elevation'') }}'

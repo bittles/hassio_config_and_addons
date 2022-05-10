@@ -120,6 +120,33 @@
     - uv_index
 
 - platform: mqtt
+  unique_id: alfred-calibration
+  state_topic: "valetudo/rockrobo/map_calibration_points"
+  name: Alfred Calibration
+  scan_interval: 5
+
+- platform: mqtt
+  unique_id: alfred-spots
+  state_topic: "valetudo/rockrobo/destinations"
+  value_template: "{{ value_json.spots }}"
+  name: Alfred Spots
+  scan_interval: 5
+  
+- platform: mqtt
+  unique_id: alfred-zones
+  state_topic: "valetudo/rockrobo/destinations"
+  value_template: "{{ value_json.zones }}"
+  name: Alfred Zones
+  scan_interval: 5
+
+- platform: mqtt
+  unique_id: alfred-rooms
+  state_topic: "valetudo/rockrobo/destinations"
+  value_template: "{{ value_json.rooms }}"
+  name: Alfred Rooms
+  scan_interval: 5
+
+- platform: mqtt
   unique_id: bonusroom_temp
   name: Bonus Room Temperature MQTT
   state_topic: zwave/bonus-room/bonus-room-temp/49/0/Air_temperature
