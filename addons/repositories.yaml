@@ -38,6 +38,10 @@ Poeschl Home Assistant Add-ons:
   maintainer: Poeschl <Poeschl@users.noreply.github.com>
   slug: 243ffc37
   source: https://github.com/Poeschl/Hassio-Addons
+Poeschl Valetudo Mapper Fork:
+  maintainer: Poeschl <Poeschl@users.noreply.github.com>
+  slug: 8c1688cd
+  source: https://github.com/bittles/hassio-valetudo-mapper-calibration
 docker-wyze-bridge:
   maintainer: unknown
   slug: 7094bb28

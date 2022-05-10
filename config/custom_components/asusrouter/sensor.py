@@ -4,30 +4,22 @@ from __future__ import annotations
 
 import logging
 _LOGGER = logging.getLogger(__name__)
-
-from dataclasses import dataclass
-from html import entities
 from numbers import Real
-from collections.abc import Callable, Mapping
-from typing import Any, Final, cast
-from xml.dom.minidom import Entity
-from datetime import datetime
+from typing import Any
 
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
     SensorEntity,
-    SensorEntityDescription,
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
-    DATA_GIGABYTES,
     DATA_RATE_MEGABITS_PER_SECOND,
     PERCENTAGE,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import EntityCategory, DeviceInfo, EntityDescription, Entity
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
@@ -35,59 +27,44 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .const import (
+    CONF_INTERFACES,
     DATA_ASUSROUTER,
     DOMAIN,
+    SENSORS_TYPE_CPU,
+    SENSORS_TYPE_DEVICES,
+    SENSORS_TYPE_MISC,
+    SENSORS_TYPE_PORTS,
+    SENSORS_TYPE_RAM,
 )
 
-from .router import KEY_COORDINATOR, KEY_SENSORS_CPU, KEY_SENSORS_MISC, KEY_SENSORS_RAM, KEY_SENSORS_NETWORK_STAT, KEY_SENSORS_DEVICES, AsusRouterObj
+from .dataclass import AsusRouterAttributeDescription, AsusRouterSensorDescription
 
-
-@dataclass
-class AsusRouterEntityDescription(EntityDescription):
-    """"""
-
-    key_group: Callable[[dict], str] | None = None
-    value: Callable[[Any], Any] = lambda val: val
-    factor: int | None = None
-    precision: int = 3
-    extra_state_attributes: dict[str, AsusRouterAttributeDescription] | None = None
-
-
-@dataclass
-class AsusRouterSensorDescription(AsusRouterEntityDescription, SensorEntityDescription):
-    """Describe AsusRouter sensor"""
-
-
-@dataclass
-class AsusRouterAttributeDescription(AsusRouterEntityDescription, SensorEntityDescription):
-    """Describe AsusRouter attribute"""
-
-
-DEFAULT_PREFIX = "AsusRouter"
+from .router import AsusRouterObj, KEY_COORDINATOR
+from .compilers import list_sensors_network
 
 
 SENSORS = {
-    ("devices", "number"): AsusRouterSensorDescription(
+    (SENSORS_TYPE_DEVICES, "number"): AsusRouterSensorDescription(
         key = "number",
-        key_group = KEY_SENSORS_DEVICES,
+        key_group = SENSORS_TYPE_DEVICES,
         name = "Connected Devices",
         icon = "mdi:router-network",
         state_class = SensorStateClass.MEASUREMENT,
         entity_category = EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default = True,
     ),
-    ("misc", "boottime"): AsusRouterSensorDescription(
+    (SENSORS_TYPE_MISC, "boottime"): AsusRouterSensorDescription(
         key = "boottime",
-        key_group = KEY_SENSORS_MISC,
+        key_group = SENSORS_TYPE_MISC,
         name = "Boot Time",
         icon = "mdi:restart",
         device_class = SensorDeviceClass.TIMESTAMP,
         entity_category = EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default = False,
     ),
-    ("cpu", "total"): AsusRouterSensorDescription(
+    (SENSORS_TYPE_CPU, "total"): AsusRouterSensorDescription(
         key = "total",
-        key_group = KEY_SENSORS_CPU,
+        key_group = SENSORS_TYPE_CPU,
         name = "CPU",
         icon = "mdi:cpu-32-bit",
         state_class = SensorStateClass.MEASUREMENT,
@@ -105,9 +82,9 @@ SENSORS = {
             "core_8": "Core 8",
         },
     ),
-    ("ram", "usage"): AsusRouterSensorDescription(
+    (SENSORS_TYPE_RAM, "usage"): AsusRouterSensorDescription(
         key = "usage",
-        key_group = KEY_SENSORS_RAM,
+        key_group = SENSORS_TYPE_RAM,
         name = "RAM",
         icon = "mdi:memory",
         state_class = SensorStateClass.MEASUREMENT,
@@ -121,109 +98,41 @@ SENSORS = {
             "used": "Used",
         },
     ),
-    ("network_stat", "WAN_rx"): AsusRouterSensorDescription(
-        key = "{}_{}".format("WAN", "rx"),
-        key_group = KEY_SENSORS_NETWORK_STAT,
-        name = "WAN Download",
-        icon = "mdi:download-outline",
-        state_class = SensorStateClass.TOTAL_INCREASING,
-        native_unit_of_measurement = DATA_GIGABYTES,
-        factor = 1073741824,
-        entity_registry_enabled_default = True,
-        extra_state_attributes = {
-            "WAN_rx": "Bytes",
-        }
-    ),
-    ("network_stat", "WAN_tx"): AsusRouterSensorDescription(
-        key = "{}_{}".format("WAN", "tx"),
-        key_group = KEY_SENSORS_NETWORK_STAT,
-        name = "WAN Upload",
-        icon = "mdi:upload-outline",
-        state_class = SensorStateClass.TOTAL_INCREASING,
-        native_unit_of_measurement = DATA_GIGABYTES,
-        factor = 1073741824,
-        entity_registry_enabled_default = True,
-        extra_state_attributes = {
-            "WAN_tx": "Bytes",
-        }
-    ),
-    ("network_stat", "WAN_rx_speed"): AsusRouterSensorDescription(
-        key = "{}_{}".format("WAN", "rx_speed"),
-        key_group = KEY_SENSORS_NETWORK_STAT,
-        name = "WAN Download Speed",
-        icon = "mdi:download-network-outline",
+    (SENSORS_TYPE_PORTS, "WAN_total"): AsusRouterSensorDescription(
+        key = "WAN_total",
+        key_group = SENSORS_TYPE_PORTS,
+        name = "WAN Speed",
+        icon = "mdi:ethernet-cable",
         state_class = SensorStateClass.MEASUREMENT,
         native_unit_of_measurement = DATA_RATE_MEGABITS_PER_SECOND,
-        factor = 1048576,
-        entity_registry_enabled_default = True,
+        entity_category = EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default = False,
         extra_state_attributes = {
-            "WAN_rx_speed": "bits/s",
-        }
+            "WAN_0": "WAN 0",
+            "WAN_1": "WAN 1",
+            "WAN_2": "WAN 2",
+            "WAN_3": "WAN 3",
+        },
     ),
-    ("network_stat", "WAN_tx_speed"): AsusRouterSensorDescription(
-        key = "{}_{}".format("WAN", "tx_speed"),
-        key_group = KEY_SENSORS_NETWORK_STAT,
-        name = "WAN Upload Speed",
-        icon = "mdi:upload-network-outline",
+    (SENSORS_TYPE_PORTS, "LAN_total"): AsusRouterSensorDescription(
+        key = "LAN_total",
+        key_group = SENSORS_TYPE_PORTS,
+        name = "LAN Speed",
+        icon = "mdi:ethernet-cable",
         state_class = SensorStateClass.MEASUREMENT,
         native_unit_of_measurement = DATA_RATE_MEGABITS_PER_SECOND,
-        factor = 1048576,
-        entity_registry_enabled_default = True,
-        extra_state_attributes = {
-            "WAN_tx_speed": "bits/s",
-        }
-    ),
-    ("network_stat", "USB_rx"): AsusRouterSensorDescription(
-        key = "{}_{}".format("USB", "rx"),
-        key_group = KEY_SENSORS_NETWORK_STAT,
-        name = "USB Download",
-        icon = "mdi:download-outline",
-        state_class = SensorStateClass.TOTAL_INCREASING,
-        native_unit_of_measurement = DATA_GIGABYTES,
-        factor = 1073741824,
+        entity_category = EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default = False,
         extra_state_attributes = {
-            "USB_rx": "Bytes",
-        }
-    ),
-    ("network_stat", "USB_tx"): AsusRouterSensorDescription(
-        key = "{}_{}".format("USB", "tx"),
-        key_group = KEY_SENSORS_NETWORK_STAT,
-        name = "USB Upload",
-        icon = "mdi:upload-outline",
-        state_class = SensorStateClass.TOTAL_INCREASING,
-        native_unit_of_measurement = DATA_GIGABYTES,
-        factor = 1073741824,
-        entity_registry_enabled_default = False,
-        extra_state_attributes = {
-            "USB_tx": "Bytes",
-        }
-    ),
-    ("network_stat", "USB_rx_speed"): AsusRouterSensorDescription(
-        key = "{}_{}".format("USB", "rx_speed"),
-        key_group = KEY_SENSORS_NETWORK_STAT,
-        name = "USB Download Speed",
-        icon = "mdi:download-network-outline",
-        state_class = SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement = DATA_RATE_MEGABITS_PER_SECOND,
-        factor = 1048576,
-        entity_registry_enabled_default = False,
-        extra_state_attributes = {
-            "USB_rx_speed": "bits/s",
-        }
-    ),
-    ("network_stat", "USB_tx_speed"): AsusRouterSensorDescription(
-        key = "{}_{}".format("USB", "tx_speed"),
-        key_group = KEY_SENSORS_NETWORK_STAT,
-        name = "USB Upload Speed",
-        icon = "mdi:upload-network-outline",
-        state_class = SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement = DATA_RATE_MEGABITS_PER_SECOND,
-        factor = 1048576,
-        entity_registry_enabled_default = False,
-        extra_state_attributes = {
-            "USB_tx_speed": "bits/s",
-        }
+            "LAN_1": "LAN 1",
+            "LAN_2": "LAN 2",
+            "LAN_3": "LAN 3",
+            "LAN_4": "LAN 4",
+            "LAN_5": "LAN 5",
+            "LAN_6": "LAN 6",
+            "LAN_7": "LAN 7",
+            "LAN_8": "LAN 8",
+        },
     ),
 }
 
@@ -233,6 +142,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
 
     router: AsusRouterObj = hass.data[DOMAIN][entry.entry_id][DATA_ASUSROUTER]
     entities = []
+
+    SENSORS.update(list_sensors_network(entry.options[CONF_INTERFACES]))
 
     for sensor_data in router._sensors_coordinator.values():
         coordinator = sensor_data[KEY_COORDINATOR]

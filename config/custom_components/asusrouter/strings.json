@@ -1,27 +1,33 @@
 {
     "config": {
         "step": {
-            "user": {
-                "description": "[%key:common::config_flow::description%]",
+            "device": {
+                "description": "Parameters to connect to the device",
                 "data": {
-                    "name": "[%key:common::config_flow::data::name%]",
-                    "host": "[%key:common::config_flow::data::host%]",
+                    "name": "The name for device (blank to use device model)",
+                    "host": "Hostname / IP address",
                     "username": "[%key:common::config_flow::data::username%]",
                     "password": "[%key:common::config_flow::data::password%]",
-                    "port": "[%key:common::config_flow::data::port%]",
-                    "use_ssl": "[%key:common::config_flow::data::use_ssl%]",
+                    "port": "Port (0 to use default value)",
+                    "ssl": "Use SSL connection",
                     "verify_ssl": "[%key:common::config_flow::data::verify_ssl%]",
-                    "cert_path": "[%key:common::config_flow::data::cert_path%]",
-                    "enable_monitor": "[%key:common::config_flow::data::enable_monitor%]",
-                    "enable_control": "[%key:common::config_flow::data::enable_control%]"
+                    "cert_path": "Certificate path",
+                    "enable_monitor": "Enable device monitoring",
+                    "enable_control": "Enable device control"
+                }
+            },
+            "interfaces": {
+                "description": "Interfaces to monitor",
+                "data": {
+                    "interfaces": "Select network interfaces to monitor"
                 }
             }
         },
         "error": {
-            "error": "[%key:common::config_flow::error::error%]",
-            "unknown": "[%key:common::config_flow::error::unknown%]",
-            "password_missing": "[%key:common::config_flow::error::password_missing%]",
-            "cannot_resolve_host": "[%key:common::config_flow::error::cannot_resolve_host%]"
+            "error": "[%key:common::config_flow::error::cannot_connect%]",
+            "unknown": "Unknown error",
+            "password_missing": "Password is missing",
+            "cannot_resolve_host": "Cannot resolve hostname. Try with the IP address"
         }
     },
     "options": {
@@ -29,6 +35,7 @@
             "init": {
                 "title": "ASUS Router options",
                 "data": {
+                    "interfaces": "Select network interfaces to monitor",
                     "cache_device_time": "Caching time for device discovery",
                     "cache_time": "Data caching time"
                 }

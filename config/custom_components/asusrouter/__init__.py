@@ -1,13 +1,23 @@
 """Support for ASUS Router devices"""
 
+from __future__ import annotations
+
+import logging
+_LOGGER = logging.getLogger(__name__)
+
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import EVENT_HOMEASSISTANT_STOP, Platform
+from homeassistant.const import EVENT_HOMEASSISTANT_STOP
 from homeassistant.core import HomeAssistant
 
-from .const import DOMAIN, DATA_ASUSROUTER
+from .const import (
+    CONF_INTERFACES,
+    DELAULT_INTERFACES,
+    DOMAIN,
+    DATA_ASUSROUTER,
+    PLATFORMS,
+)
 from .router import AsusRouterObj
-
-PLATFORMS = [Platform.SENSOR, Platform.DEVICE_TRACKER]
+from .migrate import DEPRECATED
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -61,5 +71,36 @@ async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
         await hass.config_entries.async_reload(entry.entry_id)
 
     return
+
+
+async def async_migrate_entry(hass, config_entry : ConfigEntry):
+    """Migrate old entry."""
+
+    _LOGGER.debug("Migrating from version {}".format(config_entry.version))
+
+    version = config_entry.version
+    entry = {**config_entry.data}
+    options = {**config_entry.options}
+
+    if version == 1:
+        options[CONF_INTERFACES] = DELAULT_INTERFACES
+
+    while "{}_{}".format(version, version + 1) in DEPRECATED:
+        new_entry = entry
+
+        for key_old in DEPRECATED["{}_{}".format(version, version + 1)]:
+            key_new = DEPRECATED["{}_{}".format(version, version + 1)][key_old]
+            new_entry[key_new] = new_entry[key_old]
+            new_entry.pop(key_old)
+
+        entry = new_entry
+        version += 1
+
+    config_entry.version = version
+    hass.config_entries.async_update_entry(config_entry, data = new_entry, options = options)
+
+    _LOGGER.info("Migration to version {} successful".format(config_entry.version))
+
+    return True
 
 

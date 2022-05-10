@@ -9,38 +9,36 @@ from typing import Any
 from abc import ABC, abstractmethod
 from datetime import datetime
 
-from asusrouter import AsusRouter
+from asusrouter import AsusRouter, ConnectedDevice
 
 from homeassistant.const import (
-    CONF_NAME,
     CONF_HOST,
-    CONF_USERNAME,
     CONF_PASSWORD,
     CONF_PORT,
+    CONF_SSL,
+    CONF_USERNAME,
     CONF_VERIFY_SSL,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import format_mac
 from homeassistant.helpers.update_coordinator import UpdateFailed
 
 from .const import (
-    CONF_USE_SSL,
-    CONF_CERT_PATH,
     CONF_CACHE_TIME,
-    CONF_ENABLE_MONITOR,
+    CONF_CERT_PATH,
     CONF_ENABLE_CONTROL,
-    SENSORS_RAM,
-    SENSORS_NETWORK_STAT,
+    CONF_ENABLE_MONITOR,
     SENSORS_MISC,
+    SENSORS_NETWORK_STAT,
+    SENSORS_PORTS,
+    SENSORS_RAM,
+    SENSORS_TYPE_CPU,
+    SENSORS_TYPE_MISC,
+    SENSORS_TYPE_NETWORK_STAT,
+    SENSORS_TYPE_PORTS,
+    SENSORS_TYPE_RAM,
 )
-
-SENSORS_TYPE_CPU = "cpu"
-SENSORS_TYPE_RAM = "ram"
-SENSORS_TYPE_NETWORK_STAT = "network_stat"
-SENSORS_TYPE_DEVICES = "devices"
-SENSORS_TYPE_MISC = "misc"
 
 
 class AsusRouterBridge(ABC):
@@ -82,7 +80,7 @@ class AsusRouterBridge(ABC):
 
 
     @abstractmethod
-    async def async_get_connected_devices(self) -> dict[str, dict[str, Any]]:
+    async def async_get_connected_devices(self) -> dict[str, ConnectedDevice]:
         """Get list of connected devices"""
 
 
@@ -141,7 +139,7 @@ class AsusRouterBridgeHTTP(AsusRouterBridge):
             username = conf[CONF_USERNAME],
             password = conf[CONF_PASSWORD],
             port = conf[CONF_PORT],
-            use_ssl = conf[CONF_USE_SSL],
+            use_ssl = conf[CONF_SSL],
             cert_check = conf[CONF_VERIFY_SSL],
             cert_path = conf.get(CONF_CERT_PATH, ""),
             cache_time = conf.get(CONF_CACHE_TIME, 3),
@@ -172,7 +170,7 @@ class AsusRouterBridgeHTTP(AsusRouterBridge):
         await self._api.connection.async_disconnect()
 
 
-    async def async_get_connected_devices(self) -> dict[str, Any]:
+    async def async_get_connected_devices(self) -> dict[str, ConnectedDevice]:
         """Get list of connected devices"""
 
         try:
@@ -286,6 +284,10 @@ class AsusRouterBridgeHTTP(AsusRouterBridge):
                 "sensors": SENSORS_MISC,
                 "method": self._get_misc
             },
+            SENSORS_TYPE_PORTS: {
+                "sensors": await self._get_ports_sensors(),
+                "method": self._get_ports
+            }
         }
         return sensors_types
 
@@ -332,6 +334,28 @@ class AsusRouterBridgeHTTP(AsusRouterBridge):
         data["boottime"] = datetime.fromisoformat(self._api.boottime)
 
         return data
+
+
+    async def _get_ports(self) -> dict[str, dict[str, int]]:
+        """Get ports status"""
+
+        data = dict()
+        try:
+            raw = await self._api.async_get_ports()
+
+            for type in SENSORS_PORTS:
+                if type in raw:
+                    data["{}_total".format(type)] = 0
+                    for port in raw[type]:
+                        data["{}_{}".format(type, port)] = raw[type][port]
+                        data["{}_total".format(type)] += raw[type][port]
+                    if data["{}_total".format(type)] > 0:
+                        data[type] = True
+        except (OSError, ValueError) as ex:
+            raise UpdateFailed(ex) from ex
+
+        return data
+
     ### <- GET DATA FROM DEVICE
 
 
@@ -361,5 +385,30 @@ class AsusRouterBridgeHTTP(AsusRouterBridge):
         except Exception as ex:
             _LOGGER.debug("Cannot get available network stat sensors for {}: {}".format(self._host, ex))
         return sensors
+
+
+    async def _get_ports_sensors(self):
+        """Check the available ports sensors"""
+
+        try:
+            sensors = []
+            data = await self._api.async_get_ports()
+            for type in SENSORS_PORTS:
+                if type in data:
+                    sensors.append(type)
+                    sensors.append("{}_total".format(type))
+                    for port in data[type]:
+                        sensors.append("{}_{}".format(type, port))
+            _LOGGER.debug("Available ports sensors: {}".format(sensors))
+        except Exception as ex:
+            _LOGGER.debug("Cannot get available ports sensors for {}: {}".format(self._host, ex))
+        return sensors
     ### <- GET SENSORS LIST
+
+
+    async def async_get_network_interfaces(self):
+        """"""
+
+        return await self._api.async_get_network_labels()
+
 
