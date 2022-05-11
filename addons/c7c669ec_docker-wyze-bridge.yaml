@@ -1,5 +1,5 @@
 AUDIO_CODEC: LIBOPUS
-ENABLE_AUDIO: true
+ENABLE_AUDIO: false
 FFMPEG_FLAGS: -flags low_delay+global_header -fflags +genpts+flush_packets+nobuffer
 FRESH_DATA: true
 MQTT_DTOPIC: homeassistant
