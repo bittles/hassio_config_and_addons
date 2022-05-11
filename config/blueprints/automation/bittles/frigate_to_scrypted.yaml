@@ -24,6 +24,9 @@ blueprint:
       name: Frigate Camera with Frigate Event Type
       description: The name of the camer and event type eg. 'camera_name new' the
         type can be new, update, or end.
+    scrpyted_deviceid:
+      name: Scrypted Device ID
+      description: Device ID in the webhook URL in scrypted
     zone_filter:
       name: (Optional) Zone Filter
       description: Only notify if object has entered a defined zone.
@@ -49,6 +52,7 @@ blueprint:
       selector:
         entity:
           domain: person
+          multiple: false
     cooldown:
       name: (Optional) Cooldown
       description: Delay before sending another webhook for this camera after the
@@ -59,8 +63,8 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: seconds
-          step: 1.0
           mode: slider
+          step: 1.0
 mode: single
 max_exceeded: silent
 trigger:
@@ -83,14 +87,17 @@ variables:
   input_labels: !input 'labels'
   labels: '{{ input_labels | list }}'
   presence_entity: !input 'presence_filter'
+  deviceid: !input 'scrpyted_deviceid'
 condition:
 - '{{ not zone_only or entered_zones|length > 0 }}'
 - '{{ not zones|length or zones|select(''in'', entered_zones)|list|length > 0 }}'
 - '{{ not labels|length or object in labels }}'
 - '{{ not presence_entity or not is_state(presence_entity, ''home'') }}'
 action:
-- service: rest_command.{{ camera }}_motion_on
-  data: {}
+- service: rest_command.scrypted_post
+  data:
+    deviceID: '{{ deviceid }}'
+    hook_command: turnOn
 - repeat:
     sequence:
     - wait_for_trigger:
@@ -104,6 +111,8 @@ action:
     - condition: template
       value_template: '{{ wait.trigger.payload_json[''type''] == ''end'' }}'
     until: '{{ wait.trigger.payload_json[''type''] == ''end'' }}'
-- service: rest_command.{{ camera }}_motion_off
-  data: {}
+- service: rest_command.scrypted_post
+  data:
+    deviceID: '{{ deviceid }}'
+    hook_command: turnOff
 - delay: !input 'cooldown'

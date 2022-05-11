@@ -2905,6 +2905,7 @@
       camera: back_deck
       cooldown: 10
       camera_and_type: back_deck new
+      scrpyted_deviceid: 55/d138333cbed4295f
 - id: '1646499222062'
   alias: Frigate Webhook to Scrypted Driveway
   description: ''
@@ -2915,6 +2916,7 @@
       camera: driveway
       camera_and_type: driveway new
       cooldown: 10
+      scrpyted_deviceid: 24/ee564dc2c1c2e3bb
 - id: '1646499262163'
   alias: Frigate Webhook to Scrypted Front Porch
   description: ''
@@ -2924,6 +2926,7 @@
       camera: front_porch
       camera_and_type: front_porch new
       cooldown: 10
+      scrpyted_deviceid: 31/ca06129ae5309754
 - id: '1647382362383'
   alias: Frigate AndroidTV Notification Fork Back Deck
   description: ''

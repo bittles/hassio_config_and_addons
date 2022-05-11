@@ -63,12 +63,13 @@ config:
       menu:
         buttons:
           download: false
+          frigate: false
           fullscreen: false
           image: false
         mode: overlay-left
       type: custom:frigate-card
       view:
-        camera_select: clip
+        camera_select: snapshot
         default: snapshot
     - columns: 3
       entities:
