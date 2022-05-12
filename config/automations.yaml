@@ -946,6 +946,15 @@
       milliseconds: 0
   - service: script.alfred_cleans_living_room_and_kitchen
     data: {}
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  - service: vacuum.return_to_base
+    data: {}
+    target:
+      entity_id: vacuum.alfred_re
 - id: '1600464055158'
   alias: zzSave Zone 2 Sources
   description: ''
@@ -2514,88 +2523,6 @@
     entity_id: switch.desk_lamp
     domain: switch
   mode: single
-- id: '1639590820458'
-  alias: zzMotion Update Driveway Snapshot
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_datetime.wyze_driveway_time
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 100
-  - service: camera.snapshot
-    target:
-      entity_id: camera.driveway
-    data:
-      filename: /config/www/snapshot_camera.driveway.jpg
-  - service: camera.snapshot
-    target:
-      entity_id: camera.driveway
-    data:
-      filename: /config/www/Wyze/driveway/driveway_{{ states('input_number.wyze_driveway_captures')
-        }}.jpg
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_number.wyze_driveway_captures
-        state: '100'
-      sequence:
-      - service: input_number.set_value
-        data:
-          value: 1
-        target:
-          entity_id: input_number.wyze_driveway_captures
-    default: []
-  - service: input_number.increment
-    target:
-      entity_id: input_number.wyze_driveway_captures
-    data: {}
-  mode: single
-- id: '1639590891103'
-  alias: zzMotion Update Porch Snapshot
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_datetime.wyze_porch_time
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 600
-  - service: camera.snapshot
-    data:
-      filename: /config/www/snapshot_camera.porch_camera.jpg
-    target:
-      entity_id: camera.front_porch
-  - service: camera.snapshot
-    data:
-      filename: /config/www/Wyze/front_porch/front_porch_{{ states('input_number.wyze_front_porch_captures')
-        }}.jpg
-    target:
-      entity_id: camera.front_porch
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_number.wyze_front_porch_captures
-        state: '100'
-      sequence:
-      - service: input_number.set_value
-        data:
-          value: 1
-        target:
-          entity_id: input_number.wyze_front_porch_captures
-    default: []
-  - service: input_number.increment
-    target:
-      entity_id: input_number.wyze_front_porch_captures
-    data: {}
-  mode: single
 - id: '1639636571527'
   alias: zzzzzzzSSH Restart
   description: ''
@@ -2654,75 +2581,6 @@
       temperature: '{{ states.input_number.kara_heat_temp.state }}'
     target:
       entity_id: climate.new_bedroom_thermostat
-  mode: single
-- id: '1643128686499'
-  alias: zzMotion Update Deck Snapshot
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_datetime.wyze_deck_time
-  condition: []
-  action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 100
-  - service: camera.snapshot
-    data:
-      filename: /config/www/snapshot_camera.back_deck.jpg
-    target:
-      entity_id: camera.back_deck
-  - service: camera.snapshot
-    target:
-      entity_id: camera.back_deck
-    data:
-      filename: /config/www/Wyze/back_deck/back_deck_{{ states('input_number.input_number.wyze_deck_captures')
-        }}.jpg
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: input_number.wyze_deck_captures
-        state: '100'
-      sequence:
-      - service: input_number.set_value
-        data:
-          value: 1
-        target:
-          entity_id: input_number.wyze_deck_captures
-    default: []
-  - service: input_number.increment
-    target:
-      entity_id:
-      - input_number.wyze_deck_captures
-    data: {}
-  mode: single
-- id: '1643180514530'
-  alias: zzMotion Frigate Snapshots on Interval
-  description: ''
-  trigger:
-  - platform: time_pattern
-    seconds: /9
-  condition: []
-  action:
-  - service: camera.snapshot
-    target:
-      entity_id:
-      - camera.back_deck
-    data:
-      filename: /config/www/Wyze/snapshot_interval_back-deck.jpg
-  - service: camera.snapshot
-    target:
-      entity_id:
-      - camera.front_porch
-    data:
-      filename: /config/www/Wyze/snapshot_interval_front-porch.jpg
-  - service: camera.snapshot
-    target:
-      entity_id:
-      - camera.driveway
-    data:
-      filename: /config/www/Wyze/snapshot_interval_driveway.jpg
   mode: single
 - id: '1646335859257'
   alias: zzzzz.Bedroom Thermostat Combined
@@ -2909,7 +2767,6 @@
 - id: '1646499222062'
   alias: Frigate Webhook to Scrypted Driveway
   description: ''
-  initial_state: false
   use_blueprint:
     path: bittles/frigate_to_scrypted.yaml
     input:
