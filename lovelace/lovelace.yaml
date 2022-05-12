@@ -157,6 +157,21 @@ config:
     - showAzimuth: false
       showElevation: false
       type: custom:sun-card
+    - data_source: RainViewer-Original
+      extra_labels: false
+      frame_count: 15
+      map_style: Dark
+      restart_delay: 1500
+      show_marker: true
+      show_playback: true
+      show_range: false
+      show_recenter: true
+      show_scale: true
+      show_zoom: true
+      square_map: false
+      static_map: false
+      type: custom:weather-radar-card
+      zoom_level: 6
     theme: night
     title: Home
   - badges: []
@@ -644,13 +659,15 @@ config:
       - entity: media_player.forked_daapd_output_living_room_tcl_tv
       - entity: media_player.forked_daapd_output_receiver
       type: entities
-    - camera_image: camera.deck_motion_snapshot
+    - camera_image: camera.back_deck_motion_snapshot
+      camera_view: auto
       entities:
       - entity: lock.back_door
       entity: camera.back_deck
       title: Back Deck
       type: picture-glance
-    - camera_image: camera.porch_motion_snapshot
+    - camera_image: camera.front_porch_motion_snapshot
+      camera_view: auto
       entities:
       - entity: lock.august_asl_03_smart_lock_locked
       - entity: cover.garage_mqtt

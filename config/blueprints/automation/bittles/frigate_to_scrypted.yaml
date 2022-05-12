@@ -63,8 +63,8 @@ blueprint:
           max: 300.0
           min: 0.0
           unit_of_measurement: seconds
-          mode: slider
           step: 1.0
+          mode: slider
 mode: single
 max_exceeded: silent
 trigger:
@@ -98,6 +98,11 @@ action:
   data:
     deviceID: '{{ deviceid }}'
     hook_command: turnOn
+- service: camera.snapshot
+  data:
+    filename: /config/www/snapshot_camera.{{ camera }}.jpg
+  target:
+    entity_id: camera.{{ camera }}
 - repeat:
     sequence:
     - wait_for_trigger:
