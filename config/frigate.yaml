@@ -69,7 +69,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 20
     detect:
-      fps: 6
+      fps: 4
       height: 360
       max_disappeared: 30
       stationary:
@@ -150,7 +150,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 18
     detect:
-      fps: 6
+      fps: 4
       max_disappeared: 30
       height: 360
       stationary:
@@ -319,7 +319,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 20
     detect:
-      fps: 6
+      fps: 8
       max_disappeared: 40
       stationary:
         # Optional: Frequency for running detection on stationary objects (default: shown below)

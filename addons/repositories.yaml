@@ -2,6 +2,10 @@ B Tasker HomeAssistant Addons:
   maintainer: B Tasker
   slug: 93f0ddc5
   source: https://github.com/bentasker/HomeAssistantAddons
+ESPHome:
+  maintainer: ESPHome <esphome@nabucasa.com>
+  slug: 5c53de3b
+  source: https://github.com/esphome/home-assistant-addon
 Frigate hass.io addons:
   maintainer: blakeblackshear
   slug: ccab4aaf

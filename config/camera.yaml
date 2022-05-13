@@ -1,15 +1,15 @@
-- platform: generic
-  still_image_url: http://127.0.0.1:8123/local/snapshot_camera.porch_camera.jpg
+#- platform: generic
+#  still_image_url: http://127.0.0.1:8123/local/snapshot_camera.porch_camera.jpg
 #  stream_source: http://127.0.0.1:8123/local/10-10-2021_09-26-50.mp4
-  name: Porch Motion Snapshot
+#  name: Porch Motion Snapshot
 
-- platform: generic
-  still_image_url: http://127.0.0.1:8123/local/snapshot_camera.driveway.jpg
-  name: Driveway Motion Snapshot
+#- platform: generic
+#  still_image_url: http://127.0.0.1:8123/local/snapshot_camera.driveway.jpg
+#  name: Driveway Motion Snapshot
 
-- platform: generic
-  still_image_url: http://127.0.0.1:8123/local/snapshot_camera.back_deck.jpg
-  name: Deck Motion Snapshot
+#- platform: generic
+#  still_image_url: http://127.0.0.1:8123/local/snapshot_camera.back_deck.jpg
+#  name: Deck Motion Snapshot
 
 #- platform: mqtt
 #  name: Alfred's Map

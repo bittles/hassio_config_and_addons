@@ -33,13 +33,34 @@ captive_portal:
 
 tuya:
 
+web_server:
+  port: 80
+
+text_sensor:
+# Expose ESPHome version as sensor.
+  - platform: version
+    name: Bedroom Fan-Light ESPHome Version
+    
+  - platform: wifi_info
+    ip_address:
+      name: Bedroom Fan-Light IP Address
+    ssid:
+      name: Bedroom Fan-Light SSID
+    bssid:
+      name: Bedroom Fan-Light BSSID
+
 sensor:
   - platform: wifi_signal
-    name: Bedroom Fan-Light Wifi Signal
+    name:  Bedroom Fan-Light Wifi Signal
     update_interval: 60s
+    filters:
+      - delta: 0.01
+      - throttle: 300s
 
   - platform: uptime
     name: Bedroom Fan-Light uptime
+    filters:
+      - throttle: 300s
 
 light:
   - platform: "tuya"
