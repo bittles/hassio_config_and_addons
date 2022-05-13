@@ -62,7 +62,7 @@
      - switch.hassfrontporchspeaker
      - switch.tasmota_switch_1
      - switch.nick_s_pc
-     - switch.office_tv_power
+#     - switch.bedroomtvswitch
      - switch.receiver_outlet
      - vacuum.alfred
 #     - person.michelle
@@ -204,8 +204,8 @@
 #      name: Back Deck Airplay Output
     switch.nick_pc:
       name: Nick's PC
-    switch.office_tv_power:
-      name: Bedroom TV
+#    switch.bedroomtvswitch:
+#      name: Bedroom TV
     switch.receiver_outlet:
       name: Receiver Outlet
       type: outlet

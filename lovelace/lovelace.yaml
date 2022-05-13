@@ -154,9 +154,6 @@ config:
         '
       theme: Google Dark Theme
       type: markdown
-    - showAzimuth: false
-      showElevation: false
-      type: custom:sun-card
     - data_source: RainViewer-Original
       extra_labels: false
       frame_count: 15
@@ -172,6 +169,9 @@ config:
       static_map: false
       type: custom:weather-radar-card
       zoom_level: 6
+    - showAzimuth: false
+      showElevation: false
+      type: custom:sun-card
     theme: night
     title: Home
   - badges: []
@@ -684,8 +684,6 @@ config:
     - entities:
       - entity: sensor.rt_ac88u_wan_download_speed
         name: WAN Download Speed
-      - entity: sensor.rt_ac88u_bridge_download_speed
-        name: BRIDGE Download Speed
       - entity: sensor.rt_ac88u_wired_download_speed
         name: WIRED Download Speed
       - entity: sensor.rt_ac88u_wlan0_download_speed
@@ -694,16 +692,12 @@ config:
         name: WLAN1 Download Speed
       - entity: sensor.rt_ac88u_wan_upload_speed
         name: WAN Upload Speed
-      - entity: sensor.rt_ac88u_bridge_upload_speed
-        name: BRIDGE Upload Speed
       - entity: sensor.rt_ac88u_wired_upload_speed
         name: WIRED Upload Speed
       - entity: sensor.rt_ac88u_wlan0_upload_speed
         name: WLAN0 Upload Speed
       - entity: sensor.rt_ac88u_wlan1_upload_speed
         name: WLAN1 Upload Speed
-      - entity: sensor.rt_ac88u_bridge_download
-        name: BRIDGE Download
       - entity: sensor.rt_ac88u_wan_download
         name: WAN Download
       - entity: sensor.rt_ac88u_wired_download
@@ -712,8 +706,6 @@ config:
         name: WLAN0 Download
       - entity: sensor.rt_ac88u_wlan1_download
         name: WLAN1 Download
-      - entity: sensor.rt_ac88u_bridge_upload
-        name: BRIDGE Upload
       - entity: sensor.rt_ac88u_wan_upload
         name: WAN Upload
       - entity: sensor.rt_ac88u_wired_upload

@@ -934,16 +934,6 @@
     platform: time
   condition: []
   action:
-  - service: vacuum.set_fan_speed
-    data:
-      fan_speed: medium
-    target:
-      entity_id: vacuum.valetudo_valetudorockrobo
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 5
-      milliseconds: 0
   - service: script.alfred_cleans_living_room_and_kitchen
     data: {}
   - delay:

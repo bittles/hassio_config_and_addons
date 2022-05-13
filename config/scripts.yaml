@@ -82,9 +82,11 @@ foyer_light_ten_min:
   - service: switch.turn_off
     target:
       entity_id: switch.airplayserver_bathroom
+    data: {}
   - service: switch.turn_off
     target:
       entity_id: switch.airplayserver_deck
+    data: {}
   - entity_id: switch.hassbackdeckspeaker
     service: switch.turn_off
   - entity_id: switch.hassbathroomspeaker
@@ -97,9 +99,15 @@ foyer_light_ten_min:
     target:
       entity_id:
       - media_player.forked_daapd_output_master_bedroom_apple_tv
-      - media_player.forked_daapd_output_garage_apple_tv
       - media_player.forked_daapd_output_shield
       - media_player.forked_daapd_output_receiver
+    data: {}
+  - service: media_player.turn_off
+    target:
+      entity_id:
+      - media_player.forked_daapd_output_garage_apple_tv
+    data: {}
+    enabled: false
   mode: single
 '1579732071901':
   alias: Inside House Lights Off
