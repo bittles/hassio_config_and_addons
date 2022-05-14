@@ -10,7 +10,7 @@
   target_sensor: sensor.shellytempfixed
 #  target_humidity_sensor: sensor.shelly_shht_1_6bb145_humidity
   reverse_cycle: fan
-  enable_heat_cool: True
+  enable_heat_cool: false
   min_temp: 64
   max_temp: 78
   cold_tolerance: 0.1
