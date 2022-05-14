@@ -1,13 +1,22 @@
-ENABLE_AUDIO: false
-FFMPEG_FLAGS: -flags low_delay+global_header -fflags +genpts+flush_packets+nobuffer
+DEBUG_FFMPEG: true
+ENABLE_AUDIO: true
+FFMPEG_CMD: '-loglevel verbose -fflags +genpts+flush_packets+nobuffer -flags low_delay
+  -analyzeduration 50 -probesize 50 -f h264 -i pipe: {AUDIO_IN} -vf scale=640:360
+  -b:v 500K -c:v libx264 -preset ultrafast -tune zerolatency -force_key_frames expr:gte(t,n_forced*2)
+  -c:a aac -filter:a volume=5 -movflags +empty_moov+default_base_moof+frag_keyframe
+  -f tee -map 0:v -map 1:a -shortest [select=v,a:f=rtsp:rtsp_transport=tcp]rtsp://0.0.0.0:8554/{cam_name}'
+FPS_FIX: true
 FRESH_DATA: true
-IGNORE_RES: 1
+IGNORE_RES: 3
+IMG_TYPE: jpg
+MQTT_AUTH: mqtt:mosquitto
 MQTT_DTOPIC: homeassistant
+MQTT_HOST: 192.168.29.189:1883
+MQTT_TOPIC: wyze
 NET_MODE: ANY
-QUALITY: SD90
 RTSP_HLSDISABLE: 'yes'
 RTSP_RTMPDISABLE: 'yes'
 RTSP_RTSPDISABLE: 'no'
-SNAPSHOT: API
+SNAPSHOT: RTSP5
 WYZE_EMAIL: bauern.sc@gmail.com
 WYZE_PASSWORD: '%9Kla1NMPLgF2seD'
