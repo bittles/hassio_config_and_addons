@@ -1,10 +1,15 @@
 AUDIO_CODEC: AAC
-DEBUG_FFMPEG: false
+DEBUG_FFMPEG: true
 ENABLE_AUDIO: true
-FPS_FIX: true
+FFMPEG_CMD: '-loglevel verbose -fflags nobuffer+genpts+igndts+flush_packets -flags
+  low_delay -fpsprobesize 10 -analyzeduration 150 -probesize 250 -thread_queue_size
+  128 -f h264 -i pipe: -thread_queue_size 256 -f alaw -ar 16000 -i /tmp/{cam_name}.wav
+  -c:v copy -c:a aac -af aresample=async=1 -movflags +empty_moov+default_base_moof+frag_keyframe
+  -f tee -map 0:v -map 1:a -r 20 -shortest [select=v,a:f=rtsp:rtsp_transport=tcp]rtsp://0.0.0.0:8554/{cam_name}'
+FORCE_FPS_{CAM_NAME}: 20
 FRESH_DATA: true
-IGNORE_RES: 3
 IMG_TYPE: jpg
+KEEP_BAD_FRAMES: true
 MQTT_DTOPIC: homeassistant
 NET_MODE: ANY
 QUALITY: HD90
