@@ -927,7 +927,7 @@
         - title: Dismiss
   mode: single
 - id: '1594325734855'
-  alias: zzzz.Alfred Cleans Zones Weekday Mornings
+  alias: zzzz.Alfred Cleans Zones at Alfred Time
   description: ''
   trigger:
   - at: input_datetime.alfred_cleaning_time

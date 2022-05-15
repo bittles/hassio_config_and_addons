@@ -154,7 +154,7 @@ config:
         '
       theme: Google Dark Theme
       type: markdown
-    - data_source: RainViewer-Original
+    - data_source: RainViewer-UniversalBlue
       extra_labels: false
       frame_count: 15
       map_style: Dark
