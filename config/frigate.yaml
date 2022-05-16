@@ -494,7 +494,7 @@ ffmpeg:
     detect: -f rawvideo -pix_fmt yuv420p
 
 # Optional: global input args (default: shown below)
-  input_args: -fflags +flush_packets+nobuffer -flags low_delay -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -avoid_negative_ts 1 #+flush_packets
+  input_args: -fflags +flush_packets+nobuffer+genpts+igndts -flags low_delay -rtsp_transport tcp -stimeout 5000000 #-use_wallclock_as_timestamps 1 -avoid_negative_ts 1 #+flush_packets
   # Optional: global ffmpeg args (default: shown below)
 #  global_args: -hide_banner -loglevel warning
   
