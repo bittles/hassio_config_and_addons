@@ -6,7 +6,7 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 from collections.abc import Callable, Awaitable
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, tzinfo, timezone
 from typing import Any, TypeVar
 
 from homeassistant.components.device_tracker.const import (
@@ -136,9 +136,12 @@ class AsusRouterDevInfo:
             self._name = dev_info.name
             self._ip = dev_info.ip
             self._last_activity = utc_point_in_time
-            self._connected = True
+            if dev_info.online:
+                self._connected = True
             if dev_info.connected_since:
-                self._connection_time = dev_info.connected_since
+                ### EDIT THIS WHEN
+                ### AsusRouter library fixes datetime object to have timezone
+                self._connection_time = dev_info.connected_since.replace(tzinfo = timezone.utc)
         elif self._connected:
             self._connected = (
                 utc_point_in_time - self._last_activity
@@ -324,7 +327,10 @@ class AsusRouterObj:
             self._connect_error = False
             _LOGGER.info("Reconnected to ASUS router %s", self._host)
 
-        self._connected_devices = len(api_devices)
+        self._connected_devices = 0
+        for device in api_devices:
+            if api_devices[device].online:
+                self._connected_devices += 1
         consider_home = self._options.get(
             CONF_CONSIDER_HOME, DEFAULT_CONSIDER_HOME.total_seconds()
         )

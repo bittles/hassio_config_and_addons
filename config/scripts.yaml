@@ -437,10 +437,6 @@ custom_thermostat_ac_switch_off_duplicate:
         entity_id: input_boolean.custom_thermostat_fan_already_on
         state: 'on'
       sequence:
-      - service: fan.turn_off
-        data: {}
-        target:
-          entity_id: fan.bedroom_fan2
       - service: input_boolean.turn_off
         data: {}
         target:
