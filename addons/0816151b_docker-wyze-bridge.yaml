@@ -1,23 +1,23 @@
-AUDIO_CODEC: AAC
+AUDIO_CODEC: COPY
 DEBUG_FFMPEG: true
+DEBUG_FRAMES: false
 ENABLE_AUDIO: true
-FFMPEG_CMD: '-fflags nobuffer+flush_packets -use_wallclock_as_timestamps 1 -flags
-  low_delay -fpsprobesize 100 -analyzeduration 150 -probesize 250 -thread_queue_size
-  128 -f h264 -r 20 -i pipe: -thread_queue_size 256 -f alaw -r 20 -ar 16000 -i /tmp/{cam_name}.wav
-  -c:v copy -c:a aac -af aresample=async=1:first_pts=0,asetrate=16000 -movflags +empty_moov+default_base_moof+frag_keyframe
-  -f tee -map 0:v -map 1:a -shortest [select=v,a:f=rtsp:rtsp_transport=tcp]rtsp://0.0.0.0:8554/{cam_name}'
-FORCE_FPS_{CAM_NAME}: 20
+FFMPEG_CMD: '-loglevel verbose -flags low_delay -analyzeduration 150 -probesize 150
+  -re -f h264 -r 20 -thread_queue_size 128 -i pipe: -f alaw -thread_queue_size 128
+  -r 21 -ar 16000 -i /tmp/{cam_name}.wav -c:v copy -c:a copy -movflags +empty_moov+default_base_moof+frag_keyframe+rtphint
+  -f tee -r 20 -map 0:v -map 1:a -shortest [select=v,a:f=rtsp:rtsp_transport=tcp]rtsp://0.0.0.0:8554/{cam_name}'
+FPS_FIX: true
 FRESH_DATA: true
 IGNORE_RES: 3
 IMG_TYPE: jpg
 KEEP_BAD_FRAMES: true
 MQTT_DTOPIC: homeassistant
-NET_MODE: ANY
-QUALITY: HD90
+NET_MODE: LAN
+QUALITY: HD120
 RTSP_HLSDISABLE: 'yes'
-RTSP_RTMPDISABLE: 'yes'
+RTSP_RTMPDISABLE: 'no'
 RTSP_RTSPDISABLE: 'no'
-SNAPSHOT: RTSP5
+SNAPSHOT: API
 WEBRTC: false
 WYZE_EMAIL: bauern.sc@gmail.com
 WYZE_PASSWORD: '%9Kla1NMPLgF2seD'
