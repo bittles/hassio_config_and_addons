@@ -54,7 +54,7 @@ cameras:
   front_porch:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8969/front-porch-cam
+        - path: rtsp://192.168.29.189:8964/front-porch-cam
         #rtsp://192.168.29.187:31040/b99573d3037d84ca
         #http://192.168.29.187:8898/front-porch-cam/stream.m3u8
 #        - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.113/live
@@ -69,7 +69,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 20
     detect:
-      fps: 5
+      fps: 6
       height: 360
       max_disappeared: 30
       stationary:
@@ -135,7 +135,7 @@ cameras:
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8969/driveway-cam
+        - path: rtsp://192.168.29.189:8964/driveway-cam
         #rtsp://192.168.29.187:31040/a9cb73e34e025a2d
         #http://192.168.29.187:8898/driveway-cam/stream.m3u8
         #
@@ -150,7 +150,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 18
     detect:
-      fps: 5
+      fps: 6
       max_disappeared: 30
       height: 360
       stationary:
@@ -303,7 +303,7 @@ cameras:
   back_deck:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8969/back-deck-cam
+        - path: rtsp://192.168.29.189:8964/back-deck-cam
         #rtsp://192.168.29.187:31040/d0a37ac8b922d29b
         #http://192.168.29.187:8898/back-deck-cam/stream.m3u8
         #
@@ -319,7 +319,7 @@ cameras:
       # Live camera view quality. default=8
 #      quality: 20
     detect:
-      fps: 5
+      fps: 7
       max_disappeared: 40
       stationary:
         # Optional: Frequency for running detection on stationary objects (default: shown below)
@@ -336,7 +336,7 @@ cameras:
 #      frame_alpha: 0.18
 #      frame_height: 100
       mask:
-        - 0,0,144,0,125,67,35,61,0,57
+        - 0,0,123,49,163,174,82,223,1,139
 #        - 141,0,149,23,159,53,119,62,104,2
         - 597,357,628,352,622,334,606,335
 #720p mask
@@ -494,7 +494,7 @@ ffmpeg:
     detect: -f rawvideo -pix_fmt yuv420p
 
 # Optional: global input args (default: shown below)
-  input_args: -fflags +flush_packets+nobuffer+genpts+igndts -flags low_delay -rtsp_transport tcp -stimeout 5000000 #-use_wallclock_as_timestamps 1 -avoid_negative_ts 1 #+flush_packets
+ # input_args: -fflags +flush_packets+nobuffer+genpts+igndts -flags low_delay -rtsp_transport tcp -stimeout 5000000 #-use_wallclock_as_timestamps 1 -avoid_negative_ts 1 #+flush_packets
   # Optional: global ffmpeg args (default: shown below)
 #  global_args: -hide_banner -loglevel warning
   
@@ -525,7 +525,7 @@ motion:
   # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
   # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
   # The value should be between 1 and 255.
-  threshold: 37
+  threshold: 35
   # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
   # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
   # moving objects.
@@ -535,7 +535,7 @@ motion:
   # Optional: Alpha value passed to cv2.accumulateWeighted when averaging the motion delta across multiple frames (default: shown below)
   # Higher values mean the current frame impacts the delta a lot, and a single raindrop may register as motion.
   # Too low and a fast moving person wont be detected as motion.
-  delta_alpha: 0.18
+  delta_alpha: 0.21
 
   # Optional: Alpha value passed to cv2.accumulateWeighted when averaging frames to determine the background (default: shown below)
   # Higher values mean the current frame impacts the average a lot, and a new object will be averaged into the background faster.

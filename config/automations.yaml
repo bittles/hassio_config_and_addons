@@ -1547,7 +1547,7 @@
     default: []
   mode: single
 - id: '1615078034361'
-  alias: zzzzSunday Reboot
+  alias: zzzzDaily Reboot
   description: ''
   trigger:
   - platform: time
@@ -1555,6 +1555,9 @@
   condition: []
   action:
   - service: hassio.host_reboot
+    data: {}
+    enabled: false
+  - service: homeassistant.restart
     data: {}
   mode: single
 - id: '1615243979556'
@@ -3081,4 +3084,15 @@
         target:
           entity_id: timer.butters_clean_timer
     default: []
+  mode: single
+- id: '1652898516396'
+  alias: Firgate Snapshot Interval
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /9
+  condition: []
+  action:
+  - service: script.frigate_snapshots
+    data: {}
   mode: single
