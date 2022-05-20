@@ -38,14 +38,20 @@
       - service: light.turn_on
         data:
           brightness: 254
-          entity_id: light.under_cabinet_light
+        target:
+          entity_id:
+          - light.under_cabinet_light
+          - light.above_oven_light
     - conditions:
       - condition: template
         value_template: '{{ trigger.to_state.state == ''off'' }}'
       sequence:
       - service: light.turn_off
         data: {}
-        entity_id: light.under_cabinet_light
+        target:
+          entity_id:
+          - light.under_cabinet_light
+          - light.above_oven_light
     default: []
   mode: queued
   max: 3
