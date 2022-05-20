@@ -54,7 +54,7 @@ cameras:
   front_porch:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.189:8964/front-porch-cam
+        - path: rtsp://192.168.29.187:8964/front-porch-cam
         #rtsp://192.168.29.187:31040/b99573d3037d84ca
         #http://192.168.29.187:8898/front-porch-cam/stream.m3u8
 #        - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.113/live
@@ -135,7 +135,7 @@ cameras:
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.189:8964/driveway-cam
+        - path: rtsp://192.168.29.187:8964/driveway-cam
         #rtsp://192.168.29.187:31040/a9cb73e34e025a2d
         #http://192.168.29.187:8898/driveway-cam/stream.m3u8
         #
@@ -303,7 +303,7 @@ cameras:
   back_deck:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.189:8964/back-deck-cam
+        - path: rtsp://192.168.29.187:8964/back-deck-cam
         #rtsp://192.168.29.187:31040/d0a37ac8b922d29b
         #http://192.168.29.187:8898/back-deck-cam/stream.m3u8
         #
