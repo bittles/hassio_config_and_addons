@@ -829,6 +829,7 @@
       - automation.welcome_home_nick_garage
       - automation.welcome_home_kara_garage
       - automation.zpresence_welcome_home_caroline_garage
+      - automation.zpresence_welcome_home_brandon_garage
   - service: automation.turn_on
     entity_id: automation.welcome_home_front_door
   - service: input_boolean.turn_on
@@ -859,6 +860,7 @@
       - automation.welcome_home_nick_garage
       - automation.zpresence_welcome_home_caroline_garage
       - automation.welcome_home_kara_garage
+      - automation.zpresence_leaving_brandon
   - service: input_boolean.turn_off
     target:
       entity_id: input_boolean.welcomehomeautomations
@@ -3101,4 +3103,117 @@
   action:
   - service: script.frigate_snapshots
     data: {}
+  mode: single
+- id: '1653094691950'
+  alias: zPresence.Welcome Home Brandon Garage
+  description: ''
+  trigger:
+  - entity_id:
+    - person.brandon
+    platform: state
+    to: home
+  condition:
+  - condition: state
+    entity_id: timer.brandon
+    state: idle
+  - condition: state
+    entity_id: timer.garage_open_timer
+    state: idle
+  action:
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.garage_open_timer
+  - service: cover.open_cover
+    data: {}
+    target:
+      entity_id: cover.garage_mqtt
+  mode: single
+  initial_state: false
+- id: '1653094890108'
+  alias: zPresence.Leaving Brandon
+  description: ''
+  trigger:
+  - entity_id:
+    - person.brandon
+    from: home
+    platform: state
+  condition: []
+  action:
+  - data: {}
+    service: timer.start
+    target:
+      entity_id:
+      - timer.brandon
+  - data: {}
+    service: input_boolean.turn_off
+    target:
+      entity_id:
+      - input_boolean.brandon
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: person.kara
+        state: not_home
+      - condition: state
+        entity_id: person.nick
+        state: not_home
+      sequence:
+      - service: script.1579731744650
+        data: {}
+      - service: media_player.turn_off
+        target:
+          entity_id: media_player.bedroom_tcl_tv
+        data: {}
+      - service: media_player.turn_off
+        data: {}
+        target:
+          entity_id: media_player.forked_daapd_output_master_bedroom_apple_tv
+      - service: switch.turn_off
+        data: {}
+        entity_id: switch.airplayserver_bathroom
+      - type: turn_off
+        device_id: 5e5a2b32c5848dc960a5fa9d3bc41b26
+        entity_id: switch.desk_lamp
+        domain: switch
+    default: []
+  mode: single
+- id: '1653095034547'
+  alias: zzzz.Homekit Device Tracker Updates (mqtt) Brandon
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.brandon
+    from: 'off'
+    to: 'on'
+    id: brandon-home
+  - platform: state
+    entity_id: input_boolean.brandon
+    from: 'on'
+    to: 'off'
+    id: brandon-left
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: brandon-home
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: location/brandon
+          payload: home
+          qos: '1'
+          retain: true
+    - conditions:
+      - condition: trigger
+        id: brandon-left
+      sequence:
+      - service: mqtt.publish
+        data:
+          topic: location/brandon
+          payload: not_home
+          qos: '1'
+          retain: true
+    default: []
   mode: single

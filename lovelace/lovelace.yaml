@@ -118,6 +118,12 @@ config:
       - entity: light.desklamp
         tap_action:
           action: toggle
+      - entity: switch.adguard_protection
+        tap_action:
+          action: toggle
+      - entity: switch.adguard_filtering
+        tap_action:
+          action: toggle
       show_icon: true
       show_name: true
       show_state: false
@@ -210,12 +216,8 @@ config:
     - activities:
       - device: NVIDIA Game Console
         name: nvidia SHIELD
-      - device: Harmony Beta Test Apple TV
-        name: Watch Apple TV
-      - device: Sony PS4
-        name: PS4
-      - device: Onkyo AV Receiver
-        name: Xbox One
+      - device: Sony PlayStation 5
+        name: Play PS5
       - device: TCL TV Living Room
         name: Roku TV
       buttons:
@@ -236,7 +238,7 @@ config:
           icon: mdi:home
       entity: remote.living_room
       name: Living Room TV
-      scale: 1.25
+      scale: 1.8
       type: custom:harmony-card
       volume_device: Onkyo AV Receiver
       volume_entity: media_player.onkyo

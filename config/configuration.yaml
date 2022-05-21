@@ -301,6 +301,7 @@ device_tracker:
       dariusmqtttrigger: "location/darius"
       karamqtttrigger: "location/kara"
       carolinemqtttrigger: "location/caroline"
+      brandonmqtttrigger: "location/brandon"
     qos: 1
 
 gc100:
@@ -578,6 +579,9 @@ recorder:
       - sensor.count_tanner_s_water_was_empty
       - sensor.sun_elevation
       - sensor.shellytempcombined_filter
+      - sensor.front_porch_all
+      - sensor.driveway_all
+      - sensor.back_deck_all
       - sun.sun
       - vacuum.alfred
 
