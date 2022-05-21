@@ -455,12 +455,12 @@ birdseye:
   height: 720
   # Optional: Encoding quality of the mpeg1 feed (default: shown below)
   # 1 is the highest quality, and 31 is the lowest. Lower quality feeds utilize less CPU resources.
-  quality: 20
+  quality: 15
   # Optional: Mode of the view. Available options are: objects, motion, and continuous
   #   objects - cameras are included if they have had a tracked object within the last 30 seconds
   #   motion - cameras are included if motion was detected in the last 30 seconds
   #   continuous - all cameras are included always
-  mode: continuous
+  mode: motion
 snapshots:
   # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
   # This value can be set via MQTT and will be updated in startup based on retained value
