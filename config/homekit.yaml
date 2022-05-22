@@ -12,6 +12,7 @@
      - fan.living_room_fan
      - fan.bedroom_fan2
 
+     - input_boolean.brandon
      - input_boolean.caroline
      - input_boolean.nick
      - input_boolean.kara
@@ -42,6 +43,7 @@
      - person.kara
      - person.darius
      - person.caroline
+     - person.brandon
 
      - sensor.bonusroomtemp
      - sensor.shellytempfixed
