@@ -13,6 +13,7 @@ config:
     - entity: person.darius
     - entity: person.kara
     - entity: person.caroline
+    - entity: person.brandon
     - entity: binary_sensor.noone
     - entity: vacuum.alfred_re
     - entity: sensor.nest_thermostat_temperature

@@ -636,7 +636,7 @@ frigate_snapshots:
       milliseconds: 100
   - service: camera.snapshot
     data:
-      filename: /config/www/frigate_camera.driveway.jpg
+      filename: /config/www/frigate_driveway.jpg
     target:
       entity_id:
       - camera.driveway
@@ -660,10 +660,4 @@ frigate_snapshots:
       filename: /config/www/frigate_camera.front_porch.jpg
     target:
       entity_id: camera.front_porch
-  - service: camera.snapshot
-    data:
-      filename: /config/www/frigate_camera.driveway.jpg
-    target:
-      entity_id:
-      - camera.driveway
   mode: single
