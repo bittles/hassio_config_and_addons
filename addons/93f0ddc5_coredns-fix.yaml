@@ -1,6 +1,6 @@
 block_dest: 127.0.0.12
 block_domain: version.home-assistant.io
-block_supervisor_updates: false
+block_supervisor_updates: true
 dns_container: hassio_dns
 interval: 60
 log_changes: true
