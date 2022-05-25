@@ -1105,9 +1105,6 @@
       - condition: state
         entity_id: person.nick
         state: not_home
-      - condition: state
-        entity_id: person.caroline
-        state: not_home
       sequence:
       - service: script.1579731744650
         data: {}
@@ -1170,9 +1167,6 @@
     - conditions:
       - condition: state
         entity_id: person.kara
-        state: not_home
-      - condition: state
-        entity_id: person.caroline
         state: not_home
       sequence:
       - service: script.1579731744650

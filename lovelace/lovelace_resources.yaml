@@ -13,7 +13,7 @@ items:
   url: /hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js
 - id: 377336b164b548c7809c210fb4aa332a
   type: module
-  url: /hacsfiles/fan-percent-button-row/fan-percent-button-row.js?hacstag=34575320519
+  url: /hacsfiles/fan-percent-button-row/fan-percent-button-row.js?hacstag=34575320520
 - id: ea943d502d6945fcb2f8218196d9fe06
   type: module
   url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js?hacstag=1933720442011
