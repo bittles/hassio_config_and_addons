@@ -14,6 +14,16 @@
       attributes:
         "Last Opened": '{{ states.input_datetime.back_door_last_opened_time.state }}'
 
+    - name: Small Water Bowl is Empty
+      unique_id: water_bowl_small
+      state: >
+        {% if is_state('binary_sensor.tanner_water_bowl_water', 'off') %}
+          on
+        {% elif is_state('binary_sensor.tanner_water_bowl_water', 'on') %}
+          off
+        {% endif %}
+      device_class: moisture
+
     - name: noone
 #      friendly_name: No One is Home
       unique_id: nooneprescence

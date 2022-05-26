@@ -51,8 +51,6 @@ config:
       type: entities
     - cameras:
       - camera_entity: camera.driveway
-      - camera_entity: camera.front_porch
-      - camera_entity: camera.back_deck
       dimensions:
         aspect_ratio_mode: unconstrained
       event_gallery:
@@ -63,6 +61,7 @@ config:
         auto_unmute: true
       menu:
         buttons:
+          clips: false
           download: false
           frigate: false
           fullscreen: false
@@ -72,6 +71,8 @@ config:
       view:
         camera_select: snapshot
         default: snapshot
+        timeout_seconds: 30
+        update_seconds: 300
     - columns: 3
       entities:
       - entity: binary_sensor.caringaragestatus
@@ -131,6 +132,30 @@ config:
       state_color: true
       title: Lights
       type: glance
+    - cameras:
+      - camera_entity: camera.front_porch
+      dimensions:
+        aspect_ratio_mode: unconstrained
+      event_gallery:
+        min_columns: 1
+      event_viewer:
+        auto_play: false
+      live:
+        auto_unmute: true
+      menu:
+        buttons:
+          clips: false
+          download: false
+          frigate: false
+          fullscreen: false
+          image: false
+        mode: overlay-left
+      type: custom:frigate-card
+      view:
+        camera_select: snapshot
+        default: snapshot
+        timeout_seconds: 30
+        update_seconds: 300
     - columns: 3
       entities:
       - entity: switch.nick_s_pc
@@ -151,6 +176,31 @@ config:
           action: toggle
       title: Switches
       type: glance
+    - cameras:
+      - camera_entity: camera.back_deck
+      dimensions:
+        aspect_ratio_mode: unconstrained
+      event_gallery:
+        min_columns: 1
+      event_viewer:
+        auto_play: false
+      live:
+        auto_unmute: true
+      menu:
+        buttons:
+          clips: false
+          download: false
+          frigate: false
+          fullscreen: false
+          image: false
+          snapshots: true
+        mode: overlay-left
+      type: custom:frigate-card
+      view:
+        camera_select: snapshot
+        default: snapshot
+        timeout_seconds: 30
+        update_seconds: 300
     - entity: weather.pirateweather
       secondary_info_attribute: precipitation
       show_current: true
