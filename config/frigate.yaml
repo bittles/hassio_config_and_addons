@@ -461,6 +461,7 @@ birdseye:
   #   motion - cameras are included if motion was detected in the last 30 seconds
   #   continuous - all cameras are included always
   mode: motion
+
 snapshots:
   # Optional: Enable writing jpg snapshot to /media/frigate/clips (default: shown below)
   # This value can be set via MQTT and will be updated in startup based on retained value
@@ -487,39 +488,14 @@ snapshots:
     # Optional: Per object retention days
     #objects:
     #  person: 15
+
 ffmpeg:
   output_args:
     rtmp: -c:v copy -an -f flv
-    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v copy -an
+#    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v copy -an
     detect: -f rawvideo -pix_fmt yuv420p -an
 
-# Optional: global input args (default: shown below)
- # input_args: -fflags +flush_packets+nobuffer+genpts+igndts -flags low_delay -rtsp_transport tcp -stimeout 5000000 #-use_wallclock_as_timestamps 1 -avoid_negative_ts 1 #+flush_packets
-  # Optional: global ffmpeg args (default: shown below)
-#  global_args: -hide_banner -loglevel warning
-  
-  # Optional: global hwaccel args (default: shown below)
-  # NOTE: See hardware acceleration docs for your specific device
-  
-#  hwaccel_args: -hwaccel drm -hwaccel_device /dev/dri/renderD128
-  # Optional: global input args (default: shown below)
-#  input_args: -avoid_negative_ts make_zero -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -fflags +genpts+discardcorrupt+nofillin+flush_packets
-
-  # DONT USE-rw_timeout 5000000
-  #test removed
-  #-strict experimental
-  
-  # Optional: global output args
-  #output_args:
-  #  # Optional: output args for detect streams (default: shown below)
-  #  detect: -f rawvideo -pix_fmt yuv420p
-  #  # Optional: output args for record streams (default: shown below)
-  #  record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c copy -an
-  #  # Optional: output args for rtmp streams (default: shown below)
-  #  rtmp: -c copy -f flv
-#    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v libx264 -an
-#    rtmp: -c:a libfdk_aac -b:a 100k -c:v copy -f flv
-#    rtmp: -c:v libx264 -an -f flv
+  input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -an
 
 motion:
   # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
@@ -554,7 +530,7 @@ motion:
 # NOTE: Can be overridden at the camera level
 record:
   # Optional: Enable recording (default: shown below)
-  enabled: True
+  enabled: False
   # Optional: Number of days to retain recordings regardless of events (default: shown below)
   # NOTE: This should be set to 0 and retention should be defined in events section below
   #       if you only want to retain recordings of events.

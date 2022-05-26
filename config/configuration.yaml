@@ -599,8 +599,10 @@ history:
       - person.nick
       - person.darius
       - person.kara
+      - person.caroline
+      - person.brandon
       - sensor.living_roomtv
-      - vacuum.alfred
+      - vacuum.alfred_re
 #      - camera.aarlo_back_deck
 #      - sensor.aarlo_last_back_deck
 #      - binary_sensor.aarlo_motion_back_deck
