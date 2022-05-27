@@ -6,7 +6,7 @@
     include_entities:
      - binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
      - binary_sensor.caringaragestatus
-     - binary_sensor.small_water_bowl_is_empty
+  #   - binary_sensor.small_water_bowl_is_empty
      - climate.new_bedroom_thermostat
      - climate.downstairs_the_nest
      - fan.bonus_room_fan
