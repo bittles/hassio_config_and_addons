@@ -163,6 +163,8 @@
     value_template: '{{ trigger.to_state.state > trigger.from_state.state }}'
   - condition: template
     value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
+  - condition: template
+    value_template: '{{ not trigger.to_state.state == ''unavailable'' }}'
   action:
   - data: {}
     service: lock.unlock
@@ -758,6 +760,7 @@
       entity_id:
       - light.hue_go_1
       - light.hue_go_2
+    enabled: false
   - entity_id: remote.living_room
     service: remote.turn_off
   - entity_id: switch.receiver_outlet
@@ -1301,15 +1304,12 @@
     device_id: f3f0b4b448e0ea2c72219d4ca2720652
     entity_id: binary_sensor.tanner_food_container_brown_access_control_window_door_is_open
     domain: binary_sensor
-  - type: opened
-    platform: device
-    device_id: 088661e85ee0e353d18fbc16dbd2014f
-    entity_id: binary_sensor.tanner_food_container_white_access_control_window_door_is_open
-    domain: binary_sensor
   condition:
   - condition: time
     after: input_datetime.tanner_dinner
-    before: '23:59'
+    before: '23:59:00'
+  - condition: template
+    value_template: '{{ not trigger.from_state.state == ''unavailable'' }}'
   action:
   - service: switch.turn_on
     data: {}
