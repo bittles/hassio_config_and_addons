@@ -857,8 +857,6 @@ config:
           name: Bicycle Motion
         - entity: binary_sensor.driveway_bird_motion
           name: Bird Motion
-        - entity: binary_sensor.driveway_car_motion
-          name: Car Motion
         - entity: binary_sensor.driveway_cat_motion
           name: Cat Motion
         - entity: binary_sensor.driveway_dog_motion
@@ -870,7 +868,6 @@ config:
         - entity: sensor.driveway_bear
         - entity: sensor.driveway_bicycle
         - entity: sensor.driveway_bird
-        - entity: sensor.driveway_car
         - entity: sensor.driveway_cat
         - entity: sensor.driveway_dog
         - entity: sensor.driveway_motorcycle
@@ -985,6 +982,9 @@ config:
       - entity: switch.front_porch
       - entity: switch.driveway
       - entity: switch.back_deck
+      - entity: binary_sensor.driveway_template_motion
+      - entity: binary_sensor.front_porch_template_motion
+      - entity: binary_sensor.back_deck_template_motion
       show_header_toggle: false
       title: Frigate
       type: entities

@@ -49,19 +49,17 @@ objects:
       threshold: 0.6
       min_score: 0.57
     dog:
-      threshold: 0.55
+      threshold: 0.66
+      min_score: 0.6
 cameras:
   front_porch:
     ffmpeg:
       inputs:
         - path: rtsp://192.168.29.187:8964/front-porch-cam
-        #rtsp://192.168.29.187:31040/b99573d3037d84ca
-        #http://192.168.29.187:8898/front-porch-cam/stream.m3u8
-#        - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.113/live
           roles:
             - detect
             - rtmp
-            - record
+#            - record
     live:
       # Live camera view height default=720
       height: 720
@@ -72,15 +70,11 @@ cameras:
       fps: 6
       height: 360
       max_disappeared: 30
-      stationary:
-        # Optional: Frequency for running detection on stationary objects (default: shown below)
-        # When set to 0, object detection will never be run on stationary objects. If set to 10, 
-        # it will be run on every 10th frame.
-        interval: 20
-        # Optional: Number of frames without a position change for an object to be considered 
-        # stationary (default: 10x the frame rate or 10s)
-        threshold: 20
     motion:
+      improve_contrast: false
+      threshold: 55
+      delta_alpha: 0.19
+      frame_alpha: 0.3
       mask:
         - 597,357,628,352,622,334,606,335
 #720p mask
@@ -136,14 +130,12 @@ cameras:
     ffmpeg:
       inputs:
         - path: rtsp://192.168.29.187:8964/driveway-cam
-        #rtsp://192.168.29.187:31040/a9cb73e34e025a2d
-        #http://192.168.29.187:8898/driveway-cam/stream.m3u8
-        #
-  #      - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
+
+
           roles:
             - detect
             - rtmp
-            - record
+#            - record
     live:
       # Live camera view height default=720
       height: 720
@@ -153,15 +145,12 @@ cameras:
       fps: 6
       max_disappeared: 30
       height: 360
-      stationary:
-        # Optional: Frequency for running detection on stationary objects (default: shown below)
-        # When set to 0, object detection will never be run on stationary objects. If set to 10, 
-        # it will be run on every 10th frame.
-        interval: 30
-        # Optional: Number of frames without a position change for an object to be considered 
-        # stationary (default: 10x the frame rate or 10s)
-        threshold: 14
+
     motion:
+      improve_contrast: false
+      threshold: 55
+      delta_alpha: 0.19
+      frame_alpha: 0.3
 #      contour_area: 490
       mask:
         - 236,0,0,0,1,64
@@ -303,15 +292,13 @@ cameras:
   back_deck:
     ffmpeg:
       inputs:
-        - path: rtsp://192.168.29.187:8964/back-deck-cam
-        #rtsp://192.168.29.187:31040/d0a37ac8b922d29b
-        #http://192.168.29.187:8898/back-deck-cam/stream.m3u8
-        #
- #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
+#        - path: rtsp://192.168.29.187:8964/back-deck-cam
+        - path: rtsp://192.168.29.187:31040/149b833844d3c694
           roles:
             - detect
             - rtmp
-            - record
+#            - record
+      input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1
     live:
       # Live camera view height default=720
       height: 720
@@ -330,11 +317,10 @@ cameras:
         # stationary (default: 10x the frame rate or 10s)
         threshold: 20
     motion:
-      threshold: 45
-#      contour_area: 200
-#      delta_alpha: 0.185
-#      frame_alpha: 0.18
-#      frame_height: 100
+      improve_contrast: false
+      threshold: 55
+      delta_alpha: 0.19
+      frame_alpha: 0.3
       mask:
         - 0,0,123,49,163,174,82,223,1,139
 #        - 141,0,149,23,159,53,119,62,104,2
@@ -430,7 +416,7 @@ detect:
     # Optional: Frequency for running detection on stationary objects (default: shown below)
     # When set to 0, object detection will never be run on stationary objects. If set to 10, 
     # it will be run on every 10th frame.
-    interval: 20
+    interval: 10
     # Optional: Number of frames without a position change for an object to be considered 
     # stationary (default: 10x the frame rate or 10s)
     threshold: 20
@@ -495,13 +481,13 @@ ffmpeg:
 #    record: -f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v copy -an
     detect: -f rawvideo -pix_fmt yuv420p -an
 
-  input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1 -an
+  input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport udp -stimeout 5000000 -use_wallclock_as_timestamps 1
 
 motion:
   # Optional: The threshold passed to cv2.threshold to determine if a pixel is different enough to be counted as motion. (default: shown below)
   # Increasing this value will make motion detection less sensitive and decreasing it will make motion detection more sensitive.
   # The value should be between 1 and 255.
-  threshold: 35
+  threshold: 55
   # Optional: Minimum size in pixels in the resized motion image that counts as motion (default: ~0.17% of the motion frame area)
   # Increasing this value will prevent smaller areas of motion from being detected. Decreasing will make motion detection more sensitive to smaller
   # moving objects.
@@ -511,13 +497,13 @@ motion:
   # Optional: Alpha value passed to cv2.accumulateWeighted when averaging the motion delta across multiple frames (default: shown below)
   # Higher values mean the current frame impacts the delta a lot, and a single raindrop may register as motion.
   # Too low and a fast moving person wont be detected as motion.
-  delta_alpha: 0.21
+  delta_alpha: 0.18
 
   # Optional: Alpha value passed to cv2.accumulateWeighted when averaging frames to determine the background (default: shown below)
   # Higher values mean the current frame impacts the average a lot, and a new object will be averaged into the background faster.
   # Low values will cause things like moving shadows to be detected as motion for longer.
   # https://www.geeksforgeeks.org/background-subtraction-in-an-image-using-concept-of-running-average/
-  frame_alpha: 0.2
+  frame_alpha: 0.35
 
   # Optional: Height of the resized motion frame  (default: 1/6th of the original frame height, but no less than 180)
   # This operates as an efficient blur alternative. Higher values will result in more granular motion detection at the expense of higher CPU usage.
