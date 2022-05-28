@@ -125,27 +125,31 @@
         {% if is_state('binary_sensor.driveway_bear_motion', 'on') %}
           {{ 'BEAR ' }}
         {%- endif -%}
+
         {% if is_state('binary_sensor.driveway_bicycle_motion', 'on') %}
           {{ 'BICYCLE ' }}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.driveway_bird_motion', 'on') -%}
           {{ 'BIRD ' }}
         {%- endif -%}
-        {%- if is_state('binary_sensor.driveway_car_motion', 'on') -%}
-          {{ 'CAR ' }}
-        {%- endif -%}
+
         {%- if is_state('binary_sensor.driveway_cat_motion', 'on') -%}
           {{ 'CAT '}}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.driveway_dog_motion', 'on') -%}
           {{ 'DOG '}}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.driveway_motorcycle_motion', 'on') -%}
           {{ 'MOTORCYCLE '}}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.driveway_person_motion', 'on') -%}
           {{ 'PERSON' }}
         {%- endif -%}
+
         {%- if is_state('switch.frigate_driveway_motion', 'off') -%}
           Nothing
         {%- endif -%}
@@ -156,24 +160,31 @@
         {% if is_state('binary_sensor.front_porch_bear_motion', 'on') %}
           {{ 'BEAR ' }}
         {%- endif -%}
+
         {% if is_state('binary_sensor.front_porch_bicycle_motion', 'on') %}
           {{ 'BICYCLE ' }}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.front_porch_bird_motion', 'on') -%}
           {{ 'BIRD ' }}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.front_porch_car_motion', 'on') -%}
           {{ 'CAR ' }}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.front_porch_cat_motion', 'on') -%}
           {{ 'CAT '}}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.front_porch_dog_motion', 'on') -%}
           {{ 'DOG '}}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.front_porch_person_motion', 'on') -%}
           {{ 'PERSON' }}
         {%- endif -%}
+
         {%- if is_state('switch.frigate_porch_motion', 'off') -%}
           Nothing
         {%- endif -%}
@@ -184,18 +195,23 @@
         {% if is_state('binary_sensor.back_deck_bear_motion', 'on') %}
           {{ 'BEAR ' }}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.back_deck_bird_motion', 'on') -%}
           {{ 'BIRD ' }}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.back_deck_cat_motion', 'on') -%}
           {{ 'CAT '}}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.back_deck_dog_motion', 'on') -%}
           {{ 'DOG '}}
         {%- endif -%}
+
         {%- if is_state('binary_sensor.back_deck_person_motion', 'on') -%}
           {{ 'PERSON' }}
         {%- endif -%}
+
         {%- if is_state('switch.frigate_deck_motion', 'off') -%}
           Nothing
         {%- endif -%}
