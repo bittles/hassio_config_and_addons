@@ -1,4 +1,4 @@
-"""Support for ASUS Router devices"""
+"""Support for AsusRouter devices"""
 
 from __future__ import annotations
 
@@ -6,22 +6,33 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import EVENT_HOMEASSISTANT_STOP
+from homeassistant.const import (
+    CONF_SCAN_INTERVAL,
+    EVENT_HOMEASSISTANT_STOP,
+)
 from homeassistant.core import HomeAssistant
 
 from .const import (
+    CONF_CACHE_TIME,
+    CONF_CONSIDER_HOME,
     CONF_INTERFACES,
+    DEFAULT_CACHE_TIME,
+    DEFAULT_CONSIDER_HOME,
+    DEFAULT_SCAN_INTERVAL,
     DELAULT_INTERFACES,
-    DOMAIN,
     DATA_ASUSROUTER,
+    DOMAIN,
     PLATFORMS,
 )
+from .migrate import DEPRECATED, MOVE_TO_OPTIONS
 from .router import AsusRouterObj
-from .migrate import DEPRECATED
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Setup ASUS Router platform"""
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+) -> bool:
+    """Setup AsurRouter platform"""
 
     router = AsusRouterObj(hass, entry)
     await router.setup()
@@ -47,8 +58,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload config entry"""
+async def async_unload_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+) -> bool:
+    """Unload entry"""
 
     unload = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
@@ -62,7 +76,10 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return unload
 
 
-async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
+async def update_listener(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+) -> None:
     """Update on config_entry update"""
 
     router = hass.data[DOMAIN][entry.entry_id][DATA_ASUSROUTER]
@@ -73,33 +90,46 @@ async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
     return
 
 
-async def async_migrate_entry(hass, config_entry : ConfigEntry):
-    """Migrate old entry."""
+async def async_migrate_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+) -> bool:
+    """Migrate old entry"""
 
-    _LOGGER.debug("Migrating from version {}".format(config_entry.version))
+    version = entry.version
+    _LOGGER.debug("Migrating from version {}".format(entry.version))
 
-    version = config_entry.version
-    entry = {**config_entry.data}
-    options = {**config_entry.options}
+    new_entry = {**entry.data}
+    new_options = {**entry.options}
 
     if version == 1:
-        options[CONF_INTERFACES] = DELAULT_INTERFACES
+        new_options[CONF_INTERFACES] = DELAULT_INTERFACES
+
+    if version == 2:
+        new_options[CONF_SCAN_INTERVAL] = DEFAULT_SCAN_INTERVAL
+        new_options[CONF_CACHE_TIME] = DEFAULT_CACHE_TIME
+        new_options[CONF_CONSIDER_HOME] = DEFAULT_CONSIDER_HOME
 
     while "{}_{}".format(version, version + 1) in DEPRECATED:
-        new_entry = entry
-
         for key_old in DEPRECATED["{}_{}".format(version, version + 1)]:
             key_new = DEPRECATED["{}_{}".format(version, version + 1)][key_old]
             new_entry[key_new] = new_entry[key_old]
             new_entry.pop(key_old)
 
-        entry = new_entry
         version += 1
 
-    config_entry.version = version
-    hass.config_entries.async_update_entry(config_entry, data = new_entry, options = options)
 
-    _LOGGER.info("Migration to version {} successful".format(config_entry.version))
+    while "{}_{}".format(version, version + 1) in MOVE_TO_OPTIONS:
+        for key in MOVE_TO_OPTIONS["{}_{}".format(version, version + 1)]:
+            new_options[key] = new_entry[key]
+            new_entry.pop(key)
+
+        version += 1
+
+    entry.version = version
+    hass.config_entries.async_update_entry(entry, data = new_entry, options = new_options)
+
+    _LOGGER.info("Migration to version {} successful".format(entry.version))
 
     return True
 

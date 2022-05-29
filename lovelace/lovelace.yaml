@@ -20,10 +20,15 @@ config:
     - entity: sensor.nest_thermostat_humidity
     - entity: sensor.shellytempfixed
     - entity: sensor.shelly_shht_1_6bb145_humidity
-    - entity: sensor.bonusroomtemp
-    - entity: sensor.bonusroomtemp_humidity
     - entity: automation.alfred_cleans_zones_at_4am
     - entity: sensor.processor_use
+    - entity: sensor.processor_temperature
+    - entity: sensor.memory_use_percent
+    - entity: sensor.memory_use
+    - entity: sensor.memory_free
+    - entity: sensor.swap_use_percent
+    - entity: sensor.swap_use
+    - entity: sensor.swap_free
     cards:
     - entities:
       - entity: script.restart_shield
@@ -49,30 +54,6 @@ config:
       show_header_toggle: false
       state_color: true
       type: entities
-    - cameras:
-      - camera_entity: camera.driveway
-      dimensions:
-        aspect_ratio_mode: unconstrained
-      event_gallery:
-        min_columns: 1
-      event_viewer:
-        auto_play: false
-      live:
-        auto_unmute: true
-      menu:
-        buttons:
-          clips: false
-          download: false
-          frigate: false
-          fullscreen: false
-          image: false
-        mode: overlay-left
-      type: custom:frigate-card
-      view:
-        camera_select: snapshot
-        default: snapshot
-        timeout_seconds: 30
-        update_seconds: 300
     - columns: 3
       entities:
       - entity: binary_sensor.caringaragestatus
@@ -132,30 +113,6 @@ config:
       state_color: true
       title: Lights
       type: glance
-    - cameras:
-      - camera_entity: camera.front_porch
-      dimensions:
-        aspect_ratio_mode: unconstrained
-      event_gallery:
-        min_columns: 1
-      event_viewer:
-        auto_play: false
-      live:
-        auto_unmute: true
-      menu:
-        buttons:
-          clips: false
-          download: false
-          frigate: false
-          fullscreen: false
-          image: false
-        mode: overlay-left
-      type: custom:frigate-card
-      view:
-        camera_select: snapshot
-        default: snapshot
-        timeout_seconds: 30
-        update_seconds: 300
     - columns: 3
       entities:
       - entity: switch.nick_s_pc
@@ -176,46 +133,7 @@ config:
           action: toggle
       title: Switches
       type: glance
-    - cameras:
-      - camera_entity: camera.back_deck
-      dimensions:
-        aspect_ratio_mode: unconstrained
-      event_gallery:
-        min_columns: 1
-      event_viewer:
-        auto_play: false
-      live:
-        auto_unmute: true
-      menu:
-        buttons:
-          clips: false
-          download: false
-          frigate: false
-          fullscreen: false
-          image: false
-          snapshots: true
-        mode: overlay-left
-      type: custom:frigate-card
-      view:
-        camera_select: snapshot
-        default: snapshot
-        timeout_seconds: 30
-        update_seconds: 300
-    - entity: weather.pirateweather
-      secondary_info_attribute: precipitation
-      show_current: true
-      show_forecast: true
-      type: weather-forecast
-    - content: ".\n\nFFMPEG_CMD: >-\n  -fflags nobuffer+flush_packets -use_wallclock_as_timestamps\
-        \ 1 -flags low_delay\n  -fpsprobesize 20 -analyzeduration 150 -probesize 250\
-        \ -thread_queue_size 128 -f\n  h264 -r 20 -i pipe: -thread_queue_size 256\
-        \ -f alaw -r 20 -ar 16000 -i\n  /tmp/{cam_name}.wav -c:v copy -c:a aac -af\n\
-        \  aresample=async=1:first_pts=0,asetrate=16000 -movflags\n  +empty_moov+default_base_moof+frag_keyframe\
-        \ -f tee -map 0:v -map 1:a -shortest\n  [select=v,a:f=rtsp:rtsp_transport=tcp]rtsp://0.0.0.0:8554/{cam_name}\n\
-        \n -loglevel verbose -fflags +genpts+flush_packets+nobuffer -flags low_delay\
-        \ -analyzeduration 100 -probesize 100 -f h264 -i pipe: -f alaw -ar 16000 -i\
-        \ /tmp/{cam_name}.wav -c:v copy -c:a copy -movflags +empty_moov+default_base_moof+frag_keyframe\
-        \ -f tee -map 0:v -map 1:a -shortest [select=v,a:f=rtsp:rtsp_transport=tcp]rtsp://0.0.0.0:8554/{cam_name}"
+    - content: z
       theme: Google Dark Theme
       type: markdown
     - data_source: RainViewer-UniversalBlue
@@ -806,36 +724,9 @@ config:
           name: Dog Motion
         - entity: binary_sensor.front_porch_person_motion
           name: Person Motion
-        - entity: sensor.front_porch_bear
-        - entity: sensor.front_porch_car
-        - entity: sensor.front_porch_cat
-        - entity: sensor.front_porch_dog
-        - entity: sensor.front_porch_person
         show_header_toggle: false
         title: Front Porch
         type: entities
-      - camera_view: auto
-        entity: camera.front_porch
-        show_name: true
-        show_state: true
-        type: picture-entity
-      - camera_view: auto
-        entity: camera.front_porch_bear
-        show_name: true
-        show_state: true
-        type: picture-entity
-      - entity: camera.front_porch_bicycle
-        type: picture-entity
-      - entity: camera.front_porch_bird
-        type: picture-entity
-      - entity: camera.front_porch_car
-        type: picture-entity
-      - entity: camera.front_porch_cat
-        type: picture-entity
-      - entity: camera.front_porch_dog
-        type: picture-entity
-      - entity: camera.front_porch_person
-        type: picture-entity
       columns: 1
       square: false
       type: grid
@@ -865,49 +756,9 @@ config:
           name: Motorcycle Motion
         - entity: binary_sensor.driveway_person_motion
           name: Person Motion
-        - entity: sensor.driveway_bear
-        - entity: sensor.driveway_bicycle
-        - entity: sensor.driveway_bird
-        - entity: sensor.driveway_cat
-        - entity: sensor.driveway_dog
-        - entity: sensor.driveway_motorcycle
-        - entity: sensor.driveway_person
         show_header_toggle: false
         title: Driveway
         type: entities
-      - camera_view: auto
-        entity: camera.driveway
-        show_name: true
-        show_state: true
-        type: picture-entity
-      - camera_view: auto
-        entity: camera.driveway_bear
-        show_name: true
-        show_state: true
-        type: picture-entity
-      - camera_view: auto
-        entity: camera.driveway_bicycle
-        show_name: true
-        show_state: true
-        type: picture-entity
-      - entity: camera.driveway_bird
-        type: picture-entity
-      - entity: camera.driveway_car
-        type: picture-entity
-      - entity: camera.driveway_cat
-        type: picture-entity
-      - entity: camera.driveway_dog
-        type: picture-entity
-      - camera_view: auto
-        entity: camera.driveway_motorcycle
-        show_name: true
-        show_state: true
-        type: picture-entity
-      - camera_view: auto
-        entity: camera.driveway_person
-        show_name: true
-        show_state: true
-        type: picture-entity
       columns: 1
       square: false
       type: grid
@@ -934,34 +785,9 @@ config:
           name: Dog Motion
         - entity: binary_sensor.back_deck_person_motion
           name: Person Motion
-        - entity: sensor.back_deck_bear
-          name: Bear
-        - entity: sensor.back_deck_bird
-          name: Bird
-        - entity: sensor.back_deck_cat
-          name: Cat
-        - entity: sensor.back_deck_dog
-          name: Dog
-        - entity: sensor.back_deck_person
-          name: Person
         show_header_toggle: false
         title: Back Deck
         type: entities
-      - camera_view: auto
-        entity: camera.back_deck
-        show_name: true
-        show_state: true
-        type: picture-entity
-      - entity: camera.back_deck_bear
-        type: picture-entity
-      - entity: camera.back_deck_bird
-        type: picture-entity
-      - entity: camera.back_deck_cat
-        type: picture-entity
-      - entity: camera.back_deck_dog
-        type: picture-entity
-      - entity: camera.back_deck_person
-        type: picture-entity
       columns: 1
       square: false
       type: grid
@@ -970,23 +796,96 @@ config:
       - entity: sensor.cpu1_inference_speed
       - entity: sensor.cpu2_inference_speed
       - entity: sensor.cpu3_inference_speed
-      - entity: input_boolean.porch_motion
-      - entity: input_boolean.driveway_motion
-      - entity: input_boolean.wyze_deck_motion
-      - entity: switch.frigate_porch_motion
-      - entity: switch.frigate_driveway_motion
-      - entity: switch.frigate_deck_motion
       - entity: sensor.porch_object
       - entity: sensor.driveway_object
       - entity: sensor.deck_object
       - entity: switch.front_porch
       - entity: switch.driveway
       - entity: switch.back_deck
-      - entity: binary_sensor.driveway_template_motion
       - entity: binary_sensor.front_porch_template_motion
+      - entity: switch.frigate_porch_motion
+      - entity: binary_sensor.driveway_template_motion
+      - entity: switch.frigate_driveway_motion
       - entity: binary_sensor.back_deck_template_motion
+      - entity: switch.frigate_deck_motion
+      - entity: switch.front_porch
+      - entity: switch.driveway
+      - entity: switch.back_deck
       show_header_toggle: false
       title: Frigate
       type: entities
+    - cameras:
+      - camera_entity: camera.back_deck
+      dimensions:
+        aspect_ratio_mode: unconstrained
+      event_gallery:
+        min_columns: 1
+      event_viewer:
+        auto_play: false
+      live:
+        auto_unmute: true
+      menu:
+        buttons:
+          clips: false
+          download: false
+          frigate: false
+          fullscreen: false
+          image: false
+          snapshots: true
+        mode: overlay-left
+      type: custom:frigate-card
+      view:
+        camera_select: snapshot
+        default: snapshot
+        timeout_seconds: 30
+        update_seconds: 300
+    - cameras:
+      - camera_entity: camera.front_porch
+      dimensions:
+        aspect_ratio_mode: unconstrained
+      event_gallery:
+        min_columns: 1
+      event_viewer:
+        auto_play: false
+      live:
+        auto_unmute: true
+      menu:
+        buttons:
+          clips: false
+          download: false
+          frigate: false
+          fullscreen: false
+          image: false
+        mode: overlay-left
+      type: custom:frigate-card
+      view:
+        camera_select: snapshot
+        default: snapshot
+        timeout_seconds: 30
+        update_seconds: 300
+    - cameras:
+      - camera_entity: camera.driveway
+      dimensions:
+        aspect_ratio_mode: unconstrained
+      event_gallery:
+        min_columns: 1
+      event_viewer:
+        auto_play: false
+      live:
+        auto_unmute: true
+      menu:
+        buttons:
+          clips: false
+          download: false
+          frigate: false
+          fullscreen: false
+          image: false
+        mode: overlay-left
+      type: custom:frigate-card
+      view:
+        camera_select: snapshot
+        default: snapshot
+        timeout_seconds: 30
+        update_seconds: 300
     path: frigate
     title: Frigate
