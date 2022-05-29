@@ -529,6 +529,30 @@ custom_thermostat_update_set_temp:
     default:
     - service: script.custom_thermostat_discipline_nest
       data: {}
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: switch.bedroom_dummyac
+        state: 'on'
+        for:
+          hours: 0
+          minutes: 0
+          seconds: 30
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 30
+          milliseconds: 0
+      - if:
+        - condition: state
+          entity_id: climate.downstairs_the_nest
+          attribute: hvac_action
+          state: idle
+        then:
+        - service: script.custom_thermostat_ac_switch_on_duplicate
+          data: {}
+    default: []
   mode: single
 alfred_cleans_living_room_and_kitchen:
   alias: Alfred Cleans Living Room and Kitchen

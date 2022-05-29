@@ -146,7 +146,7 @@ views:
       - entities:
           - entity: remote.living_room
           - entity: sensor.living_roomtv
-          - entity: switch.office_tv_power
+          - entity: switch.bedroomtvswitch
         show_header_toggle: false
         title: Remote
         type: entities
@@ -350,7 +350,7 @@ views:
           - entity: sensor.august_asl_03_smart_lock_battery_level
           - entity: lock.august_asl_03_smart_lock_locked
           - entity: switch.back_deck_speaker
-          - entity: switch.office_tv_power
+          - entity: switch.bedroomtvswitch
           - entity: scene.blue_day
           - entity: scene.blue_night
           - entity: group.above_cabinet_lights

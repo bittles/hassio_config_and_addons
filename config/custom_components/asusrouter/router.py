@@ -6,23 +6,23 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 from collections.abc import Callable, Awaitable
-from datetime import datetime, timedelta, tzinfo, timezone
+from datetime import datetime, timedelta
 from typing import Any, TypeVar
 
 from homeassistant.components.device_tracker.const import (
     CONF_CONSIDER_HOME,
-    DEFAULT_CONSIDER_HOME,
     DOMAIN as TRACKER_DOMAIN,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
-    CONF_NAME,
     CONF_HOST,
+    CONF_NAME,
     CONF_USERNAME,
     CONF_PASSWORD,
     CONF_PORT,
-    CONF_VERIFY_SSL,
+    CONF_SCAN_INTERVAL,
     CONF_SSL,
+    CONF_VERIFY_SSL,
 )
 from homeassistant.core import CALLBACK_TYPE, HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryNotReady
@@ -34,13 +34,16 @@ from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import dt as dt_util
 
-from .bridge import AsusRouterBridge
+from asusrouter import ConnectedDevice
+
+from .bridge import ARBridge
 from .const import (
     CONF_CACHE_TIME,
     CONF_ENABLE_CONTROL,
     CONF_ENABLE_MONITOR,
     CONF_REQ_RELOAD,
     DEFAULT_CACHE_TIME,
+    DEFAULT_CONSIDER_HOME,
     DEFAULT_ENABLE_CONTROL,
     DEFAULT_ENABLE_MONITOR,
     DEFAULT_HTTP,
@@ -56,21 +59,24 @@ from .const import (
 )
 
 
-from asusrouter import ConnectedDevice
-
-
 _T = TypeVar("_T")
 
 
 class AsusRouterSensorHandler:
     """Data handler for AsusRouter sensors"""
 
-    def __init__(self, hass : HomeAssistant, api : AsusRouterBridge) -> None:
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        api: ARBridge,
+        scan_interval: int = DEFAULT_SCAN_INTERVAL,
+    ) -> None:
         """Initialise data handler"""
 
         self._hass = hass
         self._api = api
         self._connected_devices = 0
+        self._scan_interval = timedelta(seconds = scan_interval)
 
 
     async def _get_connected_devices(self) -> dict[str, int]:
@@ -79,7 +85,10 @@ class AsusRouterSensorHandler:
         return {SENSORS_CONNECTED_DEVICES[0]: self._connected_devices}
 
 
-    def update_device_count(self, conn_devices : int) -> bool:
+    def update_device_count(
+        self,
+        conn_devices: int,
+    ) -> bool:
         """Update connected devices attribute"""
 
         if self._connected_devices == conn_devices:
@@ -88,7 +97,11 @@ class AsusRouterSensorHandler:
         return True
 
 
-    async def get_coordinator(self, sensor_type : str, update_method : Callable[[], Awaitable[_T]] | None = None) -> DataUpdateCoordinator:
+    async def get_coordinator(
+        self,
+        sensor_type: str,
+        update_method: Callable[[], Awaitable[_T]] | None = None,
+    ) -> DataUpdateCoordinator:
         """Find coordinator for the sensor type"""
 
         should_poll = True
@@ -106,7 +119,7 @@ class AsusRouterSensorHandler:
             _LOGGER,
             name = sensor_type,
             update_method = method,
-            update_interval = DEFAULT_SCAN_INTERVAL if should_poll else None,
+            update_interval = self._scan_interval if should_poll else None,
         )
         await coordinator.async_refresh()
 
@@ -116,18 +129,26 @@ class AsusRouterSensorHandler:
 class AsusRouterDevInfo:
     """Representation of an AsusRouter device info"""
 
-    def __init__(self, mac : str, name : str | None = None) -> None:
+    def __init__(
+        self,
+        mac: str,
+        name: str | None = None,
+    ) -> None:
         """Initialize an AsusRouter device info"""
 
         self._mac = mac
         self._name = name
-        self._ip : str | None = None
-        self._last_activity : datetime | None = None
-        self._connected : bool = False
-        self._connection_time : str | None = None
+        self._ip: str | None = None
+        self._last_activity: datetime | None = None
+        self._connected: bool = False
+        self._connection_time: str | None = None
 
 
-    def update(self, dev_info : dict[str, ConnectedDevice] | None = None, consider_home : int = 0):
+    def update(
+        self,
+        dev_info: dict[str, ConnectedDevice] | None = None,
+        consider_home: int = 0,
+    ):
         """Update AsusRouter device info"""
 
         utc_point_in_time = dt_util.utcnow()
@@ -136,12 +157,9 @@ class AsusRouterDevInfo:
             self._name = dev_info.name
             self._ip = dev_info.ip
             self._last_activity = utc_point_in_time
-            if dev_info.online:
-                self._connected = True
+            self._connected = True if dev_info.online else False
             if dev_info.connected_since:
-                ### EDIT THIS WHEN
-                ### AsusRouter library fixes datetime object to have timezone
-                self._connection_time = dev_info.connected_since.replace(tzinfo = timezone.utc)
+                self._connection_time = dev_info.connected_since
         elif self._connected:
             self._connected = (
                 utc_point_in_time - self._last_activity
@@ -194,42 +212,39 @@ class AsusRouterDevInfo:
 class AsusRouterObj:
     """Representatiion of AsusRouter"""
 
-    def __init__(self, hass : HomeAssistant, entry : ConfigEntry) -> None:
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        entry: ConfigEntry,
+    ) -> None:
         """Initialize the object"""
 
         self.hass = hass
         self._entry = entry
 
-        self._api : AsusRouterBridge | None = None
-        self._host : str = entry.data[CONF_HOST]
-        self._port : str = entry.data[CONF_PORT]
+        self._api: ARBridge | None = None
 
-        self._name : str = entry.data[CONF_NAME]
+        self._options = entry.options.copy()
 
-        self._mac : str | None = None
-        self._model : str = "ASUS Router"
-        self._vendor : str = "ASUSTek"
-        self._serial : str | None = None
-        self._firmware : str | None = None
+        self._host: str = entry.data[CONF_HOST]
+        self._port: str = self._options[CONF_PORT]
 
-        self._devices : dict[str, Any] = {}
-        self._connected_devices : int = 0
-        self._connect_error : bool = False
+        self._name: str = self._options[CONF_NAME]
 
-        self._sensors_data_handler : AsusRouterSensorHandler | None = None
-        self._sensors_coordinator : dict[str, Any] = {}
+        self._mac: str | None = None
+        self._model: str = "ASUS Router"
+        self._vendor: str = "ASUSTek"
+        self._serial: str | None = None
+        self._firmware: str | None = None
 
-        self._on_close : list[Callable] = []
+        self._devices: dict[str, Any] = {}
+        self._connected_devices: int = 0
+        self._connect_error: bool = False
 
-        self._options = {
-            CONF_SSL: DEFAULT_SSL,
-            CONF_VERIFY_SSL: DEFAULT_VERIFY_SSL,
-            CONF_CACHE_TIME: DEFAULT_CACHE_TIME,
-            CONF_ENABLE_MONITOR: DEFAULT_ENABLE_MONITOR, 
-            CONF_ENABLE_CONTROL: DEFAULT_ENABLE_CONTROL,
-        }
+        self._sensors_data_handler: AsusRouterSensorHandler | None = None
+        self._sensors_coordinator: dict[str, Any] = {}
 
-        self._options.update(entry.options)
+        self._on_close: list[Callable] = []
 
         if self._port == DEFAULT_PORT:
             self._port = DEFAULT_PORTS["ssl"] if self._options[CONF_VERIFY_SSL] else DEFAULT_PORTS["no_ssl"]
@@ -238,7 +253,7 @@ class AsusRouterObj:
     async def setup(self) -> None:
         """Setup an AsusRouter object"""
 
-        self._api = AsusRouterBridge.get_bridge(self.hass, dict(self._entry.data), self._options)
+        self._api = ARBridge(self.hass, dict(self._entry.data), self._options)
 
         try:
             await self._api.async_connect()
@@ -296,11 +311,14 @@ class AsusRouterObj:
         await self.init_sensors_coordinator()
 
         self.async_on_close(
-            async_track_time_interval(self.hass, self.update_all, DEFAULT_SCAN_INTERVAL)
+            async_track_time_interval(self.hass, self.update_all, timedelta(seconds = self._options[CONF_SCAN_INTERVAL]))
         )
 
 
-    async def update_all(self, now : datetime | None = None) -> None:
+    async def update_all(
+        self,
+        now: datetime | None = None,
+    ) -> None:
         """Update all AsusRouter platforms"""
 
         await self.update_devices()
@@ -310,29 +328,25 @@ class AsusRouterObj:
         """Update AsusRouter devices tracker"""
 
         new_device = False
-        _LOGGER.debug("Checking devices for ASUS router %s", self._host)
+        _LOGGER.debug("Checking devices for ASUS router {}".format(self._host))
         try:
             api_devices = await self._api.async_get_connected_devices()
-        except OSError as exc:
+        except OSError as ex:
             if not self._connect_error:
                 self._connect_error = True
-                _LOGGER.error(
-                    "Error connecting to ASUS router %s for device update: %s",
-                    self._host,
-                    exc,
-                )
+                _LOGGER.error("Error connecting to ASUS router {} for device update: {}".format(self._host, ex))
             return
 
         if self._connect_error:
             self._connect_error = False
-            _LOGGER.info("Reconnected to ASUS router %s", self._host)
+            _LOGGER.info("Reconnected to ASUS router {}".format(self._host))
 
         self._connected_devices = 0
         for device in api_devices:
             if api_devices[device].online:
                 self._connected_devices += 1
         consider_home = self._options.get(
-            CONF_CONSIDER_HOME, DEFAULT_CONSIDER_HOME.total_seconds()
+            CONF_CONSIDER_HOME, DEFAULT_CONSIDER_HOME
         )
 
         wrt_devices = {format_mac(mac): dev for mac, dev in api_devices.items()}
@@ -358,14 +372,14 @@ class AsusRouterObj:
         if self._sensors_data_handler:
             return
 
-        self._sensors_data_handler = AsusRouterSensorHandler(self.hass, self._api)
+        self._sensors_data_handler = AsusRouterSensorHandler(self.hass, self._api, self._options[CONF_SCAN_INTERVAL])
         self._sensors_data_handler.update_device_count(self._connected_devices)
 
         sensors_types = await self._api.async_get_available_sensors()
         sensors_types[SENSORS_TYPE_DEVICES] = {"sensors": SENSORS_CONNECTED_DEVICES}
 
         for sensor_type, sensor_def in sensors_types.items():
-            if not (sensor_names := sensor_def.get("sensors")):
+            if not (sensor_names:= sensor_def.get("sensors")):
                 continue
             coordinator = await self._sensors_data_handler.get_coordinator(sensor_type, update_method = sensor_def.get("method"))
             self._sensors_coordinator[sensor_type] = {
@@ -375,7 +389,7 @@ class AsusRouterObj:
 
 
     async def _update_unpolled_sensors(self) -> None:
-        """Request refresh for AsusWrt unpolled sensors."""
+        """Request refresh for AsusRouter unpolled sensors."""
 
         if not self._sensors_data_handler:
             return
@@ -399,13 +413,19 @@ class AsusRouterObj:
 
 
     @callback
-    def async_on_close(self, func : CALLBACK_TYPE) -> None:
+    def async_on_close(
+        self,
+        func: CALLBACK_TYPE,
+    ) -> None:
         """Functions on router close"""
 
         self._on_close.append(func)
 
 
-    def update_options(self, new_options: dict) -> bool:
+    def update_options(
+        self,
+        new_options: dict,
+    ) -> bool:
         """Update router options"""
 
         req_reload = False
@@ -445,14 +465,14 @@ class AsusRouterObj:
     def signal_device_new(self) -> str:
         """Event specific per AsusWrt entry to signal new device."""
 
-        return f"{DOMAIN}-device-new"
+        return "{}-device-new".format(DOMAIN)
 
 
     @property
     def signal_device_update(self) -> str:
         """Event specific per AsusWrt entry to signal updates in devices."""
 
-        return f"{DOMAIN}-device-update"
+        return "{}-device-update".format(DOMAIN)
 
 
     @property
@@ -470,7 +490,7 @@ class AsusRouterObj:
 
 
     @property
-    def api(self) -> AsusRouterBridge:
+    def api(self) -> ARBridge:
         """Router API"""
 
         return self._api

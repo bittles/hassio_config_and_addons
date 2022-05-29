@@ -1,70 +1,70 @@
-  - platform: template
-    lights:
+#  - platform: template
+#    lights:
 
-      kitchen:
-        friendly_name: Kitchen Light
-        unique_id: kitchenlight
-        value_template:  "{{ states('switch.kitchen_light') }}"
-        turn_on:
-          service: switch.turn_on
-          data:
-            entity_id: switch.kitchen_light
-        turn_off:
-          service: switch.turn_off
-          data:
-            entity_id: switch.kitchen_light
+#      kitchen:
+#        friendly_name: Kitchen Light
+#        unique_id: kitchenlight
+#        value_template:  "{{ states('switch.kitchen_light') }}"
+#        turn_on:
+#          service: switch.turn_on
+#          data:
+#            entity_id: switch.kitchen_light
+#        turn_off:
+#          service: switch.turn_off
+#          data:
+#            entity_id: switch.kitchen_light
 
-      porch:
-        friendly_name: Porch Light
-        unique_id: porchlight
-        value_template:  "{{ states('switch.porch_lights') }}"
-        turn_on:
-          service: switch.turn_on
-          data:
-            entity_id: switch.porch_lights
-        turn_off:
-          service: switch.turn_off
-          data:
-            entity_id: switch.porch_lights
+#      porch:
+#        friendly_name: Porch Light
+#        unique_id: porchlight
+#        value_template:  "{{ states('switch.porch_lights') }}"
+#        turn_on:
+#          service: switch.turn_on
+#          data:
+#            entity_id: switch.porch_lights
+#        turn_off:
+#          service: switch.turn_off
+#          data:
+#            entity_id: switch.porch_lights
 
-      lamp:
-        friendly_name: Lamp
-        unique_id: lamplight
-        value_template:  "{{ states('switch.lamp_light') }}"
-        turn_on:
-          service: switch.turn_on
-          data:
-            entity_id: switch.lamp_light
-        turn_off:
-          service: switch.turn_off
-          data:
-            entity_id: switch.lamp_light
+#      lamp:
+#        friendly_name: Lamp
+#        unique_id: lamplight
+#        value_template:  "{{ states('switch.lamp_light') }}"
+#        turn_on:
+#          service: switch.turn_on
+#          data:
+#            entity_id: switch.lamp_light
+#        turn_off:
+#          service: switch.turn_off
+#          data:
+#            entity_id: switch.lamp_light
 
-      driveway:
-        friendly_name: Driveway Lights
-        unique_id: drivewaylight
-        value_template:  "{{ states('switch.driveway_lights') }}"
-        turn_on:
-          service: switch.turn_on
-          data:
-            entity_id: switch.driveway_lights
-        turn_off:
-          service: switch.turn_off
-          data:
-            entity_id: switch.driveway_lights
+#      driveway:
+#        friendly_name: Driveway Lights
+#        unique_id: drivewaylight
+#        value_template:  "{{ states('switch.driveway_lights') }}"
+#        turn_on:
+#          service: switch.turn_on
+#          data:
+#            entity_id: switch.driveway_lights
+#        turn_off:
+#          service: switch.turn_off
+#          data:
+#            entity_id: switch.driveway_lights
 
-      desklamp:
-        friendly_name: Desk Lamp
-        unique_id: desklamp
-        value_template:  "{{ states('switch.desk_lamp') }}"
-        turn_on:
-          service: switch.turn_on
-          data:
-            entity_id: switch.desk_lamp
-        turn_off:
-          service: switch.turn_off
-          data:
-            entity_id: switch.desk_lamp
+#      desklamp:
+#        friendly_name: Desk Lamp
+#        unique_id: desklamp
+#        value_template:  "{{ states('switch.desk_lamp') }}"
+#        turn_on:
+#          service: switch.turn_on
+#          data:
+#            entity_id: switch.desk_lamp
+#        turn_off:
+#          service: switch.turn_off
+#          data:
+#            entity_id: switch.desk_lamp
 #  - platform: switch
 #    name: kitchen
 #    entity_id: switch.kitchen_switch

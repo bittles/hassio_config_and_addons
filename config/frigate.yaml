@@ -1,7 +1,7 @@
 objects:
   # Optional: list of objects to track from labelmap.txt (default: shown below)
   track:
-    - car
+#    - car
     - person
     - bicycle
     - car
@@ -283,6 +283,8 @@ cameras:
         dog:
 #          min_area: 120
           max_area: 300000
+          min_score: 0.6
+          threshold: 0.65
         bear:
           min_area: 1200
           max_area: 24000000
@@ -292,13 +294,13 @@ cameras:
   back_deck:
     ffmpeg:
       inputs:
-#        - path: rtsp://192.168.29.187:8964/back-deck-cam
-        - path: rtsp://192.168.29.187:31040/149b833844d3c694
+        - path: rtsp://192.168.29.187:8964/back-deck-cam
+#        - path: rtsp://192.168.29.187:31040/149b833844d3c694
           roles:
             - detect
             - rtmp
 #            - record
-      input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1
+#      input_args: -avoid_negative_ts make_zero -fflags +genpts+discardcorrupt -rtsp_transport tcp -stimeout 5000000 -use_wallclock_as_timestamps 1
     live:
       # Live camera view height default=720
       height: 720
@@ -371,38 +373,7 @@ cameras:
         #  threshold: 0.99
         #  min_area: 25000
         #  max_area: 700000
-#  front_porch_proxy:
-#    ffmpeg:
-#      inputs:
-#        - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
-# #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
-#          roles:
-#            - rtmp
-#      input_args: -re -thread_queue_size 512 -rtsp_transport tcp
-#      output_args:
-#        rtmp: -c:v copy -c:a libfdk_aac -f flv
 
-#  driveway_proxy:
-#    ffmpeg:
-#      inputs:
-#        - path: rtsp://driveway:kPaWrZG8A9@192.168.29.117/live
-# #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
-#          roles:
-#            - rtmp
-#      input_args: -re -thread_queue_size 512 -rtsp_transport tcp
-#      output_args:
-#        rtmp: -c:v copy -c:a libfdk_aac -f flv
-
-#  back_deck_proxy:
-#    ffmpeg:
-#      inputs:
-#        - path: rtsp://porchcam:wt2g6VXd4V@192.168.29.118/live
-# #       - path: rtsp://backdeck:Hz6YAm3LPt@192.168.29.113/live
-#          roles:
-#            - rtmp
-#      input_args: -re -thread_queue_size 512 -rtsp_transport tcp
-#      output_args:
-#        rtmp: -c:v copy -c:a libfdk_aac -f flv
 
 detect:
   enabled: True
@@ -416,10 +387,10 @@ detect:
     # Optional: Frequency for running detection on stationary objects (default: shown below)
     # When set to 0, object detection will never be run on stationary objects. If set to 10, 
     # it will be run on every 10th frame.
-    interval: 10
+    interval: 30
     # Optional: Number of frames without a position change for an object to be considered 
     # stationary (default: 10x the frame rate or 10s)
-    threshold: 20
+    threshold: 60
     # Optional: Define a maximum number of frames for tracking a stationary object (default: not set, track forever)
     # This can help with false positives for objects that should only be stationary for a limited amount of time.
     # It can also be used to disable stationary object tracking. For example, you may want to set a value for person,
@@ -555,12 +526,20 @@ logger:
   default: debug
   # Optional: Component specific logger overrides
   logs:
-    frigate.event: warning
+#    frigate.events: debug
+#    detector.cpu1: debug
+#    detector.cpu2: debug
+#    detector.cpu3: debug
+    peewee.sqliteq: warning
+    peewee: warning
+    frigate.mqtt: warning
+    frigate.record: warning
+    ws4py: warning
+    peewee_migrate: warning
+    frigate.edgetpu: error
     detector.cpu1: warning
     detector.cpu2: warning
     detector.cpu3: warning
-    peewee.sqliteq: warning
-    peewee: warning
 
 mqtt:
   host: 192.168.29.189
@@ -573,10 +552,10 @@ mqtt:
 detectors:
   cpu1:
     type: cpu
-    num_threads: 8
+    num_threads: 6
   cpu2:
     type: cpu
-    num_threads: 8
+    num_threads: 6
   cpu3:
     type: cpu
-    num_threads: 8
+    num_threads: 6

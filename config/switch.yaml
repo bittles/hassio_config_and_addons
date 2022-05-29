@@ -25,52 +25,40 @@
   unique_id: driveway-homebridge-mqtt
   name: "Driveway Frigate to Homebridge MQTT"
   device_class: switch
-  state_topic: "wyzehksv/driveway/motion"
-  command_topic: "wyzehksv/driveway/motion"
-  payload_on: >
-   {
-   "on":true
-   }
-  payload_off: >
-   {
-   "on":false
-   }
+  state_topic: "scrypted/driveway_motion/motion"
+  command_topic: "scrypted/driveway_motion/cmd"
+  payload_on: '{ "motionDetected": true }'
+  payload_off: '{ "motionDetected": false }'
   qos: 1
   retain: true
+  state_on: '{ "motionDetected": true }'
+  state_off: '{ "motionDetected": false }'
 
 - platform: mqtt
   unique_id: front-porch-homebridge-mqtt
   name: "Front Porch Frigate to Homebridge MQTT"
   device_class: switch
-  state_topic: "wyzehksv/front_porch/motion"
-  command_topic: "wyzehksv/front_porch/motion"
-  payload_on: >
-   {
-   "on":true
-   }
-  payload_off: >
-   {
-   "on":false
-   }
+  state_topic: "scrypted/front_porch_motion/motion"
+  command_topic: "scrypted/front_porch_motion/cmd"
+  payload_on: '{ "motionDetected": true }'
+  payload_off: '{ "motionDetected": false }'
   qos: 1
   retain: true
+  state_on: '{ "motionDetected": true }'
+  state_off: '{ "motionDetected": false }'
 
 - platform: mqtt
   unique_id: back-deck-homebridge-mqtt
   name: "Back Deck Frigate to Homebridge MQTT"
   device_class: switch
-  state_topic: "wyzehksv/back_deck/motion"
-  command_topic: "wyzehksv/back_deck/motion"
-  payload_on: >
-   {
-   "on":true
-   }
-  payload_off: >
-   {
-   "on":false
-   }
+  state_topic: "scrypted/back_deck_motion/motion"
+  command_topic: "scrypted/back_deck_motion/cmd"
+  payload_on: '{ "motionDetected": true }'
+  payload_off: '{ "motionDetected": false }'
   qos: 1
   retain: true
+  state_on: '{ "motionDetected": true }'
+  state_off: '{ "motionDetected": false }'
 
 - platform: template
   switches:
@@ -107,41 +95,95 @@
       frigate_porch_motion:
         friendly_name: Frigate Porch Motion
         unique_id: frigateporch
-        value_template: "{{ is_state('binary_sensor.front_porch_bicycle_motion', 'on') or is_state('binary_sensor.front_porch_bird_motion', 'on') or is_state('binary_sensor.front_porch_bus_motion', 'on') or is_state('binary_sensor.front_porch_car_motion', 'on') or is_state('binary_sensor.front_porch_cat_motion', 'on') or is_state('binary_sensor.front_porch_dog_motion', 'on') or is_state('binary_sensor.front_porch_motorcycle_motion', 'on') or is_state('binary_sensor.front_porch_person_motion', 'on') }}"
+        value_template: "{{ is_state('binary_sensor.front_porch_template_motion', 'on') or is_state('switch.front_porch', 'on') }}"
         turn_on:
-          service: input_boolean.turn_on
-          data:
-            entity_id: input_boolean.wyze_porch_dummy
+          - service: mqtt.publish
+            data:
+              topic: scrypted/front_porch_motion/motion
+              payload: '{ "motionDetected": true }'
+              retain: true
+              qos: 1
+          - service: mqtt.publish
+            data:
+              topic: scrypted/front_porch_motion/cmd
+              payload: '{ "motionDetected": true }'
+              retain: true
+              qos: 1
         turn_off:
-          service: input_boolean.turn_off
-          data_template:
-            entity_id: input_boolean.wyze_porch_dummy
+          - service: mqtt.publish
+            data:
+              topic: scrypted/front_porch_motion/motion
+              payload: '{ "motionDetected": false }'
+              retain: true
+              qos: 1
+          - service: mqtt.publish
+            data:
+              topic: scrypted/front_porch_motion/cmd
+              payload: '{ "motionDetected": false }'
+              retain: true
+              qos: 1
 
       frigate_driveway_motion:
         friendly_name: Frigate Driveway Motion
         unique_id: frigatedriveway
-        value_template: "{{ is_state('binary_sensor.driveway_bicycle_motion', 'on') or is_state('binary_sensor.driveway_bird_motion', 'on') or is_state('binary_sensor.driveway_bus_motion', 'on') or is_state('binary_sensor.driveway_car_motion', 'on') or is_state('binary_sensor.driveway_cat_motion', 'on') or is_state('binary_sensor.driveway_dog_motion', 'on') or is_state('binary_sensor.driveway_motorcycle_motion', 'on') or is_state('binary_sensor.driveway_person_motion', 'on') }}"
+        value_template: "{{ is_state('binary_sensor.driveway_template_motion', 'on') or is_state('switch.driveway', 'on') }}"
         turn_on:
-          service: input_boolean.turn_on
-          data:
-            entity_id: input_boolean.wyze_driveway_dummy
+          - service: mqtt.publish
+            data:
+              topic: scrypted/driveway_motion/motion
+              payload: '{ "motionDetected": true }'
+              retain: true
+              qos: 1
+          - service: mqtt.publish
+            data:
+              topic: scrypted/driveway_motion/cmd
+              payload: '{ "motionDetected": true }'
+              retain: true
+              qos: 1
         turn_off:
-          service: input_boolean.turn_off
-          data_template:
-            entity_id: input_boolean.wyze_driveway_dummy
+          - service: mqtt.publish
+            data:
+              topic: scrypted/driveway_motion/motion
+              payload: '{ "motionDetected": false }'
+              retain: true
+              qos: 1
+          - service: mqtt.publish
+            data:
+              topic: scrypted/front_porch_motion/cmd
+              payload: '{ "motionDetected": false }'
+              retain: true
+              qos: 1
 
       frigate_deck_motion:
         friendly_name: Frigate Deck Motion
         unique_id: frigatedeck
-        value_template: "{{ is_state('binary_sensor.back_deck_bicycle_motion', 'on') or is_state('binary_sensor.back_deck_bird_motion', 'on') or is_state('binary_sensor.back_deck_bus_motion', 'on') or is_state('binary_sensor.back_deck_car_motion', 'on') or is_state('binary_sensor.back_deck_cat_motion', 'on') or is_state('binary_sensor.back_deck_dog_motion', 'on') or is_state('binary_sensor.back_deck_motorcycle_motion', 'on') or is_state('binary_sensor.back_deck_person_motion', 'on') }}"
+        value_template: "{{ is_state('binary_sensor.back_deck_template_motion', 'on') or is_state('switch.back_deck', 'on') }}"
         turn_on:
-          service: input_boolean.turn_on
-          data:
-            entity_id: input_boolean.wyze_deck_dummy
+          - service: mqtt.publish
+            data:
+              topic: scrypted/back_deck_motion/motion
+              payload: '{ "motionDetected": true }'
+              retain: true
+              qos: 1
+          - service: mqtt.publish
+            data:
+              topic: scrypted/back_deck_motion/cmd
+              payload: '{ "motionDetected": true }'
+              retain: true
+              qos: 1
         turn_off:
-          service: input_boolean.turn_off
-          data_template:
-            entity_id: input_boolean.wyze_deck_dummy
+          - service: mqtt.publish
+            data:
+              topic: scrypted/back_deck_motion/motion
+              payload: '{ "motionDetected": false }'
+              retain: true
+              qos: 1
+          - service: mqtt.publish
+            data:
+              topic: scrypted/front_porch_motion/cmd
+              payload: '{ "motionDetected": false }'
+              retain: true
+              qos: 1
 
       fakeswitch1:
         unique_id: fakeswitch1

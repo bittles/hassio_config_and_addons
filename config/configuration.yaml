@@ -157,13 +157,13 @@ vacuum:
 #    offset:
 #      days: 1
 
-weather:
-  - platform: pirateweather
-    api_key: !secret pirateweather_api_key
-    latitude: 33.7553777
-    longitude: -78.8785383
+#weather:
+#  - platform: pirateweather
+#    api_key: !secret pirateweather_api_key
+#    latitude: 33.7553777
+#    longitude: -78.8785383#
 
-folder_watcher:
+#folder_watcher:
 #  - folder: /share/downloadtracker/
 #    patterns:
 #      - '*'
@@ -173,19 +173,19 @@ folder_watcher:
 #  - folder: "/share/Arlo/Front Porch"
 #    patterns:
 #      - '*.mp4'
-  - folder: "/config/www/Wyze/driveway"
-    patterns:
-      - '*.jpg'
-  - folder: "/config/www/Wyze/front_porch"
-    patterns:
-      - '*.jpg'
-  - folder: "/config/www/Wyze/clips"
-    patterns:
-      - 'driveway-*.jpg'
-      - 'front_porch-*.jpg'
+#  - folder: "/config/www/Wyze/driveway"
+#    patterns:
+#      - '*.jpg'
+#  - folder: "/config/www/Wyze/front_porch"
+#    patterns:
+#      - '*.jpg'
+#  - folder: "/config/www/Wyze/clips"
+#    patterns:
+#      - 'driveway-*.jpg'
+#      - 'front_porch-*.jpg'
 
-shell_command:
-  upnpports: '/usr/bin/ssh -i /ssl/odroidopensshkey hassio@192.168.29.189 -p 9722 ''upnpc -r 9722 tcp 8443 443 tcp 8880 80 tcp'''
+#shell_command:
+#  upnpports: '/usr/bin/ssh -i /ssl/odroidopensshkey hassio@192.168.29.189 -p 9722 ''upnpc -r 9722 tcp 8443 443 tcp 8880 80 tcp'''
   #  unziptorrents: /share/zipscript.sh '{{ torrent }}'
 
 #breaking_changes:
@@ -584,6 +584,10 @@ recorder:
       - sensor.back_deck_all
       - sun.sun
       - vacuum.alfred
+      - sensor.processor_temperature
+      - sensor.memory_free
+      - sensor.memory_use
+      - sensor.memory_use_percent
 
 history:
   use_include_order: true
@@ -711,56 +715,37 @@ frontend:
 logger:
   default: warning
   logs:
-    homeassistant.components: warning
-    homeassistant.components.rfxtrx: error
-    homeassistant.components.device_tracker: critical
-    homeassistant.components.camera: critical
-    homeassistant.components.august: critical
-    homeassistant.components.lock: critical
-    homeassistant.components.python_script: debug
-    gc100: error
-    homeassistant.components.gc100: error
-    homeassistant.components.zeroconf: warning
-    homeassistant.components.websocket_api.http.connection: warning
-    zeroconf: warning
-    homeassistant.core: warning
-    pydreamscreen: warning
-    custom_components.iphonedetect: warning
-    custom_components.hacs: warning
-    androidtv: warning
-    google_nest_sdm: warning
-    homeassistant.components.homekit: warning
-    homeassistant.components.time_date: warning
-    homeassistant.components.roku: warning
-    homeassistant.helpers: warning
-    homeassistant.components.asuswrt: warning
-    paho.mqtt: warning
-    homeassistant.components.recorder: warning
-    homeassistant.components.homekit_controller: warning
-    homeassistant.components.alexa: debug
-    pyhap: warning
-    homeassistant.components.automation.zz_tv_power_off: error
-    yeelight.main: warning
-    homeassistant.components.onkyo.media_player: warning
-    google.cloud.pubsub_v1: warning
-    zwave_js_server: info
-    homeassistant.components.template: warning
-    homeassistant.components.mqtt: critical
-    custom_components.localtuya.discovery: warning
-    homeassistant.components.xiaomi_miio.config_flow: warning
-    custom_components.localtuya.pytuya: warning
-    homeassistant.setup: error
-    homeassistant.components.cover: error
-    homeassistant.components.switch: error
-    homeassistant.config_entries: error
-    custom_components.weatherbit: error
-    homeassistant.components.sensor: error
+#    homeassistant.components.device_tracker: critical
+#    homeassistant.components.camera: critical
+#    homeassistant.components.august: critical
+#    homeassistant.components.lock: critical
+#    homeassistant.components.mqtt: critical
+
+#    homeassistant.components.rfxtrx: error
+#    homeassistant.components.automation.zz_tv_power_off: error
+#    gc100: error
+#    homeassistant.components.gc100: error
+#    homeassistant.setup: error
+#    homeassistant.components.cover: error
+#    homeassistant.components.switch: error
+#    homeassistant.config_entries: error
+#    custom_components.weatherbit: error
+#    homeassistant.components.sensor: error
     slixmpp.stringprep: error
-    homeassistant.components.climate: error
-    homeassistant.components.media_player: error
+#    homeassistant.components.climate: error
+#    homeassistant.components.media_player: error
+
+#    homeassistant.components.mqtt.fan: error
+#    homeassistant.components.homekit.accessories: error
+#    homeassistant.components.binary_sensor: error
+    zwave_js_server: error
     slixmpp.basexmpp: error
-    homeassistant.components.mqtt.fan: error
-    homeassistant.components.homekit.accessories: error
-    homeassistant.components.binary_sensor: error
-    yalexs.api_async: warning
+    homeassistant.config_entries: error
+    homeassistant.loader: error
+    homeassistant.setup: error
+    homeassistant.helpers.service: error
+    homeassistant.helpers.script: error
+
+    homeassistant.components.python_script: debug
+    homeassistant.components.alexa: debug
     homeassistant.components.rest_command: debug
