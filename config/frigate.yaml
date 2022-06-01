@@ -474,7 +474,7 @@ motion:
   # Higher values mean the current frame impacts the average a lot, and a new object will be averaged into the background faster.
   # Low values will cause things like moving shadows to be detected as motion for longer.
   # https://www.geeksforgeeks.org/background-subtraction-in-an-image-using-concept-of-running-average/
-  frame_alpha: 0.35
+  frame_alpha: 0.25
 
   # Optional: Height of the resized motion frame  (default: 1/6th of the original frame height, but no less than 180)
   # This operates as an efficient blur alternative. Higher values will result in more granular motion detection at the expense of higher CPU usage.
