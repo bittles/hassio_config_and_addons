@@ -1,0 +1,6 @@
+ENABLE_AUDIO: false
+MQTT_DTOPIC: homeassistant
+NET_MODE: ANY
+SNAPSHOT: API
+WYZE_EMAIL: null
+WYZE_PASSWORD: null
