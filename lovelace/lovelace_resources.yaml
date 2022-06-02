@@ -32,3 +32,6 @@ items:
 - id: 244c284f981b48a8813b209e624d6aee
   type: module
   url: /hacsfiles/weather-radar-card/weather-radar-card.js?hacstag=487680971205
+- id: fe684349173846d1b9bef5369a349761
+  type: module
+  url: /webrtc/webrtc-camera.js?v2.3.0

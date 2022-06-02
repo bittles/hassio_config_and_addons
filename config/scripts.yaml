@@ -653,35 +653,32 @@ alfred_butters_defense_re:
 frigate_snapshots:
   alias: Frigate snapshots
   sequence:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 100
   - service: camera.snapshot
     data:
       filename: /config/www/frigate_driveway.jpg
     target:
       entity_id:
       - camera.driveway
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 100
+    enabled: false
   - service: camera.snapshot
     data:
       filename: /config/www/frigate_camera.back_deck.jpg
     target:
       entity_id: camera.back_deck
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 100
+    enabled: false
+  - service: camera.snapshot
+    data:
+      filename: /config/www/frigate_driveway.jpg
+    target:
+      entity_id: camera.driveway_scrypted
+  - service: camera.snapshot
+    data:
+      filename: /config/www/frigate_camera.back_deck.jpg
+    target:
+      entity_id: camera.scryp_back_deck
   - service: camera.snapshot
     data:
       filename: /config/www/frigate_camera.front_porch.jpg
     target:
-      entity_id: camera.front_porch
+      entity_id: camera.front_deck_scrypted
   mode: single

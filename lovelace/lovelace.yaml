@@ -154,6 +154,8 @@ config:
     - showAzimuth: false
       showElevation: false
       type: custom:sun-card
+    - type: custom:webrtc-camera
+      url: rtsp://192.168.29.187:31040/6dddd286e5ae05c1
     theme: night
     title: Home
   - badges: []
