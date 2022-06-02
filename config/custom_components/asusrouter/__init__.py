@@ -1,26 +1,24 @@
-"""Support for AsusRouter devices"""
+"""Support for AsusRouter devices."""
 
 from __future__ import annotations
 
 import logging
+
 _LOGGER = logging.getLogger(__name__)
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    CONF_SCAN_INTERVAL,
-    EVENT_HOMEASSISTANT_STOP,
-)
+from homeassistant.const import CONF_SCAN_INTERVAL, EVENT_HOMEASSISTANT_STOP
 from homeassistant.core import HomeAssistant
 
 from .const import (
     CONF_CACHE_TIME,
     CONF_CONSIDER_HOME,
     CONF_INTERFACES,
+    DATA_ASUSROUTER,
     DEFAULT_CACHE_TIME,
     DEFAULT_CONSIDER_HOME,
     DEFAULT_SCAN_INTERVAL,
     DELAULT_INTERFACES,
-    DATA_ASUSROUTER,
     DOMAIN,
     PLATFORMS,
 )
@@ -32,7 +30,7 @@ async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
 ) -> bool:
-    """Setup AsurRouter platform"""
+    """Setup AsurRouter platform."""
 
     router = AsusRouterObj(hass, entry)
     await router.setup()
@@ -40,7 +38,7 @@ async def async_setup_entry(
     router.async_on_close(entry.add_update_listener(update_listener))
 
     async def async_close_connection(event):
-        """Close AsusRouter connection on HA stop"""
+        """Close AsusRouter connection on HA stop."""
 
         await router.close()
 
@@ -62,7 +60,7 @@ async def async_unload_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
 ) -> bool:
-    """Unload entry"""
+    """Unload entry."""
 
     unload = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
@@ -80,7 +78,7 @@ async def update_listener(
     hass: HomeAssistant,
     entry: ConfigEntry,
 ) -> None:
-    """Update on config_entry update"""
+    """Update on config_entry update."""
 
     router = hass.data[DOMAIN][entry.entry_id][DATA_ASUSROUTER]
 
@@ -94,10 +92,10 @@ async def async_migrate_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
 ) -> bool:
-    """Migrate old entry"""
+    """Migrate old entry."""
 
     version = entry.version
-    _LOGGER.debug("Migrating from version {}".format(entry.version))
+    _LOGGER.debug(f"Migrating from version {entry.version}")
 
     new_entry = {**entry.data}
     new_options = {**entry.options}
@@ -110,27 +108,24 @@ async def async_migrate_entry(
         new_options[CONF_CACHE_TIME] = DEFAULT_CACHE_TIME
         new_options[CONF_CONSIDER_HOME] = DEFAULT_CONSIDER_HOME
 
-    while "{}_{}".format(version, version + 1) in DEPRECATED:
-        for key_old in DEPRECATED["{}_{}".format(version, version + 1)]:
-            key_new = DEPRECATED["{}_{}".format(version, version + 1)][key_old]
+    while f"{version}_{version + 1}" in DEPRECATED:
+        for key_old in DEPRECATED[f"{version}_{version + 1}"]:
+            key_new = DEPRECATED[f"{version}_{version + 1}"][key_old]
             new_entry[key_new] = new_entry[key_old]
             new_entry.pop(key_old)
 
         version += 1
 
-
-    while "{}_{}".format(version, version + 1) in MOVE_TO_OPTIONS:
-        for key in MOVE_TO_OPTIONS["{}_{}".format(version, version + 1)]:
+    while f"{version}_{version + 1}" in MOVE_TO_OPTIONS:
+        for key in MOVE_TO_OPTIONS[f"{version}_{version + 1}"]:
             new_options[key] = new_entry[key]
             new_entry.pop(key)
 
         version += 1
 
     entry.version = version
-    hass.config_entries.async_update_entry(entry, data = new_entry, options = new_options)
+    hass.config_entries.async_update_entry(entry, data=new_entry, options=new_options)
 
-    _LOGGER.info("Migration to version {} successful".format(entry.version))
+    _LOGGER.info(f"Migration to version {entry.version} successful")
 
     return True
-
-

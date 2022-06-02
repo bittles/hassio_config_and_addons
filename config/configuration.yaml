@@ -21,6 +21,9 @@ camera: !include camera.yaml
 timer:
 input_select:
 
+stream:
+  ll_hls: false
+
 #spotify:
 #  client_id: !secret spotify_id
 #  client_secret: !secret spotify_secret
