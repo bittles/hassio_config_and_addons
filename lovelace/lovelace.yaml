@@ -154,8 +154,6 @@ config:
     - showAzimuth: false
       showElevation: false
       type: custom:sun-card
-    - type: custom:webrtc-camera
-      url: rtsp://192.168.29.187:31040/6dddd286e5ae05c1
     theme: night
     title: Home
   - badges: []
@@ -629,6 +627,7 @@ config:
       - entity: input_number.custom_thermostat_temp_low
       - entity: sun.sun
       - entity: sensor.sun_elevation
+      - entity: automation.nick_start_temp_change_duplicate
       type: entities
     - entities:
       - entity: switch.airplayserver_bathroom
