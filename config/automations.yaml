@@ -3203,3 +3203,17 @@
           retain: true
     default: []
   mode: single
+- id: '1654143015791'
+  alias: Nick Start Temp Change (Duplicate)
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.heat_end
+  condition: []
+  action:
+  - service: climate.set_temperature
+    data:
+      temperature: '{{ states.input_number.custom_thermostat_temp_high.state }}'
+    target:
+      entity_id: climate.new_bedroom_thermostat
+  mode: single
