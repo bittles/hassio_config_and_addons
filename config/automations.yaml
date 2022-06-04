@@ -3080,7 +3080,7 @@
     default: []
   mode: single
 - id: '1652898516396'
-  alias: Firgate Snapshot Interval
+  alias: Frigate Snapshot Interval
   description: ''
   trigger:
   - platform: time_pattern
