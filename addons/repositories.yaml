@@ -10,6 +10,10 @@ Frigate hass.io addons:
   maintainer: blakeblackshear
   slug: ccab4aaf
   source: https://github.com/blakeblackshear/frigate-hass-addons
+HA Add-ons by alexbelgium:
+  maintainer: alexbelgium
+  slug: db21ed7f
+  source: https://github.com/alexbelgium/hassio-addons
 Hass.IO Repository for snowzach:
   maintainer: Zach Brown <zach@prozach.org>
   slug: d5f40609

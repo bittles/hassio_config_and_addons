@@ -158,6 +158,26 @@ config:
     title: Home
   - badges: []
     cards:
+    - camera_image: camera.scryp_back_deck
+      camera_view: auto
+      entities: []
+      title: Back Deck
+      type: picture-glance
+    - camera_image: camera.driveway_scrypted
+      camera_view: auto
+      entities: []
+      title: Driveway
+      type: picture-glance
+    - camera_image: camera.front_deck_scrypted
+      camera_view: auto
+      entities: []
+      title: Front Porch
+      type: picture-glance
+    theme: Backend-selected
+    title: Cameras
+    type: sidebar
+  - badges: []
+    cards:
     - entity: media_player.bedroom_tcl_tv
       title: Bedroom TV
       tv: true
@@ -642,7 +662,7 @@ config:
       camera_view: auto
       entities:
       - entity: lock.back_door
-      entity: camera.back_deck
+      entity: camera.scryp_back_deck
       title: Back Deck
       type: picture-glance
     - camera_image: camera.front_porch_motion_snapshot
@@ -650,14 +670,15 @@ config:
       entities:
       - entity: lock.august_asl_03_smart_lock_locked
       - entity: cover.garage_mqtt
-      entity: camera.front_porch
+      entity: camera.front_deck_scrypted
       title: Front Porch
       type: picture-glance
     - camera_image: camera.driveway_motion_snapshot
+      camera_view: auto
       entities:
       - entity: lock.august_asl_03_smart_lock_locked
       - entity: cover.garage_mqtt
-      entity: camera.driveway
+      entity: camera.driveway_scrypted
       title: Driveway
       type: picture-glance
     - entities:
