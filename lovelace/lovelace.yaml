@@ -463,15 +463,14 @@ config:
     cards:
     - entities:
       - entity: device_tracker.ipnickphone
-      - entity: device_tracker.iphonenick_2
+      - entity: device_tracker.iphonenick
       - entity: device_tracker.nickmqtttrigger
       - entity: input_boolean.nick
       - entity: device_tracker.ipdariusphone
-      - entity: device_tracker.dariuss_iphone_2
       - entity: device_tracker.dariusmqtttrigger
       - entity: input_boolean.darius
       - entity: device_tracker.ipkaraphone
-      - entity: device_tracker.karasiphone
+      - entity: device_tracker.iphonekara
       - entity: device_tracker.karamqtttrigger
       - entity: input_boolean.kara
       - entity: binary_sensor.noone

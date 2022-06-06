@@ -1,0 +1,58 @@
+ipnickphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Nick iPhone Detector
+  picture:
+  track: true
+
+ipkaraphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Kara iPhone Detector
+  picture:
+  track: true
+
+ipdariusphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Darius iPhone Detector
+  picture:
+  track: true
+
+carolinemqtttrigger:
+  name: carolinemqtttrigger
+  mac:
+  icon:
+  picture:
+  track: true
+
+nickmqtttrigger:
+  name: nickmqtttrigger
+  mac:
+  icon:
+  picture:
+  track: true
+
+dariusmqtttrigger:
+  name: dariusmqtttrigger
+  mac:
+  icon:
+  picture:
+  track: true
+
+karamqtttrigger:
+  name: karamqtttrigger
+  mac:
+  icon:
+  picture:
+  track: true
+
+brandonmqtttrigger:
+  name: brandonmqtttrigger
+  mac:
+  icon:
+  picture:
+  track: true

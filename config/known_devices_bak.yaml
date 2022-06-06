@@ -1,0 +1,1180 @@
+ipnickphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Nick iPhone Detector
+  picture:
+  track: true
+
+ipkaraphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Kara iPhone Detector
+  picture:
+  track: true
+
+ipdariusphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Darius iPhone Detector
+  picture:
+  track: true
+
+dariuss_iphone:
+  name: Darius 5gHz Ping Tracker
+  mac: 22:FD:35:4C:08:02
+  icon:
+  picture:
+  track: false
+
+carolinemqtttrigger:
+  name: carolinemqtttrigger
+  mac:
+  icon:
+  picture:
+  track: true
+
+nickmqtttrigger:
+  name: nickmqtttrigger
+  mac:
+  icon:
+  picture:
+  track: true
+
+dariusmqtttrigger:
+  name: dariusmqtttrigger
+  mac:
+  icon:
+  picture:
+  track: true
+
+karamqtttrigger:
+  name: karamqtttrigger
+  mac:
+  icon:
+  picture:
+  track: true
+
+august_connect:
+  hide_if_away: false
+  icon:
+  mac: D8:61:62:35:81:CB
+  name: August Connect
+  picture:
+  track: false
+
+alfred:
+  icon:
+  mac: 50:EC:50:10:AD:52
+  name: Alfred
+  picture:
+  track: false
+
+iphonekara:
+  hide_if_away: false
+  icon:
+  mac: 3C:7D:0A:A4:A4:9C
+  name: Kara Ping Tracker
+  picture:
+  track: false
+
+iphonenick:
+  hide_if_away: false
+  icon:
+  mac: 90:E1:7B:B6:12:6D
+  name: Nick Ping Tracker
+  picture:
+  track: false
+
+nicktrigger:
+  name: Nick Trigger Switch
+  mac:
+  icon:
+  picture:
+  track: false
+
+karatrigger:
+  name: Kara Trigger Switch
+  mac:
+  icon:
+  picture:
+  track: false
+
+dariustrigger:
+  name: Darius Trigger Switch
+  mac:
+  icon:
+  picture:
+  track: false
+
+michelletrigger:
+  name: Michelle Trigger Switch
+  mac:
+  icon:
+  picture:
+  track: false
+
+ipmichellephone:
+  name: Michelle iPhone Detector
+  mac:
+  icon:
+  picture:
+  track: false
+
+fe_db_9c_ae_ae_31:
+  name: Michelle Ping Tracker
+  mac: FE:DB:9C:AE:AE:31
+  icon:
+  picture:
+  track: false
+
+nbauers_iphone:
+  icon:
+  mac:
+  name: Nick App Tracker
+  picture:
+  track: false
+
+dariusphone:
+  hide_if_away: false
+  icon:
+  mac: 18:65:90:A0:71:64
+  name: Darius Ping Tracker
+  picture:
+  track: false
+
+bigd_pc:
+  hide_if_away: false
+  icon:
+  mac: 00:22:FB:B4:FD:B6
+  name: BigD-PC
+  picture:
+  track: false
+
+tylerchromecast:
+  hide_if_away: false
+  icon:
+  mac: 6C:AD:F8:2D:14:BE
+  name: TylerChromecast
+  picture:
+  track: false
+
+echo_livingroom:
+  hide_if_away: false
+  icon:
+  mac: 44:65:0D:5F:28:B1
+  name: Echo-LivingRoom
+  picture:
+  track: false
+
+echodotbedroom:
+  hide_if_away: false
+  icon:
+  mac: AC:63:BE:C3:07:20
+  name: EchoDotBedroom
+  picture:
+  track: false
+
+nest:
+  hide_if_away: false
+  icon:
+  mac: 18:B4:30:6D:4F:A7
+  name: Nest
+  picture:
+  track: false
+
+garagedoor:
+  hide_if_away: false
+  icon:
+  mac: 60:01:94:70:7C:A5
+  name: GarageDoor
+  picture:
+  track: false
+
+bedroom_dot:
+  hide_if_away: false
+  icon:
+  mac: 08:84:9D:D6:7D:3D
+  name: Bedroom-Dot
+  picture:
+  track: false
+
+switchwifi:
+  hide_if_away: false
+  icon:
+  mac: D4:81:CA:53:9C:EE
+  name: SwitchWifi
+  picture:
+  track: false
+
+drivewaylights:
+  hide_if_away: false
+  icon:
+  mac: 50:C7:BF:3D:80:EC
+  name: DrivewayLights
+  picture:
+  track: false
+
+dreamscreen:
+  hide_if_away: false
+  icon:
+  mac: 68:C6:3A:B8:0B:BF
+  name: Dreamscreen
+  picture:
+  track: false
+
+yeelinkleft:
+  hide_if_away: false
+  icon:
+  mac: 78:11:DC:69:0B:C8
+  name: YeelinkLeft
+  picture:
+  track: false
+
+yeelinkright:
+  hide_if_away: false
+  icon:
+  mac: 78:11:DC:66:FB:A3
+  name: YeelinkRight
+  picture:
+  track: false
+
+yeelink_actuallyunder:
+  hide_if_away: false
+  icon:
+  mac: 78:11:DC:FD:C4:33
+  name: Yeelink-ActuallyUnder
+  picture:
+  track: false
+
+yeelink_new:
+  hide_if_away: false
+  icon:
+  mac: 04:CF:8C:8C:C1:7B
+  name: Yeelink-New
+  picture:
+  track: false
+
+harmonyhub:
+  hide_if_away: false
+  icon:
+  mac: 00:04:20:F2:6E:00
+  name: HarmonyHub
+  picture:
+  track: false
+
+sonoff:
+  hide_if_away: false
+  icon:
+  mac: DC:4F:22:DB:A1:32
+  name: Sonoff
+  picture:
+  track: false
+
+tylergooghome:
+  hide_if_away: false
+  icon:
+  mac: 7C:2E:BD:EC:74:59
+  name: TylerGoogHome
+  picture:
+  track: false
+
+droku:
+  hide_if_away: false
+  icon:
+  mac: D8:31:34:02:F8:30
+  name: DRoku
+  picture:
+  track: false
+
+00_04_4b_5e_72_56:
+  hide_if_away: false
+  icon:
+  mac: 00:04:4B:5E:72:56
+  name: 00 04 4b 5e 72 56
+  picture:
+  track: false
+
+00_17_88_21_e2_2e:
+  hide_if_away: false
+  icon:
+  mac: 00:17:88:21:E2:2E
+  name: 00 17 88 21 e2 2e
+  picture:
+  track: false
+
+00_17_10_8d_f2_05:
+  hide_if_away: false
+  icon:
+  mac: 00:17:10:8D:F2:05
+  name: 00 17 10 8d f2 05
+  picture:
+  track: false
+
+rasppi:
+  hide_if_away: false
+  icon:
+  mac: B8:27:EB:B9:2F:C9
+  name: RaspPI
+  picture:
+  track: false
+
+ps4ethernet:
+  hide_if_away: false
+  icon:
+  mac: 70:9E:29:FA:E3:3B
+  name: PS4Ethernet
+  picture:
+  track: false
+
+nick_pc:
+  hide_if_away: false
+  icon:
+  mac: E0:D5:5E:29:3B:66
+  name: Nick-PC
+  picture:
+  track: false
+
+00_90_a9_44_16_50:
+  hide_if_away: false
+  icon:
+  mac: 00:90:A9:44:16:50
+  name: 00 90 a9 44 16 50
+  picture:
+  track: false
+
+nick_desktop:
+  hide_if_away: false
+  icon:
+  mac: E0:D5:5E:29:20:86
+  name: Nick-Desktop
+  picture:
+  track: false
+
+atv4:
+  hide_if_away: false
+  icon:
+  mac: D0:03:4B:15:81:9F
+  name: aTV4
+  picture:
+  track: false
+
+onkyo:
+  hide_if_away: false
+  icon:
+  mac: 00:09:B0:DC:34:C0
+  name: Onkyo
+  picture:
+  track: false
+
+livingroomtcl:
+  hide_if_away: false
+  icon:
+  mac: 5C:AD:76:88:9F:DB
+  name: LivingRoomTCL
+  picture:
+  track: false
+
+f4_6d_04_e3_94_6a:
+  hide_if_away: false
+  icon:
+  mac: F4:6D:04:E3:94:6A
+  name: f4 6d 04 e3 94 6a
+  picture:
+  track: false
+
+wilsonsplewatch:
+  hide_if_away: false
+  icon:
+  mac: 14:C2:13:71:6A:5C
+  name: WilsonspleWatch
+  picture:
+  track: false
+
+44_65_0d_01_37_07:
+  hide_if_away: false
+  icon:
+  mac: 44:65:0D:01:37:07
+  name: 44 65 0d 01 37 07
+  picture:
+  track: false
+
+14_c2_13_19_9f_62:
+  hide_if_away: false
+  icon:
+  mac: 14:C2:13:19:9F:62
+  name: 14 c2 13 19 9f 62
+  picture:
+  track: false
+
+08_02_8e_e3_2c_c9:
+  hide_if_away: false
+  icon:
+  mac: 08:02:8E:E3:2C:C9
+  name: 08 02 8e e3 2c c9
+  picture:
+  track: false
+
+bedroomtcl:
+  hide_if_away: false
+  icon:
+  mac: AC:B5:7D:69:7F:59
+  name: BedroomTCL
+  picture:
+  track: false
+
+wilson_ipad:
+  hide_if_away: false
+  icon:
+  mac: F0:76:6F:77:32:6A
+  name: Wilson-iPad
+  picture:
+  track: false
+
+xbone:
+  hide_if_away: false
+  icon:
+  mac: B4:AE:2B:BD:1F:99
+  name: XBONE
+  picture:
+  track: false
+
+dc_ef_09_c2_2f_69:
+  hide_if_away: false
+  icon:
+  mac: DC:EF:09:C2:2F:69
+  name: dc ef 09 c2 2f 69
+  picture:
+  track: false
+
+laptop_m2v5s1sl:
+  hide_if_away: false
+  icon:
+  mac: 40:23:43:E4:82:3B
+  name: LAPTOP-M2V5S1SL
+  picture:
+  track: false
+
+shieldwifi:
+  hide_if_away: false
+  icon:
+  mac: 00:04:4B:5E:72:54
+  name: ShieldWifi
+  picture:
+  track: false
+
+28_16_a8_4f_e7_63:
+  hide_if_away: false
+  icon:
+  mac: 28:16:A8:4F:E7:63
+  name: 28 16 a8 4f e7 63
+  picture:
+  track: false
+
+00_90_4c_1a_a0_01:
+  hide_if_away: false
+  icon:
+  mac: 00:90:4C:1A:A0:01
+  name: 00 90 4c 1a a0 01
+  picture:
+  track: false
+
+kirbyhodsiphone:
+  hide_if_away: false
+  icon:
+  mac: F4:06:16:08:FD:07
+  name: KirbyHodsiPhone
+  picture:
+  track: false
+
+android_f67e01f032c1e6a2:
+  hide_if_away: false
+  icon:
+  mac: 88:36:5F:A4:7C:11
+  name: android-f67e01f032c1e6a2
+  picture:
+  track: false
+
+60_6b_ff_ac_03_5f:
+  hide_if_away: false
+  icon:
+  mac: 60:6B:FF:AC:03:5F
+  name: 60 6b ff ac 03 5f
+  picture:
+  track: false
+
+raspberrypi:
+  hide_if_away: false
+  icon:
+  mac: CE:35:77:0D:F6:A4
+  name: raspberrypi
+  picture:
+  track: false
+
+nicks_mac:
+  hide_if_away: false
+  icon:
+  mac: 00:0C:29:E2:8E:CD
+  name: Nicks-Mac
+  picture:
+  track: false
+
+raspberrypi_2:
+  hide_if_away: false
+  icon:
+  mac: CA:FC:50:48:67:CA
+  name: raspberrypi
+  picture:
+  track: false
+
+10_98_c3_cc_22_35:
+  hide_if_away: false
+  icon:
+  mac: 10:98:C3:CC:22:35
+  name: 10 98 c3 cc 22 35
+  picture:
+  track: false
+
+04_15_52_08_14_72:
+  hide_if_away: false
+  icon:
+  mac: 04:15:52:08:14:72
+  name: 04 15 52 08 14 72
+  picture:
+  track: false
+
+raspberrypi_3:
+  hide_if_away: false
+  icon:
+  mac: 86:7E:16:69:AB:F5
+  name: raspberrypi
+  picture:
+  track: false
+
+desktop_4r3ueuc:
+  hide_if_away: false
+  icon:
+  mac: 3C:6A:A7:58:78:07
+  name: DESKTOP-4R3UEUC
+  picture:
+  track: false
+
+tasmota_3381:
+  hide_if_away: false
+  icon:
+  mac: 2C:F4:32:D5:CD:35
+  name: tasmota-3381
+  picture:
+  track: false
+
+raspberrypi_4:
+  hide_if_away: false
+  icon:
+  mac: 36:17:9A:0B:97:81
+  name: raspberrypi
+  picture:
+  track: false
+
+raspberrypi_5:
+  hide_if_away: false
+  icon:
+  mac: 5E:92:AD:A8:F9:67
+  name: raspberrypi
+  picture:
+  track: false
+
+esp_3c3b19:
+  hide_if_away: false
+  icon:
+  mac: 60:01:94:3C:3B:19
+  name: ESP 3C3B19
+  picture:
+  track: false
+
+raspberrypi_6:
+  hide_if_away: false
+  icon:
+  mac: CE:2D:77:01:AE:53
+  name: raspberrypi
+  picture:
+  track: false
+
+raspberrypi_7:
+  hide_if_away: false
+  icon:
+  mac: 6E:1C:B4:D7:34:F5
+  name: raspberrypi
+  picture:
+  track: false
+
+raspberrypi_8:
+  hide_if_away: false
+  icon:
+  mac: 36:F3:F9:E0:31:79
+  name: raspberrypi
+  picture:
+  track: false
+
+raspberrypi_9:
+  hide_if_away: false
+  icon:
+  mac: 7E:D3:46:F0:AB:88
+  name: raspberrypi
+  picture:
+  track: false
+
+atvwifiithink:
+  hide_if_away: false
+  icon:
+  mac: D0:03:4B:15:81:9D
+  name: aTVWifiIthink
+  picture:
+  track: false
+
+raspberrypi_10:
+  hide_if_away: false
+  icon:
+  mac: 9A:28:F3:4B:5D:BD
+  name: raspberrypi
+  picture:
+  track: false
+
+raspberrypi_11:
+  hide_if_away: false
+  icon:
+  mac: 4E:86:F0:20:93:65
+  name: raspberrypi
+  picture:
+  track: false
+
+40_bc_60_2e_f3_2b:
+  hide_if_away: false
+  icon:
+  mac: 40:BC:60:2E:F3:2B
+  name: 40 bc 60 2e f3 2b
+  picture:
+  track: false
+
+f8_95_ea_05_5c_cf:
+  hide_if_away: false
+  icon:
+  mac: F8:95:EA:05:5C:CF
+  name: f8 95 ea 05 5c cf
+  picture:
+  track: false
+
+subaru:
+  hide_if_away: false
+  icon:
+  mac: 74:6F:F7:FA:37:7C
+  name: SUBARU
+  picture:
+  track: false
+
+f4_06_16_c0_2b_8a:
+  hide_if_away: false
+  icon:
+  mac: F4:06:16:C0:2B:8A
+  name: f4_06_16_c0_2b_8a
+  picture:
+  track: false
+
+40_98_ad_e1_58_c2:
+  hide_if_away: false
+  icon:
+  mac: 40:98:AD:E1:58:C2
+  name: 40_98_ad_e1_58_c2
+  picture:
+  track: false
+
+jeevesjr:
+  hide_if_away: false
+  icon:
+  mac: DC:4F:22:35:52:3C
+  name: JeevesJr
+  picture:
+  track: false
+
+xsn_iphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Xsn
+  picture:
+  track: false
+
+iptylerphone:
+  hide_if_away: false
+  icon:
+  mac:
+  name: Tyler iPhone Detector
+  picture:
+  track: false
+
+iphonetylerping:
+  hide_if_away: false
+  icon:
+  mac: F8:38:80:63:36:FE
+  name: Tyler PingMe
+  picture:
+  track: false
+
+
+ti_phone:
+  icon:
+  mac:
+  name: Ti_Phone
+  picture:
+  track: false
+
+corp_macpro_047:
+  icon:
+  mac: 8C:85:90:C9:87:FD
+  name: CORP-MACPRO-047
+  picture:
+  track: false
+
+ubuntu_server:
+  icon:
+  mac: 00:0C:29:E8:9D:87
+  name: ubuntu-server
+  picture:
+  track: false
+
+ubuntuvm:
+  icon:
+  mac: 00:0C:29:E3:83:E7
+  name: ubuntuvm
+  picture:
+  track: false
+
+kirbys_mbp:
+  icon:
+  mac: DC:A9:04:8A:CA:FF
+  name: Kirbys-MBP
+  picture:
+  track: false
+
+a8_5e_45_e0_c1_01:
+  icon:
+  mac: A8:5E:45:E0:C1:01
+  name: a8_5e_45_e0_c1_01
+  picture:
+  track: false
+
+osboxes:
+  icon:
+  mac: 00:0C:29:41:03:E8
+  name: osboxes
+  picture:
+  track: false
+
+raspberry:
+  icon:
+  mac: 00:0C:29:6D:D1:F3
+  name: raspberry
+  picture:
+  track: false
+
+karis_iphone:
+  icon:
+  mac: B8:C1:11:11:68:40
+  name: Karis-iPhone
+  picture:
+  track: false
+
+lexs_iphone:
+  icon:
+  mac: 18:81:0E:41:46:8E
+  name: Lexs-iPhone
+  picture:
+  track: false
+
+c8_3c_85_dd_26_19:
+  icon:
+  mac: C8:3C:85:DD:26:19
+  name: c8_3c_85_dd_26_19
+  picture:
+  track: false
+
+nick_pc_2:
+  icon:
+  mac: 9C:DA:3E:F2:11:D8
+  name: Nick-PC
+  picture:
+  track: false
+
+ubuntuvm_2:
+  icon:
+  mac: 00:0C:29:03:E9:6D
+  name: ubuntuvm
+  picture:
+  track: false
+
+'84_41_67_56_25_61':
+  icon:
+  mac: 84:41:67:56:25:61
+  name: '84_41_67_56_25_61'
+  picture:
+  track: false
+
+68_ef_43_6f_5d_e6:
+  icon:
+  mac: 68:EF:43:6F:5D:E6
+  name: 68_ef_43_6f_5d_e6
+  picture:
+  track: false
+
+b8_31_b5_80_04_2c:
+  icon:
+  mac: B8:31:B5:80:04:2C
+  name: b8_31_b5_80_04_2c
+  picture:
+  track: false
+
+pi4:
+  icon:
+  mac: DC:A6:32:8A:9E:9B
+  name: pi4
+  picture:
+  track: false
+
+desktop_ni2h0fh:
+  icon:
+  mac: BC:A8:A6:FE:8F:8F
+  name: DESKTOP-NI2H0FH
+  picture:
+  track: false
+
+raspberrypi3:
+  icon:
+  mac: B8:27:EB:EC:7A:9C
+  name: raspberrypi3
+  picture:
+  track: false
+
+android_90f4bbc673a74e3d:
+  icon:
+  mac: B4:F1:DA:EB:18:1A
+  name: android-90f4bbc673a74e3d
+  picture:
+  track: false
+
+e8_61_7e_aa_9b_cb:
+  icon:
+  mac: E8:61:7E:AA:9B:CB
+  name: e8_61_7e_aa_9b_cb
+  picture:
+  track: false
+
+kari_leigh:
+  icon:
+  mac: 88:A4:79:BE:D2:2A
+  name: Kari-Leigh
+  picture:
+  track: false
+
+64_b5_c6_fb_91_43:
+  icon:
+  mac: 64:B5:C6:FB:91:43
+  name: 64_b5_c6_fb_91_43
+  picture:
+  track: false
+
+tasmota_c8be94_7828:
+  icon:
+  mac: D8:BF:C0:C8:BE:94
+  name: tasmota_C8BE94-7828
+  picture:
+  track: false
+
+c4_91_0c_39_84_12:
+  icon:
+  mac: C4:91:0C:39:84:12
+  name: DsNewPhone-Pinged
+  picture:
+  track: false
+
+lexs_iphone_2:
+  name: Lexs-iPhone
+  mac: BA:B8:BC:BB:0C:3A
+  icon:
+  picture:
+  track: false
+
+galaxy_s20_ultra_5g:
+  name: Galaxy-S20-Ultra-5G
+  mac: DA:C2:14:EB:49:39
+  icon:
+  picture:
+  track: false
+
+e4_b2_fb_ef_d8_09:
+  name: e4_b2_fb_ef_d8_09
+  mac: E4:B2:FB:EF:D8:09
+  icon:
+  picture:
+  track: false
+
+treys_ipad:
+  name: Treys-iPad
+  mac: 24:1B:7A:43:83:1C
+  icon:
+  picture:
+  track: false
+
+treys_iphone_xr:
+  name: Treys-iPhone-Xr
+  mac: 70:3C:69:61:10:96
+  icon:
+  picture:
+  track: false
+
+ea_59_a9_41_c9_27:
+  name: ea_59_a9_41_c9_27
+  mac: EA:59:A9:41:C9:27
+  icon:
+  picture:
+  track: false
+
+iphone:
+  name: iPhone
+  mac: BE:8F:49:2F:67:3C
+  icon:
+  picture:
+  track: false
+
+de_71_55_e2_64_28:
+  name: de_71_55_e2_64_28
+  mac: DE:71:55:E2:64:28
+  icon:
+  picture:
+  track: false
+
+stephsiphonexr:
+  name: StephsiPhoneXr
+  mac: 1A:F0:AE:9A:E7:C3
+  icon:
+  picture:
+  track: false
+
+treys_iphone_xr_2:
+  name: Treys-iPhone-Xr
+  mac: 02:76:F9:7F:E8:D8
+  icon:
+  picture:
+  track: false
+
+ti_phone_2:
+  name: Ti-phone
+  mac: 46:E3:D6:46:2B:1F
+  icon:
+  picture:
+  track: false
+
+kirbyhodsiphone_2:
+  name: KirbyHodsiPhone
+  mac: 3A:A1:FB:F4:AD:FD
+  icon:
+  picture:
+  track: false
+
+wlan0:
+  name: wlan0
+  mac: 18:69:D8:79:25:56
+  icon:
+  picture:
+  track: false
+
+wilsonsplewatch_2:
+  name: WilsonspleWatch
+  mac: FA:31:9D:47:9E:CB
+  icon:
+  picture:
+  track: false
+
+nicholaplewatch:
+  name: NicholapleWatch
+  mac: AA:90:71:D8:E1:6E
+  icon:
+  picture:
+  track: false
+
+aa_a4_0a_48_89_a8:
+  name: aa_a4_0a_48_89_a8
+  mac: AA:A4:0A:48:89:A8
+  icon:
+  picture:
+  track: false
+
+dariuss_iphone_2:
+  name: Dariuss-iPhone
+  mac: 8E:53:9B:EA:45:4B
+  icon:
+  picture:
+  track: false
+
+nicholaplewatch_2:
+  name: NicholapleWatch
+  mac: 9E:B3:1D:C7:80:5C
+  icon:
+  picture:
+  track: false
+
+tasmota_7094:
+  name: tasmota-7094
+  mac: EC:FA:BC:56:1B:B6
+  icon:
+  picture:
+  track: false
+
+tasmota_6978:
+  name: tasmota-6978
+  mac: EC:FA:BC:56:1B:42
+  icon:
+  picture:
+  track: false
+
+2c_aa_8e_f6_5d_1f:
+  name: 2c_aa_8e_f6_5d_1f
+  mac: 2C:AA:8E:F6:5D:1F
+  icon:
+  picture:
+  track: false
+
+2c_aa_8e_f6_5f_55:
+  name: 2c_aa_8e_f6_5f_55
+  mac: 2C:AA:8E:F6:5F:55
+  icon:
+  picture:
+  track: false
+
+laptop_mv5tn99o:
+  name: LAPTOP-MV5TN99O
+  mac: D8:C0:A6:DF:EF:35
+  icon:
+  picture:
+  track: false
+
+re_gg8x704jjf8j_dedicated:
+  name: RE-GG8X704JJF8J-Dedicated
+  mac: 24:1B:7A:3C:A9:53
+  icon:
+  picture:
+  track: false
+
+lexs_iphone_3:
+  name: Lexs-iPhone
+  mac: 16:AB:CB:F7:78:3A
+  icon:
+  picture:
+  track: false
+
+amazon_3b58824a5:
+  name: amazon-3b58824a5
+  mac: FC:49:2D:6F:CD:16
+  icon:
+  picture:
+  track: false
+
+oneplus_8t_5g:
+  name: OnePlus-8T-5G
+  mac: 52:39:D3:D7:92:6F
+  icon:
+  picture:
+  track: false
+
+2c_26_17_a3_22_e5:
+  name: 2c_26_17_a3_22_e5
+  mac: 2C:26:17:A3:22:E5
+  icon:
+  picture:
+  track: false
+
+68_64_4b_07_bd_1c:
+  name: 68_64_4b_07_bd_1c
+  mac: 68:64:4B:07:BD:1C
+  icon:
+  picture:
+  track: false
+
+office_apple_tv:
+  name: Office-Apple-TV
+  mac: 68:64:4B:07:BD:1D
+  icon:
+  picture:
+  track: false
+
+kfugate_5570:
+  name: KFugate-5570
+  mac: 14:AB:C5:C2:55:79
+  icon:
+  picture:
+  track: false
+
+karisapplewatch:
+  name: KarisAppleWatch
+  mac: FA:E0:E8:03:28:10
+  icon:
+  picture:
+  track: false
+
+kari_leigh_2:
+  name: Kari-Leigh
+  mac: 32:F3:C8:25:CA:49
+  icon:
+  picture:
+  track: false
+
+0e_cd_71_62_f9_55:
+  name: 0e_cd_71_62_f9_55
+  mac: 0E:CD:71:62:F9:55
+  icon:
+  picture:
+  track: false
+
+laptop_vfqcseio:
+  name: LAPTOP-VFQCSEIO
+  mac: 3C:95:09:C0:30:9B
+  icon:
+  picture:
+  track: false
+
+94_a6_7e_10_a3_e5:
+  name: 94_a6_7e_10_a3_e5
+  mac: 94:A6:7E:10:A3:E5
+  icon:
+  picture:
+  track: false
+
+8a_94_7d_c8_ee_9b:
+  name: 8a_94_7d_c8_ee_9b
+  mac: 8A:94:7D:C8:EE:9B
+  icon:
+  picture:
+  track: false
+
+9a_8f_de_56_74_00:
+  name: 9a_8f_de_56_74_00
+  mac: 9A:8F:DE:56:74:00
+  icon:
+  picture:
+  track: false
+
+nicholaplewatch_3:
+  name: NicholapleWatch
+  mac: 1A:0B:FE:C5:CD:E9
+  icon:
+  picture:
+  track: false
+
+
+
+brandonmqtttrigger:
+  name: brandonmqtttrigger
+  mac:
+  icon:
+  picture:
+  track: true
