@@ -16,8 +16,8 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "Sonoff Fallback"
-    password: "yuyuyuyklo"
+    ssid: "Sonoff ifan02 Fallback"
+    password: "Pharmlake"
 
 captive_portal:
 

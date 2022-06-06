@@ -84,6 +84,8 @@ SENSORS_TYPE_MISC = "misc"
 SENSORS_TYPE_NETWORK_STAT = "network_stat"
 SENSORS_TYPE_PORTS = "ports"
 SENSORS_TYPE_RAM = "ram"
+SENSORS_TYPE_SYSINFO = "sysinfo"
+SENSORS_TYPE_TEMPERATURE = "temperature"
 SENSORS_TYPE_WAN = "wan"
 
 # Sensors
@@ -104,6 +106,7 @@ SENSORS_MISC = ["boottime"]
 SENSORS_NETWORK_STAT = ["rx", "tx", "rx_speed", "tx_speed"]
 SENSORS_PORTS = ["WAN", "LAN"]
 SENSORS_RAM = ["total", "free", "used", "usage"]
+SENSORS_SYSINFO = ["load_avg_1", "load_avg_5", "load_avg_15"]
 SENSORS_WAN = ["status", "ip", "ip_type", "gateway", "mask", "dns", "private_subnet"]
 
 
@@ -182,3 +185,31 @@ SENSORS_PARAM_NETWORK: dict[str, dict[str, Any]] = {
         "raw_attribute": "bits/s",
     },
 }
+
+DEVICE_ATTRIBUTE_CONNECTION_TIME = "connection_time"
+DEVICE_ATTRIBUTE_CONNECTION_TYPE = "connection_type"
+DEVICE_ATTRIBUTE_INTERNET = "internet"
+DEVICE_ATTRIBUTE_IP_TYPE = "ip_type"
+DEVICE_ATTRIBUTE_LAST_ACTIVITY = "last_activity"
+DEVICE_ATTRIBUTE_RSSI = "rssi"
+DEVICE_ATTRIBUTE_RX_SPEED = "rx_speed"
+DEVICE_ATTRIBUTE_TX_SPEED = "tx_speed"
+
+DEVICE_ATTRIBUTES: list[str] = [
+    DEVICE_ATTRIBUTE_CONNECTION_TIME,
+    DEVICE_ATTRIBUTE_CONNECTION_TYPE,
+    DEVICE_ATTRIBUTE_INTERNET,
+    DEVICE_ATTRIBUTE_IP_TYPE,
+    DEVICE_ATTRIBUTE_RSSI,
+    DEVICE_ATTRIBUTE_RX_SPEED,
+    DEVICE_ATTRIBUTE_TX_SPEED,
+]
+
+CONNECTION_TYPE_WIRED = "Wired"
+CONNECTION_TYPE_2G = "2.4 GHz"
+CONNECTION_TYPE_5G = "5 GHz"
+CONNECTION_TYPE_6G = "6 GHz"
+
+CONNECTION_BLOCKED = "blocked"
+CONNECTION_CONNECTED = "connected"
+CONNECTION_DISCONNECTED = "disconnected"

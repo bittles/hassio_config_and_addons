@@ -27,7 +27,7 @@ wifi:
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Treatfan-7828 Fallback Hotspot"
-    password: "0vqOp6G8qtRx"
+    password: "Pharmlake"
 
 captive_portal:
 

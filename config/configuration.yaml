@@ -296,7 +296,7 @@ device_tracker:
       ipdariusphone: !secret dariusiphone_ip
       ipkaraphone: !secret karaiphone_ip
     new_device_defaults:
-      track_new_devices: false
+      track_new_devices: true
 
   - platform: mqtt
     devices:

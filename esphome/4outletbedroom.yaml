@@ -9,8 +9,8 @@ wifi:
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
-    ssid: "KMC4 Bedroom Fallback Hotspot"
-    password: "wordpass"
+    ssid: "KMC4 esphome Fallback Hotspot"
+    password: "Pharmlake"
 
 captive_portal:
 
