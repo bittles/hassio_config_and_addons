@@ -17,6 +17,8 @@ notify: !include notify.yaml
 climate: !include climate.yaml
 template: !include template.yaml
 camera: !include camera.yaml
+mqtt: !include mqtt.yaml
+
 
 timer:
 input_select:
@@ -75,68 +77,7 @@ rest_command:
     password: !secret alfred_pass
     verify_ssl: false
 
-vacuum:
-  platform: mqtt
-  name: Alfred
-  unique_id: alfred_rockrobo
-  schema: state
-  device:
-    manufacturer: Roborock
-    model: roborock.vacuum.s5
-    name: alfred_rockrobo
-    identifiers:
-      - alfred_rockrobo
-    sw_version: 0.10.7
-  supported_features:
-    - start
-    - pause
-    - stop
-    - return_home
-    - battery
-    - status
-    - locate
-#    - clean_spot
-    - fan_speed
-#    - send_command
-  command_topic: valetudo/valetudorockrobo/hass/valetudorockrobo_vacuum/command
-  payload_start: START
-  payload_pause: PAUSE
-  payload_return_to_base: HOME
-  payload_stop: STOP
-  payload_locate: LOCATE
-  state_topic: valetudo/valetudorockrobo/hass/valetudorockrobo_vacuum/state
-  set_fan_speed_topic: valetudo/valetudorockrobo/FanSpeedControlCapability/preset/set
-  fan_speed_list:
-    - low
-    - medium
-    - high
-    - max
-    - 'off'
-  send_command_topic: valetudo/rockrobo/custom_command
-#  battery_level_topic: valetudo/valetudorockrobo/BatteryStateAttribute/level
-#  battery_level_template: "{{ value }}"
-#  charging_topic: valetudo/valetudorockrobo/BatteryStateAttribute/status
-#  charging_template: "{{ value }}"
-#  error_topic: valetudo/valetudorockrobo/StatusStateAttribute/error
-#  error_template: "{{ value }}"
-  json_attributes_topic: valetudo/valetudorockrobo
-  json_attributes_template: >
-    {
-      "Last Run Duration": "{{ (value_json.CurrentStatisticsCapability.time)|timestamp_custom('%H:%M:%S') }}",
-      "Last Run Area Cleaned": "{{ (value_json.CurrentStatisticsCapability.area|float*10.76)|round(0) ~ " sq ft" }}",
-      "Last Run Error?": "{{ value_json.StatusStateAttribute.error }}"
-    }
-#      "Current State": "{{ value_json.valetudo_state.name }}",
-#      "Last Run Start Time": "{{ (value_json.last_run_stats.startTime/1000)|timestamp_custom('%m/%d %a %I:%M %p',local=true) }}",
-#      "Last Run End Time": "{{ (value_json.last_run_stats.endTime/1000)|timestamp_custom('%m/%d %a %I:%M %p',local=true) }}",
 
-#      "Last Run Finish Fine?": "{% if value_json.last_run_stats.finishedFlag == True %}Yes{% else %}No{% endif %}",
-
-#      "Bin Needs Emptied?": "{% if value_json.last_run_stats.endTime > value_json.last_bin_out %}True{% else %}False{% endif %}",
-#      "Total Cleaning Time": "{{ value_json.cleanTime ~ " hr"}}",
-#      "Total Cleaning Area": "{{ (value_json.cleanArea|float/4460.9665)|round(2) ~ " football fields"}}",
-#      "Total Times Told to Clean": "{{ value_json.cleanCount }}"
-#    }
 
 
 #battery_consumption:
@@ -298,15 +239,6 @@ device_tracker:
     new_device_defaults:
       track_new_devices: true
 
-  - platform: mqtt
-    devices:
-      nickmqtttrigger: "location/nick"
-      dariusmqtttrigger: "location/darius"
-      karamqtttrigger: "location/kara"
-      carolinemqtttrigger: "location/caroline"
-      brandonmqtttrigger: "location/brandon"
-    qos: 1
-
 gc100:
   host: !secret globalcache_ip
 
@@ -322,25 +254,7 @@ hue:
       allow_unreachable: true
       allow_hue_groups: false
 
-cover:
-  - platform: mqtt
-    name: Garage MQTT
-    unique_id: mqttgarage
-    availability: 
-      - topic: "My OpenGarage/OUT/STATUS"
-    command_topic: "My OpenGarage/IN/STATE"
-    state_topic: "My OpenGarage/OUT/STATE"
-    json_attributes_topic: "My OpenGarage/OUT/DIST"
-    device_class: garage
-    json_attributes_template: >
-      {
-          "Distance (cm)": "{{ value }}"
-      }
-    payload_open: "open"
-    payload_stop: "click"
-    payload_close: "close"
-    state_open: "OPEN"
-    state_closed: "CLOSED"
+
 
 #  - platform: template
 #    covers:

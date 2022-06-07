@@ -13,11 +13,12 @@
      - fan.living_room_fan
      - fan.bedroom_fan2
 
-     - input_boolean.brandon
-     - input_boolean.caroline
-     - input_boolean.nick
-     - input_boolean.kara
-     - input_boolean.darius
+#     - input_boolean.brandon
+#     - input_boolean.carlee
+#     - input_boolean.caroline
+#     - input_boolean.nick
+#     - input_boolean.kara
+#     - input_boolean.darius
     # - input_select.alfred_should_clean_when
 
      - light.lamp
@@ -45,6 +46,7 @@
      - person.darius
      - person.caroline
      - person.brandon
+     - person.carlee
 
      - sensor.bonusroomtemp
      - sensor.shellytempfixed
@@ -54,6 +56,12 @@
      - sensor.dark_sky_precip_probability_0d
      - sensor.dark_sky_precip_probability_1d
 
+     - switch.brandon_geofence_switch
+     - switch.carlee_geofence_switch
+     - switch.caroline_geofence_switch
+     - switch.darius_geofence_switch
+     - switch.kara_geofence_switch
+     - switch.nick_geofence_switch
      - switch.door
      - switch.idevices_switch
 #     - switch.airplayserver_bathroom

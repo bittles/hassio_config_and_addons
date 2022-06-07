@@ -223,7 +223,6 @@ living_room_play_pause:
         entity_id: remote.living_room_tcl_tv
       data:
         command: play_pause
-        device: '72686620'
   mode: parallel
   max: 10
 living_room_rewind:
@@ -255,7 +254,6 @@ living_room_rewind:
         entity_id: remote.living_room_tcl_tv
       data:
         command: reverse
-        device: '72686620'
   mode: parallel
   max: 10
 living_room_fast_forward:
@@ -287,7 +285,6 @@ living_room_fast_forward:
         entity_id: remote.living_room_tcl_tv
       data:
         command: forward
-        device: '72686620'
   mode: parallel
   max: 10
 bedroom_lights_day:
@@ -647,3 +644,29 @@ frigate_snapshots:
       entity_id: camera.front_deck_scrypted
   mode: parallel
   max: 3
+garage_automations_off:
+  alias: Garage Automations Off
+  sequence:
+  - service: automation.turn_off
+    data: {}
+    target:
+      entity_id:
+      - automation.welcome_home_nick_garage
+      - automation.zpresence_welcome_home_caroline_garage
+      - automation.welcome_home_kara_garage
+      - automation.zpresence_welcome_home_brandon_garage
+      - automation.zpresence_welcome_home_carlee_garage
+  mode: single
+garage_automations_on:
+  alias: Garage Automations On
+  sequence:
+  - service: automation.turn_on
+    data: {}
+    target:
+      entity_id:
+      - automation.welcome_home_nick_garage
+      - automation.zpresence_welcome_home_caroline_garage
+      - automation.welcome_home_kara_garage
+      - automation.zpresence_welcome_home_brandon_garage
+      - automation.zpresence_welcome_home_carlee_garage
+  mode: single

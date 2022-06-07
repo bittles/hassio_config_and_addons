@@ -14,6 +14,7 @@ config:
     - entity: person.kara
     - entity: person.caroline
     - entity: person.brandon
+    - entity: person.carlee
     - entity: binary_sensor.noone
     - entity: vacuum.alfred_re
     - entity: sensor.nest_thermostat_temperature
@@ -54,16 +55,8 @@ config:
       show_header_toggle: false
       state_color: true
       type: entities
-    - columns: 3
-      entities:
-      - entity: binary_sensor.caringaragestatus
-      - entity: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
-      - entity: binary_sensor.back_door_template
-      show_icon: true
-      show_name: true
-      show_state: true
-      state_color: true
-      type: glance
+      view_layout:
+        position: sidebar
     - columns: 3
       entities:
       - entity: light.kitchen
@@ -113,6 +106,20 @@ config:
       state_color: true
       title: Lights
       type: glance
+      view_layout:
+        position: main
+    - columns: 3
+      entities:
+      - entity: binary_sensor.caringaragestatus
+      - entity: binary_sensor.august_smart_lock_pro_3rd_gen_the_current_status_of_the_door
+      - entity: binary_sensor.back_door_template
+      show_icon: true
+      show_name: true
+      show_state: true
+      state_color: true
+      type: glance
+      view_layout:
+        position: sidebar
     - columns: 3
       entities:
       - entity: switch.nick_s_pc
@@ -133,6 +140,8 @@ config:
           action: toggle
       title: Switches
       type: glance
+      view_layout:
+        position: sidebar
     - content: z
       theme: Google Dark Theme
       type: markdown
@@ -154,6 +163,8 @@ config:
     - showAzimuth: false
       showElevation: false
       type: custom:sun-card
+      view_layout:
+        position: sidebar
     theme: night
     title: Home
   - badges: []
@@ -163,16 +174,22 @@ config:
       entities: []
       title: Back Deck
       type: picture-glance
+      view_layout:
+        position: sidebar
     - camera_image: camera.driveway_scrypted
       camera_view: auto
       entities: []
       title: Driveway
       type: picture-glance
+      view_layout:
+        position: sidebar
     - camera_image: camera.front_deck_scrypted
       camera_view: auto
       entities: []
       title: Front Porch
       type: picture-glance
+      view_layout:
+        position: sidebar
     theme: Backend-selected
     title: Cameras
     type: sidebar
@@ -465,16 +482,22 @@ config:
       - entity: device_tracker.ipnickphone
       - entity: device_tracker.iphonenick
       - entity: device_tracker.nickmqtttrigger
-      - entity: input_boolean.nick
+      - entity: switch.nick_geofence_switch
       - entity: device_tracker.ipdariusphone
       - entity: device_tracker.dariusmqtttrigger
-      - entity: input_boolean.darius
+      - entity: switch.darius_geofence_switch
       - entity: device_tracker.ipkaraphone
       - entity: device_tracker.iphonekara
       - entity: device_tracker.karamqtttrigger
-      - entity: input_boolean.kara
-      - entity: binary_sensor.noone
+      - entity: switch.kara_geofence_switch
+      - entity: device_tracker.carleemqtttrigger
+      - entity: switch.carlee_geofence_switch
+      - entity: device_tracker.brandonmqtttrigger
+      - entity: switch.brandon_geofence_switch
+      - entity: device_tracker.carolinemqtttrigger
+      - entity: switch.caroline_geofence_switch
       - entity: input_boolean.noone
+      - entity: binary_sensor.noone
       show_header_toggle: false
       state_color: true
       title: Trackers
@@ -483,6 +506,8 @@ config:
       - entity: timer.nickleft
       - entity: timer.dariusleft
       - entity: timer.karaleft
+      - entity: timer.caroline
+      - entity: timer.brandon
       show_header_toggle: false
       state_color: true
       title: Timers
@@ -492,8 +517,10 @@ config:
       - entity: automation.welcome_home_kara_garage
       - entity: automation.welcome_home_nick_garage
       - entity: automation.welcome_home_d_garage
-      - entity: input_boolean.welcomehomeautomations
+      - entity: automation.zpresence_welcome_home_brandon_garage
+      - entity: automation.zpresence_welcome_home_caroline_garage
       - entity: automation.foyer_light_on_when_someone_comes_home
+      - entity: input_boolean.welcomehomeautomations
       type: entities
     - entities:
       - entity: sensor.date
@@ -506,13 +533,13 @@ config:
     cards:
     - entities:
       - entity: input_datetime.zzdaily_maintenance
-      - entity: automation.daily_4am_maintenance
+      - entity: input_datetime.sunday_reboot_time
       - entity: input_datetime.zzdaily_shield_restart_maintenance
       - entity: input_datetime.zzdaily_shield_restart_post_maintenance
+      - entity: automation.daily_4am_maintenance
+      - entity: automation.zzsunday_reboot
       - entity: automation.restart_shield_tv
       - entity: automation.new_automation_2
-      - entity: input_datetime.sunday_reboot_time
-      - entity: automation.zzsunday_reboot
       - entity: input_datetime.heat_end
       - entity: input_datetime.alfred_cleaning_time
       - entity: automation.alfred_cleans_zones_at_4am
