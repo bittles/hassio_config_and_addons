@@ -21,45 +21,6 @@
       addon: core_rpc_shutdown
       input: nick-pc
 
-- platform: mqtt
-  unique_id: driveway-homebridge-mqtt
-  name: "Driveway Frigate to Homebridge MQTT"
-  device_class: switch
-  state_topic: "scrypted/driveway_motion/motion"
-  command_topic: "scrypted/driveway_motion/cmd"
-  payload_on: '{ "motionDetected": true }'
-  payload_off: '{ "motionDetected": false }'
-  qos: 1
-  retain: true
-  state_on: '{ "motionDetected": true }'
-  state_off: '{ "motionDetected": false }'
-
-- platform: mqtt
-  unique_id: front-porch-homebridge-mqtt
-  name: "Front Porch Frigate to Homebridge MQTT"
-  device_class: switch
-  state_topic: "scrypted/front_porch_motion/motion"
-  command_topic: "scrypted/front_porch_motion/cmd"
-  payload_on: '{ "motionDetected": true }'
-  payload_off: '{ "motionDetected": false }'
-  qos: 1
-  retain: true
-  state_on: '{ "motionDetected": true }'
-  state_off: '{ "motionDetected": false }'
-
-- platform: mqtt
-  unique_id: back-deck-homebridge-mqtt
-  name: "Back Deck Frigate to Homebridge MQTT"
-  device_class: switch
-  state_topic: "scrypted/back_deck_motion/motion"
-  command_topic: "scrypted/back_deck_motion/cmd"
-  payload_on: '{ "motionDetected": true }'
-  payload_off: '{ "motionDetected": false }'
-  qos: 1
-  retain: true
-  state_on: '{ "motionDetected": true }'
-  state_off: '{ "motionDetected": false }'
-
 - platform: template
   switches:
 #      bedroomtvpower:

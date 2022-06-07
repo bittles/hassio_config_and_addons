@@ -177,17 +177,16 @@
   alias: zPresence.Leaving Darius
   description: ''
   trigger:
-  - entity_id: person.darius
+  - entity_id:
+    - person.darius
     from: home
     platform: state
+    to: not_home
   condition: []
   action:
   - service: timer.start
     entity_id: timer.dariusleft
     data: {}
-  - data: {}
-    entity_id: input_boolean.darius
-    service: input_boolean.turn_off
   mode: single
 - id: '1575053903845'
   alias: zPresence.Welcome Home D Garage
@@ -218,9 +217,11 @@
   alias: zPresence.Welcome Home Nick Garage
   description: ''
   trigger:
-  - entity_id: person.nick
+  - entity_id:
+    - person.nick
     platform: state
     to: home
+    from: not_home
   condition:
   - condition: state
     entity_id: timer.nickleft
@@ -802,70 +803,82 @@
   trigger:
   - at: 07:00:00
     platform: time
+    id: 7am
   - event: start
     platform: homeassistant
+    id: hass_start
   - platform: event
     event_type: automation_reloaded
+    id: reload_automations
   - platform: state
     entity_id: input_boolean.welcomehomeautomations
     from: 'off'
     to: 'on'
-  - at: 07:02:00
-    platform: time
-  condition:
-  - after: 06:59:00
-    before: '23:59:00'
-    condition: time
+    id: switch
+  condition: []
   action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 30
-      milliseconds: 0
-  - data: {}
-    service: automation.turn_on
-    target:
-      entity_id:
-      - automation.welcome_home_nick_garage
-      - automation.welcome_home_kara_garage
-      - automation.zpresence_welcome_home_caroline_garage
-      - automation.zpresence_welcome_home_brandon_garage
-  - service: automation.turn_on
-    entity_id: automation.welcome_home_front_door
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.welcomehomeautomations
-    data: {}
-  mode: restart
-  max: 10
+  - if:
+    - condition: or
+      conditions:
+      - condition: trigger
+        id: 7am
+      - condition: trigger
+        id: hass_start
+      - condition: trigger
+        id: reload_automations
+    - after: 06:59:00
+      before: '23:59:00'
+      condition: time
+    then:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 20
+        milliseconds: 0
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.welcomehomeautomations
+      data: {}
+    - service: script.garage_automations_on
+      data: {}
+    - service: automation.turn_on
+      data: {}
+      target:
+        entity_id: automation.welcome_home_front_door
+    else:
+    - service: script.garage_automations_on
+      data: {}
+  mode: queued
+  max: 3
 - id: '1580496037388'
   alias: Garage Auto Off at Midnight
   description: ''
   trigger:
   - at: 00:00:00
     platform: time
+    id: midnight
   - platform: state
     entity_id: input_boolean.welcomehomeautomations
     from: 'on'
     to: 'off'
-  condition:
-  - after: 00:00:00
-    before: 07:00:00
-    condition: time
+    id: switch
+  condition: []
   action:
-  - service: automation.turn_off
-    data: {}
-    target:
-      entity_id:
-      - automation.welcome_home_nick_garage
-      - automation.zpresence_welcome_home_caroline_garage
-      - automation.welcome_home_kara_garage
-      - automation.zpresence_leaving_brandon
-  - service: input_boolean.turn_off
-    target:
-      entity_id: input_boolean.welcomehomeautomations
-    data: {}
-  mode: restart
+  - if:
+    - condition: trigger
+      id: midnight
+    then:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.welcomehomeautomations
+    - service: script.garage_automations_off
+      data: {}
+    else:
+    - service: script.garage_automations_off
+      data: {}
+  mode: queued
+  max: 3
 - id: '1590522357368'
   alias: zNotify.Garage Door Open and Noone Home then Notify
   description: ''
@@ -1088,18 +1101,17 @@
   alias: zPresence.Leaving Kara
   description: ''
   trigger:
-  - entity_id: person.kara
+  - entity_id:
+    - person.kara
     from: home
     platform: state
+    to: not_home
   condition: []
   action:
   - data: {}
     service: timer.start
     target:
       entity_id: timer.karaleft
-  - data: {}
-    entity_id: input_boolean.kara
-    service: input_boolean.turn_off
   - choose:
     - conditions:
       - condition: state
@@ -1121,9 +1133,11 @@
   alias: zPresence.Welcome Home Kara Garage
   description: ''
   trigger:
-  - entity_id: person.kara
+  - entity_id:
+    - person.kara
     platform: state
     to: home
+    from: not_home
   condition:
   - condition: state
     entity_id: timer.karaleft
@@ -1146,18 +1160,17 @@
   alias: zPresence.Leaving Nick
   description: ''
   trigger:
-  - entity_id: person.nick
+  - entity_id:
+    - person.nick
     from: home
     platform: state
+    to: not_home
   condition: []
   action:
   - data: {}
     service: timer.start
     target:
       entity_id: timer.nickleft
-  - data: {}
-    entity_id: input_boolean.nick
-    service: input_boolean.turn_off
   - choose:
     - conditions:
       - condition: state
@@ -1203,10 +1216,6 @@
     event: sunrise
     offset: -00:30:00
     id: sunup
-  - platform: state
-    entity_id: person.caroline
-    to: home
-    id: carolinehome
   condition:
   - condition: or
     conditions:
@@ -1215,9 +1224,6 @@
       state: home
     - condition: state
       entity_id: person.nick
-      state: home
-    - condition: state
-      entity_id: person.caroline
       state: home
   - condition: not
     conditions:
@@ -1229,8 +1235,6 @@
           id: karahome
         - condition: trigger
           id: nickhome
-        - condition: trigger
-          id: carolinehome
       - condition: and
         conditions:
         - condition: state
@@ -1238,9 +1242,6 @@
           state: home
         - condition: state
           entity_id: person.nick
-          state: home
-        - condition: state
-          entity_id: person.caroline
           state: home
   action:
   - choose:
@@ -1258,8 +1259,6 @@
           id: nickhome
         - condition: trigger
           id: sunup
-        - condition: trigger
-          id: carolinehome
       sequence:
       - service: script.bedroom_lights_day
         data: {}
@@ -1280,8 +1279,6 @@
           id: nickhome
         - condition: trigger
           id: sundown
-        - condition: trigger
-          id: carolinehome
       sequence:
       - service: script.bedroom_lights_night
         data: {}
@@ -1610,45 +1607,6 @@
       - automation.welcome_home_nick_garage
       - automation.zpresence_welcome_home_caroline_garage
     data: {}
-  mode: single
-- id: '1621191007886'
-  alias: zzzz.Homekit Device Tracker Updates (mqtt) nick
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.nick
-    from: 'off'
-    to: 'on'
-    id: nickhome
-  - platform: state
-    entity_id: input_boolean.nick
-    from: 'on'
-    to: 'off'
-    id: nickleft
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: nickhome
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: location/nick
-          payload: home
-          qos: '1'
-          retain: true
-    - conditions:
-      - condition: trigger
-        id: nickleft
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: location/nick
-          payload: not_home
-          qos: '1'
-          retain: true
-    default: []
   mode: single
 - id: '1629944626908'
   alias: zzBedroom TV Source Select
@@ -2415,84 +2373,6 @@
     data:
       datetime: '{{ now() }}'
   mode: single
-- id: '1636499910042'
-  alias: zzzz.Homekit Device Tracker Updates (mqtt) d
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.darius
-    from: 'off'
-    to: 'on'
-    id: dhome
-  - platform: state
-    entity_id: input_boolean.darius
-    from: 'on'
-    to: 'off'
-    id: dleft
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: dhome
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: location/darius
-          payload: home
-          qos: '1'
-          retain: true
-    - conditions:
-      - condition: trigger
-        id: dleft
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: location/darius
-          payload: not_home
-          qos: '1'
-          retain: true
-    default: []
-  mode: single
-- id: '1636500267045'
-  alias: zzzz.Homekit Device Tracker Updates (mqtt) kara
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.kara
-    from: 'off'
-    to: 'on'
-    id: karahome
-  - platform: state
-    entity_id: input_boolean.kara
-    from: 'on'
-    to: 'off'
-    id: karaleft
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: karahome
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: location/kara
-          payload: home
-          qos: '1'
-          retain: true
-    - conditions:
-      - condition: trigger
-        id: karaleft
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: location/kara
-          payload: not_home
-          qos: '1'
-          retain: true
-    default: []
-  mode: single
 - id: '1637818448968'
   alias: zzz.Desk Lamp
   description: ''
@@ -2889,52 +2769,15 @@
       camera: front_porch
       camera_and_type: front_porch new
       mqtttimeout: 30
-- id: '1650047572393'
-  alias: zzzz.Homekit Device Tracker Updates (mqtt) Caroline
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.caroline
-    from: 'off'
-    to: 'on'
-    id: carolinehome
-  - platform: state
-    entity_id: input_boolean.caroline
-    from: 'on'
-    to: 'off'
-    id: carolineleft
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: carolinehome
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: location/caroline
-          payload: home
-          qos: '1'
-          retain: true
-    - conditions:
-      - condition: trigger
-        id: carolineleft
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: location/caroline
-          payload: not_home
-          qos: '1'
-          retain: true
-    default: []
-  mode: single
 - id: '1650049481978'
   alias: zPresence.Welcome Home Caroline Garage
   description: ''
   trigger:
-  - entity_id: person.caroline
+  - entity_id:
+    - person.caroline
     platform: state
     to: home
+    from: not_home
   condition:
   - condition: state
     entity_id: timer.caroline
@@ -2957,46 +2800,17 @@
   alias: zPresence.Leaving Caroline
   description: ''
   trigger:
-  - entity_id: person.caroline
+  - entity_id:
+    - person.caroline
     from: home
     platform: state
+    to: not_home
   condition: []
   action:
   - data: {}
     service: timer.start
     target:
       entity_id: timer.caroline
-  - data: {}
-    service: input_boolean.turn_off
-    target:
-      entity_id: input_boolean.caroline
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: person.kara
-        state: not_home
-      - condition: state
-        entity_id: person.nick
-        state: not_home
-      sequence:
-      - service: script.1579731744650
-        data: {}
-      - service: media_player.turn_off
-        target:
-          entity_id: media_player.bedroom_tcl_tv
-        data: {}
-      - service: media_player.turn_off
-        data: {}
-        target:
-          entity_id: media_player.forked_daapd_output_master_bedroom_apple_tv
-      - service: switch.turn_off
-        data: {}
-        entity_id: switch.airplayserver_bathroom
-      - type: turn_off
-        device_id: 5e5a2b32c5848dc960a5fa9d3bc41b26
-        entity_id: switch.desk_lamp
-        domain: switch
-    default: []
   mode: single
 - id: '1650259546530'
   alias: yButters Timer Done
@@ -3098,6 +2912,7 @@
     - person.brandon
     platform: state
     to: home
+    from: not_home
   condition:
   - condition: state
     entity_id: timer.brandon
@@ -3124,6 +2939,7 @@
     - person.brandon
     from: home
     platform: state
+    to: not_home
   condition: []
   action:
   - data: {}
@@ -3131,77 +2947,6 @@
     target:
       entity_id:
       - timer.brandon
-  - data: {}
-    service: input_boolean.turn_off
-    target:
-      entity_id:
-      - input_boolean.brandon
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: person.kara
-        state: not_home
-      - condition: state
-        entity_id: person.nick
-        state: not_home
-      sequence:
-      - service: script.1579731744650
-        data: {}
-      - service: media_player.turn_off
-        target:
-          entity_id: media_player.bedroom_tcl_tv
-        data: {}
-      - service: media_player.turn_off
-        data: {}
-        target:
-          entity_id: media_player.forked_daapd_output_master_bedroom_apple_tv
-      - service: switch.turn_off
-        data: {}
-        entity_id: switch.airplayserver_bathroom
-      - type: turn_off
-        device_id: 5e5a2b32c5848dc960a5fa9d3bc41b26
-        entity_id: switch.desk_lamp
-        domain: switch
-    default: []
-  mode: single
-- id: '1653095034547'
-  alias: zzzz.Homekit Device Tracker Updates (mqtt) Brandon
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.brandon
-    from: 'off'
-    to: 'on'
-    id: brandon-home
-  - platform: state
-    entity_id: input_boolean.brandon
-    from: 'on'
-    to: 'off'
-    id: brandon-left
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: brandon-home
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: location/brandon
-          payload: home
-          qos: '1'
-          retain: true
-    - conditions:
-      - condition: trigger
-        id: brandon-left
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: location/brandon
-          payload: not_home
-          qos: '1'
-          retain: true
-    default: []
   mode: single
 - id: '1654143015791'
   alias: Nick Start Temp Change (Duplicate)
@@ -3217,3 +2962,47 @@
     target:
       entity_id: climate.new_bedroom_thermostat
   mode: single
+- id: '1654568553137'
+  alias: zPresence.Leaving Carlee
+  description: ''
+  trigger:
+  - entity_id:
+    - person.carlee
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - data: {}
+    service: timer.start
+    target:
+      entity_id:
+      - timer.carlee
+  mode: single
+- id: '1654568632225'
+  alias: zPresence.Welcome Home Carlee Garage
+  description: ''
+  trigger:
+  - entity_id:
+    - person.carlee
+    platform: state
+    to: home
+    from: not_home
+  condition:
+  - condition: state
+    entity_id: timer.carlee
+    state: idle
+  - condition: state
+    entity_id: timer.garage_open_timer
+    state: idle
+  action:
+  - service: timer.start
+    data: {}
+    target:
+      entity_id: timer.garage_open_timer
+  - service: cover.open_cover
+    data: {}
+    target:
+      entity_id: cover.garage_mqtt
+  mode: single
+  initial_state: false

@@ -1,3 +1,4 @@
+CAM_OPTIONS: []
 ENABLE_AUDIO: false
 MQTT_DTOPIC: homeassistant
 NET_MODE: ANY

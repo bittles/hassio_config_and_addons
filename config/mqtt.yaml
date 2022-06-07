@@ -1,0 +1,241 @@
+cover:
+  - name: Garage MQTT
+    unique_id: mqttgarage
+    availability:
+      - topic: "My OpenGarage/OUT/STATUS"
+    command_topic: "My OpenGarage/IN/STATE"
+    state_topic: "My OpenGarage/OUT/STATE"
+    json_attributes_topic: "My OpenGarage/OUT/DIST"
+    device_class: garage
+    json_attributes_template: >
+      {
+          "Distance (cm)": "{{ value }}"
+      }
+    payload_open: "open"
+    payload_stop: "click"
+    payload_close: "close"
+    state_open: "OPEN"
+    state_closed: "CLOSED"
+
+device_tracker:
+  - name: "nick mqtt trigger"
+    unique_id: nick-mqtt
+    object_id: nickmqtttrigger
+    state_topic: "location/nick"
+    qos: 1
+    source_type: gps
+
+  - name: "darius mqtt trigger"
+    unique_id: darius-mqtt
+    object_id: dariusmqtttrigger
+    state_topic: "location/darius"
+    qos: 1
+    source_type: gps
+
+  - name: "kara mqtt trigger"
+    unique_id: kara-mqtt
+    object_id: karamqtttrigger
+    state_topic: "location/kara"
+    qos: 1
+    source_type: gps
+
+  - name: "caroline mqtt trigger"
+    unique_id: caroline-mqtt
+    object_id: carolinemqtttrigger
+    state_topic: "location/caroline"
+    qos: 1
+    source_type: gps
+
+  - name: "brandon mqtt trigger"
+    unique_id: brandon-mqtt
+    object_id: brandonmqtttrigger
+    state_topic: "location/brandon"
+    qos: 1
+    source_type: gps
+
+  - name: "carlee mqtt trigger"
+    unique_id: carlee-mqtt
+    state_topic: "location/carlee"
+    qos: 1
+    source_type: gps
+
+sensor:
+  - unique_id: alfred-calibration
+    state_topic: "valetudo/rockrobo/map_calibration_points"
+    name: Alfred Calibration
+    force_update: true
+#    scan_interval: 5
+
+  - unique_id: alfred-spots
+    state_topic: "valetudo/rockrobo/destinations"
+    value_template: "{{ value_json.spots }}"
+    name: Alfred Spots
+    force_update: true
+#    scan_interval: 5
+
+  - unique_id: alfred-zones
+    state_topic: "valetudo/rockrobo/destinations"
+    value_template: "{{ value_json.zones }}"
+    name: Alfred Zones
+    force_update: true
+#    scan_interval: 5
+
+  - unique_id: alfred-rooms
+    state_topic: "valetudo/rockrobo/destinations"
+    value_template: "{{ value_json.rooms }}"
+    name: Alfred Rooms
+    force_update: true
+#    scan_interval: 5
+
+switch:
+  - unique_id: nick-mqtt-switch
+    name: Nick geofence switch
+    state_topic: "location/nick"
+    command_topic: "location/nick"
+    payload_on: "home"
+    payload_off: "not_home"
+    qos: 1
+    retain: true
+
+  - unique_id: kara-mqtt-switch
+    name: Kara geofence switch
+    state_topic: "location/kara"
+    command_topic: "location/kara"
+    payload_on: "home"
+    payload_off: "not_home"
+    qos: 1
+    retain: true
+
+  - unique_id: darius-mqtt-switch
+    name: Darius geofence switch
+    state_topic: "location/darius"
+    command_topic: "location/darius"
+    payload_on: "home"
+    payload_off: "not_home"
+    qos: 1
+    retain: true
+
+  - unique_id: caroline-mqtt-switch
+    name: Caroline geofence switch
+    state_topic: "location/caroline"
+    command_topic: "location/caroline"
+    payload_on: "home"
+    payload_off: "not_home"
+    qos: 1
+    retain: true
+
+  - unique_id: brandon-mqtt-switch
+    name: Brandon geofence switch
+    state_topic: "location/brandon"
+    command_topic: "location/brandon"
+    payload_on: "home"
+    payload_off: "not_home"
+    qos: 1
+    retain: true
+
+  - unique_id: carlee-mqtt-switch
+    name: Carlee geofence switch
+    state_topic: "location/carlee"
+    command_topic: "location/carlee"
+    payload_on: "home"
+    payload_off: "not_home"
+    qos: 1
+    retain: true
+
+  - unique_id: driveway-homebridge-mqtt
+    name: "Driveway Frigate to Homebridge MQTT"
+    device_class: switch
+    state_topic: "scrypted/driveway_motion/motion"
+    command_topic: "scrypted/driveway_motion/cmd"
+    payload_on: '{ "motionDetected": true }'
+    payload_off: '{ "motionDetected": false }'
+    qos: 1
+    retain: true
+    state_on: '{ "motionDetected": true }'
+    state_off: '{ "motionDetected": false }'
+
+  - unique_id: front-porch-homebridge-mqtt
+    name: "Front Porch Frigate to Homebridge MQTT"
+    device_class: switch
+    state_topic: "scrypted/front_porch_motion/motion"
+    command_topic: "scrypted/front_porch_motion/cmd"
+    payload_on: '{ "motionDetected": true }'
+    payload_off: '{ "motionDetected": false }'
+    qos: 1
+    retain: true
+    state_on: '{ "motionDetected": true }'
+    state_off: '{ "motionDetected": false }'
+
+  - unique_id: back-deck-homebridge-mqtt
+    name: "Back Deck Frigate to Homebridge MQTT"
+    device_class: switch
+    state_topic: "scrypted/back_deck_motion/motion"
+    command_topic: "scrypted/back_deck_motion/cmd"
+    payload_on: '{ "motionDetected": true }'
+    payload_off: '{ "motionDetected": false }'
+    qos: 1
+    retain: true
+    state_on: '{ "motionDetected": true }'
+    state_off: '{ "motionDetected": false }'
+
+vacuum:
+  - name: Alfred
+    unique_id: alfred_rockrobo
+    schema: state
+    device:
+      manufacturer: Roborock
+      model: roborock.vacuum.s5
+      name: alfred_rockrobo
+      identifiers:
+        - alfred_rockrobo
+      sw_version: 0.10.7
+    supported_features:
+      - start
+      - pause
+      - stop
+      - return_home
+      - battery
+      - status
+      - locate
+  #    - clean_spot
+      - fan_speed
+  #    - send_command
+    command_topic: valetudo/valetudorockrobo/hass/valetudorockrobo_vacuum/command
+    payload_start: START
+    payload_pause: PAUSE
+    payload_return_to_base: HOME
+    payload_stop: STOP
+    payload_locate: LOCATE
+    state_topic: valetudo/valetudorockrobo/hass/valetudorockrobo_vacuum/state
+    set_fan_speed_topic: valetudo/valetudorockrobo/FanSpeedControlCapability/preset/set
+    fan_speed_list:
+      - low
+      - medium
+      - high
+      - max
+      - 'off'
+    send_command_topic: valetudo/rockrobo/custom_command
+  #  battery_level_topic: valetudo/valetudorockrobo/BatteryStateAttribute/level
+  #  battery_level_template: "{{ value }}"
+  #  charging_topic: valetudo/valetudorockrobo/BatteryStateAttribute/status
+  #  charging_template: "{{ value }}"
+  #  error_topic: valetudo/valetudorockrobo/StatusStateAttribute/error
+  #  error_template: "{{ value }}"
+    json_attributes_topic: valetudo/valetudorockrobo
+    json_attributes_template: >
+      {
+        "Last Run Duration": "{{ (value_json.CurrentStatisticsCapability.time)|timestamp_custom('%H:%M:%S') }}",
+        "Last Run Area Cleaned": "{{ (value_json.CurrentStatisticsCapability.area|float*10.76)|round(0) ~ " sq ft" }}",
+        "Last Run Error?": "{{ value_json.StatusStateAttribute.error }}"
+      }
+  #      "Current State": "{{ value_json.valetudo_state.name }}",
+  #      "Last Run Start Time": "{{ (value_json.last_run_stats.startTime/1000)|timestamp_custom('%m/%d %a %I:%M %p',local=true) }}",
+  #      "Last Run End Time": "{{ (value_json.last_run_stats.endTime/1000)|timestamp_custom('%m/%d %a %I:%M %p',local=true) }}",
+
+  #      "Last Run Finish Fine?": "{% if value_json.last_run_stats.finishedFlag == True %}Yes{% else %}No{% endif %}",
+
+  #      "Bin Needs Emptied?": "{% if value_json.last_run_stats.endTime > value_json.last_bin_out %}True{% else %}False{% endif %}",
+  #      "Total Cleaning Time": "{{ value_json.cleanTime ~ " hr"}}",
+  #      "Total Cleaning Area": "{{ (value_json.cleanArea|float/4460.9665)|round(2) ~ " football fields"}}",
+  #      "Total Times Told to Clean": "{{ value_json.cleanCount }}"
+  #    }
