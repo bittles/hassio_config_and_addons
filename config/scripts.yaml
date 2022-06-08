@@ -629,17 +629,17 @@ frigate_snapshots:
     enabled: false
   - service: camera.snapshot
     data:
-      filename: /config/www/frigate_driveway.jpg
+      filename: /config/www/driveway-cam.jpg
     target:
       entity_id: camera.driveway_scrypted
   - service: camera.snapshot
     data:
-      filename: /config/www/frigate_camera.back_deck.jpg
+      filename: /config/www/back-deck-cam.jpg
     target:
       entity_id: camera.scryp_back_deck
   - service: camera.snapshot
     data:
-      filename: /config/www/frigate_camera.front_porch.jpg
+      filename: /config/www/front-porch-cam.jpg
     target:
       entity_id: camera.front_deck_scrypted
   mode: parallel

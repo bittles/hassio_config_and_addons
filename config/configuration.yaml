@@ -77,9 +77,6 @@ rest_command:
     password: !secret alfred_pass
     verify_ssl: false
 
-
-
-
 #battery_consumption:
 #  front_door_batteries:
 #    source: sensor.august_smart_lock_pro_3rd_gen_battery_level
@@ -238,6 +235,10 @@ device_tracker:
       ipkaraphone: !secret karaiphone_ip
     new_device_defaults:
       track_new_devices: true
+#  - platform: ddwrt
+#    host: 192.168.29.244
+#    username: root
+#    password: Tigole86
 
 gc100:
   host: !secret globalcache_ip
