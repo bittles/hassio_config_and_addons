@@ -190,6 +190,27 @@ config:
       type: picture-glance
       view_layout:
         position: sidebar
+    - camera_image: camera.back_deck_motion_snapshot
+      camera_view: auto
+      entities: []
+      title: Back Deck
+      type: picture-glance
+      view_layout:
+        position: sidebar
+    - camera_image: camera.driveway_motion_snapshot
+      camera_view: auto
+      entities: []
+      title: Driveway
+      type: picture-glance
+      view_layout:
+        position: sidebar
+    - camera_image: camera.front_porch_motion_snapshot
+      camera_view: auto
+      entities: []
+      title: Front Porch
+      type: picture-glance
+      view_layout:
+        position: sidebar
     theme: Backend-selected
     title: Cameras
     type: sidebar
@@ -413,42 +434,6 @@ config:
     title: TV and Music
   - badges: []
     cards:
-    - entity: media_player.tyler_s_echo_dot
-      tts:
-        platform: alexa
-        type: tts
-      type: custom:mini-media-player
-    - entities:
-      - entity: input_text.alexa_message_text
-        name: Alexa message text
-        type: custom:text-input-row
-      - entity: input_select.alexa_message_target
-        name: Alexa message device
-      - action_name: Send
-        icon: mdi:voice
-        name: ' '
-        service: script.1624664181825
-        type: call-service
-      type: entities
-    - entity: media_player.living_room_echo
-      tts:
-        platform: alexa
-        type: tts
-      type: custom:mini-media-player
-    - entity: media_player.bathroom_echo
-      tts:
-        platform: alexa
-        type: tts
-      type: custom:mini-media-player
-    - entity: media_player.bedroom_echo
-      tts:
-        platform: alexa
-        type: tts
-      type: custom:mini-media-player
-    path: alexa
-    title: Alexa
-  - badges: []
-    cards:
     - entities:
       - entity: sensor.washing_machine_energy_total_this_month
       hours_to_show: 800
@@ -488,6 +473,7 @@ config:
       - entity: switch.darius_geofence_switch
       - entity: device_tracker.ipkaraphone
       - entity: device_tracker.iphonekara
+      - entity: device_tracker.iphonekara_2
       - entity: device_tracker.karamqtttrigger
       - entity: switch.kara_geofence_switch
       - entity: device_tracker.carleemqtttrigger
