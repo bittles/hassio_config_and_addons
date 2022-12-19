@@ -1,6 +1,9 @@
 # hassio_config_and_addons
 Personal Home Assistant Setup
 
+## Moved into a new house which I'll be setting up as a new branch
+- Being a lot more comfortable with everything and starting from scratch a lot is cleaned up in my new setup
+
 ## System
 - Raspberry Pi4 rev 1.2
   - running at 1800 mhz
